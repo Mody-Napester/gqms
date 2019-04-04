@@ -15,17 +15,27 @@
                     </ul>
                 </li>
 
-                <li class="text-muted menu-title">Settings</li>
-                <li class="has_sub">
-                    <a href="#" class="waves-effect"><i class="ti-user"></i> <span> Lookups </span></a>
-                </li>
-                <li class="has_sub">
-                    <a href="#" class="waves-effect"><i class="ti-settings"></i> <span> Site Modes </span></a>
-                </li>
-
                 <li class="text-muted menu-title">Resources</li>
                 <li class="has_sub">
                     <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Users </span></a>
+                </li>
+                <li class="has_sub">
+                    <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Patients </span></a>
+                </li>
+                <li class="has_sub">
+                    <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Doctors </span></a>
+                </li>
+                <li class="has_sub">
+                    <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Floors </span></a>
+                </li>
+                <li class="has_sub">
+                    <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Receptions </span></a>
+                </li>
+                <li class="has_sub">
+                    <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Desks </span></a>
+                </li>
+                <li class="has_sub">
+                    <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Screens </span></a>
                 </li>
 
             </ul>

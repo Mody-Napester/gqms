@@ -44,24 +44,6 @@ function str_well($value){
     return ucfirst(str_replace('_', ' ', $value));
 }
 
-// Files
-function getFile($file_for, $refer_row_id, $table){
-    return \App\File::where('lookup_file_for_id', lookup('name',$file_for)->id)
-        ->where('refer_row_id', $refer_row_id)
-        ->where('lookup_tables_id', lookup('name', $table)->id)
-        ->where('active', 1)
-        ->first();
-}
-
-// Localized fields
-function localize($table, $refer_row_id, $localized_field){
-    return \App\Localization::where('lookup_tables_id', lookup('name', $table)->id)
-        ->where('lookup_languages_id', lookup('name',lang())->id)
-        ->where('refer_row_id', $refer_row_id)
-        ->where('lookup_localized_fields_id', lookup('name', $localized_field)->id)
-        ->first();
-}
-
 // Upload files
 function upload_file($type, $file, $path){
 

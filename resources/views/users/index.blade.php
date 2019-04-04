@@ -58,24 +58,24 @@
                     </thead>
 
                     <tbody>
-                        @foreach($resources as $resource)
+                        @foreach($users as $user)
                             <tr>
-                                <td>{{ $resource->id }}</td>
-                                <td>{{ $resource->name }}</td>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
                                 <td>
-                                    @foreach($resource->roles as $role)
+                                    @foreach($user->roles as $role)
                                         <span class="label {{ $role->class }}">{{ $role->name }}</span>
                                     @endforeach
                                 </td>
-                                <td>{{ $resource->createdBy->name }}</td>
-                                <td>{{ $resource->updatedBy->name }}</td>
-                                <td>{{ $resource->created_at }}</td>
-                                <td>{{ $resource->updated_at }}</td>
+                                <td>{{ $user->createdBy->name }}</td>
+                                <td>{{ $user->updatedBy->name }}</td>
+                                <td>{{ $user->created_at }}</td>
+                                <td>{{ $user->updated_at }}</td>
                                 <td>
-                                    <a href="{{ route('users.edit', [$resource->uuid]) }}" class="update-modal btn btn-sm btn-success">
+                                    <a href="{{ route('users.edit', [$user->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <a href="{{ route('users.destroy', [$resource->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
+                                    <a href="{{ route('users.destroy', [$user->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
                                         <i class="fa fa-times"></i>
                                     </a>
                                 </td>

@@ -49,42 +49,8 @@
                         </div>
                     </div>
 
-                    <div class="form-group m-t-20 m-b-0">
-                        <div class="col-12">
-                            <a href="{{ route('password.request') }}" class="text-dark"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
-                        </div>
-                    </div>
-
-                    <div class="form-group m-t-40 m-b-0">
-                        <div class="col-12 text-center">
-                            <h5 class="font-18"><b>Sign in with</b></h5>
-                        </div>
-                    </div>
-
-                    <div class="form-group m-b-0 text-center">
-                        <div class="col-12">
-                            <button type="button" class="btn btn-sm btn-facebook waves-effect waves-light m-t-20">
-                                <i class="fa fa-facebook m-r-5"></i> Facebook
-                            </button>
-
-                            <button type="button" class="btn btn-sm btn-twitter waves-effect waves-light m-t-20">
-                                <i class="fa fa-twitter m-r-5"></i> Twitter
-                            </button>
-
-                            <button type="button" class="btn btn-sm btn-googleplus waves-effect waves-light m-t-20">
-                                <i class="fa fa-google-plus m-r-5"></i> Google+
-                            </button>
-                        </div>
-                    </div>
                 </form>
 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 text-center">
-                <p class="text-white">
-                    Don't have an account? <a href="{{ route('register') }}" class="text-white m-l-5"><b>Sign Up</b></a>
-                </p>
             </div>
         </div>
 
