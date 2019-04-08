@@ -1,4 +1,4 @@
-<form method="post" action="{{ route('users.update', $resource->uuid) }}" enctype="multipart/form-data">
+<form method="post" action="{{ route('users.update', $user->uuid) }}" enctype="multipart/form-data">
     {{ csrf_field() }}
     {{ method_field('PUT') }}
 
@@ -6,7 +6,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="email">Email</label>
-                <input type="email" id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $resource->email }}" required autofocus/>
+                <input type="email" id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $user->email }}" required autofocus/>
 
                 @if ($errors->has('email'))
                     <span class="invalid-feedback" role="alert">
@@ -18,7 +18,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="name">Username</label>
-                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $resource->name }}" required>
+                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $user->name }}" required>
 
                 @if ($errors->has('name'))
                     <span class="invalid-feedback" role="alert">
@@ -28,10 +28,9 @@
             </div>
         </div>
         <div class="col-md-6">
-
             <div class="form-group">
                 <label class="" for="phone">Phone</label>
-                <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ $resource->phone }}" required>
+                <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ $user->phone }}" required>
 
                 @if ($errors->has('phone'))
                     <span class="invalid-feedback" role="alert">
@@ -52,13 +51,35 @@
                 @endif
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach(App\Enums\UserStatuses::$statuses as $key => $status)
+                        <option @if($status == $user->status) selected @endif value="{{ $key }}">{{ $status }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Type</label>
+                <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach(App\Enums\UserTypes::$types as $key => $type)
+                        <option @if($type == $user->type) selected @endif value="{{ $key }}">{{ $type }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
     </div>
 
     <div class="form-group">
         <label>Roles <span data-select2-target="roles_update" class="select-all text-success btn-link">(Select All)</span></label>
         <select name="roles[]" id="roles_update" class="select2 select2-multiple" multiple="" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
             @foreach($roles as $role)
-                <option @if(in_array($role->id, $resource->roles->pluck('id')->toArray())) selected @endif value="{{ $role->uuid }}">{{ $role->name }}</option>
+                <option @if(in_array($role->id, $user->roles->pluck('id')->toArray())) selected @endif value="{{ $role->uuid }}">{{ $role->name }}</option>
             @endforeach
         </select>
     </div>

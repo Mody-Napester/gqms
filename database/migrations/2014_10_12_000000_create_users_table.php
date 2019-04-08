@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
             $table->integer('created_by');
             $table->integer('updated_by');
             $table->integer('status');
+            $table->integer('type');
+            $table->string('api_token');
             $table->softDeletes();
             $table->timestamps();
         });

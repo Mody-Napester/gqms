@@ -27,7 +27,6 @@
             </div>
         </div>
         <div class="col-md-6">
-
             <div class="form-group">
                 <label class="" for="phone">Phone</label>
                 <input id="phone" type="text" autocomplete="off" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ old('phone') }}" required>
@@ -51,16 +50,42 @@
                 @endif
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach(App\Enums\UserStatuses::$statuses as $key => $status)
+                        <option value="{{ $key }}">{{ $status }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Type</label>
+                <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach(App\Enums\UserTypes::$types as $key => $type)
+                        <option value="{{ $key }}">{{ $type }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Roles <span data-select2-target="roles_create" class="select-all text-success btn-link">(Select All)</span></label>
+                <select name="roles[]" id="roles_create" class="select2 select2-multiple" multiple="" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($roles as $role)
+                        <option value="{{ $role->uuid }}">{{ $role->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Roles <span data-select2-target="roles_create" class="select-all text-success btn-link">(Select All)</span></label>
-        <select name="roles[]" id="roles_create" class="select2 select2-multiple" multiple="" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-            @foreach($roles as $role)
-                <option value="{{ $role->uuid }}">{{ $role->name }}</option>
-            @endforeach
-        </select>
-    </div>
 
     <div class="form-group m-b-0">
         <div>

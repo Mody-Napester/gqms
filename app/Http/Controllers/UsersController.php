@@ -58,7 +58,11 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         // Check permissions
+//        if (!User::hasAuthority('store.users')){
+//            return redirect('/');
+//        }
 
         // Check validation
         $validator = Validator::make($request->all(), [
@@ -79,10 +83,12 @@ class UsersController extends Controller
             'phone' => $request->phone,
             'password' => bcrypt($request->password),
             'created_by' => auth()->user()->id,
-            'updated_by' => auth()->user()->id
+            'updated_by' => auth()->user()->id,
+            'status' => $request->status,
+            'type' => $request->type,
         ]);
 
-        // Relation
+        // Relations
         if ($resource){
             foreach ($request->input('roles') as $role){
                 $resource->roles()->attach(Role::getBy('uuid', $role)->id);
@@ -115,9 +121,9 @@ class UsersController extends Controller
     public function edit($uuid)
     {
         $data['roles'] = Role::all();
-        $data['resource'] = User::getBy('uuid', $uuid);
+        $data['user'] = User::getBy('uuid', $uuid);
         return response([
-            'title'=> "Update user " . $data['resource']->name,
+            'title'=> "Update user " . $data['user']->name,
             'view'=> view('users.edit', $data)->render(),
         ]);
     }
