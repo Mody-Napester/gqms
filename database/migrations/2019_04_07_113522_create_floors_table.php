@@ -16,7 +16,12 @@ class CreateFloorsTable extends Migration
         Schema::create('floors', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
-            $table->string('name');
+            $table->string('name_ar');
+            $table->string('name_en');
+            $table->integer('status');
+            $table->integer('created_by');
+            $table->integer('updated_by');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

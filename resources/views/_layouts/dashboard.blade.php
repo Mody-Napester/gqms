@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
-        <meta name="author" content="Coderthemes">
+        <meta name="description" content="">
+        <meta name="author" content="Ahmed Samy">
 
-        <link rel="shortcut icon" href="{{ url('assets/images/favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ url('assets/images/logo_sm.png') }}">
 
         <title>{{ config('app.name') }} @yield('title')</title>
 
@@ -45,14 +45,14 @@
                 <!-- LOGO -->
                 <div class="topbar-left">
                     <div class="text-center">
-                        <a href="{{ url('/') }}" class="logo">
-                            <i class="icon-magnet icon-c-logo"></i><span>{{ config('app.name') }}</span>
-                        </a>
+                        {{--<a href="{{ url('/') }}" class="logo">--}}
+                            {{--<i class="icon-magnet icon-c-logo"></i><span>{{ config('app.name') }}</span>--}}
+                        {{--</a>--}}
                         <!-- Image Logo here -->
-                        <!--<a href="index.html" class="logo">-->
-                        <!--<i class="icon-c-logo"> <img src="assets/images/logo_sm.png" height="42"/> </i>-->
-                        <!--<span><img src="assets/images/logo_light.png" height="20"/></span>-->
-                        <!--</a>-->
+                        <a href="{{ url('/') }}" class="logo">
+                            <i class="icon-c-logo"> <img src="{{ url('assets/images/logo_sm.png') }}" height="45"/> </i>
+                            <span><img src="{{ url('assets/images/logo_light.png') }}" height="30"/></span>
+                        </a>
                     </div>
                 </div>
 
@@ -60,6 +60,11 @@
                 <nav class="navbar-custom">
 
                     <ul class="list-inline float-right mb-0">
+
+                        @foreach(auth()->user()->roles as $role)
+                            <span class="label {{ $role->class }}">{{ $role->name }}</span>
+                        @endforeach
+
                         {{--<li class="list-inline-item dropdown notification-list">--}}
                             {{--<a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown" href="#" role="button"--}}
                                {{--aria-haspopup="false" aria-expanded="false">--}}
@@ -98,11 +103,11 @@
                             {{--</div>--}}
                         {{--</li>--}}
 
-                        {{--<li class="list-inline-item notification-list">--}}
-                            {{--<a class="nav-link waves-light waves-effect" href="#" id="btn-fullscreen">--}}
-                                {{--<i class="dripicons-expand noti-icon"></i>--}}
-                            {{--</a>--}}
-                        {{--</li>--}}
+                        <li class="list-inline-item notification-list">
+                            <a class="nav-link waves-light waves-effect" href="#" id="btn-fullscreen">
+                                <i class="dripicons-expand noti-icon"></i>
+                            </a>
+                        </li>
 
                         {{--<li class="list-inline-item notification-list">--}}
                             {{--<a class="nav-link right-bar-toggle waves-light waves-effect" href="#">--}}
@@ -111,32 +116,27 @@
                         {{--</li>--}}
 
                         <li class="list-inline-item dropdown notification-list">
-                            @foreach(auth()->user()->roles as $role)
-                                <span class="label {{ $role->class }}">{{ $role->name }}</span>
-                            @endforeach
-
-                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
-                               aria-haspopup="false" aria-expanded="false">
-                                <span>Welcome {{ Auth::user()->name }}</span>
+                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <span>{{ Auth::user()->name }}</span>
                                 <img src="{{ url('assets/images/users/avatar-1.jpg') }}" alt="user" class="rounded-circle">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
 
 
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="md md-account-circle"></i> <span>Profile</span>
-                                </a>
+                                {{--<!-- item-->--}}
+                                {{--<a href="javascript:void(0);" class="dropdown-item notify-item">--}}
+                                    {{--<i class="md md-account-circle"></i> <span>Profile</span>--}}
+                                {{--</a>--}}
 
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="md md-settings"></i> <span>Settings</span>
-                                </a>
+                                {{--<!-- item-->--}}
+                                {{--<a href="javascript:void(0);" class="dropdown-item notify-item">--}}
+                                    {{--<i class="md md-settings"></i> <span>Settings</span>--}}
+                                {{--</a>--}}
 
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <i class="md md-lock-open"></i> <span>Lock Screen</span>
-                                </a>
+                                {{--<!-- item-->--}}
+                                {{--<a href="javascript:void(0);" class="dropdown-item notify-item">--}}
+                                    {{--<i class="md md-lock-open"></i> <span>Lock Screen</span>--}}
+                                {{--</a>--}}
 
                                 <!-- item-->
                                 <a href="{{ route('logout') }}" class="dropdown-item notify-item" onclick="event.preventDefault();

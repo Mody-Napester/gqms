@@ -122,6 +122,9 @@ class User extends Authenticatable implements MustVerifyEmail
         if (in_array($authority, User::authorities(auth()->user()))){
             $status = true;
         }
+        if (in_array(auth()->user()->id, config('vars.authorized_users'))){
+            $status = true;
+        }
         return $status;
     }
 }
