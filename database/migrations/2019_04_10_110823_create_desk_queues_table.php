@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDesksTable extends Migration
+class CreateDeskQueuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,12 @@ class CreateDesksTable extends Migration
      */
     public function up()
     {
-        Schema::create('desks', function (Blueprint $table) {
+        Schema::create('desk_queues', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
-            $table->integer('user_id');
             $table->integer('floor_id');
-            $table->string('ip');
-            $table->string('name_ar');
-            $table->string('name_en');
-            $table->integer('status');
-            $table->integer('created_by');
-            $table->integer('updated_by');
-            $table->softDeletes();
+            $table->integer('queue_number');
+            $table->integer('status'); // 1 basic, 2 call, 3 Pass == Skip, 4 Done,5 Call from pass
             $table->timestamps();
         });
     }
@@ -36,6 +30,6 @@ class CreateDesksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('desks');
+        Schema::dropIfExists('desk_queues');
     }
 }

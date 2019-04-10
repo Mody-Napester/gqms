@@ -58,11 +58,10 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
         // Check permissions
-//        if (!User::hasAuthority('store.users')){
-//            return redirect('/');
-//        }
+        if (!User::hasAuthority('store.users')){
+            return redirect('/');
+        }
 
         // Check validation
         $validator = Validator::make($request->all(), [
@@ -99,17 +98,6 @@ class UsersController extends Controller
         if ($resource){
             return back();
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

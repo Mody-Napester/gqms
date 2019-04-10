@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') Floors @endsection
+@section('title') Desks @endsection
 
 @section('content')
 
@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <h4 class="page-title">Floors</h4>
+            <h4 class="page-title">Desk</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
                 <li class="breadcrumb-item"><a href="#">Floors</a></li>
