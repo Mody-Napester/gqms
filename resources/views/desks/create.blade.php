@@ -1,4 +1,4 @@
-<form method="post" action="{{ route('floors.store') }}" enctype="multipart/form-data">
+<form method="post" action="{{ route('desks.store') }}" enctype="multipart/form-data">
     @csrf
 
     <div class="row">
@@ -26,11 +26,33 @@
                 @endif
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="" for="ip">Screen IP</label>
+                <input type="text" id="ip" autocomplete="off" class="form-control{{ $errors->has('ip') ? ' is-invalid' : '' }}" name="ip" value="{{ old('ip') }}" required/>
+
+                @if ($errors->has('ip'))
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('ip') }}</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Floor</label>
+                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($floors as $key => $floor)
+                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label>Status</label>
                 <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach(App\Enums\FloorStatuses::$statuses as $key => $status)
+                    @foreach(App\Enums\DeskStatuses::$statuses as $key => $status)
                         <option value="{{ $key }}">{{ $status['en'] }}</option>
                     @endforeach
                 </select>

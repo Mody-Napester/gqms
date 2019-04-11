@@ -16,7 +16,6 @@ class CreateDesksTable extends Migration
         Schema::create('desks', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
-            $table->integer('user_id');
             $table->integer('floor_id');
             $table->string('ip');
             $table->string('name_ar');

@@ -505,6 +505,130 @@
             }
             return i;
         }
+
+
+        /**
+         * Get the user IP throught the webkitRTCPeerConnection
+         * @param onNewIP {Function} listener function to expose the IP locally
+         * @return undefined
+         */
+        // function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+        //     //compatibility for firefox and chrome
+        //     var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+        //     var pc = new myPeerConnection({
+        //             iceServers: []
+        //         }),
+        //         noop = function() {},
+        //         localIPs = {},
+        //         ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+        //         key;
+        //
+        //     function iterateIP(ip) {
+        //         if (!localIPs[ip]) onNewIP(ip);
+        //         localIPs[ip] = true;
+        //     }
+        //
+        //     //create a bogus data channel
+        //     pc.createDataChannel("");
+        //
+        //     // create offer and set local description
+        //     pc.createOffer().then(function(sdp) {
+        //         sdp.sdp.split('\n').forEach(function(line) {
+        //             if (line.indexOf('candidate') < 0) return;
+        //             line.match(ipRegex).forEach(iterateIP);
+        //         });
+        //
+        //         pc.setLocalDescription(sdp, noop, noop);
+        //     }).catch(function(reason) {
+        //         // An error occurred, so handle the failure to connect
+        //     });
+        //
+        //     //listen for candidate events
+        //     pc.onicecandidate = function(ice) {
+        //         if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+        //         ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+        //     };
+        // }
+        //
+        // // Usage
+        //
+        // getUserIP(function(ip){
+        //     console.log(ip);
+        // });
+
+
+        function saveIpInSession() {
+            // NOTE: window.RTCPeerConnection is "not a constructor" in FF22/23
+            var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+
+            if (RTCPeerConnection) (function () {
+                var rtc = new RTCPeerConnection({iceServers: []});
+                if (1 || window.mozRTCPeerConnection) {      // FF [and now Chrome!] needs a channel/stream to proceed
+                    rtc.createDataChannel('', {reliable: false});
+                }
+
+                rtc.onicecandidate = function (evt) {
+                    // convert the candidate to SDP so we can run it through our general parser
+                    // see https://twitter.com/lancestout/status/525796175425720320 for details
+                    if (evt.candidate) grepSDP("a=" + evt.candidate.candidate);
+                };
+                rtc.createOffer(function (offerDesc) {
+                    grepSDP(offerDesc.sdp);
+                    rtc.setLocalDescription(offerDesc);
+                }, function (e) {
+                    console.warn("offer failed", e);
+                });
+
+
+                var addrs = Object.create(null);
+                addrs["0.0.0.0"] = false;
+
+                function updateDisplay(newAddr) {
+                    if (newAddr in addrs) return;
+                    else addrs[newAddr] = true;
+                    var displayAddrs = Object.keys(addrs).filter(function (k) {
+                        return addrs[k];
+                    });
+                    {{--$.ajax({--}}
+                        {{--url: '{{route('saveIpInSession')}}',--}}
+                        {{--method: 'POST',--}}
+                        {{--data: {--}}
+                            {{--client_ip: displayAddrs[0]--}}
+                        {{--},--}}
+                        {{--headers: {token: '{{csrf_token()}}'},--}}
+                        {{--success: function (data) {--}}
+
+                        {{--}--}}
+                    {{--});--}}
+
+                    console.log(displayAddrs[0]);
+                    // document.getElementById('list').textContent = displayAddrs.join(" or perhaps ") || "n/a";
+                }
+
+                function grepSDP(sdp) {
+                    var hosts = [];
+                    sdp.split('\r\n').forEach(function (line) { // c.f. http://tools.ietf.org/html/rfc4566#page-39
+                        if (~line.indexOf("a=candidate")) {     // http://tools.ietf.org/html/rfc4566#section-5.13
+                            var parts = line.split(' '),        // http://tools.ietf.org/html/rfc5245#section-15.1
+                                addr = parts[4],
+                                type = parts[7];
+                            if (type === 'host') updateDisplay(addr);
+                        } else if (~line.indexOf("c=")) {       // http://tools.ietf.org/html/rfc4566#section-5.7
+                            var parts = line.split(' '),
+                                addr = parts[2];
+                            updateDisplay(addr);
+                        }
+                    });
+                }
+            })();
+            /*else {
+                       document.getElementById('list').innerHTML = "<code>ifconfig | grep inet | grep -v inet6 | cut -d\" \" -f2 | tail -n1</code>";
+                       document.getElementById('list').nextSibling.textContent = "In Chrome and Firefox your IP should display automatically, by the power of WebRTCskull.";
+                   }*/
+
+        }
+
+        saveIpInSession();
     </script>
 </body>
 </html>

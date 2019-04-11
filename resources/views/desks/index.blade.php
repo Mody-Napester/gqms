@@ -11,7 +11,7 @@
             <h4 class="page-title">Desk</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
-                <li class="breadcrumb-item"><a href="#">Floors</a></li>
+                <li class="breadcrumb-item"><a href="#">Desks</a></li>
                 <li class="breadcrumb-item active">Index</li>
             </ol>
 
@@ -34,16 +34,14 @@
                     <p class="text-muted font-14 m-b-20">
                         Parsley is a javascript form validation library. It helps you provide your users with feedback on their form submission before sending it to your server.
                     </p>
-
-
                 </div>
                 <div class="tab-pane" id="createResource">
-                    <h4 class="m-t-0 header-title">Create new Floor</h4>
+                    <h4 class="m-t-0 header-title">Create new Desk</h4>
                     <p class="text-muted font-14 m-b-30">
                         Create new resource from here.
                     </p>
 
-                    @include('floors.create')
+                    @include('desks.create')
                 </div>
             </div>
         </div>
@@ -64,6 +62,8 @@
                             <th>Id</th>
                             <th>Name ar</th>
                             <th>Name en</th>
+                            <th>Desk IP</th>
+                            <th>Floor</th>
                             <th>Status</th>
                             <th>Created by</th>
                             <th>Updated by</th>
@@ -74,21 +74,23 @@
                     </thead>
 
                     <tbody>
-                        @foreach($floors as $floor)
+                        @foreach($desks as $desk)
                             <tr>
-                                <td>{{ $floor->id }}</td>
-                                <td>{{ $floor->name_ar }}</td>
-                                <td>{{ $floor->name_en }}</td>
-                                <td>{{ App\Enums\FloorStatuses::$statuses[$floor->status]['en'] }}</td>
-                                <td>{{ $floor->createdBy->name }}</td>
-                                <td>{{ $floor->updatedBy->name }}</td>
-                                <td>{{ $floor->created_at }}</td>
-                                <td>{{ $floor->updated_at }}</td>
+                                <td>{{ $desk->id }}</td>
+                                <td>{{ $desk->name_ar }}</td>
+                                <td>{{ $desk->name_en }}</td>
+                                <td>{{ $desk->ip }}</td>
+                                <td>{{ $desk->floor->name_en }}</td>
+                                <td>{{ App\Enums\DeskStatuses::$statuses[$desk->status]['en'] }}</td>
+                                <td>{{ $desk->createdBy->name }}</td>
+                                <td>{{ $desk->updatedBy->name }}</td>
+                                <td>{{ $desk->created_at }}</td>
+                                <td>{{ $desk->updated_at }}</td>
                                 <td>
-                                    <a href="{{ route('floors.edit', [$floor->uuid]) }}" class="update-modal btn btn-sm btn-success">
+                                    <a href="{{ route('desks.edit', [$desk->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <a href="{{ route('floors.destroy', [$floor->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
+                                    <a href="{{ route('desks.destroy', [$desk->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
                                         <i class="fa fa-times"></i>
                                     </a>
                                 </td>
