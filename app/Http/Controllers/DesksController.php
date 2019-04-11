@@ -69,6 +69,20 @@ class DesksController extends Controller
     }
 
     /**
+     * Display the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($uuid)
+    {
+        if (!User::hasAuthority('show.desks')){
+            return redirect('/');
+        }
+        $data['desk'] = Desk::getBy('uuid', $uuid);
+        return view('desks.show', $data);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  string  $uuid

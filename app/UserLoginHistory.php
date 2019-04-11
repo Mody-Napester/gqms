@@ -33,7 +33,7 @@ class UserLoginHistory extends Model
         if (User::find($user->id)){
             $result = self::create([
                 'user_id' => $user->id,
-                'login_ip' => get_client_ip(),
+                'login_ip' => getenv_get_client_ip(),
                 'login_data' => json_encode(get_browser(null, true)),
             ]);
 

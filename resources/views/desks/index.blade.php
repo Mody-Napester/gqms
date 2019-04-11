@@ -66,9 +66,9 @@
                             <th>Floor</th>
                             <th>Status</th>
                             <th>Created by</th>
-                            <th>Updated by</th>
+                            {{--<th>Updated by</th>--}}
                             <th>Created at</th>
-                            <th>Updated at</th>
+                            {{--<th>Updated at</th>--}}
                             <th>Control</th>
                         </tr>
                     </thead>
@@ -83,10 +83,13 @@
                                 <td>{{ $desk->floor->name_en }}</td>
                                 <td>{{ App\Enums\DeskStatuses::$statuses[$desk->status]['en'] }}</td>
                                 <td>{{ $desk->createdBy->name }}</td>
-                                <td>{{ $desk->updatedBy->name }}</td>
+{{--                                <td>{{ $desk->updatedBy->name }}</td>--}}
                                 <td>{{ $desk->created_at }}</td>
-                                <td>{{ $desk->updated_at }}</td>
+{{--                                <td>{{ $desk->updated_at }}</td>--}}
                                 <td>
+                                    <a href="{{ route('desks.show', [$desk->uuid]) }}" target="_blank" class="btn btn-sm btn-primary">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
                                     <a href="{{ route('desks.edit', [$desk->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>

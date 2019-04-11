@@ -40,6 +40,12 @@
                     </li>
                 @endif
 
+                @if (\App\User::hasAuthority('index.screens'))
+                <li class="has_sub">
+                    <a href="{{ route('screens.index') }}" class="waves-effect"><i class="ti-desktop"></i> <span> Screens </span></a>
+                </li>
+                @endif
+
                 {{--<li class="has_sub">--}}
                     {{--<a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Patients </span></a>--}}
                 {{--</li>--}}
@@ -49,20 +55,6 @@
                 {{--<li class="has_sub">--}}
                     {{--<a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Receptions </span></a>--}}
                 {{--</li>--}}
-
-                @if (\App\User::hasAuthority('use.screens'))
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="ti-desktop"></i> <span> Screens </span> <span class="menu-arrow"></span></a>
-                        <ul class="list-unstyled">
-                            @if (\App\User::hasAuthority('index.permission_groups'))
-                                <li><a href="{{ route('screens.index') }}">Kiosk Screens</a></li>
-                            @endif
-                            @if (\App\User::hasAuthority('index.permissions'))
-                                <li><a href="{{ route('screens.index') }}">Reception Screens</a></li>
-                            @endif
-                        </ul>
-                    </li>
-                @endif
 
                 <li class="text-muted menu-title">Queues</li>
                 <li class="has_sub">
