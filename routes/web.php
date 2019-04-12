@@ -1,6 +1,7 @@
 <?php
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::post('queues/{screen_uuid}', 'DeskQueuesController@store')->name('queues.store');
 
 Auth::routes(['verify' => true]);
 

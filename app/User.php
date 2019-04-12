@@ -88,6 +88,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     *  Relationship with desks
+     */
+    public function desk()
+    {
+        return $this->belongsTo('App\Desk');
+
+    }
+
+    /**
      *  Relationship with roles
      */
     public function roles()

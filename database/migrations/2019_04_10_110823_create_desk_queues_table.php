@@ -18,7 +18,7 @@ class CreateDeskQueuesTable extends Migration
             $table->uuid('uuid');
             $table->integer('floor_id');
             $table->integer('queue_number');
-            $table->integer('status'); // 1 basic, 2 call, 3 Pass == Skip, 4 Done,5 Call from pass
+            $table->integer('status'); // 1 Waiting, 2 Call, 3 Pass == Skip, 4 Done,5 Call from pass
             $table->timestamps();
         });
     }

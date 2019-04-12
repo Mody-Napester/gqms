@@ -24,6 +24,7 @@
 
         <div class="account-pages"></div>
         <div class="clearfix"></div>
+
         @yield('content')
 
         <script>
@@ -46,6 +47,8 @@
 
         <script src="{{ url('assets/js/jquery.core.js') }}"></script>
         <script src="{{ url('assets/js/jquery.app.js') }}"></script>
+
+        @yield('scripts')
 
     </body>
 </html>

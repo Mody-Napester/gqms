@@ -17,6 +17,7 @@ class CreateQueueStatusesTable extends Migration
             $table->increments('id');
             $table->uuid('uuid');
             $table->integer('queue_type');
+            $table->string('class');
             $table->string('name_ar');
             $table->string('name_en');
             $table->timestamps();

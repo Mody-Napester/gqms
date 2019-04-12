@@ -51,7 +51,7 @@
                         <!-- Image Logo here -->
                         <a href="{{ url('/') }}" class="logo">
                             <i class="icon-c-logo"> <img src="{{ url('assets/images/logo_sm.png') }}" height="45"/> </i>
-                            <span><img src="{{ url('assets/images/logo_light.png') }}" height="30"/></span>
+                            <span><img src="{{ url('assets/images/logo_light.png') }}" height="45"/></span>
                         </a>
                     </div>
                 </div>
@@ -115,10 +115,10 @@
                             {{--</a>--}}
                         {{--</li>--}}
 
-                        <li class="list-inline-item dropdown notification-list">
+                        <li class="list-inline-item dropdown notification-list" style="background-color: #4d5a67;">
                             <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <span>{{ Auth::user()->name }}</span>
-                                <img src="{{ url('assets/images/users/avatar-1.jpg') }}" alt="user" class="rounded-circle">
+                                <span class="pr-0">{{ Auth::user()->name }} <i class="fa fa-fw fa-angle-down"></i></span>
+                                {{--<img src="{{ url('assets/images/users/avatar-1.jpg') }}" alt="user" class="rounded-circle">--}}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
 
@@ -417,13 +417,13 @@
                 table.buttons().container()
                     .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
             } );
-        </script>
 
-        <script type="text/javascript">
             $(document).ready(function() {
                 $('form').parsley();
             });
         </script>
+
+        @yield('scripts')
 
     </body>
 </html>

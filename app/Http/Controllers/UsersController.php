@@ -32,9 +32,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-//        if (!User::hasAuthority('index.users')){
-//            return redirect('/');
-//        }
+        // Check permissions
+        if (!User::hasAuthority('index.users')){
+            return redirect('/');
+        }
+
         $data['roles'] = Role::all();
         $data['users'] = User::all();
         return view('users.index', $data);

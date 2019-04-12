@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Desk;
 use App\DeskQueue;
 use App\Floor;
+use App\Screen;
 use App\User;
 use Validator;
 use Illuminate\Http\Request;
 
-class DesksController extends Controller
+class DeskQueuesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +19,9 @@ class DesksController extends Controller
      */
     public function index()
     {
-        // Check permissions
         if (!User::hasAuthority('index.desks')){
             return redirect('/');
         }
-
         $data['desks'] = Desk::all();
         $data['floors'] = Floor::all();
         return view('desks.index', $data);
@@ -31,39 +30,21 @@ class DesksController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  string $screen_uuid
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($screen_uuid)
     {
-        // Check permissions
-        if (!User::hasAuthority('store.desks')){
-            return redirect('/');
+        $screen = Screen::getBy('uuid', $screen_uuid);
+
+        if($screen->screen_type_id == 1){ // Kiosk
+            // Do Code
+            $resource = DeskQueue::store([
+                'floor_id' => $screen->floor_id,
+                'queue_number' => DeskQueue::where('floor_id', $screen->floor_id)->count() + 1,
+                'status' => config('vars.default_kiosk_status'),
+            ]);
         }
-
-        // Check validation
-        $validator = Validator::make($request->all(), [
-            'name_ar' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-            'status' => 'required',
-            'ip' => 'required',
-            'floor' => 'required',
-        ]);
-
-        if ($validator->fails()){
-            return back()->withErrors($validator)->withInput();
-        }
-
-        // Do Code
-        $resource = Desk::store([
-            'name_ar' => $request->name_ar,
-            'name_en' => $request->name_en,
-            'status' => $request->status,
-            'ip' => $request->ip,
-            'floor_id' => Floor::getBy('uuid', $request->floor)->id,
-            'created_by' => auth()->user()->id,
-            'updated_by' => auth()->user()->id,
-        ]);
 
         // Return
         if ($resource){
@@ -78,17 +59,11 @@ class DesksController extends Controller
      */
     public function show($uuid)
     {
+        // Check Permission
         if (!User::hasAuthority('show.desks')){
             return redirect('/');
         }
-
-        // Check if user login from current desk
-        if (is_null(auth()->user()->desk_id) || auth()->user()->login_ip != auth()->user()->desk->ip){
-            return redirect(route('dashboard.index'));
-        }
-
         $data['desk'] = Desk::getBy('uuid', $uuid);
-        $data['deskQueues'] = DeskQueue::where('floor_id', $data['desk']->floor_id)->get();
         return view('desks.show', $data);
     }
 

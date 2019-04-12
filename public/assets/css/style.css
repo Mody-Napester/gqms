@@ -7845,4 +7845,12 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
     width: 100% !important;
   }
 }
-/*# sourceMappingURL=style.css.map */
+
+.current-queue{
+  padding: 1rem 0;
+  font-size: 8rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: #EEEEEE;
+  margin-bottom: 1rem;
+}
