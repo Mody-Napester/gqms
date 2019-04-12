@@ -8,7 +8,7 @@
         <div class="col-lg-8">
             <div class="card-box table-responsive">
                 <h4 class="m-t-0 header-title">All Floors</h4>
-                
+
             </div>
         </div>
 

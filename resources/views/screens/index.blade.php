@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') Desks @endsection
+@section('title') Screens @endsection
 
 @section('content')
 
@@ -8,10 +8,10 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <h4 class="page-title">Desk</h4>
+            <h4 class="page-title">Screens</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
-                <li class="breadcrumb-item"><a href="#">Desks</a></li>
+                <li class="breadcrumb-item"><a href="#">Screens</a></li>
                 <li class="breadcrumb-item active">Index</li>
             </ol>
 
@@ -36,12 +36,12 @@
                     </p>
                 </div>
                 <div class="tab-pane" id="createResource">
-                    <h4 class="m-t-0 header-title">Create new Desk</h4>
+                    <h4 class="m-t-0 header-title">Create new screen</h4>
                     <p class="text-muted font-14 m-b-30">
                         Create new resource from here.
                     </p>
 
-                    @include('desks.create')
+                    @include('screens.create')
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card-box table-responsive">
-                <h4 class="m-t-0 header-title">All Desks</h4>
+                <h4 class="m-t-0 header-title">All Screens</h4>
                 <p class="text-muted font-14 m-b-30">
                     Here you will find all the resources to make actions on them.
                 </p>
@@ -62,7 +62,7 @@
                             <th>Id</th>
                             <th>Name ar</th>
                             <th>Name en</th>
-                            <th>Desk IP</th>
+                            <th>Screen IP</th>
                             <th>Floor</th>
                             <th>Status</th>
                             <th>Created by</th>
@@ -74,26 +74,26 @@
                     </thead>
 
                     <tbody>
-                        @foreach($desks as $desk)
+                        @foreach($screens as $screen)
                             <tr>
-                                <td>{{ $desk->id }}</td>
-                                <td>{{ $desk->name_ar }}</td>
-                                <td>{{ $desk->name_en }}</td>
-                                <td>{{ $desk->ip }}</td>
-                                <td>{{ $desk->floor->name_en }}</td>
-                                <td>{{ App\Enums\DeskStatuses::$statuses[$desk->status]['en'] }}</td>
-                                <td>{{ $desk->createdBy->name }}</td>
-{{--                                <td>{{ $desk->updatedBy->name }}</td>--}}
-                                <td>{{ $desk->created_at }}</td>
-{{--                                <td>{{ $desk->updated_at }}</td>--}}
+                                <td>{{ $screen->id }}</td>
+                                <td>{{ $screen->name_ar }}</td>
+                                <td>{{ $screen->name_en }}</td>
+                                <td>{{ $screen->ip }}</td>
+                                <td>{{ $screen->floor->name_en }}</td>
+                                <td>{{ App\Enums\ScreenStatuses::$statuses[$screen->status]['en'] }}</td>
+                                <td>{{ $screen->createdBy->name }}</td>
+{{--                                <td>{{ $screen->updatedBy->name }}</td>--}}
+                                <td>{{ $screen->created_at }}</td>
+{{--                                <td>{{ $screen->updated_at }}</td>--}}
                                 <td>
-                                    <a href="{{ route('desks.show', [$desk->uuid]) }}" target="_blank" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('screens.show', [$screen->uuid]) }}" target="_blank" class="btn btn-sm btn-primary">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('desks.edit', [$desk->uuid]) }}" class="update-modal btn btn-sm btn-success">
+                                    <a href="{{ route('screens.edit', [$screen->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <a href="{{ route('desks.destroy', [$desk->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
+                                    <a href="{{ route('screens.destroy', [$screen->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
                                         <i class="fa fa-times"></i>
                                     </a>
                                 </td>

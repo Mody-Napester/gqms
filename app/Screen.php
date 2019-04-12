@@ -6,6 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Screen extends Model
 {
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['floor_id', 'screen_type_id', 'ip','name_ar', 'name_en', 'status', 'created_by', 'updated_by'];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+    ];
+
     /**
      *  Setup model event hooks
      */
@@ -17,8 +33,59 @@ class Screen extends Model
         });
     }
 
+    /**
+     *  Create new resource
+     */
+    public static function store($inputs)
+    {
+        return self::create($inputs);
+    }
+
+    /**
+     *  Update existing resource
+     */
+    public static function edit($inputs, $resource)
+    {
+        return self::where('id', $resource)->update($inputs);
+    }
+
+    /**
+     *  Delete existing resource
+     */
+    public static function remove($resource)
+    {
+        return self::where('id', $resource)->delete();
+    }
+
+    /**
+     *  Get a specific resource
+     */
+    public static function getBy($by, $resource)
+    {
+        return self::where($by, $resource)->first();
+    }
+
+    /**
+     *  Relationship with users
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo('App\User', 'created_by');
+
+    }
+
+    /**
+     *  Relationship with users
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo('App\User', 'updated_by');
+
+    }
+
     // Floor Relation
     public function floor(){
         return $this->belongsTo('App\Floor');
     }
+
 }

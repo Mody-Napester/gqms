@@ -1,8 +1,8 @@
 <?php
 
-Auth::routes(['verify' => true]);
-
 Route::get('/', 'HomeController@index')->name('home');
+
+Auth::routes(['verify' => true]);
 
 Route::group([
     'prefix'=>'dashboard',
@@ -17,7 +17,6 @@ Route::group([
     Route::resource('desks', 'DesksController');
     Route::resource('screens', 'ScreensController');
 });
-
 
 Route::get('mtm', function(){
     return view('mtm');

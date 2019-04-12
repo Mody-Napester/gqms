@@ -34,7 +34,7 @@ class DesksController extends Controller
     public function store(Request $request)
     {
         // Check permissions
-        if (!User::hasAuthority('store.floors')){
+        if (!User::hasAuthority('store.desks')){
             return redirect('/');
         }
 
@@ -90,10 +90,11 @@ class DesksController extends Controller
      */
     public function edit($uuid)
     {
-        $data['floor'] = Floor::getBy('uuid', $uuid);
+        $data['desk'] = Desk::getBy('uuid', $uuid);
+        $data['floors'] = Floor::all();
         return response([
-            'title'=> "Update floor " . $data['floor']->name_en,
-            'view'=> view('floors.edit', $data)->render(),
+            'title'=> "Update desk " . $data['desk']->name_en,
+            'view'=> view('desks.edit', $data)->render(),
         ]);
     }
 
@@ -109,13 +110,15 @@ class DesksController extends Controller
         // Check permissions
 
         // Get Resource
-        $resource = Floor::getBy('uuid', $uuid);
+        $resource = Desk::getBy('uuid', $uuid);
 
         // Check validation
         $validator = Validator::make($request->all(), [
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
             'status' => 'required',
+            'ip' => 'required',
+            'floor' => 'required',
         ]);
 
         if ($validator->fails()){
@@ -123,11 +126,13 @@ class DesksController extends Controller
         }
 
         // Do Code
-        $updatedResource = Floor::edit([
+        $updatedResource = Desk::edit([
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
-            'updated_by' => auth()->user()->id
+            'ip' => $request->ip,
+            'floor_id' => Floor::getBy('uuid', $request->floor)->id,
+            'updated_by' => auth()->user()->id,
         ], $resource->id);
 
         // Return
@@ -144,9 +149,9 @@ class DesksController extends Controller
      */
     public function destroy($uuid)
     {
-        $resource = Floor::getBy('uuid', $uuid);
+        $resource = Desk::getBy('uuid', $uuid);
         if ($resource){
-            $deletedResource = Floor::remove($resource->id);
+            $deletedResource = Desk::remove($resource->id);
 
             // Return
             if ($deletedResource){
