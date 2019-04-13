@@ -78,7 +78,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 text-center">
-                <form action="{{ route('queues.store', $screen->uuid) }}" method="post">
+                <form action="{{ route('desks.queues.storeNewQueue', $screen->uuid) }}" method="post">
                     @csrf
                     <button class="btn btn-primary btn-print" type="submit">اضغط هنا لطباعة دور</button>
                 </form>

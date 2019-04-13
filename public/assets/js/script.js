@@ -9,13 +9,11 @@ $(document).ready(function(){
         $("#"+target).select2();
     });
 
-    var loader = '<div class="loading"><div class="loader"></div></div>';
-    function addLoader() {
-        $('body').append(loader);
-    }
-    function removeLoarder() {
-        $('.loading').hide(200).remove();
-    }
+    $('body').on('click', '.de-select-all', function () {
+        var target = $(this).attr('data-select2-target');
+        $("#"+target+" > option").prop("selected",false);
+        $("#"+target).select2();
+    });
 
     // General Update
     $('body').on('click', '.update-modal', function (event) {

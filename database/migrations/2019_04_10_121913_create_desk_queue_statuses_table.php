@@ -16,6 +16,7 @@ class CreateDeskQueueStatusesTable extends Migration
         Schema::create('desk_queue_statuses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id'); // Desk
+            $table->integer('desk_queue_id');
             $table->integer('queue_status_id');
             $table->timestamps();
         });

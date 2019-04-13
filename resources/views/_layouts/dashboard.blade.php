@@ -6,6 +6,8 @@
         <meta name="description" content="">
         <meta name="author" content="Ahmed Samy">
 
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <link rel="shortcut icon" href="{{ url('assets/images/logo_sm.png') }}">
 
         <title>{{ config('app.name') }} @yield('title')</title>
@@ -29,16 +31,12 @@
         <link href="{{ url('assets/css/style.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ url('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
 
-        <script src="{{ url('assets/js/modernizr.min.js') }}"></script>
-
-
     </head>
 
     <body class="fixed-left">
 
         <!-- Begin page -->
         <div id="wrapper">
-
             <!-- Top Bar Start -->
             <div class="topbar">
 
@@ -185,7 +183,9 @@
                 <!-- Start content -->
                 <div class="content">
                     <div class="container-fluid">
-                        @yield('content')
+                        <div id="app">
+                            @yield('content')
+                        </div>
                     </div> <!-- container -->
 
                 </div> <!-- content -->
@@ -198,117 +198,6 @@
             <!-- ============================================================== -->
             <!-- End Right content here -->
             <!-- ============================================================== -->
-
-            <!-- Right Sidebar -->
-            <div class="side-bar right-bar nicescroll">
-                <h4 class="text-center">Chat</h4>
-                <div class="contact-list nicescroll">
-                    <ul class="list-group contacts-list">
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-1.jpg" alt="">
-                                </div>
-                                <span class="name">Chadengle</span>
-                                <i class="fa fa-circle online"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-2.jpg" alt="">
-                                </div>
-                                <span class="name">Tomaslau</span>
-                                <i class="fa fa-circle online"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-3.jpg" alt="">
-                                </div>
-                                <span class="name">Stillnotdavid</span>
-                                <i class="fa fa-circle online"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-4.jpg" alt="">
-                                </div>
-                                <span class="name">Kurafire</span>
-                                <i class="fa fa-circle online"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-5.jpg" alt="">
-                                </div>
-                                <span class="name">Shahedk</span>
-                                <i class="fa fa-circle away"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-6.jpg" alt="">
-                                </div>
-                                <span class="name">Adhamdannaway</span>
-                                <i class="fa fa-circle away"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-7.jpg" alt="">
-                                </div>
-                                <span class="name">Ok</span>
-                                <i class="fa fa-circle away"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-8.jpg" alt="">
-                                </div>
-                                <span class="name">Arashasghari</span>
-                                <i class="fa fa-circle offline"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-9.jpg" alt="">
-                                </div>
-                                <span class="name">Joshaustin</span>
-                                <i class="fa fa-circle offline"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#">
-                                <div class="avatar">
-                                    <img src="assets/images/users/avatar-10.jpg" alt="">
-                                </div>
-                                <span class="name">Sortino</span>
-                                <i class="fa fa-circle offline"></i>
-                            </a>
-                            <span class="clearfix"></span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- /Right-bar -->
-
         </div>
         <!-- END wrapper -->
 
@@ -317,13 +206,11 @@
         <!-- Delete Modal -->
         @include('_modals.delete')
 
-        <script>
-            var resizefunc = [];
-        </script>
+        <script src="{{ url('assets/js/modernizr.min.js') }}"></script>
 
         <!-- jQuery  -->
         <script src="{{ url('assets/js/jquery.min.js') }}"></script>
-        <script src="{{ url('assets/js/popper.min.js') }}"></script><!-- Popper for Bootstrap -->
+        <script src="{{ url('assets/js/popper.min.js') }}"></script>
         <script src="{{ url('assets/js/bootstrap.min.js') }}"></script>
         <script src="{{ url('assets/js/detect.js') }}"></script>
         <script src="{{ url('assets/js/fastclick.js') }}"></script>
@@ -333,7 +220,8 @@
         <script src="{{ url('assets/js/wow.min.js') }}"></script>
         <script src="{{ url('assets/js/jquery.nicescroll.js') }}"></script>
         <script src="{{ url('assets/js/jquery.scrollTo.min.js') }}"></script>
-        <script src="{{ url('assets/js/script.js') }}"></script>
+
+        <script src="{{ url('js/app.js') }}"></script>
 
         <!-- jQuery  -->
         <script src="{{ url('assets/plugins/moment/moment.js') }}"></script>
@@ -349,7 +237,7 @@
         <script src="{{ url('assets/plugins/datatables/dataTables.buttons.min.js') }}"></script>
         <script src="{{ url('assets/plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
         <script src="{{ url('assets/plugins/datatables/jszip.min.js') }}"></script>
-        <script src="{{ url('assets/plugins/datatables/pdfmake.min.') }}"></script>
+{{--        <script src="{{ url('assets/plugins/datatables/pdfmake.min.') }}"></script>--}}
         <script src="{{ url('assets/plugins/datatables/vfs_fonts.js') }}"></script>
         <script src="{{ url('assets/plugins/datatables/buttons.html5.min.js') }}"></script>
         <script src="{{ url('assets/plugins/datatables/buttons.print.min.js') }}"></script>
@@ -364,8 +252,8 @@
         <!-- Selection table -->
         <script src="{{ url('assets/plugins/datatables/dataTables.select.min.js') }}"></script>
 
-        <script src="{{ url('assets/plugins/morris/morris.min.js') }}"></script>
-        <script src="{{ url('assets/plugins/raphael/raphael-min.js') }}"></script>
+        {{--<script src="{{ url('assets/plugins/morris/morris.min.js') }}"></script>--}}
+        {{--<script src="{{ url('assets/plugins/raphael/raphael-min.js') }}"></script>--}}
 
         <script src="{{ url('assets/plugins/bootstrap-sweetalert/sweet-alert.min.js') }}"></script>
 
@@ -377,14 +265,19 @@
 
         <script src="{{ url('assets/plugins/peity/jquery.peity.min.js') }}"></script>
 
-        <script src="{{ url('assets/js/jquery.core.js') }}"></script>
-        <script src="{{ url('assets/js/jquery.app.js') }}"></script>
-
         <!-- parsleyjs  -->
         <script src="{{ url('assets/plugins/parsleyjs/parsley.min.js') }}"></script>
 
         <!-- dashboard_2  -->
-        <script src="{{ url('assets/pages/jquery.dashboard_2.js') }}"></script>
+{{--        <script src="{{ url('assets/pages/jquery.dashboard_2.js') }}"></script>--}}
+
+        <script>
+            var resizefunc = [];
+        </script>
+
+        <script src="{{ url('assets/js/jquery.core.js') }}"></script>
+        <script src="{{ url('assets/js/jquery.app.js') }}"></script>
+        <script src="{{ url('assets/js/script.js') }}"></script>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -421,6 +314,16 @@
             $(document).ready(function() {
                 $('form').parsley();
             });
+
+
+            // Loaders
+            var loader = '<div class="loading"><div class="loader"></div></div>';
+            function addLoader(selector = 'body') {
+                $(selector).append(loader);
+            }
+            function removeLoarder() {
+                $('.loading').hide(200).remove();
+            }
         </script>
 
         @yield('scripts')

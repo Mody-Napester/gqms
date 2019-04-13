@@ -19,6 +19,9 @@ Follow this steps:
 - composer install
 - npm install
 - npm install --save laravel-echo pusher-js
+- php artisan key:generate
+- php artisan migrate
+- php artisan db:seed
 
 ## Configurations
 

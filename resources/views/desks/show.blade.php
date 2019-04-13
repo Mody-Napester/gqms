@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="table-detail text-right">
-                                    <h4 class="m-t-0 m-b-5"><b>-</b></h4>
+                                    <h4 class="m-t-0 m-b-5"><b id="count-skip">{{ $deskQueuesSkip }}</b></h4>
                                     <h5 class="text-muted m-b-0 m-t-0">Skip</h5>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="table-detail text-right">
-                                    <h4 class="m-t-0 m-b-5"><b>-</b></h4>
+                                    <h4 class="m-t-0 m-b-5"><b id="count-done">{{ $deskQueuesDone }}</b></h4>
                                     <h5 class="text-muted m-b-0 m-t-0">Done</h5>
                                 </div>
                             </div>
@@ -66,22 +66,22 @@
                 <div class="">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="current-queue">-</div>
+                            <div class="current-queue" id="current-queue">-</div>
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-block btn-danger waves-effect waves-light">
-                                        Skip <i class="fa fa-fw fa-close"></i>
+                                    <button v-if="active_btn" @click.prevent="skip()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                        Skip And Next <i class="fa fa-fw fa-close"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-block btn-primary waves-effect waves-light">
+                                    <button v-if="!active_btn" @click.prevent="next()" type="button" class="btn btn-block btn-primary waves-effect waves-light">
                                         Next <i class="fa fa-fw fa-arrow-right"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-block btn-success waves-effect waves-light">
-                                        Done <i class="fa fa-fw fa-check"></i>
+                                    <button v-if="active_btn" @click.prevent="done()" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                        Done And Next <i class="fa fa-fw fa-check"></i>
                                     </button>
                                 </div>
                             </div>
@@ -91,11 +91,11 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4" id="all-queues">
             <div class="card-box">
                 <h4 class="m-t-0 m-b-20 header-title"><b>Today Desk Queue ({{ count($deskQueues) }})</b></h4>
 
-                <div class="nicescroll mx-box">
+                <div class="mx-box" style="overflow: auto;">
                     <table class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -122,4 +122,78 @@
     </div>
     <!-- end row -->
 
+@endsection
+
+@section('scripts')
+    <script>
+        const app = new Vue({
+            el : '#app',
+            data : {
+                desk_queue_uuid : '',
+                active_btn : false,
+            },
+            methods : {
+                skip(){
+                    addLoader();
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip';
+                    axios.get(url)
+                        .then((response) => {
+                            console.log(response.data);
+                            $('.current-queue').text(response.data.nextQueue.queue_number);
+                            $('#count-skip').text(response.data.deskQueuesSkip);
+                            $('#count-done').text(response.data.deskQueuesDone);
+                            removeLoarder();
+                        })
+                        .catch((data) => {
+                            console.log(0, data);
+                            removeLoarder();
+                        });
+                },
+                next(){
+                    addLoader();
+                    var url = '{{ route('desks.queues.callNextQueueNumber', $desk->uuid) }}';
+                    axios.get(url)
+                            .then((response) => {
+                                console.log(response.data);
+                                $('.current-queue').text(response.data.nextQueue.queue_number);
+
+                                this.desk_queue_uuid = response.data.nextQueue.uuid;
+                                this.active_btn = true;
+
+                                removeLoarder();
+                            })
+                            .catch((data) => {
+                                console.log(0, data);
+                                removeLoarder();
+                            });
+                },
+                done(){
+                    addLoader();
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done';
+                    axios.get(url)
+                        .then((response) => {
+                            console.log(response.data);
+                            $('.current-queue').text(response.data.nextQueue.queue_number);
+                            $('#count-skip').text(response.data.deskQueuesSkip);
+                            $('#count-done').text(response.data.deskQueuesDone);
+                            removeLoarder();
+                        })
+                        .catch((data) => {
+                            console.log(0, data);
+                            removeLoarder();
+                        });
+                },
+                listen(){
+                    Echo.channel('available-desk-queue-{{ $desk->floor_id }}')
+                        .listen('QueueStatus', (response) => {
+                            console.log(response.view);
+                            $('#all-queues').html(response.view);
+                        });
+                }
+            },
+            mounted() {
+                this.listen();
+            }
+        });
+    </script>
 @endsection

@@ -72,6 +72,31 @@ class DeskQueue extends Model
         return self::where('status', $status)->get();
     }
 
+    /**
+     *  Get Available Desk Queue
+     */
+    public static function getAvailableDeskQueueView($floor_id)
+    {
+        $deskQueues = self::getDeskQueues($floor_id);
+        $availableDeskQueue = view('desks._available_desk_queue', compact('deskQueues'))->render();
+
+        return $availableDeskQueue;
+    }
+
+    /**
+     *  Get All Desk Queues
+     */
+    public static function getDeskQueues($floor_id)
+    {
+        $deskQueues = self::where('floor_id', $floor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        return $deskQueues;
+    }
+
+
     // Floor Relation
     public function floor(){
         return $this->belongsTo('App\Floor');

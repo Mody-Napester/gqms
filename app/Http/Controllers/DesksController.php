@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Desk;
 use App\DeskQueue;
+use App\DeskQueueStatus;
 use App\Floor;
 use App\User;
 use Validator;
@@ -73,8 +74,6 @@ class DesksController extends Controller
 
     /**
      * Display the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function show($uuid)
     {
@@ -82,21 +81,26 @@ class DesksController extends Controller
             return redirect('/');
         }
 
+        $data['desk'] = Desk::getBy('uuid', $uuid);
+
         // Check if user login from current desk
         if (is_null(auth()->user()->desk_id) || auth()->user()->login_ip != auth()->user()->desk->ip){
             return redirect(route('dashboard.index'));
         }
+        if (auth()->user()->desk_id != $data['desk']->id) {
+            return redirect(route('dashboard.index'));
+        }
 
-        $data['desk'] = Desk::getBy('uuid', $uuid);
-        $data['deskQueues'] = DeskQueue::where('floor_id', $data['desk']->floor_id)->get();
+        // Get today's desk queues
+        $data['deskQueues'] = DeskQueue::getDeskQueues($data['desk']->floor_id);
+        $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 3);
+        $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 4);
+
         return view('desks.show', $data);
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  string  $uuid
-     * @return \Illuminate\Http\Response
      */
     public function edit($uuid)
     {

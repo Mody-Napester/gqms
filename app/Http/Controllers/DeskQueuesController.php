@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Desk;
 use App\DeskQueue;
+use App\DeskQueueStatus;
+use App\Events\QueueStatus;
 use App\Floor;
 use App\Screen;
 use App\User;
@@ -33,7 +35,7 @@ class DeskQueuesController extends Controller
      * @param  string $screen_uuid
      * @return \Illuminate\Http\Response
      */
-    public function store($screen_uuid)
+    public function storeNewQueue($screen_uuid)
     {
         $screen = Screen::getBy('uuid', $screen_uuid);
 
@@ -41,107 +43,135 @@ class DeskQueuesController extends Controller
             // Do Code
             $resource = DeskQueue::store([
                 'floor_id' => $screen->floor_id,
-                'queue_number' => DeskQueue::where('floor_id', $screen->floor_id)->count() + 1,
+                'queue_number' => (DeskQueue::getDeskQueues($screen->floor_id)->count() + 1) + 100,
                 'status' => config('vars.default_kiosk_status'),
             ]);
         }
 
         // Return
         if ($resource){
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($screen->floor_id);
+            event(new QueueStatus($data['availableDeskQueue'], $screen->floor_id));
             return back();
         }
     }
+    
+    /**
+     * Call Next Queue Number.
+     */
+    public function callNext($desk_uuid)
+    {
+        $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+            ->where('status', 1)
+            ->first();
+
+        if($data['nextQueue']){
+            // Do Code
+            $data['nextDeskQueueUpdated'] = DeskQueue::edit([
+                'status' => 2, // Called
+            ], $data['nextQueue']->id);
+
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Updated',
+            ];
+
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Error',
+            ];
+        }
+
+        // Broadcast event
+        if ($data['nextDeskQueueUpdated']){
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
+        }
+
+        // Return
+        return $data;
+    }
 
     /**
-     * Display the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Call Next Queue Number.
      */
-    public function show($uuid)
+    public function callNextQueueNumber($desk_uuid)
     {
-        // Check Permission
-        if (!User::hasAuthority('show.desks')){
+        if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
         }
-        $data['desk'] = Desk::getBy('uuid', $uuid);
-        return view('desks.show', $data);
+
+        $data = $this->callNext($desk_uuid);
+
+        // Return
+        return response()->json($data);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  string  $uuid
-     * @return \Illuminate\Http\Response
+     * Skip Queue Number.
      */
-    public function edit($uuid)
+    public function skipQueueNumber($desk_uuid, $desk_queue_uuid)
     {
-        $data['desk'] = Desk::getBy('uuid', $uuid);
-        $data['floors'] = Floor::all();
-        return response([
-            'title'=> "Update desk " . $data['desk']->name_en,
-            'view'=> view('desks.edit', $data)->render(),
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $uuid
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $uuid)
-    {
-        // Check permissions
-
-        // Get Resource
-        $resource = Desk::getBy('uuid', $uuid);
-
-        // Check validation
-        $validator = Validator::make($request->all(), [
-            'name_ar' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-            'status' => 'required',
-            'ip' => 'required',
-            'floor' => 'required',
-        ]);
-
-        if ($validator->fails()){
-            return back()->withErrors($validator)->withInput();
+        if (!User::hasAuthority('use.desk_queue')){
+            return redirect('/');
         }
 
         // Do Code
-        $updatedResource = Desk::edit([
-            'name_ar' => $request->name_ar,
-            'name_en' => $request->name_en,
-            'status' => $request->status,
-            'ip' => $request->ip,
-            'floor_id' => Floor::getBy('uuid', $request->floor)->id,
-            'updated_by' => auth()->user()->id,
-        ], $resource->id);
+        $deskQueueStatusSkip = DeskQueueStatus::store([
+            'user_id' => auth()->user()->id,
+            'desk_queue_id' => DeskQueue::getBy('uuid', $desk_queue_uuid)->id,
+            'queue_status_id' => 3,
+        ]);
+
+        if($deskQueueStatusSkip){
+            $data = $this->callNext($desk_uuid);
+
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 3);
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 4);
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Error',
+            ];
+        }
 
         // Return
-        if ($updatedResource){
-            return back();
-        }
+        return response()->json($data);
+
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $uuid
-     * @return \Illuminate\Http\Response
+     * Done Queue Number.
      */
-    public function destroy($uuid)
+    public function doneQueueNumber($desk_uuid, $desk_queue_uuid)
     {
-        $resource = Desk::getBy('uuid', $uuid);
-        if ($resource){
-            $deletedResource = Desk::remove($resource->id);
-
-            // Return
-            if ($deletedResource){
-                return back();
-            }
+        if (!User::hasAuthority('use.desk_queue')){
+            return redirect('/');
         }
+
+        // Do Code
+        $deskQueueStatusDone = DeskQueueStatus::store([
+            'user_id' => auth()->user()->id,
+            'desk_queue_id' => DeskQueue::getBy('uuid', $desk_queue_uuid)->id,
+            'queue_status_id' => 4,
+        ]);
+
+        if($deskQueueStatusDone){
+            $data = $this->callNext($desk_uuid);
+
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 3);
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 4);
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Error',
+            ];
+        }
+
+        // Return
+        return response()->json($data);
     }
 }
