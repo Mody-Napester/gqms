@@ -7854,3 +7854,14 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
   background-color: #EEEEEE;
   margin-bottom: 1rem;
 }
+
+.float-alert{
+  position: fixed;
+  z-index: 99999;
+  top: 20px;
+  right: 20px;
+  width: 30%;
+}
+.float-alert .fa{
+  cursor: pointer;
+}

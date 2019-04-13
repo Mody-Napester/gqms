@@ -63,6 +63,7 @@ class DeskQueuesController extends Controller
     {
         $data['desk'] = Desk::getBy('uuid', $desk_uuid);
         $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', 1)
             ->first();
 
@@ -76,13 +77,12 @@ class DeskQueuesController extends Controller
 
             $data['message'] = [
                 'msg_status' => 1,
-                'text' => 'Updated',
+                'text' => 'Your next number has come',
             ];
-
         }else{
             $data['message'] = [
                 'msg_status' => 0,
-                'text' => 'Error',
+                'text' => 'Some thing error, please try again after few minutes',
             ];
         }
 
@@ -119,10 +119,17 @@ class DeskQueuesController extends Controller
             return redirect('/');
         }
 
+        $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
+
+        // Do Code
+        DeskQueue::edit([
+            'status' => 3, // Called
+        ], $deskQueue->id);
+
         // Do Code
         $deskQueueStatusSkip = DeskQueueStatus::store([
             'user_id' => auth()->user()->id,
-            'desk_queue_id' => DeskQueue::getBy('uuid', $desk_queue_uuid)->id,
+            'desk_queue_id' => $deskQueue->id,
             'queue_status_id' => 3,
         ]);
 
@@ -131,10 +138,15 @@ class DeskQueuesController extends Controller
 
             $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 3);
             $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 4);
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Queue was skipped successfully with getting next number',
+            ];
         }else{
             $data['message'] = [
                 'msg_status' => 0,
-                'text' => 'Error',
+                'text' => 'Some thing error, please try again after few minutes',
             ];
         }
 
@@ -152,10 +164,17 @@ class DeskQueuesController extends Controller
             return redirect('/');
         }
 
+        $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
+
+        // Do Code
+        DeskQueue::edit([
+            'status' => 4, // Called
+        ], $deskQueue->id);
+
         // Do Code
         $deskQueueStatusDone = DeskQueueStatus::store([
             'user_id' => auth()->user()->id,
-            'desk_queue_id' => DeskQueue::getBy('uuid', $desk_queue_uuid)->id,
+            'desk_queue_id' => $deskQueue->id,
             'queue_status_id' => 4,
         ]);
 
@@ -164,10 +183,15 @@ class DeskQueuesController extends Controller
 
             $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 3);
             $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 4);
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Queue was done successfully with getting next number',
+            ];
         }else{
             $data['message'] = [
                 'msg_status' => 0,
-                'text' => 'Error',
+                'text' => 'Some thing error, please try again after few minutes',
             ];
         }
 

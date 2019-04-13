@@ -14,8 +14,8 @@ class QueueStatusesSeeder extends Seeder
         // queue types (1 -> Desk, 2 -> Doctor)
         $types = [
             ['queue_type'=>'1', 'class'=>'label-purple', 'en'=>'Waiting', 'ar'=>'انتظار'],
-            ['queue_type'=>'1', 'class'=>'label-primary', 'en'=>'Call', 'ar'=>'على الشباك'],
-            ['queue_type'=>'1', 'class'=>'label-danger', 'en'=>'Skip', 'ar'=>'غير موجود'],
+            ['queue_type'=>'1', 'class'=>'label-primary', 'en'=>'Called', 'ar'=>'على الشباك'],
+            ['queue_type'=>'1', 'class'=>'label-danger', 'en'=>'Skipped', 'ar'=>'غير موجود'],
             ['queue_type'=>'1', 'class'=>'label-success', 'en'=>'Done', 'ar'=>'تم الخدمة'],
             ['queue_type'=>'1', 'class'=>'label-warning', 'en'=>'Cell from skip', 'ar'=>'رجوع'],
         ];

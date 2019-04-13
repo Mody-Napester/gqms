@@ -7,6 +7,7 @@
             <tr>
                 <th>Queue</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
             </thead>
 
@@ -16,6 +17,11 @@
                     <th>{{ $deskQueue->queue_number }}</th>
                     <th>
                         <span class="label {{ $deskQueue->queueStatus->class }}">{{ $deskQueue->queueStatus->name_en }}</span>
+                    </th>
+                    <th>
+                        @if($deskQueue->queueStatus->id == 3)
+                            <button class="btn btn-secondary waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
+                        @endif
                     </th>
                 </tr>
             @endforeach

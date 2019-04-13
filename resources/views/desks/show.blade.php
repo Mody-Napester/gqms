@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="table-detail text-right">
                                     <h4 class="m-t-0 m-b-5"><b id="count-skip">{{ $deskQueuesSkip }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">Skip</h5>
+                                    <h5 class="text-muted m-b-0 m-t-0">Skipped</h5>
                                 </div>
                             </div>
                         </div>
@@ -101,6 +101,7 @@
                             <tr>
                                 <th>Queue</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
 
@@ -110,6 +111,11 @@
                                     <th>{{ $deskQueue->queue_number }}</th>
                                     <th>
                                         <span class="label {{ $deskQueue->queueStatus->class }}">{{ $deskQueue->queueStatus->name_en }}</span>
+                                    </th>
+                                    <th>
+                                        @if($deskQueue->queueStatus->id == 3)
+                                            <button class="btn btn-secondary waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
+                                        @endif
                                     </th>
                                 </tr>
                             @endforeach
@@ -142,7 +148,14 @@
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.deskQueuesSkip);
                             $('#count-done').text(response.data.deskQueuesDone);
+                            this.desk_queue_uuid = response.data.nextQueue.uuid;
                             removeLoarder();
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
                         })
                         .catch((data) => {
                             console.log(0, data);
@@ -161,6 +174,12 @@
                                 this.active_btn = true;
 
                                 removeLoarder();
+
+                                if(response.data.message.msg_status == 1){
+                                    addAlert('success', response.data.message.text);
+                                }else{
+                                    addAlert('danger', response.data.message.text);
+                                }
                             })
                             .catch((data) => {
                                 console.log(0, data);
@@ -176,7 +195,14 @@
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.deskQueuesSkip);
                             $('#count-done').text(response.data.deskQueuesDone);
+                            this.desk_queue_uuid = response.data.nextQueue.uuid;
                             removeLoarder();
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
                         })
                         .catch((data) => {
                             console.log(0, data);
