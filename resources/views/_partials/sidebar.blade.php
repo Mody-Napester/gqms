@@ -6,6 +6,9 @@
                 <li class="has_sub">
                     <a href="{{ route('dashboard.index') }}" class="waves-effect"><i class="ti-dashboard"></i> <span> Dashboard </span></a>
                 </li>
+                <li class="has_sub">
+                    <a href="{{ route('ip.get') }}" class="waves-effect"><i class="ti-location-pin"></i> <span> Get my IP </span></a>
+                </li>
 
                 @if (\App\User::hasAuthority('use.security'))
                     <li class="text-muted menu-title">Security</li>
@@ -83,9 +86,9 @@
                     <li class="has_sub">
                         <a href="{{ url('translations') }}" class="waves-effect"><i class="ti-flag-alt-2"></i> <span> Translations </span></a>
                     </li>
-                    <li class="has_sub">
-                        <a href="{{ url('translations') }}" class="waves-effect"><i class="ti-id-badge"></i> <span> Tickets </span></a>
-                    </li>
+                    {{--<li class="has_sub">--}}
+                        {{--<a href="{{ url('translations') }}" class="waves-effect"><i class="ti-id-badge"></i> <span> Tickets </span></a>--}}
+                    {{--</li>--}}
                 @endif
 
             </ul>

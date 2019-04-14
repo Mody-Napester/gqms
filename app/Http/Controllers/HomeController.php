@@ -23,7 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return redirect(route('login'));
-        //return view('home');
+        if (auth()->check()) {
+            return redirect(route('dashboard.index'));
+        } else {
+            return redirect(route('login'));
+        }
     }
 }

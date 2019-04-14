@@ -110,6 +110,22 @@ class DeskQueue extends Model
         return $deskQueues;
     }
 
+    /**
+     *  Get Count Desk Queue
+     */
+    public static function getCountDeskQueues($status, $all = null)
+    {
+        $deskQueues = self::where('status', $status);
+
+        if (is_null($all)){
+            $deskQueues = $deskQueues->where('created_at', 'like', "%".date('Y-m-d')."%")->count();
+        }else{
+            $deskQueues = $deskQueues->count();
+        }
+
+        return $deskQueues;
+    }
+
 
     // Floor Relation
     public function floor(){

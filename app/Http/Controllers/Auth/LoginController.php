@@ -55,24 +55,27 @@ class LoginController extends Controller
                 'desk_id' => $desk->id,
                 'login_ip' => $desk->ip
             ], $user->id);
-        }
 
-        // Broadcast event
-        event(new DeskStatus($desk->uuid, 1));
+            // Broadcast event
+            event(new DeskStatus($desk->uuid, 1));
+        }
 
         UserLoginHistory::addLoginHistory();
     }
 
     // Custom Logout
     public function logout(\Illuminate\Http\Request $request) {
-        // Broadcast event
-        event(new DeskStatus(Desk::getBy('id', auth()->user()->desk_id)->uuid, 0));
 
-        // Update user
-        User::edit([
-            'desk_id' => null,
-            'login_ip' => null
-        ], auth()->user()->id);
+        if(auth()->user()->desk_id){
+            // Broadcast event
+            event(new DeskStatus(Desk::getBy('id', auth()->user()->desk_id)->uuid, 0));
+    
+            // Update user
+            User::edit([
+                'desk_id' => null,
+                'login_ip' => null
+            ], auth()->user()->id);
+        }
 
         auth()->logout();
         return redirect(route('login'));

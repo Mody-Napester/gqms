@@ -78,7 +78,7 @@ class DeskQueuesController extends Controller
             $deskQueueStatusDone = DeskQueueStatus::store([
                 'user_id' => auth()->user()->id,
                 'desk_queue_id' => $data['nextQueue']->id,
-                'queue_status_id' => config('vars.queue_status.waiting'),
+                'queue_status_id' => config('vars.queue_status.called'),
             ]);
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);

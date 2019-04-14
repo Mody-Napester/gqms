@@ -7,6 +7,7 @@ Route::group(
 });
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('home', 'HomeController@index')->name('home');
 Route::post('queues/{screen_uuid}', 'DeskQueuesController@storeNewQueue')->name('desks.queues.storeNewQueue');
 
 Auth::routes(['verify' => true]);
@@ -35,7 +36,7 @@ Route::get('screens/{screen}', 'ScreensController@show')->name('screens.show');
 
 Route::get('get-my-ip', function(){
     return view('get_my_ip');
-});
+})->name('ip.get');
 Route::get('mtm', function(){
     return view('mtm');
 });

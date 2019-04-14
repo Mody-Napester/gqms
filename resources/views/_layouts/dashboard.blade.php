@@ -34,6 +34,8 @@
         <link href="{{ url('assets/css/alerts.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ url('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
 
+        @yield('head')
+
     </head>
 
     <body class="fixed-left">
@@ -123,7 +125,7 @@
 
                         <li class="list-inline-item dropdown notification-list" style="background-color: #4d5a67;">
                             <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                <span class="pr-0">{{ Auth::user()->name }} <i class="fa fa-fw fa-angle-down"></i></span>
+                                <span class="pr-0">{{ auth()->user()->name }} <i class="fa fa-fw fa-angle-down"></i></span>
                                 {{--<img src="{{ url('assets/images/users/avatar-1.jpg') }}" alt="user" class="rounded-circle">--}}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">

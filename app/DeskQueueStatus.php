@@ -41,4 +41,20 @@ class DeskQueueStatus extends Model
 
         return $count;
     }
+
+    /**
+     *  Get Count Desk Queues
+     */
+    public static function getCountDeskQueue($queue_status_id, $all = null)
+    {
+        $count = self::where('queue_status_id', $queue_status_id);
+
+        if (is_null($all)){
+            $count = $count->where('created_at', 'like', "%".date('Y-m-d')."%")->count();
+        }else{
+            $count = $count->count();
+        }
+
+        return $count;
+    }
 }
