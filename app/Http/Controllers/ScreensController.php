@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Desk;
+use App\DeskQueue;
+use App\DeskQueueStatus;
 use App\Floor;
 use App\Screen;
 use App\ScreenType;
@@ -80,16 +82,14 @@ class ScreensController extends Controller
      */
     public function show($uuid)
     {
-        if (!User::hasAuthority('show.screens')){
-            return redirect('/');
-        }
-
         $data['screen'] = Screen::getBy('uuid', $uuid);
 
-        if($data['screen']->screen_type_id == 1){
+        if($data['screen']->screen_type_id == config('vars.screen_types.kiosk')){
             return view('screens.kiosk.show', $data);
         }
-        else if($data['screen']->screen_type_id == 2){
+        else if($data['screen']->screen_type_id == config('vars.screen_types.reception')){
+            $data['logegdInUsers'] = Desk::logegdInUsers('desk_id');
+            $data['desks'] = Desk::where('floor_id', $data['screen']->floor_id)->get();
             return view('screens.reception.show', $data);
         }else{
             return redirect(route('dashboard.index'));

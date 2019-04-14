@@ -96,6 +96,11 @@ class DesksController extends Controller
         $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 3);
         $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 4);
 
+        $data['currentDeskQueueNumber'] = DeskQueue::where('desk_id', $data['desk']->id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('status', config('vars.queue_status.called'))
+            ->first();
+
         return view('desks.show', $data);
     }
 

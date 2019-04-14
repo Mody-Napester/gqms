@@ -1,0 +1,10 @@
+.float-alert{
+    position: fixed;
+    z-index: 99999;
+    top: 20px;
+    right: 20px;
+    width: 30%;
+}
+.float-alert .fa{
+    cursor: pointer;
+}

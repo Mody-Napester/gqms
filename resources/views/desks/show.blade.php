@@ -66,7 +66,7 @@
                 <div class="">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="current-queue" id="current-queue">-</div>
+                            <div class="current-queue" id="current-queue">{{ ($currentDeskQueueNumber)? $currentDeskQueueNumber->queue_number : '-' }}</div>
 
                             <div class="row">
                                 <div class="col-md-4">
@@ -135,8 +135,8 @@
         const app = new Vue({
             el : '#app',
             data : {
-                desk_queue_uuid : '',
-                active_btn : false,
+                desk_queue_uuid : '{{ ($currentDeskQueueNumber)? $currentDeskQueueNumber->uuid : '' }}',
+                active_btn : {{ ($currentDeskQueueNumber)? 'true' : 'false' }},
             },
             methods : {
                 skip(){

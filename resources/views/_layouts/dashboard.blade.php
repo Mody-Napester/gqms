@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="description" content="">
         <meta name="author" content="Ahmed Samy">
 
@@ -10,7 +11,7 @@
 
         <link rel="shortcut icon" href="{{ url('assets/images/logo_sm.png') }}">
 
-        <title>{{ config('app.name') }} @yield('title')</title>
+        <title>@yield('title')</title>
 
         <!--Morris Chart CSS -->
         <link href="{{ url('assets/plugins/morris/morris.css') }}" rel="stylesheet">
@@ -29,6 +30,8 @@
         <link href="{{ url('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ url('assets/css/icons.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ url('assets/css/style.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url('assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url('assets/css/alerts.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ url('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
 
     </head>
@@ -319,26 +322,10 @@
             $(document).ready(function() {
                 $('form').parsley();
             });
-
-
-            // Loaders
-            var loader = '<div class="loading"><div class="loader"></div></div>';
-            function addLoader(selector = 'body') {
-                $(selector).append(loader);
-            }
-            function removeLoarder() {
-                $('.loading').hide(200).remove();
-            }
-
-            // Alert
-            function addAlert(type, text){
-                var alertDiv = '<div class="row alert-div alert alert-'+ type +' clearfix"><div class="col-md-10 p-0 m-0">'+ text +'</div> <div class="col-md-2 p-0 m-0 text-right"><i class="alert-close fa fa-fw fa-close"></i></div></div>';
-                $('.float-alert').append(alertDiv);
-            }
-            $('body').on('click', '.alert-close', function () {
-                $(this).parents('.alert-div').remove();
-            });
         </script>
+
+        <script src="{{ url('assets/js/loader.js') }}"></script>
+        <script src="{{ url('assets/js/alerts.js') }}"></script>
 
         @yield('scripts')
 

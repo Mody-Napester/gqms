@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Desk;
-use App\Http\Controllers\Controller;
+use App\Events\DeskStatus;
 use App\User;
 use App\UserLoginHistory;
 use http\Env\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -42,17 +43,38 @@ class LoginController extends Controller
 
     }
 
+    // After Login
     protected function authenticated(\Illuminate\Http\Request $request, $user)
     {
-//        dd($request->all(), $user->id);
         // Check if ip exists in desks
         $desk = Desk::getBy('ip', $request->login_ip);
+
         if ($desk){
+            // Update user
             User::edit([
                 'desk_id' => $desk->id,
                 'login_ip' => $desk->ip
             ], $user->id);
         }
+
+        // Broadcast event
+        event(new DeskStatus($desk->uuid, 1));
+
         UserLoginHistory::addLoginHistory();
+    }
+
+    // Custom Logout
+    public function logout(\Illuminate\Http\Request $request) {
+        // Broadcast event
+        event(new DeskStatus(Desk::getBy('id', auth()->user()->desk_id)->uuid, 0));
+
+        // Update user
+        User::edit([
+            'desk_id' => null,
+            'login_ip' => null
+        ], auth()->user()->id);
+
+        auth()->logout();
+        return redirect(route('login'));
     }
 }

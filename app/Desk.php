@@ -59,6 +59,14 @@ class Desk extends Model
     /**
      *  Get a specific resource
      */
+    public static function getAll($status = 1)
+    {
+        return self::where('status', $status)->get();
+    }
+
+    /**
+     *  Get a specific resource
+     */
     public static function getBy($by, $resource)
     {
         return self::where($by, $resource)->first();
@@ -80,6 +88,15 @@ class Desk extends Model
     {
         return $this->belongsTo('App\User', 'updated_by');
 
+    }
+
+    /**
+     *  Logged in users
+     */
+    public static function logegdInUsers($filed)
+    {
+        $loggedInUsers = User::where('desk_id', '<>', '')->get();
+        return $loggedInUsers->pluck($filed)->toArray();
     }
 
     // Floor Relation
