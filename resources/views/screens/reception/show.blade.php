@@ -201,7 +201,13 @@
                 listen(){
                     Echo.channel('desk-queue-screen')
                         .listen('NextDeskQueue', (response) => {
-                            $('#' + response.desk + ' .number-app').text(response.queue).addClass('bounce-class');
+                            $('#' + response.desk + ' .number-app').addClass('bounce-class', function(){
+                                setTimeout(function () {
+                                    $('#' + response.desk + ' .number-app').removeClass('bounce-class');
+                                }, 100);
+                            }).text(response.queue);
+
+                            console.log(response);
                         });
 
                     Echo.channel('desk-queue-screen')

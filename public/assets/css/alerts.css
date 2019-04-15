@@ -4,6 +4,7 @@
     top: 20px;
     right: 20px;
     width: 30%;
+    font-size: 18px;
 }
 .float-alert .fa{
     cursor: pointer;

@@ -51,13 +51,13 @@ class DeskQueuesController extends Controller
 
         // Return
         if ($resource){
-//            try{
-//                \EPSON::testPrint($resource->queue_number, $screen->ip);
-//            }catch (\Exception $e){
-//                $data['res'] = [
-//                    $e->getFile(), $e->getMessage(), $e->getLine()
-//                ];
-//            }
+            try{
+                \EPSON::testPrint($resource->queue_number, $screen->ip);
+            }catch (\Exception $e){
+                $data['res'] = [
+                    $e->getFile(), $e->getMessage(), $e->getLine()
+                ];
+            }
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($screen->floor_id);
             $data['queue_number'] = $resource->queue_number;
@@ -125,6 +125,32 @@ class DeskQueuesController extends Controller
         }
 
         $data = $this->callNext($desk_uuid);
+
+        // Return
+        return response()->json($data);
+    }
+
+    /**
+     * Call Next Queue Number.
+     */
+    public function callNextQueueNumberAgain($desk_uuid)
+    {
+        if (!User::hasAuthority('use.desk_queue')){
+            return redirect('/');
+        }
+
+        $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('status', config('vars.queue_status.called'))
+            ->first();
+
+        event(new NextDeskQueue($data['desk']->uuid, $data['nextQueue']->queue_number));
+
+        $data['message'] = [
+            'msg_status' => 1,
+            'text' => 'Next number called again',
+        ];
 
         // Return
         return response()->json($data);

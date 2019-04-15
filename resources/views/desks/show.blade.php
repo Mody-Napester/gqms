@@ -78,6 +78,9 @@
                                     <button v-if="!active_btn" @click.prevent="next()" type="button" class="btn btn-block btn-primary waves-effect waves-light">
                                         Next <i class="fa fa-fw fa-arrow-right"></i>
                                     </button>
+                                    <button v-if="active_btn" @click.prevent="call()" type="button" class="btn btn-block btn-warning waves-effect waves-light">
+                                        Call Again <i class="fa fa-fw fa-refresh"></i>
+                                    </button>
                                 </div>
                                 <div class="col-md-4">
                                     <button v-if="active_btn" @click.prevent="done()" type="button" class="btn btn-block btn-success waves-effect waves-light">
@@ -185,6 +188,23 @@
                             })
                             .catch((data) => {
                                 console.log(0, data);
+                                removeLoarder();
+                            });
+                },
+                call(){
+                    addLoader();
+                    var url = '{{ route('desks.queues.callNextQueueNumberAgain', $desk->uuid) }}';
+                    axios.get(url)
+                            .then((response) => {
+                                removeLoarder();
+                                if(response.data.message.msg_status == 1){
+                                    addAlert('success', response.data.message.text);
+                                }else{
+                                    addAlert('danger', response.data.message.text);
+                                }
+                            })
+                            .catch((data) => {
+                                console.log(data);
                                 removeLoarder();
                             });
                 },

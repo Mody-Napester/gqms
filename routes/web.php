@@ -29,6 +29,7 @@ Route::group([
     // Desks Actions
     Route::get('desk/{desk_uuid}/{desk_queue_uuid}/skip', 'DeskQueuesController@skipQueueNumber')->name('desks.queues.skipQueueNumber');
     Route::get('desk/{desk_uuid}/next', 'DeskQueuesController@callNextQueueNumber')->name('desks.queues.callNextQueueNumber');
+    Route::get('desk/{desk_uuid}/next-again', 'DeskQueuesController@callNextQueueNumberAgain')->name('desks.queues.callNextQueueNumberAgain');
     Route::get('desk/{desk_uuid}/{desk_queue_uuid}/done', 'DeskQueuesController@doneQueueNumber')->name('desks.queues.doneQueueNumber');
 });
 
