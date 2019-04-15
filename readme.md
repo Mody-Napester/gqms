@@ -31,3 +31,17 @@ Follow this steps:
 - config => vars.php
 - env => Database
 - env => Pusher
+
+## Run the application
+
+Follow this steps:
+ 
+- php artisan serve
+- php artisan websockets:serve
+
+## References
+- https://laravel.com/
+- https://docs.beyondco.de/laravel-websockets/
+- https://yajrabox.com/docs/laravel-oci8/master
+- https://vuejs.org/
+- https://cli.vuejs.org/

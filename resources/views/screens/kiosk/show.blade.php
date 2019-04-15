@@ -7,8 +7,8 @@
     <div class="container-fluid kiosk-screen">
         <div class="row">
             <div class="col-md-12 text-center">
+                <div class="return-screen-qn">@{{ queue }}</div>
                 <button @click.prevent="printQueue()" class="btn-print">اضغط هنا لطباعة دور</button>
-                {{--<div class="return-screen-qn">@{{ queue }}</div>--}}
             </div>
         </div>
     </div>
@@ -20,7 +20,7 @@
         const app = new Vue({
             el : '#app',
             data : {
-                queue : ''
+                queue : '-'
             },
             methods : {
                 printQueue(){
@@ -31,7 +31,7 @@
                     })
                     .then((response) => {
                         console.log(response);
-                        // this.queue = response;
+                        this.queue = response.data.queue_number;
                         removeLoarder();
                     })
                     .catch((response) => {

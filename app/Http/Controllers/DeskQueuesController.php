@@ -51,13 +51,13 @@ class DeskQueuesController extends Controller
 
         // Return
         if ($resource){
-            try{
-                \EPSON::testPrint($resource->queue_number, $screen->ip);
-            }catch (\Exception $e){
-                $data['res'] = [
-                    $e->getFile(), $e->getMessage(), $e->getLine()
-                ];
-            }
+//            try{
+//                \EPSON::testPrint($resource->queue_number, $screen->ip);
+//            }catch (\Exception $e){
+//                $data['res'] = [
+//                    $e->getFile(), $e->getMessage(), $e->getLine()
+//                ];
+//            }
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($screen->floor_id);
             $data['queue_number'] = $resource->queue_number;
