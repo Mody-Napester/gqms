@@ -14,6 +14,7 @@
     <title>@yield('title')</title>
 
     <link href="{{ url('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="https://fonts.googleapis.com/css?family=Tajawal:400,500,700,800,900" rel="stylesheet">
@@ -22,7 +23,29 @@
 <body onload="startTime()">
 
     <div id="app">
+        <div>
+            <div class="section bg-blue-1 mb-2">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 text-left">
+                            <div class="top-div">{{ $screen->floor->name_en }}</div>
+                            <div class="top-div">
+                                <div id="time-txt" style="width: 150px;text-align: center;"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-white txt-2 text-right">
+                                <span>مستشفى الجنزورى التخصصى</span>
+                                <img class="logo-image" src="{{ url('assets/images/ganz-logo.jpg') }}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         @yield('content')
+
+        </div>
     </div>
 
     <script src="{{ url('assets/js/jquery.min.js') }}"></script>
@@ -128,6 +151,8 @@
 
         saveIpInSession();
     </script>
+
+    <script src="{{ url('assets/js/loader.js') }}"></script>
 
     @yield('scripts')
 

@@ -4,205 +4,185 @@
 
 @section('content')
 
-    <div>
-        <div class="section bg-blue-1 mb-2">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6 text-left">
-                        <div class="top-div">{{ $screen->floor->name_en }}</div>
-                        <div class="top-div">
-                            <div id="time-txt" style="width: 150px;text-align: center;"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Doctor Queue -->
+            <div class="col-md-6 pl-0">
+                <div class="bg-blue-2 section mb-2">
+                    <div class="text-white txt-1 text-center">
+                        إنتظار العيادات
+                    </div>
+                </div>
+
+
+                <!-- Start Reservation Row -->
+                <div class="res-row row m-0">
+                    <div class="col-md-6 p-0">
+                        <div class="bg-gray-2 section mb-2">
+                            <div class="txt-3 text-center">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="number-app">152</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="text-app">حجز</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="text-white txt-2 text-right">
-                            <span>مستشفى الجنزورى التخصصى</span>
-                            <img class="logo-image" src="{{ url('assets/images/ganz-logo.jpg') }}" alt="">
+                    <div class="col-md-6 p-0">
+                        <div class="bg-blue-3 section-1 mb-2">
+                            <div class="txt-3 text-right">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="text-app-1">د/أحمد سامى</span>
+                                        <span class="text-app-2">عيادة القلب</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- End Reservation Row -->
+
+                <!-- Start Reservation Row -->
+                <div class="res-row row m-0">
+                    <div class="col-md-6 p-0">
+                        <div class="bg-gray-2 section mb-2">
+                            <div class="txt-3 text-center">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="number-app">152</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="text-app">حجز</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="bg-blue-3 section-1 mb-2">
+                            <div class="txt-3 text-right">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="text-app-1">د/أحمد سامى</span>
+                                        <span class="text-app-2">عيادة القلب</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Reservation Row -->
+
+                <!-- Start Reservation Row -->
+                <div class="res-row row m-0">
+                    <div class="col-md-6 p-0">
+                        <div class="bg-gray-2 section mb-2">
+                            <div class="txt-3 text-center">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="number-app bounce-class">152</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="text-app">حجز</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="bg-blue-3 section-1 mb-2">
+                            <div class="txt-3 text-right">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="text-app-1">د/أحمد سامى</span>
+                                        <span class="text-app-2">عيادة القلب</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Reservation Row -->
+
+                <!-- Start Reservation Row -->
+                <div class="res-row row m-0">
+                    <div class="col-md-6 p-0">
+                        <div class="bg-gray-2 section mb-2">
+                            <div class="txt-3 text-center">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="number-app">152</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="text-app">حجز</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="bg-blue-3 section-1 mb-2">
+                            <div class="txt-3 text-right">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="text-app-1">د/أحمد سامى</span>
+                                        <span class="text-app-2">عيادة القلب</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Reservation Row -->
+
             </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Doctor Queue -->
-                <div class="col-md-6 pl-0">
-                    <div class="bg-blue-2 section mb-2">
-                        <div class="text-white txt-1 text-center">
-                            إنتظار العيادات
-                        </div>
+
+            <!-- Desk Queue -->
+            <div class="col-md-6 pr-0">
+                <div class="bg-blue-2 section mb-2">
+                    <div class="text-white txt-1 text-center">
+                        إنتظار الإستقبال
                     </div>
-
-
-                    <!-- Start Reservation Row -->
-                    <div class="res-row row m-0">
-                        <div class="col-md-6 p-0">
-                            <div class="bg-gray-2 section mb-2">
-                                <div class="txt-3 text-center">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <span class="number-app">152</span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-app">حجز</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-0">
-                            <div class="bg-blue-3 section-1 mb-2">
-                                <div class="txt-3 text-right">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <span class="text-app-1">د/أحمد سامى</span>
-                                            <span class="text-app-2">عيادة القلب</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Reservation Row -->
-
-                    <!-- Start Reservation Row -->
-                    <div class="res-row row m-0">
-                        <div class="col-md-6 p-0">
-                            <div class="bg-gray-2 section mb-2">
-                                <div class="txt-3 text-center">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <span class="number-app">152</span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-app">حجز</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-0">
-                            <div class="bg-blue-3 section-1 mb-2">
-                                <div class="txt-3 text-right">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <span class="text-app-1">د/أحمد سامى</span>
-                                            <span class="text-app-2">عيادة القلب</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Reservation Row -->
-
-                    <!-- Start Reservation Row -->
-                    <div class="res-row row m-0">
-                        <div class="col-md-6 p-0">
-                            <div class="bg-gray-2 section mb-2">
-                                <div class="txt-3 text-center">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <span class="number-app bounce-class">152</span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-app">حجز</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-0">
-                            <div class="bg-blue-3 section-1 mb-2">
-                                <div class="txt-3 text-right">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <span class="text-app-1">د/أحمد سامى</span>
-                                            <span class="text-app-2">عيادة القلب</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Reservation Row -->
-
-                    <!-- Start Reservation Row -->
-                    <div class="res-row row m-0">
-                        <div class="col-md-6 p-0">
-                            <div class="bg-gray-2 section mb-2">
-                                <div class="txt-3 text-center">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <span class="number-app">152</span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-app">حجز</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-0">
-                            <div class="bg-blue-3 section-1 mb-2">
-                                <div class="txt-3 text-right">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <span class="text-app-1">د/أحمد سامى</span>
-                                            <span class="text-app-2">عيادة القلب</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Reservation Row -->
-
                 </div>
 
-                <!-- Desk Queue -->
-                <div class="col-md-6 pr-0">
-                    <div class="bg-blue-2 section mb-2">
-                        <div class="text-white txt-1 text-center">
-                            إنتظار الإستقبال
-                        </div>
-                    </div>
-
-                    @foreach($desks as $desk)
-                    <!-- Start Reservation Row -->
-                    <div class="res-row row m-0">
-                        <div class="col-md-6 p-0">
-                            <div id="{{ $desk->uuid }}" class="bg-gray-1 section mb-2 @if(!in_array($desk->id , $logegdInUsers)) canceled-res @endif">
-                                <div class="txt-3 text-center">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <span class="number-app">{{ ($queue = \App\DeskQueue::getCurrentDeskQueues($desk->id))? $queue->queue_number : '-'  }}</span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-app">حجز</span>
-                                        </div>
+                @foreach($desks as $desk)
+                <!-- Start Reservation Row -->
+                <div class="res-row row m-0">
+                    <div class="col-md-6 p-0">
+                        <div id="{{ $desk->uuid }}" class="bg-gray-1 section mb-2 @if(!in_array($desk->id , $logegdInUsers)) canceled-res @endif">
+                            <div class="txt-3 text-center">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="number-app">{{ ($queue = \App\DeskQueue::getCurrentDeskQueues($desk->id))? $queue->queue_number : '-'  }}</span>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 p-0">
-                            <div class="bg-blue-3 section mb-2">
-                                <div class="txt-3 text-center">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <span class="number-app">{{ $desk->name_en }}</span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-app">شباك</span>
-                                        </div>
+                                    <div class="col-md-6">
+                                        <span class="text-app">حجز</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- End Reservation Row -->
-                    @endforeach
+                    <div class="col-md-6 p-0">
+                        <div class="bg-blue-3 section mb-2">
+                            <div class="txt-3 text-center">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="number-app">{{ $desk->name_en }}</span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="text-app">شباك</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- End Reservation Row -->
+                @endforeach
             </div>
         </div>
     </div>

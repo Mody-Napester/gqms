@@ -7,7 +7,7 @@
                     <a href="{{ route('dashboard.index') }}" class="waves-effect"><i class="ti-dashboard"></i> <span> Dashboard </span></a>
                 </li>
                 <li class="has_sub">
-                    <a href="{{ route('ip.get') }}" class="waves-effect"><i class="ti-location-pin"></i> <span> Get my IP </span></a>
+                    <a href="{{ route('ip.get') }}" target="_blank" class="waves-effect"><i class="ti-location-pin"></i> <span> Get my IP </span></a>
                 </li>
 
                 @if (\App\User::hasAuthority('use.security'))

@@ -95,8 +95,10 @@
             <div class="card-box">
                 <h4 class="m-t-0 m-b-20 header-title"><b>Today Desk Queue ({{ count($deskQueues) }})</b></h4>
 
+                <input type="text" id="myInput" v-on:keyup="myFunction()" placeholder="Search for names..">
+
                 <div class="mx-box" style="overflow: auto;">
-                    <table class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
+                    <table id="myTable" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Queue</th>
@@ -215,6 +217,28 @@
                             console.log(response.view);
                             $('#all-queues').html(response.view);
                         });
+                },
+                // Search on table
+                myFunction() {
+                    // Declare variables
+                    var input, filter, table, tr, td, i, txtValue;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("myTable");
+                    tr = table.getElementsByTagName("tr");
+
+                    // Loop through all table rows, and hide those who don't match the search query
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[0];
+                        if (td) {
+                            txtValue = td.textContent || td.innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                            } else {
+                                tr[i].style.display = "none";
+                            }
+                        }
+                    }
                 }
             },
             mounted() {

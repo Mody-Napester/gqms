@@ -6,6 +6,44 @@
     background-color: #EEEEEE;
     margin-bottom: 1rem;
 }
+.kiosk-screen{
+    position: absolute;
+    bottom: 0;
+    top:93px;
+    width: 100%;
+    background-color: #dfe6e9;
+    border-bottom: 30px solid #405566;
+}
+.btn-print {
+    margin-top: 10%;
+    outline: none;
+    padding: 2.5rem;
+    font-size: 3rem;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background-color: #035B88;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 9px #999;
+}
+
+.btn-print:hover {background-color: #2d3436}
+
+.btn-print:active {
+    background-color: #405566;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.return-screen-qn{
+    background-color: #555;
+    color: #fff;
+    padding: 30px;
+    font-size: 2rem;
+    margin-top: 10px;
+    display: inline-block;
+}
 
 @font-face {
     font-family: GE_SS_Two;
