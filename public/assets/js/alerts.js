@@ -6,3 +6,8 @@ function addAlert(type, text){
 $('body').on('click', '.alert-close', function () {
     $(this).parents('.alert-div').remove();
 });
+$('body').on('load', '.alert-div', function () {
+    setTimeout(function () {
+        $(this).remove();
+    }, 500);
+});

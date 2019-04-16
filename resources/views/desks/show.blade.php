@@ -96,35 +96,47 @@
 
         <div class="col-lg-4" id="all-queues">
             <div class="card-box">
-                <h4 class="m-t-0 m-b-20 header-title"><b>Today Desk Queue ({{ count($deskQueues) }})</b></h4>
+                <h4 class="m-t-0 header-title">
+                    <label for="">Today Queue ({{ count($deskQueues) }})</label>
+                    <div class="row">
+                        <div class="col-md-6 pr-1">
+                            <input class="form-control" type="text" id="searchInput" placeholder="Search ..">
+                        </div>
+                        <div class="col-md-6 pl-1">
+                            <select class="form-control" id="searchSelect" style="height: 35px;">
+                                <option value='All'>All</option>
+                                <option value='Waiting'>Waiting</option>
+                                <option value='Called'>Called</option>
+                                <option value='Skipped'>Skipped</option>
+                                <option value='Done'>Done</option>
+                                <option value='Cell from skip'>Cell from skip</option>
+                            </select>
+                        </div>
+                    </div>
+                </h4>
 
-                <input type="text" id="myInput" v-on:keyup="myFunction()" placeholder="Search for names..">
 
                 <div class="mx-box" style="overflow: auto;">
-                    <table id="myTable" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Queue</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                    <table id="searchTable" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
+                        <tr>
+                            <th>Queue</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
 
-                        <tbody>
-                            @foreach($deskQueues as $deskQueue)
-                                <tr>
-                                    <th>{{ $deskQueue->queue_number }}</th>
-                                    <th>
-                                        <span class="label {{ $deskQueue->queueStatus->class }}">{{ $deskQueue->queueStatus->name_en }}</span>
-                                    </th>
-                                    <th>
-                                        @if($deskQueue->queueStatus->id == 3)
-                                            <button class="btn btn-secondary waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
-                                        @endif
-                                    </th>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        @foreach($deskQueues as $deskQueue)
+                            <tr>
+                                <td>{{ $deskQueue->queue_number }}</td>
+                                <td>
+                                    <span class="label {{ $deskQueue->queueStatus->class }}">{{ $deskQueue->queueStatus->name_en }}</span>
+                                </td>
+                                <td>
+                                    @if($deskQueue->queueStatus->id == 3)
+                                        <button @click.prevent="callSkippedAgain()" class="btn btn-secondary waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
 
                     </table>
                 </div>
@@ -136,6 +148,55 @@
 @endsection
 
 @section('scripts')
+    <script>
+        $(document).ready(function () {
+            // Search on table
+            $('body').on("keyup", "#searchInput",function() {
+                var value = $(this).val();
+
+                $("#searchTable tr").each(function(index) {
+                    if (index != 0) {
+
+                        $row = $(this);
+
+                        var id = $row.find("td:nth-child(2) span").text();
+
+                        if (id.indexOf(value) != 0) {
+                            $(this).hide();
+                        }
+                        else {
+                            $(this).show();
+                        }
+                    }
+                });
+            })
+
+            $('body').on("change", "#searchSelect",function() {
+                var value = $(this).val();
+
+                $("#searchTable tr").each(function(index) {
+                    if (index != 0) {
+
+                        $row = $(this);
+
+                        var id = $row.find("td:nth-child(2) span").text();
+
+                        if(value == 'All'){
+                            $(this).show();
+                        }else{
+                            if (id.indexOf(value) != 0) {
+                                $(this).hide();
+                            }
+                            else {
+                                $(this).show();
+                            }
+                        }
+
+                    }
+                });
+            })
+        })
+    </script>
     <script>
         const app = new Vue({
             el : '#app',
@@ -208,6 +269,23 @@
                                 removeLoarder();
                             });
                 },
+                callSkippedAgain(){
+                    addLoader();
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip-again';
+                    axios.get(url)
+                            .then((response) => {
+                                removeLoarder();
+                                if(response.data.message.msg_status == 1){
+                                    addAlert('success', response.data.message.text);
+                                }else{
+                                    addAlert('danger', response.data.message.text);
+                                }
+                            })
+                            .catch((data) => {
+                                console.log(data);
+                                removeLoarder();
+                            });
+                },
                 done(){
                     addLoader();
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done';
@@ -238,32 +316,31 @@
                             $('#all-queues').html(response.view);
                         });
                 },
-                // Search on table
-                myFunction() {
-                    // Declare variables
-                    var input, filter, table, tr, td, i, txtValue;
-                    input = document.getElementById("myInput");
-                    filter = input.value.toUpperCase();
-                    table = document.getElementById("myTable");
-                    tr = table.getElementsByTagName("tr");
+                searchFunction(){
+                    var value = $(this).val();
 
-                    // Loop through all table rows, and hide those who don't match the search query
-                    for (i = 0; i < tr.length; i++) {
-                        td = tr[i].getElementsByTagName("td")[0];
-                        if (td) {
-                            txtValue = td.textContent || td.innerText;
-                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                tr[i].style.display = "";
-                            } else {
-                                tr[i].style.display = "none";
+                    $("#searchTable tbody tr").each(function(index) {
+                        if (index != 0) {
+
+                            $row = $(this);
+
+                            var id = $row.find("td:first").text();
+
+                            if (id.indexOf(value) != 0) {
+                                $(this).hide();
+                            }
+                            else {
+                                $(this).show();
                             }
                         }
-                    }
+                    });
                 }
             },
             mounted() {
                 this.listen();
             }
         });
+
+
     </script>
 @endsection

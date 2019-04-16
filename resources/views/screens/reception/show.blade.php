@@ -201,11 +201,13 @@
                 listen(){
                     Echo.channel('desk-queue-screen')
                         .listen('NextDeskQueue', (response) => {
-                            $('#' + response.desk + ' .number-app').addClass('bounce-class', function(){
-                                setTimeout(function () {
-                                    $('#' + response.desk + ' .number-app').removeClass('bounce-class');
-                                }, 100);
-                            }).text(response.queue);
+                            var targetEl = $('#' + response.desk + ' .number-app');
+
+                            targetEl.text(response.queue);
+
+                            targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
+                                targetEl.removeClass( "bounce-class" );
+                            });
 
                             console.log(response);
                         });

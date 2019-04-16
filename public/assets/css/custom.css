@@ -156,7 +156,7 @@ body{
 
 .bounce-class {
     /*animation: flashKeyFrame 2s 2 forwards;*/
-    animation: bounceKeyFrame 2s 5 forwards;
+    animation: bounceKeyFrame 2s 2 forwards;
 }
 
 @keyframes flashKeyFrame {
