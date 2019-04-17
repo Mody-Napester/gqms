@@ -210,12 +210,12 @@ body{
 
 @keyframes bounceKeyFrame {
     0% {
-        background-color: #d63031;
+        background-color: green;
         transform: scale(1);
         /*color: #2E5272;*/
     }
     50% {
-        background-color: #d63031;
+        background-color: green;
         transform: scale(1.5);
         color: #FFFFFF;
     }
