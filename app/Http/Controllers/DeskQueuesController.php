@@ -44,15 +44,20 @@ class DeskQueuesController extends Controller
             // Do Code
             $resource = DeskQueue::store([
                 'floor_id' => $screen->floor_id,
-                'queue_number' => (DeskQueue::getDeskQueues($screen->floor_id)->count() + 1) + 100,
+                'queue_number' => deskQueueNumberFormat($screen->floor_id, 100),
                 'status' => config('vars.default_kiosk_status'),
             ]);
         }
 
         // Return
         if ($resource){
+//            $floor_name = Floor::getBy('id', $screen->floor_id)->name_en;
 //            try{
-//                \EPSON::testPrint($resource->queue_number, $screen->ip);
+//                \EPSON::deskPrint([
+//                    'floor_name' => $floor_name,
+//                    'queue_number' => $resource->queue_number,
+//                    'screen_ip' => $screen->ip
+//                ]);
 //            }catch (\Exception $e){
 //                $data['res'] = [
 //                    $e->getFile(), $e->getMessage(), $e->getLine()

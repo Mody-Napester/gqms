@@ -159,10 +159,15 @@
 
                         $row = $(this);
 
-                        var id = $row.find("td:nth-child(2) span").text();
+                        var id1 = $row.find("td:first").text();
+                        var id2 = $row.find("td:nth-child(2) span").text();
 
-                        if (id.indexOf(value) != 0) {
-                            $(this).hide();
+                        if (id1.indexOf(value) != 0) {
+                            if (id2.indexOf(value) != 0){
+                                $(this).hide();
+                            }else{
+                                $(this).show();
+                            }
                         }
                         else {
                             $(this).show();

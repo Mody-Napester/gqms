@@ -142,3 +142,8 @@ function server_get_client_ip() {
         $ipaddress = 'UNKNOWN';
     return $ipaddress;
 }
+
+// Desk Queue Number Format
+function deskQueueNumberFormat($floor_id, $scheme){
+    return ((\App\DeskQueue::getDeskQueues($floor_id)->count() + 1) + $scheme);
+}

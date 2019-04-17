@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->integer('status');
             $table->integer('type');
             $table->string('api_token');
+            $table->boolean('available')->default(0)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

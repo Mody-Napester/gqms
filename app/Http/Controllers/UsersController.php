@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Desk;
+use App\Events\DeskStatus;
 use App\Permission;
 use App\PermissionGroup;
 use App\Role;
@@ -40,16 +42,6 @@ class UsersController extends Controller
         $data['roles'] = Role::all();
         $data['users'] = User::all();
         return view('users.index', $data);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -104,9 +96,6 @@ class UsersController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  string  $uuid
-     * @return \Illuminate\Http\Response
      */
     public function edit($uuid)
     {
@@ -185,5 +174,42 @@ class UsersController extends Controller
             }
         }
 
+    }
+
+    /**
+     * Availability
+     */
+    public function availability()
+    {
+        if(auth()->check()){
+            if(auth()->user()->desk_id){
+                if(auth()->user()->available == 0){
+                    // Will be 1
+                    $data['message'] = [
+                        'msg_status' => 1,
+                        'text' => 'You are now available',
+                        'btn_txt' => 'Go not available',
+                    ];
+                }else{
+                    // Will be 0
+                    $data['message'] = [
+                        'msg_status' => 0,
+                        'text' => 'You are now not available',
+                        'btn_txt' => 'Go available',
+                    ];
+                }
+
+                // Update user
+                User::edit([
+                    'available' => (auth()->user()->available == 0)? 1 : 0,
+                ], auth()->user()->id);
+
+                // Broadcast event
+                event(new DeskStatus(Desk::getBy('id', auth()->user()->desk_id)->uuid, (auth()->user()->available == 0)? 1 : 0));
+
+                // Return
+                return response()->json($data);
+            }
+        }
     }
 }

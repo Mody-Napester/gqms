@@ -53,7 +53,8 @@ class LoginController extends Controller
             // Update user
             User::edit([
                 'desk_id' => $desk->id,
-                'login_ip' => $desk->ip
+                'login_ip' => $desk->ip,
+                'available' => 1,
             ], $user->id);
 
             // Broadcast event
@@ -73,7 +74,8 @@ class LoginController extends Controller
             // Update user
             User::edit([
                 'desk_id' => null,
-                'login_ip' => null
+                'login_ip' => null,
+                'available' => 0,
             ], auth()->user()->id);
         }
 

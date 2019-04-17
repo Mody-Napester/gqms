@@ -8,9 +8,9 @@ use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 class EPSON
 {
 
-    public static function testPrint($code, $printerIp)
+    public static function deskPrint($inputs)
     {
-        $printer = self::USBPrint($printerIp);
+        $printer = self::USBPrint($inputs['screen_ip']);
         $printer->setJustification(Printer::JUSTIFY_CENTER);
 
         // Image
@@ -22,13 +22,14 @@ class EPSON
         $printer->setTextSize(4, 4);
         $printer->setEmphasis(true);
         $printer->setFont(Printer::FONT_A);
-        $printer->text($code . "\n");
+        $printer->text($inputs['queue_number'] . "\n");
         $printer->initialize();
 
         $printer->feed(1);
         $printer->setTextSize(2, 2);
         $printer->setFont(Printer::FONT_B);
         $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text('Floor: ' . $inputs['floor_name'] . "\n");
         $printer->text(date('h:i:s A - dMY') . "\n");
 
         $printer->cut();

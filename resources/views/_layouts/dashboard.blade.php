@@ -147,8 +147,9 @@
                                 {{--</a>--}}
 
                                 <!-- item-->
-                                <a href="{{ route('logout') }}" class="dropdown-item notify-item" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                <a href="{{ route('logout') }}"
+                                   class="dropdown-item notify-item"
+                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                     <i class="md md-settings-power"></i> <span>Logout</span>
                                 </a>
 
@@ -161,11 +162,20 @@
 
                     </ul>
 
-                    <ul class="list-inline menu-left mb-0">
+                    <ul id="dash_app" class="list-inline menu-left mb-0">
                         <li class="float-left">
                             <button class="button-menu-mobile open-left waves-light waves-effect">
                                 <i class="dripicons-menu"></i>
                             </button>
+
+                            @if(auth()->check())
+                                @if(auth()->user()->desk_id)
+                                    <button @click.prevent="availability()" type="button" id="availablity" class="btn btn-success waves-effect waves-light">
+                                        <span>Go Available</span>
+                                        <i class="fa fa-fw fa-unlock"></i>
+                                    </button>
+                                @endif
+                            @endif
                         </li>
                         {{--<li class="hide-phone app-search">--}}
                             {{--<form role="search" class="">--}}
@@ -285,7 +295,7 @@
             var resizefunc = [];
         </script>
 
-        <script src="{{ url('assets/js/jquery.core.js') }}"></script>
+{{--        <script src="{{ url('assets/js/jquery.core.js') }}"></script>--}}
         <script src="{{ url('assets/js/jquery.app.js') }}"></script>
         <script src="{{ url('assets/js/script.js') }}"></script>
 
@@ -330,6 +340,39 @@
         <script src="{{ url('assets/js/alerts.js') }}"></script>
 
         @yield('scripts')
+
+        <script>
+            const dash_app = new Vue({
+                el : '#dash_app',
+                data : {
+                },
+                methods : {
+                    availability(){
+                        addLoader();
+                        var url = '{{ route('users.availability') }}';
+                        axios.get(url)
+                            .then((response) => {
+                                removeLoarder();
+                                if(response.data.message.msg_status == 1){
+                                    addAlert('success', response.data.message.text);
+                                    $('#availablity').removeClass('btn-success').addClass('btn-danger');
+                                    $('#availablity').find('span').text(response.data.message.btn_txt);
+                                    $('#availablity').find('.fa').removeClass('fa-lock').addClass('fa-unlock');
+                                }else{
+                                    addAlert('danger', response.data.message.text);
+                                    $('#availablity').removeClass('btn-danger').addClass('btn-success');
+                                    $('#availablity').find('span').text(response.data.message.btn_txt);
+                                    $('#availablity').find('.fa').removeClass('fa-unlock').addClass('fa-lock');
+                                }
+                            })
+                            .catch((data) => {
+                                console.log(data);
+                                removeLoarder();
+                            });
+                    }
+                }
+            });
+        </script>
 
     </body>
 </html>
