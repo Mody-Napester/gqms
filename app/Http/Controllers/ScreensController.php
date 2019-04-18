@@ -51,6 +51,7 @@ class ScreensController extends Controller
             'ip' => 'required',
             'floor' => 'required',
             'type' => 'required',
+            'floors' => 'required_if:type,' . config('vars.screen_types.kiosk'),
         ]);
 
         if ($validator->fails()){
@@ -68,6 +69,13 @@ class ScreensController extends Controller
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
         ]);
+
+        // Add Relation
+        if ($request->has('type') && $request->type == config('vars.screen_types.kiosk')){
+            foreach ($request->floors as $floor){
+                $resource->floors()->attach(Floor::getBy('uuid', $floor)->id);
+            }
+        }
 
         // Return
         if ($resource){
@@ -98,9 +106,6 @@ class ScreensController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  string  $uuid
-     * @return \Illuminate\Http\Response
      */
     public function edit($uuid)
     {
@@ -135,6 +140,7 @@ class ScreensController extends Controller
             'ip' => 'required',
             'floor' => 'required',
             'type' => 'required',
+            'floors' => 'required_if:type,' . config('vars.screen_types.kiosk'),
         ]);
 
         if ($validator->fails()){
@@ -151,6 +157,15 @@ class ScreensController extends Controller
             'screen_type_id' => $request->type,
             'updated_by' => auth()->user()->id,
         ], $resource->id);
+
+        // Update Relation
+        if ($request->has('type') && $request->type == config('vars.screen_types.kiosk')){
+            $resource->floors()->detach();
+
+            foreach ($request->floors as $floor){
+                $resource->floors()->attach(Floor::getBy('uuid', $floor)->id);
+            }
+        }
 
         // Return
         if ($updatedResource){

@@ -4,12 +4,14 @@
 
 @section('content')
 
-    <div class="container-fluid kiosk-screen">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <div class="return-screen-qn">@{{ queue }}</div>
-                <button @click.prevent="printQueue()" class="btn-print">اضغط هنا لطباعة دور</button>
-            </div>
+    <div class="kiosk-screen">
+        <div class="kiosk-screen-in">
+            @foreach($screen->floors as $floor)
+                <div class="mb-4">
+                    <div class="return-screen-qn">@{{ queue }}</div>
+                    <button @click.prevent="printQueue()" class="btn-print"><span>{{ $floor->name_en }}</span> اضغط هنا لطباعة دور</button>
+                </div>
+            @endforeach
         </div>
     </div>
 
@@ -17,6 +19,7 @@
 
 @section('scripts')
     <script>
+        $('.kiosk-screen').height($(window).height() - 93);
         const app = new Vue({
             el : '#app',
             data : {

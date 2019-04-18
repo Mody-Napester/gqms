@@ -51,7 +51,17 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>Floor</label>
+                <label>Status</label>
+                <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach(App\Enums\screenstatuses::$statuses as $key => $status)
+                        <option @if($key == $screen->status) selected @endif value="{{ $key }}">{{ $status['en'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Place</label>
                 <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
                     @foreach($floors as $key => $floor)
                         <option @if($screen->floor_id == $floor->id) selected @endif value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
@@ -59,12 +69,13 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-6">
+
+        <div @if(count($screen->floors) == 0 && $screen->screen_type_id != config('vars.screen_types.kiosk')) style="display: none;" @endif id="floor-div" class="col-md-6">
             <div class="form-group">
-                <label>Status</label>
-                <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach(App\Enums\screenstatuses::$statuses as $key => $status)
-                        <option @if($key == $screen->status) selected @endif value="{{ $key }}">{{ $status['en'] }}</option>
+                <label>Print For Floors</label>
+                <select name="floors[]" id="floors" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($floors as $key => $floor)
+                        <option @if(in_array($floor->id, $screen->floors()->pluck('floor_id')->toArray())) selected @endif value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
                     @endforeach
                 </select>
             </div>

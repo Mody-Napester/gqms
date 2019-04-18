@@ -42,18 +42,9 @@
             <div class="form-group">
                 <label>Type</label>
                 <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    <option>Choose</option>
                     @foreach($screenTypes as $key => $screenType)
                         <option value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Floor</label>
-                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach($floors as $key => $floor)
-                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -64,6 +55,26 @@
                 <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
                     @foreach(App\Enums\screenstatuses::$statuses as $key => $status)
                         <option value="{{ $key }}">{{ $status['en'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Screen Place</label>
+                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($floors as $key => $floor)
+                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div style="display: none;" id="floor-div" class="col-md-6">
+            <div class="form-group">
+                <label>Print For Floors</label>
+                <select name="floors[]" id="floors" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($floors as $key => $floor)
+                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
                     @endforeach
                 </select>
             </div>

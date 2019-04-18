@@ -162,27 +162,26 @@
 
                     </ul>
 
-                    <ul id="dash_app" class="list-inline menu-left mb-0">
+                    <ul class="list-inline menu-left mb-0">
                         <li class="float-left">
                             <button class="button-menu-mobile open-left waves-light waves-effect">
                                 <i class="dripicons-menu"></i>
                             </button>
-
-                            @if(auth()->check())
-                                @if(auth()->user()->desk_id)
-                                    <button @click.prevent="availability()" type="button" id="availablity" class="btn btn-success waves-effect waves-light">
-                                        <span>Go Available</span>
-                                        <i class="fa fa-fw fa-unlock"></i>
-                                    </button>
-                                @endif
-                            @endif
                         </li>
-                        {{--<li class="hide-phone app-search">--}}
+                        <li id="dash_app" class="hide-phone app-search">
                             {{--<form role="search" class="">--}}
                                 {{--<input type="text" placeholder="Search..." class="form-control">--}}
                                 {{--<a href=""><i class="fa fa-search"></i></a>--}}
                             {{--</form>--}}
-                        {{--</li>--}}
+                            @if(auth()->check())
+                                @if(auth()->user()->desk_id)
+                                    <button @click.prevent="availability()" type="button" id="availablity" class="btn btn-danger waves-effect waves-light">
+                                        <span>Go not available</span>
+                                        <i class="fa fa-fw fa-lock"></i>
+                                    </button>
+                                @endif
+                            @endif
+                        </li>
                     </ul>
 
                 </nav>

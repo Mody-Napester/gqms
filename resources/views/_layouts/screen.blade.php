@@ -24,7 +24,7 @@
 
     <div id="app">
         <div>
-            <div class="section bg-blue-1 mb-2">
+            <div class="section bg-blue-1">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6 text-left">

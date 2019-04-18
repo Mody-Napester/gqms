@@ -107,3 +107,18 @@
     <!-- end row -->
 
 @endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function () {
+            $('body').on('change', '#type', function () {
+                var type = $(this).val();
+               if (type == {{ config('vars.screen_types.kiosk') }}){
+                    $('#floor-div').show(0);
+               }else if (type == {{ config('vars.screen_types.reception') }}) {
+                   $('#floor-div').hide(0);
+               }
+            });
+        });
+    </script>
+@endsection

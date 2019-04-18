@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container-fluid">
+    <div class="container-fluid mt-2">
         <div class="row">
             <!-- Doctor Queue -->
             @include('screens.reception._doctor_queue')
@@ -15,10 +15,19 @@
         </div>
     </div>
 
+    <audio id="call_sound" preload="none" src="{{ url('assets/sounds/call_1.wav') }}"></audio>
+
+    {{--<embed src="{{ url('assets/sounds/call_1.wav') }}" autostart="false" width="0" height="0" id="sound1" enablejavascript="true">--}}
+
 @endsection
 
 @section('scripts')
     <script>
+        // function PlaySound(soundObj) {
+        //     var audio = new Audio(soundObj);
+        //     audio.play();
+        // }
+
         const app = new Vue({
             el : '#app',
             data : {
@@ -36,6 +45,9 @@
                             targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
                                 targetEl.removeClass( "bounce-class" );
                             });
+
+                            {{--PlaySound('{{ url('assets/sounds/call_1.wav') }}');--}}
+                            document.getElementById('call_sound').play();
 
                             console.log(response);
                         });
