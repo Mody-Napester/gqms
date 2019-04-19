@@ -8,7 +8,7 @@ Route::group(
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('home', 'HomeController@index')->name('home');
-Route::post('queues/{screen_uuid}', 'DeskQueuesController@storeNewQueue')->name('desks.queues.storeNewQueue');
+Route::post('queues/{screen_uuid}/{floor_uuid}', 'DeskQueuesController@storeNewQueue')->name('desks.queues.storeNewQueue');
 
 Auth::routes(['verify' => true]);
 Route::get('logout', 'Auth\LoginController@logout');

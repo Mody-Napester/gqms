@@ -8,8 +8,11 @@
         <div class="kiosk-screen-in">
             @foreach($screen->floors as $floor)
                 <div class="mb-4">
-                    <div class="return-screen-qn">@{{ queue }}</div>
-                    <button @click.prevent="printQueue()" class="btn-print"><span>{{ $floor->name_en }}</span> اضغط هنا لطباعة دور</button>
+                    <div class="qn-{{$floor->uuid}} return-screen-qn">-</div>
+                    <button @click.prevent="printQueue('{{$floor->uuid}}')" class="btn-print">
+                        <span style="background-color: rgba(64, 85, 102, .7);padding: 0 10px">{{ $floor->name_en }}</span>
+                        <span> اضغط هنا لطباعة حجز</span>
+                    </button>
                 </div>
             @endforeach
         </div>
@@ -20,21 +23,21 @@
 @section('scripts')
     <script>
         $('.kiosk-screen').height($(window).height() - 93);
+
         const app = new Vue({
             el : '#app',
             data : {
-                queue : '-'
             },
             methods : {
-                printQueue(){
+                printQueue(floor_uuid){
                     addLoader();
-                    var url = '{{ route('desks.queues.storeNewQueue', $screen->uuid) }}';
+                    var url = '{{ url('/') }}/queues/{{$screen->uuid}}/' + floor_uuid;
                     axios.post(url, {
                         _token : '{{ csrf_token() }}'
                     })
                     .then((response) => {
                         console.log(response);
-                        this.queue = response.data.queue_number;
+                        $('.qn-' + floor_uuid).text(response.data.queue_number);
                         removeLoarder();
                     })
                     .catch((response) => {

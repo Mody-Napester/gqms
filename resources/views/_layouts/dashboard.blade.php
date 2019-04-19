@@ -357,11 +357,15 @@
                                     $('#availablity').removeClass('btn-success').addClass('btn-danger');
                                     $('#availablity').find('span').text(response.data.message.btn_txt);
                                     $('#availablity').find('.fa').removeClass('fa-lock').addClass('fa-unlock');
+
+                                    $('.current-queue-div').removeClass('cover-div');
                                 }else{
                                     addAlert('danger', response.data.message.text);
                                     $('#availablity').removeClass('btn-danger').addClass('btn-success');
                                     $('#availablity').find('span').text(response.data.message.btn_txt);
                                     $('#availablity').find('.fa').removeClass('fa-unlock').addClass('fa-lock');
+
+                                    $('.current-queue-div').addClass('cover-div');
                                 }
                             })
                             .catch((data) => {

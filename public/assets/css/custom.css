@@ -33,6 +33,20 @@
     box-shadow: 0 9px #999;
 }
 
+.cover-div{
+    position: relative;
+}
+.cover-div:after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background-color: rgba(0,0,0,.2);
+}
+
 .btn-print:hover {background-color: #2d3436}
 
 .btn-print:active {

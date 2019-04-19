@@ -60,8 +60,11 @@
                 </div>
             </div>
 
-            <div class="card-box">
-                <h4 class="m-t-0 m-b-20 header-title"><b>Current Serving Queue</b></h4>
+            <div class="current-queue-div card-box">
+                <h4 class="m-t-0 m-b-20 header-title">
+                    <b>Current Serving Queue</b>
+                    <b class="pull-right">Waiting : <span class="waitingTime">@{{ waiting_time }}</span></b>
+                </h4>
 
                 <div class="">
                     <div class="row">
@@ -208,6 +211,7 @@
             data : {
                 desk_queue_uuid : '{{ ($currentDeskQueueNumber)? $currentDeskQueueNumber->uuid : '' }}',
                 active_btn : {{ ($currentDeskQueueNumber)? 'true' : 'false' }},
+                waiting_time : '{{ ($currentDeskQueueNumber)? nice_time($currentDeskQueueNumber->created_at) : '00:00' }}',
             },
             methods : {
                 skip(){
@@ -220,6 +224,7 @@
                             $('#count-skip').text(response.data.deskQueuesSkip);
                             $('#count-done').text(response.data.deskQueuesDone);
                             this.desk_queue_uuid = response.data.nextQueue.uuid;
+                            this.waiting_time = response.data.waitingTime;
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
@@ -242,6 +247,7 @@
                                 $('.current-queue').text(response.data.nextQueue.queue_number);
 
                                 this.desk_queue_uuid = response.data.nextQueue.uuid;
+                                this.waiting_time = response.data.waitingTime;
                                 this.active_btn = true;
 
                                 removeLoarder();
@@ -301,6 +307,7 @@
                             $('#count-skip').text(response.data.deskQueuesSkip);
                             $('#count-done').text(response.data.deskQueuesDone);
                             this.desk_queue_uuid = response.data.nextQueue.uuid;
+                            this.waiting_time = response.data.waitingTime;
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){

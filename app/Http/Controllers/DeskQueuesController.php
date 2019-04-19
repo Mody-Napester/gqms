@@ -36,25 +36,25 @@ class DeskQueuesController extends Controller
      * @param  string $screen_uuid
      * @return \Illuminate\Http\Response
      */
-    public function storeNewQueue($screen_uuid)
+    public function storeNewQueue($screen_uuid, $floor_uuid)
     {
         $screen = Screen::getBy('uuid', $screen_uuid);
 
-        if($screen->screen_type_id == 1){ // Kiosk
+        $floor_id = Floor::getBy('uuid', $floor_uuid)->id;
+
+        if($screen->screen_type_id == config('vars.screen_types.kiosk')){ // Kiosk
             // Do Code
             $resource = DeskQueue::store([
-                'floor_id' => $screen->floor_id,
-                'queue_number' => deskQueueNumberFormat($screen->floor_id, 100),
+                'floor_id' => $floor_id,
+                'queue_number' => deskQueueNumberFormat($floor_id, 100),
                 'status' => config('vars.default_kiosk_status'),
             ]);
         }
 
         // Return
         if ($resource){
-//            $floor_name = Floor::getBy('id', $screen->floor_id)->name_en;
 //            try{
 //                \EPSON::deskPrint([
-//                    'floor_name' => $floor_name,
 //                    'queue_number' => $resource->queue_number,
 //                    'screen_ip' => $screen->ip
 //                ]);
@@ -64,10 +64,10 @@ class DeskQueuesController extends Controller
 //                ];
 //            }
 
-            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($screen->floor_id);
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($floor_id);
             $data['queue_number'] = $resource->queue_number;
 
-            event(new QueueStatus($data['availableDeskQueue'], $screen->floor_id));
+            event(new QueueStatus($data['availableDeskQueue'], $floor_id));
 
             return response($data);
         }
@@ -99,6 +99,8 @@ class DeskQueuesController extends Controller
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
 
+            $data['waitingTime'] = nice_time($data['nextQueue']->created_at);
+
             $data['message'] = [
                 'msg_status' => 1,
                 'text' => 'Your next number has come',
@@ -111,7 +113,7 @@ class DeskQueuesController extends Controller
         }
 
         // Broadcast event
-        if ($data['nextDeskQueueUpdated']){
+        if (isset($data['nextDeskQueueUpdated'])){
             event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
             event(new NextDeskQueue($data['desk']->uuid, $data['nextQueue']->queue_number));
         }
@@ -199,13 +201,21 @@ class DeskQueuesController extends Controller
         if($deskQueueStatusSkip){
             $data = $this->callNext($desk_uuid);
 
+            if ($data['message']['msg_status'] == 1){
+                $data['message'] = [
+                    'msg_status' => 1,
+                    'text' => 'Queue was skipped successfully with getting next number',
+                ];
+            }else{
+                $data['message'] = [
+                    'msg_status' => 1,
+                    'text' => 'Queue was skipped successfully with no next number',
+                ];
+            }
+
             $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
             $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
 
-            $data['message'] = [
-                'msg_status' => 1,
-                'text' => 'Queue was skipped successfully with getting next number',
-            ];
         }else{
             $data['message'] = [
                 'msg_status' => 0,

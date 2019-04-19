@@ -5,6 +5,11 @@ function get_path($path){
     return base_path() . config('custom.public') . '/' . $path;
 }
 
+// Get path
+function nice_time($time){
+    return \Carbon\Carbon::createFromTimeStamp(strtotime($time))->diffForHumans();
+}
+
 // Default language
 function lang(){
     return "english";
@@ -145,5 +150,5 @@ function server_get_client_ip() {
 
 // Desk Queue Number Format
 function deskQueueNumberFormat($floor_id, $scheme){
-    return ((\App\DeskQueue::getDeskQueues($floor_id)->count() + 1) + $scheme);
+    return \App\Floor::getBy('id', $floor_id)->name_en . '-' .((\App\DeskQueue::getDeskQueues($floor_id)->count() + 1) + $scheme);
 }

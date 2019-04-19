@@ -29,7 +29,6 @@ class EPSON
         $printer->setTextSize(2, 2);
         $printer->setFont(Printer::FONT_B);
         $printer->setJustification(Printer::JUSTIFY_CENTER);
-        $printer->text('Floor: ' . $inputs['floor_name'] . "\n");
         $printer->text(date('h:i:s A - dMY') . "\n");
 
         $printer->cut();
