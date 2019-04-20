@@ -23,29 +23,27 @@
 <body onload="startTime()">
 
     <div id="app">
-        <div>
-            <div class="section bg-blue-1">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-6 text-left">
-                            <div class="top-div">{{ $screen->floor->name_en }}</div>
-                            <div class="top-div">
-                                <div id="time-txt" style="width: 150px;text-align: center;"></div>
-                            </div>
+        <div class="section bg-blue-1">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 text-left">
+                        <div class="top-div">{{ $screen->floor->name_en }}</div>
+                        <div class="top-div">{{ $screen->name_en }}</div>
+                        <div class="top-div">
+                            <div id="time-txt" style="width: 150px;text-align: center;"></div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="text-white txt-2 text-right">
-                                <span>مستشفى الجنزورى التخصصى</span>
-                                <img class="logo-image" src="{{ url('assets/images/ganz-logo.jpg') }}" alt="">
-                            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-white txt-2 text-right">
+                            <span>مستشفى الجنزورى التخصصى</span>
+                            <img class="logo-image" src="{{ url('assets/images/ganz-logo.jpg') }}" alt="">
                         </div>
                     </div>
                 </div>
             </div>
-
-        @yield('content')
-
         </div>
+        
+        @yield('content')
     </div>
 
     <script src="{{ url('assets/js/jquery.min.js') }}"></script>

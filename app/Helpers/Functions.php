@@ -150,5 +150,20 @@ function server_get_client_ip() {
 
 // Desk Queue Number Format
 function deskQueueNumberFormat($floor_id, $scheme){
-    return \App\Floor::getBy('id', $floor_id)->name_en . '-' .((\App\DeskQueue::getDeskQueues($floor_id)->count() + 1) + $scheme);
+    $lastNumber = \App\DeskQueue::getDeskQueues($floor_id)->count() + 1;
+
+    $lastNumberZeros = '';
+    
+    if($lastNumber < $scheme){
+        $schemeLength = strlen((string)$scheme);
+        $lastNumberLength = strlen((string)$lastNumber);
+
+        for ($i=1; $i < $schemeLength; $i++) { 
+            $lastNumberZeros .= 0;
+        }
+
+        $lastNumber = $lastNumberZeros . $lastNumber;
+    }
+
+    return \App\Floor::getBy('id', $floor_id)->name_en . '-' . $lastNumber;
 }

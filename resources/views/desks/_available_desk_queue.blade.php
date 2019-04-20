@@ -34,8 +34,11 @@
                         <span class="label {{ $deskQueue->queueStatus->class }}">{{ $deskQueue->queueStatus->name_en }}</span>
                     </td>
                     <td>
-                        @if($deskQueue->queueStatus->id == 3)
-                            <button @click.prevent="callSkippedAgain()" class="btn btn-secondary waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
+                        @if($deskQueue->queueStatus->id == config('vars.queue_status.skipped'))
+                            <button v-on:click="callSkippedAgain('{{ $deskQueue->uuid }}')" class="btn btn-secondary waves-effect"
+                                    style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
+                        @elseif($deskQueue->queueStatus->id == config('vars.queue_status.called'))
+                            Called by {{ $deskQueue->desk->name_en }}
                         @endif
                     </td>
                 </tr>

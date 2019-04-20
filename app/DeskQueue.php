@@ -102,10 +102,17 @@ class DeskQueue extends Model
      */
     public static function getCurrentDeskQueues($desk_id)
     {
-        $deskQueues = self::where('status', config('vars.queue_status.called'))
+        $deskQueues = self::where('status', config('vars.queue_status.cell_from_skip'))
         ->where('created_at', 'like', "%".date('Y-m-d')."%")
         ->where('desk_id', $desk_id)
         ->first();
+
+        if(count($deskQueues) == 0){
+            $deskQueues = self::where('status', config('vars.queue_status.called'))
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->where('desk_id', $desk_id)
+                ->first();
+        }
 
         return $deskQueues;
     }
@@ -130,6 +137,11 @@ class DeskQueue extends Model
     // Floor Relation
     public function floor(){
         return $this->belongsTo('App\Floor');
+    }
+
+    // Floor Relation
+    public function desk(){
+        return $this->belongsTo('App\Desk');
     }
 
     // Queue Status Relation

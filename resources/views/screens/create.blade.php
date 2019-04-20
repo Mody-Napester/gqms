@@ -72,7 +72,7 @@
         <div style="display: none;" id="floor-div" class="col-md-6">
             <div class="form-group">
                 <label>Print For Floors</label>
-                <select name="floors[]" id="floors" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                <select name="floors[]" id="floors" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     @foreach($floors as $key => $floor)
                         <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
                     @endforeach

@@ -134,8 +134,11 @@
                                     <span class="label {{ $deskQueue->queueStatus->class }}">{{ $deskQueue->queueStatus->name_en }}</span>
                                 </td>
                                 <td>
-                                    @if($deskQueue->queueStatus->id == 3)
-                                        <button @click.prevent="callSkippedAgain()" class="btn btn-secondary waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
+                                    @if($deskQueue->queueStatus->id == config('vars.queue_status.skipped'))
+                                        <button @click.prevent="callSkippedAgain('{{ $deskQueue->uuid }}')" class="btn btn-secondary waves-effect"
+                                                style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
+                                    @elseif($deskQueue->queueStatus->id == config('vars.queue_status.called'))
+                                        Called by {{ $deskQueue->desk->name_en }}
                                     @endif
                                 </td>
                             </tr>
@@ -280,12 +283,18 @@
                                 removeLoarder();
                             });
                 },
-                callSkippedAgain(){
+                callSkippedAgain(skipped_queue_uuid){
                     addLoader();
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip-again';
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + skipped_queue_uuid + '/call-skipped';
                     axios.get(url)
                             .then((response) => {
                                 removeLoarder();
+
+                                $('.current-queue').text(response.data.skippedQueue.queue_number);
+                                this.desk_queue_uuid = response.data.skippedQueue.uuid;
+                                this.waiting_time = response.data.waitingTime;
+                                this.active_btn = true;
+
                                 if(response.data.message.msg_status == 1){
                                     addAlert('success', response.data.message.text);
                                 }else{
@@ -293,7 +302,6 @@
                                 }
                             })
                             .catch((data) => {
-                                console.log(data);
                                 removeLoarder();
                             });
                 },
@@ -302,7 +310,6 @@
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done';
                     axios.get(url)
                         .then((response) => {
-                            console.log(response.data);
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.deskQueuesSkip);
                             $('#count-done').text(response.data.deskQueuesDone);
@@ -317,7 +324,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },

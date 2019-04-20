@@ -166,11 +166,62 @@ class DeskQueuesController extends Controller
     /**
      * Call Skipped Queue Number.
      */
-    public function callSkippedAgain($desk_uuid, $desk_queue_uuid)
+    public function callSkippedAgain($desk_uuid, $queue_uuid)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
         }
+
+        $data['skippedQueue'] = DeskQueue::getBy('uuid', $queue_uuid);
+        $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+
+        $data['currentQueue'] = DeskQueue::getCurrentDeskQueues($data['desk']->id);
+
+        // Do Code
+        // Edit current
+        DeskQueue::edit([
+            'desk_id' => $data['desk']->id,
+            'status' => config('vars.queue_status.done'),
+        ], $data['currentQueue']->id);
+
+        // Edit skipped
+        DeskQueue::edit([
+            'desk_id' => $data['desk']->id,
+            'status' => config('vars.queue_status.cell_from_skip'),
+        ], $data['skippedQueue']->id);
+
+        // Do Code
+        $deskQueueStatusSkip = DeskQueueStatus::store([
+            'user_id' => auth()->user()->id,
+            'desk_queue_id' => $data['skippedQueue']->id,
+            'queue_status_id' => config('vars.queue_status.cell_from_skip'),
+        ]);
+
+        if($deskQueueStatusSkip){
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Called skipped number',
+            ];
+
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
+            $data['waitingTime'] = nice_time($data['skippedQueue']->created_at);
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
+
+            // Broadcast event
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
+            event(new NextDeskQueue($data['desk']->uuid, $data['skippedQueue']->queue_number));
+
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Some thing error, please try again after few minutes',
+            ];
+        }
+
+        // Return
+        return response()->json($data);
 
     }
 

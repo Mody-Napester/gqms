@@ -15,6 +15,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(){
         // Fix migration error
         Schema::defaultStringLength(191);
+
+        // Screens page
+        // view('screens.kiosk.show')->composer(function($view){
+            
+        // });
     }
 
     /**
