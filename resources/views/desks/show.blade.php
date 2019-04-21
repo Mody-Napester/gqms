@@ -64,32 +64,34 @@
                 <div class="queue-settings-container">
                     <div class="queue-settings-btns">
                         <div class="queue-settings-close"><i class="fa fa-fw fa-close"></i></div>
-                        <p>Done button</p>
-                        <div class="radio radio-success">
-                            <input style="margin-top: 4px;" type="radio" checked name="queue_done" id="radio1" value="option4">
-                            <label for="radio1">
-                                Done
-                            </label>
-                        </div>
-                        <div class="radio radio-success">
-                            <input style="margin-top: 4px;" type="radio" name="queue_done" id="radio2" value="option4">
-                            <label for="radio2">
-                                Done and next
-                            </label>
-                        </div>
-                        <hr>
-                        <p>Skip button</p>
-                        <div class="radio radio-danger">
-                            <input style="margin-top: 4px;" type="radio" checked name="queue_skip" id="radio3" value="option4">
-                            <label for="radio3">
-                                Skip
-                            </label>
-                        </div>
-                        <div class="radio radio-danger">
-                            <input style="margin-top: 4px;" type="radio" name="queue_skip" id="radio4" value="option4">
-                            <label for="radio4">
-                                Skip and next
-                            </label>
+                        <div style="overflow: auto;height: 100%">
+                            <p>Done button</p>
+                            <div class="radio radio-success" v-on:click="changeBtn('done')">
+                                <input style="margin-top: 4px;" type="radio" name="queue_done" id="radio1" value="option4">
+                                <label for="radio1">
+                                    Done
+                                </label>
+                            </div>
+                            <div class="radio radio-success" v-on:click="changeBtn('doneandnext')">
+                                <input style="margin-top: 4px;" type="radio" checked name="queue_done" id="radio2" value="option4">
+                                <label for="radio2">
+                                    Done and next
+                                </label>
+                            </div>
+                            <hr>
+                            <p>Skip button</p>
+                            <div class="radio radio-danger" v-on:click="changeBtn('skip')">
+                                <input style="margin-top: 4px;" type="radio" name="queue_skip" id="radio3" value="option4">
+                                <label for="radio3">
+                                    Skip
+                                </label>
+                            </div>
+                            <div class="radio radio-danger" v-on:click="changeBtn('skipandnext')">
+                                <input style="margin-top: 4px;" type="radio" checked name="queue_skip" id="radio4" value="option4">
+                                <label for="radio4">
+                                    Skip and next
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -106,7 +108,10 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <button v-if="active_btn" @click.prevent="skip()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                    <button v-if="active_btn && skip_status" @click.prevent="skip()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                        Skip <i class="fa fa-fw fa-close"></i>
+                                    </button>
+                                    <button v-if="active_btn && !skip_status" @click.prevent="skip()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip And Next <i class="fa fa-fw fa-close"></i>
                                     </button>
                                 </div>
@@ -119,7 +124,10 @@
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button v-if="active_btn" @click.prevent="done()" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-if="active_btn && done_status" @click.prevent="done()" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                        Done <i class="fa fa-fw fa-check"></i>
+                                    </button>
+                                    <button v-if="active_btn && !done_status" @click.prevent="done()" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Done And Next <i class="fa fa-fw fa-check"></i>
                                     </button>
                                 </div>
@@ -248,8 +256,24 @@
                 desk_queue_uuid : '{{ ($currentDeskQueueNumber)? $currentDeskQueueNumber->uuid : '' }}',
                 active_btn : {{ ($currentDeskQueueNumber)? 'true' : 'false' }},
                 waiting_time : '{{ ($currentDeskQueueNumber)? nice_time($currentDeskQueueNumber->created_at) : '00:00' }}',
+                done_status: false,
+                skip_status: false,
             },
             methods : {
+                changeBtn(type){
+                    if(type == 'done'){
+                        this.done_status = true;
+                    }
+                    else if(type == 'doneandnext'){
+                        this.done_status = false;
+                    }
+                    else if(type == 'skip'){
+                        this.skip_status = true;
+                    }
+                    else if(type == 'skipandnext'){
+                        this.skip_status = false;
+                    }
+                },
                 skip(){
                     addLoader();
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip';
