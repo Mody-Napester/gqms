@@ -151,6 +151,7 @@ function server_get_client_ip() {
 // Desk Queue Number Format
 function deskQueueNumberFormat($floor_id, $scheme){
     $lastNumber = \App\DeskQueue::getDeskQueues($floor_id)->count() + 1;
+//    $lastNumber = 101; // Testing
 
     $lastNumberZeros = '';
     
@@ -158,7 +159,9 @@ function deskQueueNumberFormat($floor_id, $scheme){
         $schemeLength = strlen((string)$scheme);
         $lastNumberLength = strlen((string)$lastNumber);
 
-        for ($i=1; $i < $schemeLength; $i++) { 
+        $zerosLength = $schemeLength - $lastNumberLength;
+
+        for ($i=0; $i < $zerosLength; $i++) {
             $lastNumberZeros .= 0;
         }
 

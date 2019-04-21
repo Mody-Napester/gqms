@@ -148,4 +148,9 @@ class DeskQueue extends Model
     public function queueStatus(){
         return $this->belongsTo('App\QueueStatus', 'status');
     }
+
+    // Queue Status Histories Relation
+    public function deskQueueStatusHistories(){
+        return $this->hasMany('App\DeskQueueStatus', 'desk_queue_id');
+    }
 }

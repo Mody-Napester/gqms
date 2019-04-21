@@ -58,13 +58,20 @@ class ScreensController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        // Floor
+        $floor = Floor::getBy('uuid', $request->floor);
+
+        // Generate Slug
+        $slug = str_slug($floor->name_en . '-' . $request->name_en);
+
         // Do Code
         $resource = Screen::store([
+            'slug' => $slug,
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
             'ip' => $request->ip,
-            'floor_id' => Floor::getBy('uuid', $request->floor)->id,
+            'floor_id' => $floor->id,
             'screen_type_id' => $request->type,
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
@@ -88,9 +95,9 @@ class ScreensController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($uuid)
+    public function show($screen)
     {
-        $data['screen'] = Screen::getBy('uuid', $uuid);
+        $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
 
         if($data['screen']->screen_type_id == config('vars.screen_types.kiosk')){
             return view('screens.kiosk.show', $data);
@@ -147,13 +154,20 @@ class ScreensController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        // Floor
+        $floor = Floor::getBy('uuid', $request->floor);
+
+        // Generate Slug
+        $slug = str_slug($floor->name_en . '-' . $request->name_en);
+
         // Do Code
         $updatedResource = Screen::edit([
+            'slug' => $slug,
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
             'ip' => $request->ip,
-            'floor_id' => Floor::getBy('uuid', $request->floor)->id,
+            'floor_id' => $floor->id,
             'screen_type_id' => $request->type,
             'updated_by' => auth()->user()->id,
         ], $resource->id);

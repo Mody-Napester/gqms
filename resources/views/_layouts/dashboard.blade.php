@@ -117,6 +117,12 @@
                             </a>
                         </li>
 
+                        <li onclick="location.reload();" class="list-inline-item notification-list">
+                            <a class="nav-link waves-light waves-effect" href="#" >
+                                <i class="dripicons-clockwise noti-icon"></i>
+                            </a>
+                        </li>
+
                         {{--<li class="list-inline-item notification-list">--}}
                             {{--<a class="nav-link right-bar-toggle waves-light waves-effect" href="#">--}}
                                 {{--<i class="dripicons-message noti-icon"></i>--}}
@@ -174,7 +180,7 @@
                                 {{--<a href=""><i class="fa fa-search"></i></a>--}}
                             {{--</form>--}}
                             @if(auth()->check())
-                                @if(auth()->user()->desk_id)
+                                @if(auth()->user()->desk_id && in_array( auth()->user()->type ,config('vars.go_available_user_types')))
                                     <button @click.prevent="availability()" type="button" id="availablity" class="btn btn-danger waves-effect waves-light">
                                         <span>Go not available</span>
                                         <i class="fa fa-fw fa-lock"></i>
@@ -224,6 +230,8 @@
         @include('_modals.update')
         <!-- Delete Modal -->
         @include('_modals.delete')
+        <!-- Update Modal -->
+        @include('_modals.desk_queue_history')
 
         <script src="{{ url('assets/js/modernizr.min.js') }}"></script>
 
@@ -332,6 +340,16 @@
 
             $(document).ready(function() {
                 $('form').parsley();
+            });
+
+            // Open
+            $('body').on('click', '.queue-settings', function() {
+                $('.queue-settings-container').show(100);
+            });
+
+            // Close
+            $('body').on('click', '.queue-settings-close', function() {
+                $('.queue-settings-container').hide(100);
             });
         </script>
 

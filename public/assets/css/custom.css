@@ -46,6 +46,40 @@
     z-index: 999;
     background-color: rgba(0,0,0,.2);
 }
+.current-queue-div{
+    position: relative;
+}
+.queue-settings-container{
+    background-color: rgba(0,0,0,.5);
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9999;
+    cursor: pointer;
+    display: none;
+}
+.queue-settings-btns{
+    background-color: rgba(255,255,255,.8);
+    padding: 20px;
+    height: 100%;
+    float: right;
+}
+.queue-settings-close{
+    background-color: rgba(0,0,0,.8);
+    padding: 5px;
+    color: #FFFFFF;
+    position: absolute;
+    top:0;
+    right: 0;
+}
+.queue-settings{
+    background-color: #DDDDDD;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 2px;
+}
 
 .btn-print:hover {background-color: #2d3436}
 

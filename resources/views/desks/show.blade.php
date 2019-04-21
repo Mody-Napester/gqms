@@ -61,9 +61,42 @@
             </div>
 
             <div class="current-queue-div card-box">
+                <div class="queue-settings-container">
+                    <div class="queue-settings-btns">
+                        <div class="queue-settings-close"><i class="fa fa-fw fa-close"></i></div>
+                        <p>Done button</p>
+                        <div class="radio radio-success">
+                            <input style="margin-top: 4px;" type="radio" checked name="queue_done" id="radio1" value="option4">
+                            <label for="radio1">
+                                Done
+                            </label>
+                        </div>
+                        <div class="radio radio-success">
+                            <input style="margin-top: 4px;" type="radio" name="queue_done" id="radio2" value="option4">
+                            <label for="radio2">
+                                Done and next
+                            </label>
+                        </div>
+                        <hr>
+                        <p>Skip button</p>
+                        <div class="radio radio-danger">
+                            <input style="margin-top: 4px;" type="radio" checked name="queue_skip" id="radio3" value="option4">
+                            <label for="radio3">
+                                Skip
+                            </label>
+                        </div>
+                        <div class="radio radio-danger">
+                            <input style="margin-top: 4px;" type="radio" name="queue_skip" id="radio4" value="option4">
+                            <label for="radio4">
+                                Skip and next
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <h4 class="m-t-0 m-b-20 header-title">
-                    <b>Current Serving Queue</b>
-                    <b class="pull-right">Waiting : <span class="waitingTime">@{{ waiting_time }}</span></b>
+                    <b>Current Serving Queue</b> <b class="pull-right">Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
+                        <span class="queue-settings"><i class="fa fa-cog fa-spin fa-fw"></i></span></b>
                 </h4>
 
                 <div class="">
@@ -135,7 +168,7 @@
                                 </td>
                                 <td>
                                     @if($deskQueue->queueStatus->id == config('vars.queue_status.skipped'))
-                                        <button @click.prevent="callSkippedAgain('{{ $deskQueue->uuid }}')" class="btn btn-secondary waves-effect"
+                                        <button v-on:click="callSkippedAgain('{{ $deskQueue->uuid }}')" class="btn btn-secondary waves-effect"
                                                 style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
                                     @elseif($deskQueue->queueStatus->id == config('vars.queue_status.called'))
                                         Called by {{ $deskQueue->desk->name_en }}
@@ -283,28 +316,6 @@
                                 removeLoarder();
                             });
                 },
-                callSkippedAgain(skipped_queue_uuid){
-                    addLoader();
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + skipped_queue_uuid + '/call-skipped';
-                    axios.get(url)
-                            .then((response) => {
-                                removeLoarder();
-
-                                $('.current-queue').text(response.data.skippedQueue.queue_number);
-                                this.desk_queue_uuid = response.data.skippedQueue.uuid;
-                                this.waiting_time = response.data.waitingTime;
-                                this.active_btn = true;
-
-                                if(response.data.message.msg_status == 1){
-                                    addAlert('success', response.data.message.text);
-                                }else{
-                                    addAlert('danger', response.data.message.text);
-                                }
-                            })
-                            .catch((data) => {
-                                removeLoarder();
-                            });
-                },
                 done(){
                     addLoader();
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done';
@@ -327,11 +338,33 @@
                             removeLoarder();
                         });
                 },
+                callSkippedAgain(skipped_queue_uuid){
+                    addLoader();
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + skipped_queue_uuid + '/call-skipped';
+                    axios.get(url)
+                        .then((response) => {
+                            removeLoarder();
+
+                            $('.current-queue').text(response.data.skippedQueue.queue_number);
+                            this.desk_queue_uuid = response.data.skippedQueue.uuid;
+                            this.waiting_time = response.data.waitingTime;
+                            this.active_btn = true;
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+                        })
+                        .catch((data) => {
+                            removeLoarder();
+                        });
+                },
                 listen(){
                     Echo.channel('available-desk-queue-{{ $desk->floor_id }}')
                         .listen('QueueStatus', (response) => {
-                            console.log(response.view);
-                            $('#all-queues').html(response.view);
+                            $('#all-queues').html('');
+                            $('#all-queues').append(response.view);
                         });
                 },
                 searchFunction(){
@@ -359,6 +392,38 @@
             }
         });
 
+        function callSkippedAgain(skipped_queue_uuid){
+            addLoader();
+            var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + skipped_queue_uuid + '/call-skipped';
 
+            // Get contents
+            $.ajax({
+                method:'GET',
+                url:url,
+                beforeSend:function () {
+                    addLoader();
+                },
+                success:function (response) {
+                    console.log(response);
+
+                    $('.current-queue').text(response.skippedQueue.queue_number);
+
+                    app.desk_queue_uuid = response.skippedQueue.uuid;
+                    app.waiting_time = response.waitingTime;
+                    app.active_btn = true;
+
+                    if(response.message.msg_status == 1){
+                        addAlert('success', response.message.text);
+                    }else{
+                        addAlert('danger', response.message.text);
+                    }
+
+                    removeLoarder();
+                },
+                error:function () {
+
+                }
+            });
+        }
     </script>
 @endsection

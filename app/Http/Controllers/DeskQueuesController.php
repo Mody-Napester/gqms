@@ -323,4 +323,35 @@ class DeskQueuesController extends Controller
         // Return
         return response()->json($data);
     }
+
+    /**
+     * All queue histories.
+     */
+    public function deskQueueHistory()
+    {
+        if (!User::hasAuthority('use.desk_queue')){
+            return redirect('/');
+        }
+
+        $data['desks'] = Desk::all();
+        $data['deskQueues'] = DeskQueue::all();
+        return view('desks.history', $data);
+
+    }
+    /**
+     * Single queue histories.
+     */
+    public function deskQueueSingleHistory($queue_uuid)
+    {
+        if (!User::hasAuthority('use.desk_queue')){
+            return redirect('/');
+        }
+
+        $data['deskQueue'] = DeskQueue::getBy('uuid', $queue_uuid);
+        return response([
+            'title'=> "All History for queue number " . "(" . $data['deskQueue']->queue_number . ")",
+            'view'=> view('desks._desk_queue_history', $data)->render(),
+        ]);
+
+    }
 }

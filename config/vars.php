@@ -4,6 +4,7 @@ return [
     'uuid_ver' => 4,
     'authorized_users' => [1],
     'default_kiosk_status' => 1,
+    'go_available_user_types' => [1, 2],
     'screen_types' => [
         'kiosk' => 1,
         'reception' => 2,

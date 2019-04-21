@@ -16,6 +16,7 @@ class CreateScreensTable extends Migration
         Schema::create('screens', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
+            $table->string('slug');
             $table->integer('screen_type_id');
             $table->integer('floor_id');
             $table->string('ip');

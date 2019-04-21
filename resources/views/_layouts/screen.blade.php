@@ -76,7 +76,8 @@
             return i;
         }
 
-        function saveIpInSession() {
+        function saveIpInSession()
+        {
             // NOTE: window.RTCPeerConnection is "not a constructor" in FF22/23
             var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 

@@ -87,7 +87,7 @@
                                 <td>{{ $screen->created_at }}</td>
 {{--                                <td>{{ $screen->updated_at }}</td>--}}
                                 <td>
-                                    <a href="{{ route('screens.show', [$screen->uuid]) }}" target="_blank" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('screens.show', [$screen->slug]) }}" target="_blank" class="btn btn-sm btn-primary">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <a href="{{ route('screens.edit', [$screen->uuid]) }}" class="update-modal btn btn-sm btn-success">

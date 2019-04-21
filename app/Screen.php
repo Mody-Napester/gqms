@@ -12,7 +12,7 @@ class Screen extends Model
      *
      * @var array
      */
-    protected $fillable = ['floor_id', 'screen_type_id', 'ip','name_ar', 'name_en', 'status', 'created_by', 'updated_by'];
+    protected $fillable = ['slug','floor_id', 'screen_type_id', 'ip','name_ar', 'name_en', 'status', 'created_by', 'updated_by'];
 
     /**
      * The attributes that should be hidden for arrays.

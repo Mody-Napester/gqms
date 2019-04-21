@@ -45,6 +45,36 @@ $(document).ready(function(){
         targetModal.modal();
     });
 
+    // General Update
+    $('body').on('click', '.history-modal', function (event) {
+        event.preventDefault();
+        var url, targetModal;
+        url = $(this).attr('href');
+        targetModal = $('#deskQueueHistoryModal');
+
+        // Get contents
+        $.ajax({
+            method:'GET',
+            url:url,
+            beforeSend:function () {
+                addLoader();
+            },
+            success:function (data) {
+                targetModal.find('#deskQueueHistoryModalLabel').text(data.title);
+                targetModal.find('.modal-body').html(data.view);
+                // Select2
+                $(".select2").select2();
+                removeLoarder();
+            },
+            error:function () {
+
+            }
+        });
+
+        // Show modal
+        targetModal.modal();
+    });
+
     // General Confirm Delete
     $('body').on('click', ".confirm-delete", function(e){
         e.preventDefault();
@@ -52,4 +82,5 @@ $(document).ready(function(){
         $('#confirm-delete-form').attr('action', link);
         $("#confirm_delete_modal").modal({backdrop: true});
     });
+
 });
