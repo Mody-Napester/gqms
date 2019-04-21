@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') Desks @endsection
+@section('title') Desk Queue History @endsection
 
 @section('content')
 
@@ -22,7 +22,11 @@
         <div class="col-lg-12">
             <div class="card-box">
                 <h4 class="m-t-0 header-title">Search and filter</h4>
-{{--                @include('desks.create')--}}
+                <p class="text-muted font-14 m-b-30">
+                    Here you can filter and search on desk queues.
+                </p>
+
+                @include('desks._desk_queue_history_filter')
             </div>
         </div>
         <!-- end card-box -->

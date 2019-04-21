@@ -334,6 +334,9 @@ class DeskQueuesController extends Controller
         }
 
         $data['desks'] = Desk::all();
+        $data['floors'] = Floor::all();
+        $data['users'] = User::all();
+        $data['statuses'] = \App\QueueStatus::all();
         $data['deskQueues'] = DeskQueue::all();
         return view('desks.history', $data);
 
@@ -341,7 +344,7 @@ class DeskQueuesController extends Controller
     /**
      * Single queue histories.
      */
-    public function deskQueueSingleHistory($queue_uuid)
+    public function deskQueueSingleHistory($queue_uuid) // Ajax
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');

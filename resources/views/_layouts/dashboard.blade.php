@@ -344,12 +344,27 @@
 
             // Open
             $('body').on('click', '.queue-settings', function() {
-                $('.queue-settings-container').show(100);
+                $('.queue-settings-container').show(0);
+                $('.queue-settings-container').animate({
+                    opacity:1
+                }, 500);
+
+                $('.queue-settings-btns').animate({
+                    marginRight: 0
+                }, 500);
             });
 
             // Close
             $('body').on('click', '.queue-settings-close', function() {
-                $('.queue-settings-container').hide(100);
+                $('.queue-settings-btns').animate({
+                    marginRight: '-100%'
+                }, 500);
+
+                $('.queue-settings-container').animate({
+                    opacity:0
+                }, 500);
+
+                $('.queue-settings-container').hide(0);
             });
         </script>
 
