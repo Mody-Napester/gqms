@@ -351,14 +351,14 @@
 
                 $('.queue-settings-btns').animate({
                     marginRight: 0
-                }, 500);
+                }, 300);
             });
 
             // Close
             $('body').on('click', '.queue-settings-close', function() {
                 $('.queue-settings-btns').animate({
                     marginRight: '-100%'
-                }, 500);
+                }, 300);
 
                 $('.queue-settings-container').animate({
                     opacity:0

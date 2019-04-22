@@ -111,7 +111,7 @@
                                     <button v-if="active_btn && skip_status" @click.prevent="skip()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip <i class="fa fa-fw fa-close"></i>
                                     </button>
-                                    <button v-if="active_btn && !skip_status" @click.prevent="skip()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                    <button v-if="active_btn && !skip_status" @click.prevent="skipAndNext()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip And Next <i class="fa fa-fw fa-close"></i>
                                     </button>
                                 </div>
@@ -127,7 +127,7 @@
                                     <button v-if="active_btn && done_status" @click.prevent="done()" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Done <i class="fa fa-fw fa-check"></i>
                                     </button>
-                                    <button v-if="active_btn && !done_status" @click.prevent="done()" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-if="active_btn && !done_status" @click.prevent="doneAndNext()" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Done And Next <i class="fa fa-fw fa-check"></i>
                                     </button>
                                 </div>
@@ -212,23 +212,78 @@
                 skip_status: false,
             },
             methods : {
-                changeBtn(type){
-                    if(type == 'done'){
-                        this.done_status = true;
-                    }
-                    else if(type == 'doneandnext'){
-                        this.done_status = false;
-                    }
-                    else if(type == 'skip'){
-                        this.skip_status = true;
-                    }
-                    else if(type == 'skipandnext'){
-                        this.skip_status = false;
-                    }
+                // Buttons
+                next(){
+                    addLoader();
+                    var url = '{{ route('desks.queues.callNextQueueNumber', $desk->uuid) }}';
+                    axios.get(url)
+                        .then((response) => {
+                            console.log(response.data);
+                            $('.current-queue').text(response.data.nextQueue.queue_number);
+
+                            this.desk_queue_uuid = response.data.nextQueue.uuid;
+                            this.waiting_time = response.data.waitingTime;
+                            this.active_btn = true;
+
+                            removeLoarder();
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+                        })
+                        .catch((data) => {
+                            console.log(0, data);
+                            removeLoarder();
+                        });
+                },
+                call(){
+                    addLoader();
+                    var url = '{{ route('desks.queues.callNextQueueNumberAgain', $desk->uuid) }}';
+                    axios.get(url)
+                        .then((response) => {
+                            removeLoarder();
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+                        })
+                        .catch((data) => {
+                            console.log(data);
+                            removeLoarder();
+                        });
                 },
                 skip(){
                     addLoader();
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip';
+                    axios.get(url)
+                        .then((response) => {
+
+                            $('.current-queue').text('-');
+
+                            $('#count-skip').text(response.data.deskQueuesSkip);
+                            $('#count-done').text(response.data.deskQueuesDone);
+
+                            this.active_btn = false;
+
+                            removeLoarder();
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+                        })
+                        .catch((data) => {
+                            console.log(0, data);
+                            removeLoarder();
+                        });
+                },
+                skipAndNext(){
+                    addLoader();
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip-and-next';
                     axios.get(url)
                         .then((response) => {
                             console.log(response.data);
@@ -250,51 +305,34 @@
                             removeLoarder();
                         });
                 },
-                next(){
-                    addLoader();
-                    var url = '{{ route('desks.queues.callNextQueueNumber', $desk->uuid) }}';
-                    axios.get(url)
-                            .then((response) => {
-                                console.log(response.data);
-                                $('.current-queue').text(response.data.nextQueue.queue_number);
-
-                                this.desk_queue_uuid = response.data.nextQueue.uuid;
-                                this.waiting_time = response.data.waitingTime;
-                                this.active_btn = true;
-
-                                removeLoarder();
-
-                                if(response.data.message.msg_status == 1){
-                                    addAlert('success', response.data.message.text);
-                                }else{
-                                    addAlert('danger', response.data.message.text);
-                                }
-                            })
-                            .catch((data) => {
-                                console.log(0, data);
-                                removeLoarder();
-                            });
-                },
-                call(){
-                    addLoader();
-                    var url = '{{ route('desks.queues.callNextQueueNumberAgain', $desk->uuid) }}';
-                    axios.get(url)
-                            .then((response) => {
-                                removeLoarder();
-                                if(response.data.message.msg_status == 1){
-                                    addAlert('success', response.data.message.text);
-                                }else{
-                                    addAlert('danger', response.data.message.text);
-                                }
-                            })
-                            .catch((data) => {
-                                console.log(data);
-                                removeLoarder();
-                            });
-                },
                 done(){
                     addLoader();
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done';
+                    axios.get(url)
+                        .then((response) => {
+                            $('.current-queue').text('-');
+
+                            $('#count-skip').text(response.data.deskQueuesSkip);
+                            $('#count-done').text(response.data.deskQueuesDone);
+
+                            this.active_btn = false;
+
+                            removeLoarder();
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+                        })
+                        .catch((data) => {
+                            console.log(0, data);
+                            removeLoarder();
+                        });
+                },
+                doneAndNext(){
+                    addLoader();
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done-and-next';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text(response.data.nextQueue.queue_number);
@@ -336,12 +374,30 @@
                             removeLoarder();
                         });
                 },
+
+                // Websockets
                 listen(){
                     Echo.channel('available-desk-queue-{{ $desk->floor_id }}')
                         .listen('QueueStatus', (response) => {
                             $('#all-queues').html('');
                             $('#all-queues').append(response.view);
                         });
+                },
+
+                // Configs
+                changeBtn(type){
+                    if(type == 'done'){
+                        this.done_status = true;
+                    }
+                    else if(type == 'doneandnext'){
+                        this.done_status = false;
+                    }
+                    else if(type == 'skip'){
+                        this.skip_status = true;
+                    }
+                    else if(type == 'skipandnext'){
+                        this.skip_status = false;
+                    }
                 },
                 searchFunction(){
                     var value = $(this).val();

@@ -178,11 +178,13 @@ class DeskQueuesController extends Controller
         $data['currentQueue'] = DeskQueue::getCurrentDeskQueues($data['desk']->id);
 
         // Do Code
-        // Edit current
-        DeskQueue::edit([
-            'desk_id' => $data['desk']->id,
-            'status' => config('vars.queue_status.done'),
-        ], $data['currentQueue']->id);
+        if($data['currentQueue']){
+            // Edit current
+            DeskQueue::edit([
+                'desk_id' => $data['desk']->id,
+                'status' => config('vars.queue_status.done'),
+            ], $data['currentQueue']->id);
+        }
 
         // Edit skipped
         DeskQueue::edit([
@@ -229,6 +231,61 @@ class DeskQueuesController extends Controller
      * Skip Queue Number.
      */
     public function skipQueueNumber($desk_uuid, $desk_queue_uuid)
+    {
+        if (!User::hasAuthority('use.desk_queue')){
+            return redirect('/');
+        }
+
+        $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
+
+        $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+
+        // Do Code
+        DeskQueue::edit([
+            'desk_id' => $data['desk']->id,
+            'status' => config('vars.queue_status.skipped'),
+        ], $deskQueue->id);
+
+        // Do Code
+        $deskQueueStatusSkip = DeskQueueStatus::store([
+            'user_id' => auth()->user()->id,
+            'desk_queue_id' => $deskQueue->id,
+            'queue_status_id' => config('vars.queue_status.skipped'),
+        ]);
+
+
+        if($deskQueueStatusSkip){
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Queue number skipped successfully',
+            ];
+
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
+
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
+
+            // Broadcast event
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
+//            event(new NextDeskQueue($data['desk']->uuid, $deskQueue->queue_number));
+
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Some thing error, please try again after few minutes',
+            ];
+        }
+
+        // Return
+        return response()->json($data);
+
+    }
+
+    /**
+     * Skip And Next Queue Number.
+     */
+    public function skipAndNextQueueNumber($desk_uuid, $desk_queue_uuid)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
@@ -283,6 +340,58 @@ class DeskQueuesController extends Controller
      * Done Queue Number.
      */
     public function doneQueueNumber($desk_uuid, $desk_queue_uuid)
+    {
+        if (!User::hasAuthority('use.desk_queue')){
+            return redirect('/');
+        }
+
+        $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
+
+        $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+
+        // Do Code
+        DeskQueue::edit([
+            'desk_id' => $data['desk']->id,
+            'status' => config('vars.queue_status.done'),
+        ], $deskQueue->id);
+
+        // Do Code
+        $deskQueueStatusDone = DeskQueueStatus::store([
+            'user_id' => auth()->user()->id,
+            'desk_queue_id' => $deskQueue->id,
+            'queue_status_id' => config('vars.queue_status.done'),
+        ]);
+
+        if($deskQueueStatusDone){
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Queue was done successfully with getting next number',
+            ];
+
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
+
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
+
+            // Broadcast event
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
+//            event(new NextDeskQueue($data['desk']->uuid, $deskQueue->queue_number));
+
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Some thing error, please try again after few minutes',
+            ];
+        }
+
+        // Return
+        return response()->json($data);
+    }
+
+    /**
+     * Done And Next Queue Number.
+     */
+    public function doneAndNextQueueNumber($desk_uuid, $desk_queue_uuid)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
