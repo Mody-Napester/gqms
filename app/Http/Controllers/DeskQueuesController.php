@@ -147,16 +147,18 @@ class DeskQueuesController extends Controller
         }
 
         $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+
         $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', config('vars.queue_status.called'))
+            ->orWhere('status', config('vars.queue_status.cell_from_skip'))
             ->first();
 
         event(new NextDeskQueue($data['desk']->uuid, $data['nextQueue']->queue_number));
 
         $data['message'] = [
             'msg_status' => 1,
-            'text' => 'Next number called again',
+            'text' => 'Queue number reminded',
         ];
 
         // Return

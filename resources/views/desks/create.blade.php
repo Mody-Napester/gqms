@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-12">
             <div class="form-group">
-                <label class="" for="ip">Screen IP</label>
+                <label class="" for="ip">Desk IP</label>
                 <input type="text" id="ip" autocomplete="off" class="form-control{{ $errors->has('ip') ? ' is-invalid' : '' }}" name="ip" value="{{ old('ip') }}" required/>
 
                 @if ($errors->has('ip'))

@@ -214,7 +214,7 @@
             methods : {
                 // Buttons
                 next(){
-                    addLoader();
+                    addLoader('.current-queue-div');
                     var url = '{{ route('desks.queues.callNextQueueNumber', $desk->uuid) }}';
                     axios.get(url)
                         .then((response) => {
@@ -239,7 +239,7 @@
                         });
                 },
                 call(){
-                    addLoader();
+                    addLoader('.current-queue-div');
                     var url = '{{ route('desks.queues.callNextQueueNumberAgain', $desk->uuid) }}';
                     axios.get(url)
                         .then((response) => {
@@ -256,7 +256,7 @@
                         });
                 },
                 skip(){
-                    addLoader();
+                    addLoader('.current-queue-div');
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip';
                     axios.get(url)
                         .then((response) => {
@@ -282,7 +282,7 @@
                         });
                 },
                 skipAndNext(){
-                    addLoader();
+                    addLoader('.current-queue-div');
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip-and-next';
                     axios.get(url)
                         .then((response) => {
@@ -306,7 +306,7 @@
                         });
                 },
                 done(){
-                    addLoader();
+                    addLoader('.current-queue-div');
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done';
                     axios.get(url)
                         .then((response) => {
@@ -331,7 +331,7 @@
                         });
                 },
                 doneAndNext(){
-                    addLoader();
+                    addLoader('.current-queue-div');
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done-and-next';
                     axios.get(url)
                         .then((response) => {
@@ -360,6 +360,7 @@
                             removeLoarder();
 
                             $('.current-queue').text(response.data.skippedQueue.queue_number);
+
                             this.desk_queue_uuid = response.data.skippedQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
                             this.active_btn = true;

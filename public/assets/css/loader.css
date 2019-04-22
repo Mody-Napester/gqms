@@ -1,5 +1,5 @@
 .loading{
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
@@ -17,11 +17,11 @@
     /*border-bottom: 10px solid #3498db; !* Blue *!*/
 
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     animation: spin 1s linear infinite;
-    margin: 20% auto auto auto;
-    transform: translateY(-50%);
+    margin: 18% auto auto auto;
+    /*transform: translateY(-50%);*/
 }
 
 @keyframes spin {
