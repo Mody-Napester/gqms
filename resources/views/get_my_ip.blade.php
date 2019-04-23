@@ -11,18 +11,24 @@
             margin: 0;
             text-align: center;
             font-family: Arial;
+            background-color: #34495e;
         }
         .container{
             display: inline-block;
             margin-top: 10%;
-            font-size: 2rem;
+            font-size: 3rem;
+            color: #FFFFFF;
         }
         #section{
-            background-color: #EEEEEE;
-            font-size: 3rem;
+            background-color: #ffffff;
+            color: #2c3e50;
+            font-size: 4rem;
             margin-top: 10px;
             font-weight: bold;
             padding: 2rem;
+            border-radius: 5px;
+            /*box-shadow: 3px 3px 3px #CCCCCC;*/
+            /*border: 1px solid #555555;*/
         }
     </style>
 
@@ -30,7 +36,7 @@
 </head>
 <body>
     <div class="container">
-        Your ip is
+        Device IP is
         <div id="section">
 
         </div>
@@ -90,8 +96,9 @@
                 }
             })();
         }
-
         saveIpInSession();
+
+
     </script>
 </body>
 </html>

@@ -47,7 +47,11 @@
                             <a href="{{ route('desks.index') }}" class="waves-effect"><i class="ti-harddrives"></i> <span> Desks </span></a>
                         </li>
                     @endif
-
+                    @if (\App\User::hasAuthority('index.rooms'))
+                        <li class="has_sub">
+                            <a href="{{ route('rooms.index') }}" class="waves-effect"><i class="ti-heart"></i> <span> Rooms </span></a>
+                        </li>
+                    @endif
                     @if (\App\User::hasAuthority('index.screens'))
                     <li class="has_sub">
                         <a href="{{ route('screens.index') }}" class="waves-effect"><i class="ti-desktop"></i> <span> Screens </span></a>

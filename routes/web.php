@@ -24,6 +24,7 @@ Route::group([
     Route::resource('users', 'UsersController');
     Route::resource('floors', 'FloorsController');
     Route::resource('desks', 'DesksController');
+    Route::resource('rooms', 'RoomsController');
     Route::resource('screens', 'ScreensController')->except(['show']);
     
     // Desks Actions

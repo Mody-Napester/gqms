@@ -89,3 +89,43 @@
     <!-- end row -->
 
 @endsection
+
+{{--@section('scripts')--}}
+    {{--<script>--}}
+        {{--const app = new Vue({--}}
+            {{--el : '#app',--}}
+            {{--data : {--}}
+                {{--email: '',--}}
+                {{--name: '',--}}
+                {{--phone: '',--}}
+                {{--password: '',--}}
+                {{--status: '',--}}
+                {{--type: '',--}}
+                {{--roles: [],--}}
+            {{--},--}}
+            {{--methods : {--}}
+                {{--// Submit--}}
+                {{--createNew(){--}}
+                    {{--addLoader('.current-queue-div');--}}
+                    {{--var url = '{{ route('desks.queues.callNextQueueNumber', $desk->uuid) }}';--}}
+                    {{--axios.post(url)--}}
+                        {{--.then((response) => {--}}
+                            {{--console.log(response.data);--}}
+
+                            {{--removeLoarder();--}}
+
+                            {{--if(response.data.message.msg_status == 1){--}}
+                                {{--addAlert('success', response.data.message.text);--}}
+                            {{--}else{--}}
+                                {{--addAlert('danger', response.data.message.text);--}}
+                            {{--}--}}
+                        {{--})--}}
+                        {{--.catch((data) => {--}}
+                            {{--console.log(data);--}}
+                            {{--removeLoarder();--}}
+                        {{--});--}}
+                {{--},--}}
+            {{--}--}}
+        {{--});--}}
+    {{--</script>--}}
+{{--@endsection--}}
