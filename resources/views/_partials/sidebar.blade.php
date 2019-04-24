@@ -69,26 +69,36 @@
                     {{--<a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Receptions </span></a>--}}
                 {{--</li>--}}
 
-                @if (!is_null(auth()->user()->desk_id) && auth()->user()->login_ip == auth()->user()->desk->ip)
+
                     @if (\App\User::hasAuthority('use.queues'))
                         <li class="text-muted menu-title">Queues</li>
-                         @if (\App\User::hasAuthority('use.desk_queue'))
-                            <li class="has_sub">
-                                <a href="{{ route('desks.show', [auth()->user()->desk->uuid]) }}" class="waves-effect"><i class="ti-exchange-vertical"></i> <span> Desk queue </span></a>
-                            </li>
-                         @endif
-                         @if (\App\User::hasAuthority('use.desk_queue'))
-                            <li class="has_sub">
-                                <a href="{{ route('desks.queues.deskQueueHistory') }}" class="waves-effect"><i class="ti-server"></i> <span> Desk queue History</span></a>
-                            </li>
-                         @endif
-                         @if (\App\User::hasAuthority('use.doctor_queue'))
-                            <li class="has_sub">
-                                <a href="{{ route('screens.index') }}" class="waves-effect"><i class="ti-exchange-vertical"></i> <span> Doctors queue </span></a>
-                            </li>
-                         @endif
+                        @if (!is_null(auth()->user()->desk_id) && auth()->user()->login_ip == auth()->user()->desk->ip)
+                             @if (\App\User::hasAuthority('use.desk_queue'))
+                                <li class="has_sub">
+                                    <a href="{{ route('desks.show', [auth()->user()->desk->uuid]) }}" class="waves-effect"><i class="ti-exchange-vertical"></i> <span> Desk queue </span></a>
+                                </li>
+                             @endif
+                             @if (\App\User::hasAuthority('use.desk_queue'))
+                                <li class="has_sub">
+                                    <a href="{{ route('desks.queues.deskQueueHistory') }}" class="waves-effect"><i class="ti-server"></i> <span> Desk queue History</span></a>
+                                </li>
+                             @endif
+                        @endif
+
+                        @if (!is_null(auth()->user()->room_id) && auth()->user()->login_ip == auth()->user()->room->ip)
+                             @if (\App\User::hasAuthority('use.doctor_queue'))
+                                <li class="has_sub">
+                                    <a href="{{ route('rooms.show', [auth()->user()->room->uuid]) }}" class="waves-effect"><i class="ti-exchange-vertical"></i> <span> Doctors queue </span></a>
+                                </li>
+                             @endif
+                            @if (\App\User::hasAuthority('use.doctor_queue'))
+                                <li class="has_sub">
+                                    <a href="{{ route('rooms.queues.roomQueueHistory') }}" class="waves-effect"><i class="ti-server"></i> <span> Doctors queue History</span></a>
+                                </li>
+                            @endif
+                        @endif
                     @endif
-                @endif
+
 
                 @if (\App\User::hasAuthority('use.settings'))
                     <li class="text-muted menu-title">Settings</li>

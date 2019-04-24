@@ -69,6 +69,16 @@
                 </select>
             </div>
         </div>
+        <div style="display: none;" id="rooms-div" class="col-md-6">
+            <div class="form-group">
+                <label>Show Rooms</label>
+                <select name="rooms[]" id="rooms" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($rooms as $key => $room)
+                        <option value="{{ $room->uuid }}">{{ $room->floor->name_en . ' - ' . $room->name_en }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
         <div style="display: none;" id="floor-div" class="col-md-6">
             <div class="form-group">
                 <label>Print For Floors</label>

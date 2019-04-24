@@ -97,6 +97,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     *  Relationship with rooms
+     */
+    public function room()
+    {
+        return $this->belongsTo('App\Room');
+
+    }
+
+    /**
      *  Relationship with roles
      */
     public function roles()

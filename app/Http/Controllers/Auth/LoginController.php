@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Desk;
 use App\Events\DeskStatus;
+use App\Events\RoomStatus;
+use App\Room;
 use App\User;
 use App\UserLoginHistory;
 use http\Env\Request;
@@ -49,6 +51,8 @@ class LoginController extends Controller
         // Check if ip exists in desks
         $desk = Desk::getBy('ip', $request->login_ip);
 
+        $room = Room::getBy('ip', $request->login_ip);
+
         if ($desk){
             // Update user
             User::edit([
@@ -59,6 +63,17 @@ class LoginController extends Controller
 
             // Broadcast event
             event(new DeskStatus($desk->uuid, 1));
+        }
+        elseif($room){
+            // Update user
+            User::edit([
+                'room_id' => $room->id,
+                'login_ip' => $room->ip,
+                'available' => 1,
+            ], $user->id);
+
+            // Broadcast event
+            event(new RoomStatus($room->uuid, 1));
         }
 
         UserLoginHistory::addLoginHistory();
@@ -74,6 +89,17 @@ class LoginController extends Controller
             // Update user
             User::edit([
                 'desk_id' => null,
+                'login_ip' => null,
+                'available' => 0,
+            ], auth()->user()->id);
+        }
+        elseif(auth()->user()->room_id){
+            // Broadcast event
+            event(new RoomStatus(Room::getBy('id', auth()->user()->room_id)->uuid, 0));
+
+            // Update user
+            User::edit([
+                'room_id' => null,
                 'login_ip' => null,
                 'available' => 0,
             ], auth()->user()->id);

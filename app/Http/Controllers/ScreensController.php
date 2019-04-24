@@ -6,6 +6,7 @@ use App\Desk;
 use App\DeskQueue;
 use App\DeskQueueStatus;
 use App\Floor;
+use App\Room;
 use App\Screen;
 use App\ScreenType;
 use App\User;
@@ -27,6 +28,7 @@ class ScreensController extends Controller
         $data['screens'] = Screen::all();
         $data['screenTypes'] = ScreenType::all();
         $data['floors'] = Floor::all();
+        $data['rooms'] = Room::all();
         return view('screens.index', $data);
     }
 
@@ -83,6 +85,11 @@ class ScreensController extends Controller
                 $resource->floors()->attach(Floor::getBy('uuid', $floor)->id);
             }
         }
+        if ($request->has('rooms')){
+            foreach ($request->rooms as $room){
+                $resource->rooms()->attach(Room::getBy('uuid', $room)->id);
+            }
+        }
 
         // Return
         if ($resource){
@@ -119,6 +126,7 @@ class ScreensController extends Controller
         $data['screen'] = Screen::getBy('uuid', $uuid);
         $data['screenTypes'] = ScreenType::all();
         $data['floors'] = Floor::all();
+        $data['rooms'] = Room::all();
         return response([
             'title'=> "Update screen " . $data['screen']->name_en,
             'view'=> view('screens.edit', $data)->render(),
@@ -178,6 +186,14 @@ class ScreensController extends Controller
 
             foreach ($request->floors as $floor){
                 $resource->floors()->attach(Floor::getBy('uuid', $floor)->id);
+            }
+        }
+
+        if ($request->has('rooms')){
+            $resource->rooms()->detach();
+
+            foreach ($request->rooms as $room){
+                $resource->rooms()->attach(Room::getBy('uuid', $room)->id);
             }
         }
 

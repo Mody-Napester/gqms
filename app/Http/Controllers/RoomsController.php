@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Room;
 use App\Floor;
+use App\RoomQueue;
+use App\RoomQueueStatus;
 use App\User;
 use Validator;
 use Illuminate\Http\Request;

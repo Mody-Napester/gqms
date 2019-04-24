@@ -1,6 +1,6 @@
 <div class="card-box">
     <h4 class="m-t-0 header-title">
-        <label for="">Today Queue ({{ count($deskQueues) }})</label>
+        <label for="">Today Queue ({{ count($roomQueues) }})</label>
         <div class="row">
             <div class="col-md-6 pr-1">
                 <input class="form-control" type="text" id="searchInput" placeholder="Search ..">
@@ -27,18 +27,18 @@
                 <th>Action</th>
             </tr>
 
-            @foreach($deskQueues as $deskQueue)
+            @foreach($roomQueues as $roomQueue)
                 <tr>
-                    <td>{{ $deskQueue->queue_number }}</td>
+                    <td>{{ $roomQueue->queue_number }}</td>
                     <td>
-                        <span class="label {{ $deskQueue->queueStatus->class }}">{{ $deskQueue->queueStatus->name_en }}</span>
+                        <span class="label {{ $roomQueue->queueStatus->class }}">{{ $roomQueue->queueStatus->name_en }}</span>
                     </td>
                     <td>
-                        @if($deskQueue->queueStatus->id == config('vars.queue_status.skipped'))
-                            <button onclick="callSkippedAgain('{{ $deskQueue->uuid }}')" class="btn btn-secondary waves-effect"
+                        @if($roomQueue->queueStatus->id == config('vars.queue_status.skipped'))
+                            <button onclick="callSkippedAgain('{{ $roomQueue->uuid }}')" class="btn btn-secondary waves-effect"
                                     style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
-                        @elseif($deskQueue->queueStatus->id != config('vars.queue_status.waiting'))
-                            By {{ $deskQueue->desk->name_en }}
+                        @elseif($roomQueue->queueStatus->id != config('vars.queue_status.waiting'))
+                            By {{ $roomQueue->room->name_en }}
                         @endif
                     </td>
                 </tr>

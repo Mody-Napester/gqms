@@ -115,8 +115,10 @@
                 var type = $(this).val();
                if (type == {{ config('vars.screen_types.kiosk') }}){
                     $('#floor-div').show(0);
+                    $('#rooms-div').hide(0);
                }else if (type == {{ config('vars.screen_types.reception') }}) {
                    $('#floor-div').hide(0);
+                   $('#rooms-div').show(0);
                }
             });
         });

@@ -93,4 +93,9 @@ class Screen extends Model
         return $this->belongsToMany('App\Floor', 'floor_kiosk', 'kiosk_id', 'floor_id');
     }
 
+    // Rooms Relation
+    public function rooms(){
+        return $this->belongsToMany('App\Room', 'screen_room');
+    }
+
 }
