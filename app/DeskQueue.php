@@ -77,8 +77,9 @@ class DeskQueue extends Model
      */
     public static function getAvailableDeskQueueView($floor_id)
     {
-        $deskQueues = self::getDeskQueues($floor_id);
-        $availableDeskQueue = view('desks._available_desk_queue', compact('deskQueues'))->render();
+        $data['deskQueues'] = self::getDeskQueues($floor_id);
+        $data['deskQueueStatues'] = QueueStatus::getQueueStatuses('desk');
+        $availableDeskQueue = view('desks._available_desk_queue', $data)->render();
 
         return $availableDeskQueue;
     }
@@ -102,13 +103,13 @@ class DeskQueue extends Model
      */
     public static function getCurrentDeskQueues($desk_id)
     {
-        $deskQueues = self::where('status', config('vars.queue_status.cell_from_skip'))
+        $deskQueues = self::where('status', config('vars.desk_queue_status.call_from_skip'))
         ->where('created_at', 'like', "%".date('Y-m-d')."%")
         ->where('desk_id', $desk_id)
         ->first();
 
         if(count($deskQueues) == 0){
-            $deskQueues = self::where('status', config('vars.queue_status.called'))
+            $deskQueues = self::where('status', config('vars.desk_queue_status.called'))
                 ->where('created_at', 'like', "%".date('Y-m-d')."%")
                 ->where('desk_id', $desk_id)
                 ->first();

@@ -9,12 +9,20 @@ return [
         'kiosk' => 1,
         'reception' => 2,
     ],
-    'queue_status' => [
+    'desk_queue_status' => [
         'waiting' => 1,
         'called' => 2,
         'skipped' => 3,
         'done' => 4,
-        'cell_from_skip' => 5,
+        'call_from_skip' => 5,
+    ],
+    'room_queue_status' => [
+        'waiting' => 6,
+        'called' => 7,
+        'patient_in' => 8,
+        'skipped' => 9,
+        'patient_out' => 10,
+        'call_from_skip' => 11,
     ],
 
 ];

@@ -77,8 +77,9 @@ class RoomQueue extends Model
      */
     public static function getAvailableRoomQueueView($floor_id)
     {
-        $roomQueues = self::getRoomQueues($floor_id);
-        $availableRoomQueue = view('rooms._available_room_queue', compact('roomQueues'))->render();
+        $data['roomQueues'] = self::getRoomQueues($floor_id);
+        $data['roomQueueStatues'] = QueueStatus::getQueueStatuses('room');
+        $availableRoomQueue = view('rooms._available_room_queue', $data)->render();
 
         return $availableRoomQueue;
     }
@@ -102,13 +103,13 @@ class RoomQueue extends Model
      */
     public static function getCurrentRoomQueues($room_id)
     {
-        $roomQueues = self::where('status', config('vars.queue_status.cell_from_skip'))
+        $roomQueues = self::where('status', config('vars.desk_queue_status.call_from_skip'))
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('room_id', $room_id)
             ->first();
 
         if(count($roomQueues) == 0){
-            $roomQueues = self::where('status', config('vars.queue_status.called'))
+            $roomQueues = self::where('status', config('vars.desk_queue_status.called'))
                 ->where('created_at', 'like', "%".date('Y-m-d')."%")
                 ->where('room_id', $room_id)
                 ->first();

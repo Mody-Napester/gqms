@@ -48,34 +48,35 @@ class LoginController extends Controller
     // After Login
     protected function authenticated(\Illuminate\Http\Request $request, $user)
     {
-        // Check if ip exists in desks
-        $desk = Desk::getBy('ip', $request->login_ip);
+        // Check if user and ip exists in desks or in rooms
+        if($user->type == 1){ // Doctor
+            $data['resource'] = Room::getBy('ip', $request->login_ip);
+        }
+        elseif($user->type == 2){ // Desk
+            $data['resource'] = Desk::getBy('ip', $request->login_ip);
+        }
 
-        $room = Room::getBy('ip', $request->login_ip);
-
-        if ($desk){
+        // Update user
+        if (isset($data['resource'])){
             // Update user
             User::edit([
-                'desk_id' => $desk->id,
-                'login_ip' => $desk->ip,
+                'room_id' => ($user->type == 1)? $data['resource']->id : null,
+                'desk_id' => ($user->type == 2)? $data['resource']->id : null,
+                'login_ip' => $data['resource']->ip,
                 'available' => 1,
             ], $user->id);
 
             // Broadcast event
-            event(new DeskStatus($desk->uuid, 1));
-        }
-        elseif($room){
-            // Update user
-            User::edit([
-                'room_id' => $room->id,
-                'login_ip' => $room->ip,
-                'available' => 1,
-            ], $user->id);
+            if($user->type == 1){ // Doctor
+                event(new RoomStatus($data['resource']->uuid, 1));
+            }
+            elseif($user->type == 2){ // Desk
+                event(new DeskStatus($data['resource']->uuid, 1));
+            }
 
-            // Broadcast event
-            event(new RoomStatus($room->uuid, 1));
         }
 
+        // Add user login history
         UserLoginHistory::addLoginHistory();
     }
 

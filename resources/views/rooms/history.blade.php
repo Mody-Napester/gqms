@@ -65,7 +65,7 @@
                                 </td>
                                 <td>{{ $deskQueue->created_at }}</td>
                                 <td class="text-center">
-                                    @if($deskQueue->status != config('vars.queue_status.waiting'))
+                                    @if($deskQueue->status != config('vars.desk_queue_status.waiting'))
                                         <a href="{{ route('desks.queues.deskQueueSingleHistory', [$deskQueue->uuid]) }}" class="btn history-modal btn-warning waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Show</a>
                                     @endif
                                 </td>

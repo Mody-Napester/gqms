@@ -81,20 +81,20 @@ class DeskQueuesController extends Controller
         $data['desk'] = Desk::getBy('uuid', $desk_uuid);
         $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->where('status', config('vars.queue_status.waiting'))
+            ->where('status', config('vars.desk_queue_status.waiting'))
             ->first();
 
         if($data['nextQueue']){
             // Do Code
             $data['nextDeskQueueUpdated'] = DeskQueue::edit([
                 'desk_id' => $data['desk']->id,
-                'status' => config('vars.queue_status.called'),
+                'status' => config('vars.desk_queue_status.called'),
             ], $data['nextQueue']->id);
 
             $deskQueueStatusDone = DeskQueueStatus::store([
                 'user_id' => auth()->user()->id,
                 'desk_queue_id' => $data['nextQueue']->id,
-                'queue_status_id' => config('vars.queue_status.called'),
+                'queue_status_id' => config('vars.desk_queue_status.called'),
             ]);
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
@@ -150,8 +150,8 @@ class DeskQueuesController extends Controller
 
         $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->where('status', config('vars.queue_status.called'))
-            ->orWhere('status', config('vars.queue_status.cell_from_skip'))
+            ->where('status', config('vars.desk_queue_status.called'))
+            ->orWhere('status', config('vars.desk_queue_status.call_from_skip'))
             ->first();
 
         event(new NextDeskQueue($data['desk']->uuid, $data['nextQueue']->queue_number));
@@ -184,21 +184,21 @@ class DeskQueuesController extends Controller
             // Edit current
             DeskQueue::edit([
                 'desk_id' => $data['desk']->id,
-                'status' => config('vars.queue_status.done'),
+                'status' => config('vars.desk_queue_status.done'),
             ], $data['currentQueue']->id);
         }
 
         // Edit skipped
         DeskQueue::edit([
             'desk_id' => $data['desk']->id,
-            'status' => config('vars.queue_status.cell_from_skip'),
+            'status' => config('vars.desk_queue_status.call_from_skip'),
         ], $data['skippedQueue']->id);
 
         // Do Code
         $deskQueueStatusSkip = DeskQueueStatus::store([
             'user_id' => auth()->user()->id,
             'desk_queue_id' => $data['skippedQueue']->id,
-            'queue_status_id' => config('vars.queue_status.cell_from_skip'),
+            'queue_status_id' => config('vars.desk_queue_status.call_from_skip'),
         ]);
 
         if($deskQueueStatusSkip){
@@ -210,8 +210,8 @@ class DeskQueuesController extends Controller
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
             $data['waitingTime'] = nice_time($data['skippedQueue']->created_at);
-            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
-            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
             // Broadcast event
             event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
@@ -245,14 +245,14 @@ class DeskQueuesController extends Controller
         // Do Code
         DeskQueue::edit([
             'desk_id' => $data['desk']->id,
-            'status' => config('vars.queue_status.skipped'),
+            'status' => config('vars.desk_queue_status.skipped'),
         ], $deskQueue->id);
 
         // Do Code
         $deskQueueStatusSkip = DeskQueueStatus::store([
             'user_id' => auth()->user()->id,
             'desk_queue_id' => $deskQueue->id,
-            'queue_status_id' => config('vars.queue_status.skipped'),
+            'queue_status_id' => config('vars.desk_queue_status.skipped'),
         ]);
 
 
@@ -265,8 +265,8 @@ class DeskQueuesController extends Controller
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
 
-            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
-            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
             // Broadcast event
             event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
@@ -298,14 +298,14 @@ class DeskQueuesController extends Controller
         // Do Code
         DeskQueue::edit([
             'desk_id' => Desk::getBy('uuid', $desk_uuid)->id,
-            'status' => config('vars.queue_status.skipped'),
+            'status' => config('vars.desk_queue_status.skipped'),
         ], $deskQueue->id);
 
         // Do Code
         $deskQueueStatusSkip = DeskQueueStatus::store([
             'user_id' => auth()->user()->id,
             'desk_queue_id' => $deskQueue->id,
-            'queue_status_id' => config('vars.queue_status.skipped'),
+            'queue_status_id' => config('vars.desk_queue_status.skipped'),
         ]);
 
         if($deskQueueStatusSkip){
@@ -323,8 +323,8 @@ class DeskQueuesController extends Controller
                 ];
             }
 
-            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
-            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
         }else{
             $data['message'] = [
@@ -354,14 +354,14 @@ class DeskQueuesController extends Controller
         // Do Code
         DeskQueue::edit([
             'desk_id' => $data['desk']->id,
-            'status' => config('vars.queue_status.done'),
+            'status' => config('vars.desk_queue_status.done'),
         ], $deskQueue->id);
 
         // Do Code
         $deskQueueStatusDone = DeskQueueStatus::store([
             'user_id' => auth()->user()->id,
             'desk_queue_id' => $deskQueue->id,
-            'queue_status_id' => config('vars.queue_status.done'),
+            'queue_status_id' => config('vars.desk_queue_status.done'),
         ]);
 
         if($deskQueueStatusDone){
@@ -372,8 +372,8 @@ class DeskQueuesController extends Controller
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
 
-            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
-            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
             // Broadcast event
             event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
@@ -404,21 +404,21 @@ class DeskQueuesController extends Controller
         // Do Code
         DeskQueue::edit([
             'desk_id' => Desk::getBy('uuid', $desk_uuid)->id,
-            'status' => config('vars.queue_status.done'),
+            'status' => config('vars.desk_queue_status.done'),
         ], $deskQueue->id);
 
         // Do Code
         $deskQueueStatusDone = DeskQueueStatus::store([
             'user_id' => auth()->user()->id,
             'desk_queue_id' => $deskQueue->id,
-            'queue_status_id' => config('vars.queue_status.done'),
+            'queue_status_id' => config('vars.desk_queue_status.done'),
         ]);
 
         if($deskQueueStatusDone){
             $data = $this->callNext($desk_uuid);
 
-            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.skipped'));
-            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.queue_status.done'));
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
             $data['message'] = [
                 'msg_status' => 1,

@@ -16,16 +16,16 @@ class DashboardController extends Controller
     public function index()
     {
         $data['today_total'] = DeskQueue::where('created_at', 'like', "%".date('Y-m-d')."%")->count();
-        $data['today_waiting'] = DeskQueue::getCountDeskQueues(config('vars.queue_status.waiting'));
-        $data['today_called'] = DeskQueueStatus::getCountDeskQueue(config('vars.queue_status.called'));
-        $data['today_skipped'] = DeskQueueStatus::getCountDeskQueue(config('vars.queue_status.skipped'));
-        $data['today_done'] = DeskQueueStatus::getCountDeskQueue(config('vars.queue_status.done'));
+        $data['today_waiting'] = DeskQueue::getCountDeskQueues(config('vars.desk_queue_status.waiting'));
+        $data['today_called'] = DeskQueueStatus::getCountDeskQueue(config('vars.desk_queue_status.called'));
+        $data['today_skipped'] = DeskQueueStatus::getCountDeskQueue(config('vars.desk_queue_status.skipped'));
+        $data['today_done'] = DeskQueueStatus::getCountDeskQueue(config('vars.desk_queue_status.done'));
 
         $data['total_total'] = DeskQueue::count();
-        $data['total_waiting'] = DeskQueue::getCountDeskQueues(config('vars.queue_status.waiting'), 1);
-        $data['total_called'] = DeskQueueStatus::getCountDeskQueue(config('vars.queue_status.called'), 1);
-        $data['total_skipped'] = DeskQueueStatus::getCountDeskQueue(config('vars.queue_status.skipped'), 1);
-        $data['total_done'] = DeskQueueStatus::getCountDeskQueue(config('vars.queue_status.done'), 1);
+        $data['total_waiting'] = DeskQueue::getCountDeskQueues(config('vars.desk_queue_status.waiting'), 1);
+        $data['total_called'] = DeskQueueStatus::getCountDeskQueue(config('vars.desk_queue_status.called'), 1);
+        $data['total_skipped'] = DeskQueueStatus::getCountDeskQueue(config('vars.desk_queue_status.skipped'), 1);
+        $data['total_done'] = DeskQueueStatus::getCountDeskQueue(config('vars.desk_queue_status.done'), 1);
 
         $data['today_total_is'] = ($data['today_total'] == 0)? 0 : 1;
         $data['total_total_is'] = ($data['total_total'] == 0)? 0 : 1;

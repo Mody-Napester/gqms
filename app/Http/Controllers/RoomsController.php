@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\QueueStatus;
 use App\Room;
 use App\Floor;
 use App\RoomQueue;
@@ -91,11 +92,12 @@ class RoomsController extends Controller
             return redirect(route('dashboard.index'));
         }
 
+        $data['roomQueueStatues'] = QueueStatus::getQueueStatuses('room');
+
         // Get today's room queues
         $data['roomQueues'] = RoomQueue::getRoomQueues($data['room']->floor_id);
-        
-        $data['roomQueuesSkip'] = RoomQueueStatus::getRoomQueues(auth()->user()->id, 3);
-        $data['roomQueuesDone'] = RoomQueueStatus::getRoomQueues(auth()->user()->id, 4);
+        $data['roomQueuesSkip'] = RoomQueueStatus::getRoomQueues(auth()->user()->id, config('vars.room_queue_status.skipped'));
+        $data['roomQueuesPatientOut'] = RoomQueueStatus::getRoomQueues(auth()->user()->id, config('vars.room_queue_status.patient_out'));
 
         $data['currentRoomQueueNumber'] = RoomQueue::getCurrentRoomQueues($data['room']->id);
 

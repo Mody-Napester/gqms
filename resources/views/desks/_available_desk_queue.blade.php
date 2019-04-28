@@ -8,11 +8,9 @@
             <div class="col-md-6 pl-1">
                 <select class="form-control" id="searchSelect" style="height: 35px;">
                     <option value='All'>All</option>
-                    <option value='Waiting'>Waiting</option>
-                    <option value='Called'>Called</option>
-                    <option value='Skipped'>Skipped</option>
-                    <option value='Done'>Done</option>
-                    <option value='Cell from skip'>Cell from skip</option>
+                    @foreach($deskQueueStatues as $status)
+                    <option value='{{ $status->name_en }}'>{{ $status->name_en }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
@@ -34,10 +32,10 @@
                         <span class="label {{ $deskQueue->queueStatus->class }}">{{ $deskQueue->queueStatus->name_en }}</span>
                     </td>
                     <td>
-                        @if($deskQueue->queueStatus->id == config('vars.queue_status.skipped'))
+                        @if($deskQueue->queueStatus->id == config('vars.desk_queue_status.skipped'))
                             <button onclick="callSkippedAgain('{{ $deskQueue->uuid }}')" class="btn btn-secondary waves-effect"
                                     style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
-                        @elseif($deskQueue->queueStatus->id != config('vars.queue_status.waiting'))
+                        @elseif($deskQueue->queueStatus->id != config('vars.desk_queue_status.waiting'))
                             By {{ $deskQueue->desk->name_en }}
                         @endif
                     </td>

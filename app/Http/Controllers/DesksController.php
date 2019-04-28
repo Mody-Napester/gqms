@@ -6,6 +6,7 @@ use App\Desk;
 use App\DeskQueue;
 use App\DeskQueueStatus;
 use App\Floor;
+use App\QueueStatus;
 use App\User;
 use Validator;
 use Illuminate\Http\Request;
@@ -90,6 +91,8 @@ class DesksController extends Controller
         if (auth()->user()->desk_id != $data['desk']->id) {
             return redirect(route('dashboard.index'));
         }
+
+        $data['deskQueueStatues'] = QueueStatus::getQueueStatuses('desk');
 
         // Get today's desk queues
         $data['deskQueues'] = DeskQueue::getDeskQueues($data['desk']->floor_id);
