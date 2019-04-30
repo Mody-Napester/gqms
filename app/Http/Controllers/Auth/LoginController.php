@@ -54,6 +54,7 @@ class LoginController extends Controller
         }
         elseif($user->type == 2){ // Desk
             $data['resource'] = Desk::getBy('ip', $request->login_ip);
+            dd($data['resource']);
         }
 
         // Update user

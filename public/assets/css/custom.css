@@ -106,6 +106,15 @@
     box-shadow: 0 9px #999;
 }
 
+.get-next{
+    background-color: #e17055;
+    color: #ffffff;
+    padding: 3px 6px;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 14px;
+}
+
 @font-face {
     font-family: GE_SS_Two;
     src: url('/public/assets/fonts/ge-ss-two-medium.ttf') format('ttf');
