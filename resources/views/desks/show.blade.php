@@ -96,6 +96,12 @@
                     </div>
                 </div>
 
+                <div class="confirm-done-container">
+                    <div class="confirm-done">
+
+                    </div>
+                </div>
+
                 <h4 class="m-t-0 m-b-20 header-title">
                     <b>Current Serving Queue</b> <b class="pull-right">Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
                         <span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span></b>

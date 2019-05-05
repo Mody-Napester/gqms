@@ -67,28 +67,28 @@
                         <div class="queue-settings-close"><i class="fa fa-fw fa-close"></i></div>
                         <div style="overflow: auto;height: 100%">
                             <p>Done button</p>
-                            <div class="radio radio-success" v-on:click="changeBtn('done')">
-                                <input style="margin-top: 4px;" type="radio" name="queue_done" id="radio1" value="option4">
+                            <div class="radio radio-success" v-on:click="changeBtn('out')">
+                                <input style="margin-top: 4px;" type="radio" name="queue_done" id="radio1">
                                 <label for="radio1">
-                                    Done
+                                    Patient out
                                 </label>
                             </div>
-                            <div class="radio radio-success" v-on:click="changeBtn('doneandnext')">
-                                <input style="margin-top: 4px;" type="radio" checked name="queue_done" id="radio2" value="option4">
+                            <div class="radio radio-success" v-on:click="changeBtn('outandnext')">
+                                <input style="margin-top: 4px;" type="radio" checked name="queue_done" id="radio2">
                                 <label for="radio2">
-                                    Done and next
+                                    Patient out and next
                                 </label>
                             </div>
                             <hr>
                             <p>Skip button</p>
                             <div class="radio radio-danger" v-on:click="changeBtn('skip')">
-                                <input style="margin-top: 4px;" type="radio" name="queue_skip" id="radio3" value="option4">
+                                <input style="margin-top: 4px;" type="radio" name="queue_skip" id="radio3">
                                 <label for="radio3">
                                     Skip
                                 </label>
                             </div>
                             <div class="radio radio-danger" v-on:click="changeBtn('skipandnext')">
-                                <input style="margin-top: 4px;" type="radio" checked name="queue_skip" id="radio4" value="option4">
+                                <input style="margin-top: 4px;" type="radio" checked name="queue_skip" id="radio4">
                                 <label for="radio4">
                                     Skip and next
                                 </label>
@@ -103,10 +103,8 @@
                     <b class="pull-right">
                         Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
 
-                        <span class="get-next" href="">Next patient <i class="fa fa-refresh fa-fw"></i></span>
-
-                        <span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>
-
+                        <span v-on:click="next()" v-if="!next_status" class="get-next" href="">Next patient <i class="fa fa-refresh fa-fw"></i></span>
+                        <span v-on:click="call()" v-if="next_status" class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>
 
                     </b>
                 </h4>
@@ -118,18 +116,24 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                    <button v-if="skip_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip <i class="fa fa-fw fa-close"></i>
+                                    </button>
+                                    <button v-if="!skip_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                        Skip and next <i class="fa fa-fw fa-close"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-block btn-pink waves-effect waves-light">
+                                    <button v-if="" type="button" class="btn btn-block btn-pink waves-effect waves-light">
                                         Patient in <i class="fa fa-fw fa-arrow-down"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-if="out_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Patient out <i class="fa fa-fw fa-arrow-up"></i>
+                                    </button>
+                                    <button v-if="!out_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                        Patient out and next <i class="fa fa-fw fa-arrow-up"></i>
                                     </button>
                                 </div>
                             </div>
@@ -209,10 +213,27 @@
                 room_queue_uuid : '{{ ($currentRoomQueueNumber)? $currentRoomQueueNumber->uuid : '' }}',
                 active_btn : {{ ($currentRoomQueueNumber)? 'true' : 'false' }},
                 waiting_time : '{{ ($currentRoomQueueNumber)? nice_time($currentRoomQueueNumber->created_at) : '00:00' }}',
-                done_status: false,
+                out_status: false,
                 skip_status: false,
+                next_status: false,
             },
             methods : {
+                // Configs
+                changeBtn(type){
+                    if(type == 'out'){
+                        this.out_status = true;
+                    }
+                    else if(type == 'outandnext'){
+                        this.out_status = false;
+                    }
+                    else if(type == 'skip'){
+                        this.skip_status = true;
+                    }
+                    else if(type == 'skipandnext'){
+                        this.skip_status = false;
+                    }
+                },
+
                 // Buttons
                 next(){
                     addLoader('.current-queue-div');
@@ -230,6 +251,7 @@
 
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
+                                this.next_status = true;
                             }else{
                                 addAlert('danger', response.data.message.text);
                             }
@@ -306,7 +328,7 @@
                             removeLoarder();
                         });
                 },
-                done(){
+                in(){
                     addLoader('.current-queue-div');
                     var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/done';
                     axios.get(url)
@@ -331,7 +353,32 @@
                             removeLoarder();
                         });
                 },
-                doneAndNext(){
+                out(){
+                    addLoader('.current-queue-div');
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/done';
+                    axios.get(url)
+                        .then((response) => {
+                            $('.current-queue').text('-');
+
+                            $('#count-skip').text(response.data.roomQueuesSkip);
+                            $('#count-done').text(response.data.roomQueuesDone);
+
+                            this.active_btn = false;
+
+                            removeLoarder();
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+                        })
+                        .catch((data) => {
+                            console.log(0, data);
+                            removeLoarder();
+                        });
+                },
+                outAndNext(){
                     addLoader('.current-queue-div');
                     var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/done-and-next';
                     axios.get(url)
@@ -386,21 +433,6 @@
                         });
                 },
 
-                // Configs
-                changeBtn(type){
-                    if(type == 'done'){
-                        this.done_status = true;
-                    }
-                    else if(type == 'doneandnext'){
-                        this.done_status = false;
-                    }
-                    else if(type == 'skip'){
-                        this.skip_status = true;
-                    }
-                    else if(type == 'skipandnext'){
-                        this.skip_status = false;
-                    }
-                },
                 searchFunction(){
                     var value = $(this).val();
 

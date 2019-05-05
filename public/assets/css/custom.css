@@ -83,6 +83,27 @@
     border-radius: 3px;
     padding: 2px;
 }
+.confirm-done-container{
+    background-color: rgba(0,0,0,.5);
+    text-align: center;
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9999;
+    overflow: hidden;
+    /*display: none;*/
+    /*opacity: 0;*/
+}
+.confirm-done{
+    background-color: #EEEEEE;
+    padding: 20px;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
 .btn-print:hover {background-color: #2d3436}
 
