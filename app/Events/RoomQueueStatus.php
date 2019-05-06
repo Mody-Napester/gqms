@@ -37,7 +37,7 @@ class RoomQueueStatus implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('available-desk-queue-' . $this->floor_id . '-' . $this->room_id);
+        return new Channel('available-room-queue-' . $this->floor_id . '-' . $this->room_id);
     }
 
     /**

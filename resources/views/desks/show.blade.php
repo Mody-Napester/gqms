@@ -106,12 +106,11 @@
                                     <div class="invalid-feedback reservation_serial_feedback"></div>
                                 </div>
                                 <div>
-                                    <select v-model="room_id" name="room_id" data-placeholder="Choose ..." class="select2">
-                                        @foreach($desk->floor->rooms as $room)
-                                        <option value="{{ $room->uuid }}">{{ $room->name_en }}</option>
-                                        @endforeach
+                                    <select v-model="selected_room" name="room_uuid" class="selected_room form-control">
+                                        <option value="choose" disabled>Choose Room..</option>
+                                        <option v-for="room in rooms" v-bind:value="room.uuid" >@{{ room.name_en }}</option>
                                     </select>
-                                    <div class="invalid-feedback room_id_feedback"></div>
+                                    <div class="invalid-feedback selected_room_feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -242,7 +241,7 @@
                 $('.confirm-done-container').hide(0);
 
                 $('#reservation_serial').removeClass('is-invalid');
-                $('.invalid-feedback').hide(0);
+                $('.reservation_serial_feedback').text('').hide(0);
             });
 
             // Open
@@ -281,13 +280,14 @@
                 done_status: false,
                 skip_status: false,
                 reservation_serial: '',
-                room_id: '',
+                rooms: {!! $desk->floor->rooms !!},
+                selected_room: 'choose',
             },
             methods : {
                 // Buttons
                 confirmDoneOrDoneAndNext(){
-                    if (this.reservation_serial.length > 0){
-                        var url = '{{ url('dashboard') }}/desk/reservation/' + this.reservation_serial + '/check';
+                    if (this.reservation_serial.length > 0 && this.selected_room.length != 'choose' && this.selected_room.length > 0){
+                        var url = '{{ url('dashboard') }}/desk/reservation/' + this.reservation_serial + '/' + this.selected_room + '/check';
 
                         axios.get(url)
                             .then((response) => {
@@ -302,18 +302,30 @@
                                     this.reservation_serial = '';
 
                                     $('#reservation_serial').removeClass('is-invalid');
-                                    $('.reservation_serial_feedback').hide(0);
+                                    $('.reservation_serial_feedback').text('').hide(0);
+
+                                    $('.selected_room').removeClass('is-invalid');
+                                    $('.selected_room_feedback').text('').hide(0);
 
                                 }else{
                                     $('#reservation_serial').addClass('is-invalid');
                                     $('.reservation_serial_feedback').text(response.data.message.text).show(0);
                                 }
+
+                                this.selected_room = 'choose';
                             })
                             .catch((data) => {
                                 console.log(data);
                             });
 
+                        $('.selected_room').removeClass('is-invalid');
+                        $('.selected_room_feedback').text('').hide(0);
+
                     }else {
+                        if (this.selected_room.length != 'choose'){
+                            $('.selected_room').addClass('is-invalid');
+                            $('.selected_room_feedback').text('Please select room').show(0);
+                        }
                         $('#reservation_serial').addClass('is-invalid');
                         $('.reservation_serial_feedback').text('Enter reservation serial').show(0);
                     }
@@ -414,7 +426,7 @@
 
                 done(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_serial + '/done';
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_serial + '/' + this.selected_room + '/done';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text('-');
@@ -426,13 +438,13 @@
 
                             removeLoarder();
 
-                            $('.confirm-done-close').trigger('click');
-
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
                             }else{
                                 addAlert('danger', response.data.message.text);
                             }
+
+                            $('.confirm-done-close').trigger('click');
                         })
                         .catch((data) => {
                             console.log(0, data);
@@ -441,7 +453,7 @@
                 },
                 doneAndNext(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done-and-next';
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid  + '/' + this.selected_room + '/done-and-next';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text(response.data.nextQueue.queue_number);
@@ -449,13 +461,16 @@
                             $('#count-done').text(response.data.deskQueuesDone);
                             this.desk_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
+
                             removeLoarder();
-                            $('.confirm-done-close').trigger('click');
+
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
                             }else{
                                 addAlert('danger', response.data.message.text);
                             }
+
+                            $('.confirm-done-close').trigger('click');
                         })
                         .catch((data) => {
                             removeLoarder();

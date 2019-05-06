@@ -11,7 +11,7 @@ class RoomQueue extends Model
      *
      * @var array
      */
-    protected $fillable = ['floor_id', 'queue_number', 'status'];
+    protected $fillable = ['floor_id', 'room_id', 'queue_number', 'status'];
 
     /**
      * The attributes that should be hidden for arrays.

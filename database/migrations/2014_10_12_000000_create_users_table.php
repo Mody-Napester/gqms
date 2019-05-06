@@ -23,13 +23,13 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
             $table->integer('created_by');
             $table->integer('updated_by');
             $table->integer('status');
             $table->integer('type');
             $table->string('api_token');
             $table->boolean('available')->default(0)->nullable();
+            $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
         });

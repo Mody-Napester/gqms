@@ -426,8 +426,8 @@
 
                 // Websockets
                 listen(){
-                    Echo.channel('available-room-queue-{{ $room->floor_id }}')
-                        .listen('QueueStatus', (response) => {
+                    Echo.channel('available-room-queue-{{ $room->floor_id }}-{{ $room->id }}')
+                        .listen('RoomQueueStatus', (response) => {
                             $('#all-queues').html('');
                             $('#all-queues').append(response.view);
                         });

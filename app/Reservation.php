@@ -11,7 +11,7 @@ class Reservation extends Model
      *
      * @var array
      */
-    protected $fillable = ['desk_queue_id', 'room_queue_id','source_reservation_serial', 'created_at', 'updated_at'];
+    protected $fillable = ['room_id', 'desk_queue_id', 'room_queue_id','source_reservation_serial', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.

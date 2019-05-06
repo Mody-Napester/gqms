@@ -10,6 +10,7 @@ use App\Events\QueueStatus;
 use App\Events\RoomQueueStatus;
 use App\Floor;
 use App\Reservation;
+use App\Room;
 use App\RoomQueue;
 use App\Screen;
 use App\User;
@@ -18,6 +19,15 @@ use Illuminate\Http\Request;
 
 class DeskQueuesController extends Controller
 {
+    public $roomQueuesController;
+    /*
+     * Construct
+     * */
+    public function __construct()
+    {
+        $this->roomQueuesController = new RoomQueuesController();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -344,7 +354,7 @@ class DeskQueuesController extends Controller
     /**
      * Done Queue Number.
      */
-    public function checkReservationSerial($reservation_serial){
+    public function checkReservationSerial($reservation_serial, $room_uuid){
         $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
         if ($reservation){
             if(empty($reservation->desk_queue_id)){
@@ -372,11 +382,13 @@ class DeskQueuesController extends Controller
     /**
      * Done Queue Number.
      */
-    public function doneQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial)
+    public function doneQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial, $room_uuid)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
         }
+
+        $room = Room::getBy('uuid', $room_uuid);
 
         $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
 
@@ -413,28 +425,7 @@ class DeskQueuesController extends Controller
             /*
              * Handle Room Queues
              * */
-            // 1 - Get Reservation
-            $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
-
-            // 2 - Generate And Store Room Queue number
-            $roomQueue = RoomQueue::store([
-                'floor_id' => $data['desk']->floor_id,
-                'room_id' => $reservation->room_id,
-                'queue_number' => roomQueueNumberFormat($data['desk']->floor_id, $reservation->room_id,100),
-                'status' => config('vars.room_queue_status.waiting'),
-            ]);
-
-            // 3 - Update reservation
-            $updatedReservation = $reservation->update([
-                'desk_queue_id' => $deskQueue->id,
-                'room_queue_id' => $roomQueue->id,
-            ]);
-
-            // 4 - Websockets notification for rooms
-            if($updatedReservation){
-                $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['desk']->floor_id, $reservation->room_id);
-                event(new RoomQueueStatus($data['availableDeskQueue'], $data['desk']->floor_id, $reservation->room_id));
-            }
+            $this->roomQueuesController->storeNewQueue($reservation_serial, $room, $data['desk'], $deskQueue);
 
         }else{
             $data['message'] = [
@@ -450,11 +441,13 @@ class DeskQueuesController extends Controller
     /**
      * Done And Next Queue Number.
      */
-    public function doneAndNextQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial)
+    public function doneAndNextQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial, $room_uuid)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
         }
+
+        $room = Room::getBy('uuid', $room_uuid);
 
         $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
 
@@ -481,6 +474,12 @@ class DeskQueuesController extends Controller
                 'msg_status' => 1,
                 'text' => 'Queue was done successfully with getting next number',
             ];
+
+            /*
+             * Handle Room Queues
+             * */
+            $this->roomQueuesController->storeNewQueue($reservation_serial, $room, $data['desk'], $deskQueue);
+
         }else{
             $data['message'] = [
                 'msg_status' => 0,
