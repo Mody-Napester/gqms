@@ -35,8 +35,10 @@ Route::group([
     Route::get('desk/{desk_uuid}/next', 'DeskQueuesController@callNextQueueNumber')->name('desks.queues.callNextQueueNumber');
     Route::get('desk/{desk_uuid}/next-again', 'DeskQueuesController@callNextQueueNumberAgain')->name('desks.queues.callNextQueueNumberAgain');
 
-    Route::get('desk/{desk_uuid}/{desk_queue_uuid}/done', 'DeskQueuesController@doneQueueNumber')->name('desks.queues.doneQueueNumber');
-    Route::get('desk/{desk_uuid}/{desk_queue_uuid}/done-and-next', 'DeskQueuesController@doneAndNextQueueNumber')->name('desks.queues.doneAndNextQueueNumber');
+    Route::get('desk/reservation/{reservation_serial}/check', 'DeskQueuesController@checkReservationSerial')->name('desks.queues.checkReservationSerial');
+
+    Route::get('desk/{desk_uuid}/{desk_queue_uuid}/{reservation_serial}/done', 'DeskQueuesController@doneQueueNumber')->name('desks.queues.doneQueueNumber');
+    Route::get('desk/{desk_uuid}/{desk_queue_uuid}/{reservation_serial}/done-and-next', 'DeskQueuesController@doneAndNextQueueNumber')->name('desks.queues.doneAndNextQueueNumber');
 
     // Rooms Actions
     Route::get('room/{room_uuid}/{room_queue_uuid}/skip', 'RoomQueuesController@skipQueueNumber')->name('rooms.queues.skipQueueNumber');

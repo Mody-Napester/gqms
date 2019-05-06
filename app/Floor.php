@@ -87,6 +87,11 @@ class Floor extends Model
         return $this->hasMany('App\Desk');
     }
 
+    // Rooms Relation
+    public function rooms(){
+        return $this->hasMany('App\Room');
+    }
+
     // Desks Relation
     public function screens(){
         return $this->hasMany('App\Screen');

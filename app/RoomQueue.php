@@ -75,9 +75,9 @@ class RoomQueue extends Model
     /**
      *  Get Available Room Queue
      */
-    public static function getAvailableRoomQueueView($floor_id)
+    public static function getAvailableRoomQueueView($floor_id, $room_id)
     {
-        $data['roomQueues'] = self::getRoomQueues($floor_id);
+        $data['roomQueues'] = self::getRoomQueues($floor_id, $room_id);
         $data['roomQueueStatues'] = QueueStatus::getQueueStatuses('room');
         $availableRoomQueue = view('rooms._available_room_queue', $data)->render();
 
@@ -87,9 +87,10 @@ class RoomQueue extends Model
     /**
      *  Get All Room Queues
      */
-    public static function getRoomQueues($floor_id)
+    public static function getRoomQueues($floor_id, $room_id)
     {
         $roomQueues = self::where('floor_id', $floor_id)
+            ->where('room_id', $room_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->orderBy('id', 'DESC')
             ->get();

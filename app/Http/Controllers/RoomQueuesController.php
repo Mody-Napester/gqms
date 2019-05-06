@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\RoomQueue;
 use Illuminate\Http\Request;
 
 class RoomQueuesController extends Controller
@@ -17,13 +18,11 @@ class RoomQueuesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Store New Room Queue.
      */
-    public function create()
+    public function storeNewQueue()
     {
-        //
+
     }
 
     /**

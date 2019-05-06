@@ -19,7 +19,7 @@ class CreateRoomQueuesTable extends Migration
             $table->integer('floor_id');
             $table->integer('room_id')->nullable();
             $table->string('queue_number');
-            $table->integer('status'); // 1 Waiting, 2 Call, 3 Pass == Skip, 4 Done,5 Call from pass
+            $table->integer('status'); // 1 Waiting, 2 Call, 3 Skip, 4 Done ,5 Call from pass
             $table->timestamps();
         });
     }

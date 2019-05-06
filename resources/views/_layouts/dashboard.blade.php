@@ -306,68 +306,6 @@
         <script src="{{ url('assets/js/jquery.app.js') }}"></script>
         <script src="{{ url('assets/js/script.js') }}"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-
-                // Default Datatable
-                $('#datatable').DataTable();
-
-                //Buttons examples
-                var table = $('#datatable-buttons').DataTable({
-                    lengthChange: false,
-                    buttons: ['copy', 'excel', 'pdf']
-                });
-
-                // Key Tables
-
-                $('#key-table').DataTable({
-                    keys: true
-                });
-
-                // Responsive Datatable
-                $('#responsive-datatable').DataTable();
-
-                // Multi Selection Datatable
-                $('#selection-datatable').DataTable({
-                    select: {
-                        style: 'multi'
-                    }
-                });
-
-                table.buttons().container()
-                    .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
-            } );
-
-            $(document).ready(function() {
-                $('form').parsley();
-            });
-
-            // Open
-            $('body').on('click', '.queue-settings', function() {
-                $('.queue-settings-container').show(0);
-                $('.queue-settings-container').animate({
-                    opacity:1
-                }, 500);
-
-                $('.queue-settings-btns').animate({
-                    marginRight: 0
-                }, 300);
-            });
-
-            // Close
-            $('body').on('click', '.queue-settings-close', function() {
-                $('.queue-settings-btns').animate({
-                    marginRight: '-100%'
-                }, 300);
-
-                $('.queue-settings-container').animate({
-                    opacity:0
-                }, 500);
-
-                $('.queue-settings-container').hide(0);
-            });
-        </script>
-
         <script src="{{ url('assets/js/loader.js') }}"></script>
         <script src="{{ url('assets/js/alerts.js') }}"></script>
 

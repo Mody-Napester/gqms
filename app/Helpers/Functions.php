@@ -170,3 +170,26 @@ function deskQueueNumberFormat($floor_id, $scheme){
 
     return \App\Floor::getBy('id', $floor_id)->name_en . '-' . $lastNumber;
 }
+
+// Room Queue Number Format
+function roomQueueNumberFormat($floor_id, $room_id, $scheme){
+    $lastNumber = \App\RoomQueue::getRoomQueues($floor_id, $room_id)->count() + 1;
+//    $lastNumber = 101; // Testing
+
+    $lastNumberZeros = '';
+
+    if($lastNumber < $scheme){
+        $schemeLength = strlen((string)$scheme);
+        $lastNumberLength = strlen((string)$lastNumber);
+
+        $zerosLength = $schemeLength - $lastNumberLength;
+
+        for ($i=0; $i < $zerosLength; $i++) {
+            $lastNumberZeros .= 0;
+        }
+
+        $lastNumber = $lastNumberZeros . $lastNumber;
+    }
+
+    return \App\Floor::getBy('id', $floor_id)->name_en . '-' . \App\Room::getBy('id', $room_id)->name_en .'-' . $lastNumber;
+}

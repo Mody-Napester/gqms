@@ -97,8 +97,27 @@
                 </div>
 
                 <div class="confirm-done-container">
+                    <div class="confirm-done-close"><i class="fa fa-fw fa-close"></i></div>
                     <div class="confirm-done">
-
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-2">
+                                    <input v-model="reservation_serial" class="form-control" type="text" placeholder="Enter Reservation Serial .." name="reservation_serial" id="reservation_serial">
+                                    <div class="invalid-feedback reservation_serial_feedback"></div>
+                                </div>
+                                <div>
+                                    <select v-model="room_id" name="room_id" data-placeholder="Choose ..." class="select2">
+                                        @foreach($desk->floor->rooms as $room)
+                                        <option value="{{ $room->uuid }}">{{ $room->name_en }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback room_id_feedback"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button style="height: 100%;font-size: 18px;" v-on:click="confirmDoneOrDoneAndNext()" class="btn btn-primary btn-block"><i class="fa fa-fw fa-save"></i> Confirm</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -130,10 +149,10 @@
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button v-if="active_btn && done_status" @click.prevent="done()" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-if="active_btn && done_status" type="button" class="confirm btn btn-block btn-success waves-effect waves-light">
                                         Done <i class="fa fa-fw fa-check"></i>
                                     </button>
-                                    <button v-if="active_btn && !done_status" @click.prevent="doneAndNext()" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-if="active_btn && !done_status" type="button" class="confirm btn btn-block btn-success waves-effect waves-light">
                                         Done And Next <i class="fa fa-fw fa-check"></i>
                                     </button>
                                 </div>
@@ -205,6 +224,51 @@
                     }
                 });
             })
+
+            // Confirm Open
+            $('body').on('click', '.confirm', function () {
+                $('.confirm-done-container').show(0);
+                $('.confirm-done-container').animate({
+                    opacity:1
+                }, 100);
+            });
+
+            // Confirm Close
+            $('body').on('click', '.confirm-done-close', function() {
+                $('.confirm-done-container').animate({
+                    opacity:0
+                }, 100);
+
+                $('.confirm-done-container').hide(0);
+
+                $('#reservation_serial').removeClass('is-invalid');
+                $('.invalid-feedback').hide(0);
+            });
+
+            // Open
+            $('body').on('click', '.queue-settings', function() {
+                $('.queue-settings-container').show(0);
+                $('.queue-settings-container').animate({
+                    opacity:1
+                }, 500);
+
+                $('.queue-settings-btns').animate({
+                    marginRight: 0
+                }, 300);
+            });
+
+            // Close
+            $('body').on('click', '.queue-settings-close', function() {
+                $('.queue-settings-btns').animate({
+                    marginRight: '-100%'
+                }, 300);
+
+                $('.queue-settings-container').animate({
+                    opacity:0
+                }, 500);
+
+                $('.queue-settings-container').hide(0);
+            });
         })
     </script>
     <script>
@@ -216,9 +280,45 @@
                 waiting_time : '{{ ($currentDeskQueueNumber)? nice_time($currentDeskQueueNumber->created_at) : '00:00' }}',
                 done_status: false,
                 skip_status: false,
+                reservation_serial: '',
+                room_id: '',
             },
             methods : {
                 // Buttons
+                confirmDoneOrDoneAndNext(){
+                    if (this.reservation_serial.length > 0){
+                        var url = '{{ url('dashboard') }}/desk/reservation/' + this.reservation_serial + '/check';
+
+                        axios.get(url)
+                            .then((response) => {
+                                if(response.data.message.msg_status == 1){
+                                    if(this.done_status = true){
+                                        this.done();
+                                    }
+                                    else if(this.done_status = true){
+                                        this.doneAndNext();
+                                    }
+
+                                    this.reservation_serial = '';
+
+                                    $('#reservation_serial').removeClass('is-invalid');
+                                    $('.reservation_serial_feedback').hide(0);
+
+                                }else{
+                                    $('#reservation_serial').addClass('is-invalid');
+                                    $('.reservation_serial_feedback').text(response.data.message.text).show(0);
+                                }
+                            })
+                            .catch((data) => {
+                                console.log(data);
+                            });
+
+                    }else {
+                        $('#reservation_serial').addClass('is-invalid');
+                        $('.reservation_serial_feedback').text('Enter reservation serial').show(0);
+                    }
+                },
+
                 next(){
                     addLoader('.current-queue-div');
                     var url = '{{ route('desks.queues.callNextQueueNumber', $desk->uuid) }}';
@@ -311,9 +411,10 @@
                             removeLoarder();
                         });
                 },
+
                 done(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/done';
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_serial + '/done';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text('-');
@@ -324,6 +425,8 @@
                             this.active_btn = false;
 
                             removeLoarder();
+
+                            $('.confirm-done-close').trigger('click');
 
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
@@ -347,7 +450,7 @@
                             this.desk_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
                             removeLoarder();
-
+                            $('.confirm-done-close').trigger('click');
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
                             }else{
@@ -358,6 +461,7 @@
                             removeLoarder();
                         });
                 },
+
                 callSkippedAgain(skipped_queue_uuid){
                     addLoader();
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + skipped_queue_uuid + '/call-skipped';
