@@ -354,18 +354,32 @@ class DeskQueuesController extends Controller
     /**
      * Done Queue Number.
      */
-    public function checkReservationSerial($reservation_serial, $room_uuid){
+    public function checkReservationSerial($reservation_serial){
         $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
+
         if ($reservation){
-            if(empty($reservation->desk_queue_id)){
-                $data['message'] = [
-                    'msg_status' => 1,
-                    'text' => 'Reservation exists',
-                ];
+            $room = $reservation->doctor->user->room;
+            if ($room){
+                if(empty($reservation->desk_queue_id)){
+                    $data['serial'] = $reservation->source_reservation_serial;
+                    $data['patient'] = $reservation->source_patient_name;
+                    $data['doctor'] = $reservation->doctor->name_en;
+                    $data['clinic'] = $reservation->clinic->name_en;
+
+                    $data['message'] = [
+                        'msg_status' => 1,
+                        'text' => 'Reservation exists',
+                    ];
+                }else{
+                    $data['message'] = [
+                        'msg_status' => 0,
+                        'text' => 'Reservation already routed to room ' . $room->name_en,
+                    ];
+                }
             }else{
                 $data['message'] = [
                     'msg_status' => 0,
-                    'text' => 'Reservation already routed to room',
+                    'text' => 'Reservation exists but doctor not available',
                 ];
             }
         }else{
@@ -382,13 +396,11 @@ class DeskQueuesController extends Controller
     /**
      * Done Queue Number.
      */
-    public function doneQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial, $room_uuid)
+    public function doneQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
         }
-
-        $room = Room::getBy('uuid', $room_uuid);
 
         $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
 
@@ -425,7 +437,7 @@ class DeskQueuesController extends Controller
             /*
              * Handle Room Queues
              * */
-            $this->roomQueuesController->storeNewQueue($reservation_serial, $room, $data['desk'], $deskQueue);
+            $this->roomQueuesController->storeNewQueue($reservation_serial, $data['desk'], $deskQueue);
 
         }else{
             $data['message'] = [
@@ -441,13 +453,11 @@ class DeskQueuesController extends Controller
     /**
      * Done And Next Queue Number.
      */
-    public function doneAndNextQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial, $room_uuid)
+    public function doneAndNextQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
         }
-
-        $room = Room::getBy('uuid', $room_uuid);
 
         $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
 
@@ -478,7 +488,7 @@ class DeskQueuesController extends Controller
             /*
              * Handle Room Queues
              * */
-            $this->roomQueuesController->storeNewQueue($reservation_serial, $room, $data['desk'], $deskQueue);
+            $this->roomQueuesController->storeNewQueue($reservation_serial, $data['desk'], $deskQueue);
 
         }else{
             $data['message'] = [

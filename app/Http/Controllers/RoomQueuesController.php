@@ -24,24 +24,23 @@ class RoomQueuesController extends Controller
     /**
      * Store New Room Queue.
      */
-    public function storeNewQueue($reservation_serial, $room, $desk, $deskQueue)
+    public function storeNewQueue($reservation_serial, $desk, $deskQueue)
     {
         // 1 - Get Reservation
         $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
 
+        $room = $reservation->doctor->user->room;
+
         // 2 - Generate And Store Room Queue number
         $roomQueue = RoomQueue::store([
             'floor_id' => $desk->floor_id,
-            'room_id' => $room->id,
-            'queue_number' => roomQueueNumberFormat($desk->floor_id, $room->id,100),
+            'queue_number' => $reservation->source_queue_number,
             'status' => config('vars.room_queue_status.waiting'),
         ]);
 
         // 3 - Update reservation
         $updatedReservation = $reservation->update([
-            'room_id' => $room->id,
             'desk_queue_id' => $deskQueue->id,
-            'room_queue_id' => $roomQueue->id,
         ]);
 
         // 4 - Websockets notification for rooms

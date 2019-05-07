@@ -72,8 +72,13 @@ class Reservation extends Model
         return self::where($by, $resource)->first();
     }
 
-    // Desk Queue Relation
-    public function floor(){
-        return $this->belongsTo('App\Floor');
+    // Doctor Relation
+    public function doctor(){
+        return $this->belongsTo('App\Doctor');
+    }
+
+    // Clinic Relation
+    public function clinic(){
+        return $this->belongsTo('App\Clinic');
     }
 }

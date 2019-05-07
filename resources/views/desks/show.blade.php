@@ -99,22 +99,42 @@
                 <div class="confirm-done-container">
                     <div class="confirm-done-close"><i class="fa fa-fw fa-close"></i></div>
                     <div class="confirm-done">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="mb-2">
-                                    <input v-model="reservation_serial" class="form-control" type="text" placeholder="Enter Reservation Serial .." name="reservation_serial" id="reservation_serial">
-                                    <div class="invalid-feedback reservation_serial_feedback"></div>
-                                </div>
-                                <div>
-                                    <select v-model="selected_room" name="room_uuid" class="selected_room form-control">
-                                        <option value="choose" disabled>Choose Room..</option>
-                                        <option v-for="room in rooms" v-bind:value="room.uuid" >@{{ room.name_en }}</option>
-                                    </select>
-                                    <div class="invalid-feedback selected_room_feedback"></div>
+                        <div class="">
+                            <div class="input-group">
+                                <input v-model="reservation_serial" placeholder="Enter Reservation Serial .."
+                                       name="reservation_serial" id="reservation_serial" type="text"
+                                       class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button v-on:click="checkReservationSerial()" class="btn btn-secondary waves-effect waves-light" type="button"><i class="fa fa-fw fa-search"></i> Search</button>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <button style="height: 100%;font-size: 18px;" v-on:click="confirmDoneOrDoneAndNext()" class="btn btn-primary btn-block"><i class="fa fa-fw fa-save"></i> Confirm</button>
+                            <div class="invalid-feedback reservation_serial_feedback"></div>
+                            {{--<div>--}}
+                                {{--<select v-model="selected_room" name="room_uuid" class="selected_room form-control">--}}
+                                    {{--<option value="choose" disabled>Choose Room..</option>--}}
+                                    {{--<option v-for="room in rooms" v-bind:value="room.uuid" >@{{ room.name_en }}</option>--}}
+                                {{--</select>--}}
+                                {{--<div class="invalid-feedback selected_room_feedback"></div>--}}
+                            {{--</div>--}}
+                        </div>
+
+                        <div v-if="reservationDiv" class="card-box get-patient-data mt-3 mb-0">
+                            <table class="table table-sm table-striped table-bordered">
+                                <tr>
+                                    <td>Serial</td>
+                                    <td>@{{ serial }}</td>
+                                    <td>Doctor</td>
+                                    <td>@{{ doctor }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Patient</td>
+                                    <td>@{{ patient }}</td>
+                                    <td>Clinic</td>
+                                    <td>@{{ clinic }}</td>
+                                </tr>
+                            </table>
+                            <div class="text-right">
+                                <button v-on:click="confirmDoneOrDoneAndNext()" class="btn btn-primary"><i class="fa fa-fw fa-save"></i> Confirm</button>
                             </div>
                         </div>
                     </div>
@@ -281,54 +301,71 @@
                 skip_status: false,
                 reservation_serial: '',
                 rooms: {!! $desk->floor->rooms !!},
-                selected_room: 'choose',
+                reservationDiv: false,
+                serial: '-',
+                patient: '-',
+                doctor: '-',
+                clinic: '-',
             },
             methods : {
                 // Buttons
-                confirmDoneOrDoneAndNext(){
-                    if (this.reservation_serial.length > 0 && this.selected_room.length != 'choose' && this.selected_room.length > 0){
-                        var url = '{{ url('dashboard') }}/desk/reservation/' + this.reservation_serial + '/' + this.selected_room + '/check';
+                checkReservationSerial(){
+                    addLoader('.current-queue-div');
+                    if (this.reservation_serial.length > 0){
+                        var url = '{{ url('dashboard') }}/desk/reservation/' + this.reservation_serial + '/check';
 
                         axios.get(url)
                             .then((response) => {
-                                if(response.data.message.msg_status == 1){
-                                    if(this.done_status = true){
-                                        this.done();
-                                    }
-                                    else if(this.done_status = true){
-                                        this.doneAndNext();
-                                    }
+                                console.log(response);
 
-                                    this.reservation_serial = '';
+                                if(response.data.message.msg_status == 1){
+
+                                    this.reservationDiv = true;
+
+                                    this.reservation_serial = response.data.serial;
+
+                                    this.serial = response.data.serial;
+                                    this.patient = response.data.patient;
+                                    this.doctor = response.data.doctor;
+                                    this.clinic = response.data.clinic;
 
                                     $('#reservation_serial').removeClass('is-invalid');
                                     $('.reservation_serial_feedback').text('').hide(0);
 
-                                    $('.selected_room').removeClass('is-invalid');
-                                    $('.selected_room_feedback').text('').hide(0);
-
+                                    removeLoarder();
                                 }else{
+                                    this.reservationDiv = false;
+
                                     $('#reservation_serial').addClass('is-invalid');
                                     $('.reservation_serial_feedback').text(response.data.message.text).show(0);
+
+                                    removeLoarder();
                                 }
 
-                                this.selected_room = 'choose';
                             })
                             .catch((data) => {
                                 console.log(data);
                             });
 
-                        $('.selected_room').removeClass('is-invalid');
-                        $('.selected_room_feedback').text('').hide(0);
-
                     }else {
-                        if (this.selected_room.length != 'choose'){
-                            $('.selected_room').addClass('is-invalid');
-                            $('.selected_room_feedback').text('Please select room').show(0);
-                        }
+                        removeLoarder();
                         $('#reservation_serial').addClass('is-invalid');
                         $('.reservation_serial_feedback').text('Enter reservation serial').show(0);
                     }
+                },
+                confirmDoneOrDoneAndNext(){
+                    if(this.done_status = true){
+                        this.done();
+                    }
+                    else if(this.done_status = false){
+                        this.doneAndNext();
+                    }
+
+                    this.reservation_serial = '';
+                    this.reservationDiv = false,
+
+                    $('#reservation_serial').removeClass('is-invalid');
+                    $('.reservation_serial_feedback').text('').hide(0);
                 },
 
                 next(){
@@ -426,7 +463,7 @@
 
                 done(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_serial + '/' + this.selected_room + '/done';
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_serial + '/done';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text('-');
@@ -453,7 +490,7 @@
                 },
                 doneAndNext(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid  + '/' + this.selected_room + '/done-and-next';
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid  + '/done-and-next';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text(response.data.nextQueue.queue_number);
