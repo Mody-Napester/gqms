@@ -263,31 +263,6 @@
                 $('#reservation_serial').removeClass('is-invalid');
                 $('.reservation_serial_feedback').text('').hide(0);
             });
-
-            // Open
-            $('body').on('click', '.queue-settings', function() {
-                $('.queue-settings-container').show(0);
-                $('.queue-settings-container').animate({
-                    opacity:1
-                }, 500);
-
-                $('.queue-settings-btns').animate({
-                    marginRight: 0
-                }, 300);
-            });
-
-            // Close
-            $('body').on('click', '.queue-settings-close', function() {
-                $('.queue-settings-btns').animate({
-                    marginRight: '-100%'
-                }, 300);
-
-                $('.queue-settings-container').animate({
-                    opacity:0
-                }, 500);
-
-                $('.queue-settings-container').hide(0);
-            });
         })
     </script>
     <script>

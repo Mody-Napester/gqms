@@ -7,7 +7,7 @@
     <div class="container-fluid mt-2">
         <div class="row">
             <!-- Doctor Queue -->
-            @include('screens.reception._doctor_queue')
+            @include('screens.reception._room_queue')
 
             <!-- Desk Queue -->
             @include('screens.reception._desk_queue')

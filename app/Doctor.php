@@ -77,6 +77,11 @@ class Doctor extends Model
         return $this->belongsTo('App\User');
     }
 
+    // Clinic Relation
+    public function clinic(){
+        return $this->belongsTo('App\Clinic', 'source_clinic_id');
+    }
+
     // Reservations Relation
     public function reservations(){
         return $this->hasMany('App\Reservation');

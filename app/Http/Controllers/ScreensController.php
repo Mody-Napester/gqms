@@ -110,8 +110,12 @@ class ScreensController extends Controller
             return view('screens.kiosk.show', $data);
         }
         else if($data['screen']->screen_type_id == config('vars.screen_types.reception')){
-            $data['logegdInUsers'] = Desk::logegdInUsers('desk_id');
+            $data['logegdInDeskUsers'] = Desk::logegdInUsers('desk_id');
+            $data['logegdInRoomUsers'] = Room::logegdInUsers('room_id');
+
             $data['desks'] = Desk::where('floor_id', $data['screen']->floor_id)->get();
+            $data['room'] = Room::where('floor_id', $data['screen']->floor_id)->get();
+
             return view('screens.reception.show', $data);
         }else{
             return redirect(route('dashboard.index'));

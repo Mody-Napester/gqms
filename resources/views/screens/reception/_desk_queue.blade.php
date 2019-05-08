@@ -9,7 +9,7 @@
     <!-- Start Reservation Row -->
         <div class="res-row row m-0">
             <div class="col-md-6 p-0">
-                <div id="{{ $desk->uuid }}" class="bg-gray-1 section mb-2 @if(!in_array($desk->id , $logegdInUsers)) canceled-res @endif">
+                <div id="{{ $desk->uuid }}" class="bg-gray-1 section mb-2 @if(!in_array($desk->id , $logegdInDeskUsers)) canceled-res @endif">
                     <div class="txt-3 text-center">
                         <div class="row">
                             <div class="col-md-6">

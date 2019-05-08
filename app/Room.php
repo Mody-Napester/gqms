@@ -90,8 +90,22 @@ class Room extends Model
 
     }
 
+    /**
+     *  Logged in users
+     */
+    public static function logegdInUsers($filed)
+    {
+        $loggedInUsers = User::where('room_id', '<>', '')->get();
+        return $loggedInUsers->pluck($filed)->toArray();
+    }
+
     // Floor Relation
     public function floor(){
         return $this->belongsTo('App\Floor');
+    }
+
+    // User Relation
+    public function user(){
+        return $this->hasOne('App\User');
     }
 }

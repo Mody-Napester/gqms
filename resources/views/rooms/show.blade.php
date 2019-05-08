@@ -103,8 +103,10 @@
                     <b class="pull-right">
                         Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
 
-                        <span v-on:click="next()" v-if="!next_status" class="get-next" href="">Next patient <i class="fa fa-refresh fa-fw"></i></span>
-                        <span v-on:click="call()" v-if="next_status" class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>
+                        <span v-on:click="next()" v-if="!next_status" class="get-next" href="">Call Next <i class="fa fa-refresh fa-fw"></i></span>
+                        <span v-on:click="call()" v-if="next_status" class="get-next" href="">Call Next Again <i class="fa fa-refresh fa-fw"></i></span>
+
+                        <span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>
 
                     </b>
                 </h4>

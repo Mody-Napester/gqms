@@ -106,6 +106,22 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     *  Relationship with doctor
+     */
+    public function doctor()
+    {
+        return $this->hasOne('App\Doctor');
+    }
+
+    /**
+     *  Relationship with clinic
+     */
+    public function clinic()
+    {
+        return $this->hasOne('App\Clinic');
+    }
+
+    /**
      *  Relationship with roles
      */
     public function roles()
