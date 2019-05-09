@@ -75,6 +75,21 @@ class RoomQueue extends Model
     /**
      *  Get Available Room Queue
      */
+    public static function getNextRoomQueueTurn($room)
+    {
+        $data = self::where('floor_id', $room->floor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('room_id', $room->id)
+            ->where('status', config('vars.room_queue_status.waiting'))
+            ->first();
+
+        return $data;
+
+    }
+
+    /**
+     *  Get Available Room Queue
+     */
     public static function getAvailableRoomQueueView($floor_id, $room_id)
     {
         $data['roomQueues'] = self::getRoomQueues($floor_id, $room_id);

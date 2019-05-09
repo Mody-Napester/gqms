@@ -2,25 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Desk;
+use App\Room;
 use App\Events\RoomQueueStatus;
 use App\Reservation;
-use App\Room;
 use App\RoomQueue;
 use Illuminate\Http\Request;
 
 class RoomQueuesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Store New Room Queue.
      */
@@ -60,58 +49,70 @@ class RoomQueuesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Call Next Queue Number.
      */
-    public function store(Request $request)
+    public function callNext($room_uuid)
     {
-        //
+        $data['room'] = Room::getBy('uuid', $room_uuid);
+
+        if(!$data['room']){
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'No room nor doctor exists',
+            ];
+        }
+
+        $data['nextQueue'] = RoomQueue::getNextRoomQueueTurn($data['room']);
+
+        if($data['nextQueue']){
+            // Edit Status
+            $data['nextQueueUpdated'] = RoomQueue::edit([
+                'status' => config('vars.room_queue_status.called'),
+            ], $data['nextQueue']->id);
+
+            $roomQueueStatusDone = RoomQueueStatus::store([
+                'user_id' => auth()->user()->id,
+                'room_queue_id' => $data['nextQueue']->id,
+                'queue_status_id' => config('vars.room_queue_status.called'),
+            ]);
+
+            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id);
+
+            $data['waitingTime'] = nice_time($data['nextQueue']->created_at);
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Your next number has come',
+            ];
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Some thing error, please try again after few minutes',
+            ];
+        }
+
+        // Broadcast event
+        if (isset($data['nextRoomQueueUpdated'])){
+            event(new QueueStatus($data['availableRoomQueue'], $data['room']->floor_id));
+            event(new NextRoomQueue($data['room']->uuid, $data['nextQueue']->queue_number));
+        }
+
+        // Return
+        return $data;
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Call Next Queue Number.
      */
-    public function show($id)
+    public function callNextQueueNumber($room_uuid)
     {
-        //
-    }
+        if (!User::hasAuthority('use.room_queue')){
+            return redirect('/');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $data = $this->callNext($room_uuid);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        // Return
+        return response()->json($data);
     }
 }
