@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="table-detail text-right">
-                                    <h4 class="m-t-0 m-b-5"><b id="count-done">{{ $roomQueuesPatientOut }}</b></h4>
+                                    <h4 class="m-t-0 m-b-5"><b id="count-out">{{ $roomQueuesPatientOut }}</b></h4>
                                     <h5 class="text-muted m-b-0 m-t-0">Patient Out</h5>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                         Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
 
                         <span v-on:click="callNext()" v-if="!next_status" class="get-next" href="">Call Next <i class="fa fa-refresh fa-fw"></i></span>
-                        <span v-on:click="call()" v-if="next_status" class="get-next" href="">Call Next Again <i class="fa fa-refresh fa-fw"></i></span>
+                        <span v-on:click="callNextAgain()" v-if="next_status" class="get-next" href="">Call Next Again <i class="fa fa-refresh fa-fw"></i></span>
 
                         <span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>
 
@@ -118,23 +118,23 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <button v-if="skip_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                    <button v-on:click="skip()" v-if="skip_status && next_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip <i class="fa fa-fw fa-close"></i>
                                     </button>
-                                    <button v-if="!skip_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                    <button v-on:click="skipAndNext()" v-if="!skip_status && next_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip and next <i class="fa fa-fw fa-close"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button v-if="" type="button" class="btn btn-block btn-pink waves-effect waves-light">
+                                    <button v-on:click="patientIn()" v-if="next_status" type="button" class="btn btn-block btn-pink waves-effect waves-light">
                                         Patient in <i class="fa fa-fw fa-arrow-down"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button v-if="out_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-on:click="patientOut()" v-if="out_status && next_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Patient out <i class="fa fa-fw fa-arrow-up"></i>
                                     </button>
-                                    <button v-if="!out_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-on:click="patientOutAndNext()" v-if="!out_status && next_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Patient out and next <i class="fa fa-fw fa-arrow-up"></i>
                                     </button>
                                 </div>
@@ -213,11 +213,13 @@
             el : '#app',
             data : {
                 room_queue_uuid : '{{ ($currentRoomQueueNumber)? $currentRoomQueueNumber->uuid : '' }}',
-                active_btn : {{ ($currentRoomQueueNumber)? 'true' : 'false' }},
+                active_btn : {{ ($currentRoomQueueNumber && $currentRoomQueueNumber->room_queue_id != config('vars.room_queue_status.patient_in'))? 'true' : 'false' }},
                 waiting_time : '{{ ($currentRoomQueueNumber)? nice_time($currentRoomQueueNumber->created_at) : '00:00' }}',
                 out_status: false,
                 skip_status: false,
-                next_status: false,
+                next_status: {{ ($currentRoomQueueNumber && $currentRoomQueueNumber->room_queue_id != config('vars.room_queue_status.patient_in'))? 'true' : 'false' }},
+                room: '{{ $room->id }}',
+                floor: '{{ $room->floor_id }}',
             },
             methods : {
                 // Configs
@@ -242,7 +244,6 @@
                     var url = '{{ route('rooms.queues.callNextQueueNumber', $room->uuid) }}';
                     axios.get(url)
                         .then((response) => {
-                            console.log(response.data);
                             $('.current-queue').text(response.data.nextQueue.queue_number);
 
                             this.room_queue_uuid = response.data.nextQueue.uuid;
@@ -259,11 +260,10 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
-                call(){
+                callNextAgain(){
                     addLoader('.current-queue-div');
                     var url = '{{ route('rooms.queues.callNextQueueNumberAgain', $room->uuid) }}';
                     axios.get(url)
@@ -276,7 +276,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(data);
                             removeLoarder();
                         });
                 },
@@ -289,9 +288,10 @@
                             $('.current-queue').text('-');
 
                             $('#count-skip').text(response.data.roomQueuesSkip);
-                            $('#count-done').text(response.data.roomQueuesDone);
+                            $('#count-out').text(response.data.roomQueuesOut);
 
                             this.active_btn = false;
+                            this.next_status = false;
 
                             removeLoarder();
 
@@ -314,9 +314,10 @@
                             console.log(response.data);
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.roomQueuesSkip);
-                            $('#count-done').text(response.data.roomQueuesDone);
+                            $('#count-out').text(response.data.roomQueuesOut);
                             this.room_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
+                            this.next_status = false;
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
@@ -330,17 +331,37 @@
                             removeLoarder();
                         });
                 },
-                in(){
+                patientIn(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/done';
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/in';
+                    axios.get(url)
+                        .then((response) => {
+
+                            removeLoarder();
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+                        })
+                        .catch((data) => {
+                            console.log(0, data);
+                            removeLoarder();
+                        });
+                },
+                patientOut(){
+                    addLoader('.current-queue-div');
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/out';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text('-');
 
                             $('#count-skip').text(response.data.roomQueuesSkip);
-                            $('#count-done').text(response.data.roomQueuesDone);
+                            $('#count-out').text(response.data.roomQueuesOut);
 
                             this.active_btn = false;
+                            this.next_status = false;
 
                             removeLoarder();
 
@@ -355,41 +376,17 @@
                             removeLoarder();
                         });
                 },
-                out(){
+                patientOutAndNext(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/done';
-                    axios.get(url)
-                        .then((response) => {
-                            $('.current-queue').text('-');
-
-                            $('#count-skip').text(response.data.roomQueuesSkip);
-                            $('#count-done').text(response.data.roomQueuesDone);
-
-                            this.active_btn = false;
-
-                            removeLoarder();
-
-                            if(response.data.message.msg_status == 1){
-                                addAlert('success', response.data.message.text);
-                            }else{
-                                addAlert('danger', response.data.message.text);
-                            }
-                        })
-                        .catch((data) => {
-                            console.log(0, data);
-                            removeLoarder();
-                        });
-                },
-                outAndNext(){
-                    addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/done-and-next';
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/out-and-next';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.roomQueuesSkip);
-                            $('#count-done').text(response.data.roomQueuesDone);
+                            $('#count-out').text(response.data.roomQueuesOut);
                             this.room_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
+                            this.next_status = false;
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
@@ -402,6 +399,7 @@
                             removeLoarder();
                         });
                 },
+
                 callSkippedAgain(skipped_queue_uuid){
                     addLoader();
                     var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + skipped_queue_uuid + '/call-skipped';
@@ -428,31 +426,11 @@
 
                 // Websockets
                 listen(){
-                    Echo.channel('available-room-queue-{{ $room->floor_id }}-{{ $room->id }}')
+                    Echo.channel('available-room-queue-' + this.floor + '-' + this.room)
                         .listen('RoomQueueStatus', (response) => {
                             $('#all-queues').html('');
                             $('#all-queues').append(response.view);
                         });
-                },
-
-                searchFunction(){
-                    var value = $(this).val();
-
-                    $("#searchTable tbody tr").each(function(index) {
-                        if (index != 0) {
-
-                            $row = $(this);
-
-                            var id = $row.find("td:first").text();
-
-                            if (id.indexOf(value) != 0) {
-                                $(this).hide();
-                            }
-                            else {
-                                $(this).show();
-                            }
-                        }
-                    });
                 }
             },
             mounted() {

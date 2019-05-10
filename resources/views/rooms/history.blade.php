@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') Desk Queue History @endsection
+@section('title') Room Queue History @endsection
 
 @section('content')
 
@@ -8,10 +8,10 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <h4 class="page-title">Desk Queue History</h4>
+            <h4 class="page-title">Room Queue History</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
-                <li class="breadcrumb-item"><a href="#">Desks</a></li>
+                <li class="breadcrumb-item"><a href="#">Rooms</a></li>
                 <li class="breadcrumb-item active">History</li>
             </ol>
 
@@ -23,10 +23,10 @@
             <div class="card-box">
                 <h4 class="m-t-0 header-title">Search and filter</h4>
                 <p class="text-muted font-14 m-b-30">
-                    Here you can filter and search on desk queues.
+                    Here you can filter and search on room queues.
                 </p>
 
-                @include('desks._desk_queue_history_filter')
+                @include('rooms._room_queue_history_filter')
             </div>
         </div>
         <!-- end card-box -->
@@ -35,7 +35,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card-box table-responsive">
-                <h4 class="m-t-0 header-title">All Desks</h4>
+                <h4 class="m-t-0 header-title">All Rooms</h4>
                 <p class="text-muted font-14 m-b-30">
                     Here you will find all the resources to make actions on them.
                 </p>
@@ -45,7 +45,7 @@
                         <tr>
                             <th>Queue</th>
                             <th>Floor</th>
-                            <th>Current Desk</th>
+                            <th>Current Room</th>
                             <th>Current Status</th>
                             <th>Created at</th>
                             <th class="text-center">History</th>
@@ -53,20 +53,20 @@
                     </thead>
 
                     <tbody>
-                        @foreach($deskQueues as $deskQueue)
+                        @foreach($roomQueues as $roomQueue)
                             <tr>
-                                <td>{{ $deskQueue->queue_number }}</td>
-                                <td>{{ $deskQueue->floor->name_en }}</td>
-                                <td>{{ ($deskQueue->desk)? $deskQueue->desk->name_en : '' }}</td>
+                                <td>{{ $roomQueue->queue_number }}</td>
+                                <td>{{ $roomQueue->floor->name_en }}</td>
+                                <td>{{ ($roomQueue->room)? $roomQueue->room->name_en : '' }}</td>
                                 <td>
-                                    <span class="label {{ $deskQueue->queueStatus->class }}">
-                                        {{ $deskQueue->queueStatus->name_en }}
+                                    <span class="label {{ $roomQueue->queueStatus->class }}">
+                                        {{ $roomQueue->queueStatus->name_en }}
                                     </span>
                                 </td>
-                                <td>{{ $deskQueue->created_at }}</td>
+                                <td>{{ $roomQueue->created_at }}</td>
                                 <td class="text-center">
-                                    @if($deskQueue->status != config('vars.desk_queue_status.waiting'))
-                                        <a href="{{ route('desks.queues.deskQueueSingleHistory', [$deskQueue->uuid]) }}" class="btn history-modal btn-warning waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Show</a>
+                                    @if($roomQueue->status != config('vars.room_queue_status.waiting'))
+                                        <a href="{{ route('rooms.queues.roomQueueSingleHistory', [$roomQueue->uuid]) }}" class="btn history-modal btn-warning waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Show</a>
                                     @endif
                                 </td>
                             </tr>

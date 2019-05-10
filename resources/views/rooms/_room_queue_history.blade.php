@@ -5,7 +5,7 @@
         <th>Date</th>
     </tr>
 
-    @foreach($deskQueue->deskQueueStatusHistories as $history)
+    @foreach($roomQueue->roomQueueStatusHistories as $history)
         <tr>
             <td>
                 <span class="label {{ \App\QueueStatus::where('id', $history->queue_status_id)->first()->class }}">

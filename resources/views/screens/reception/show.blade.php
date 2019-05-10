@@ -36,9 +36,27 @@
             },
             methods : {
                 listen(){
+                    // Flash Desk Queue
                     Echo.channel('desk-queue-screen')
                         .listen('NextDeskQueue', (response) => {
                             var targetEl = $('#' + response.desk + ' .number-app');
+
+                            targetEl.text(response.queue);
+
+                            targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
+                                targetEl.removeClass( "bounce-class" );
+                            });
+
+                            {{--PlaySound('{{ url('assets/sounds/call_1.wav') }}');--}}
+                            document.getElementById('call_sound').play();
+
+                            console.log(response);
+                        });
+
+                    // Flash Room Queue
+                    Echo.channel('room-queue-screen')
+                        .listen('NextRoomQueue', (response) => {
+                            var targetEl = $('#' + response.room + ' .number-app');
 
                             targetEl.text(response.queue);
 

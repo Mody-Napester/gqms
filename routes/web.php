@@ -48,8 +48,10 @@ Route::group([
     Route::get('room/{room_uuid}/next', 'RoomQueuesController@callNextQueueNumber')->name('rooms.queues.callNextQueueNumber');
     Route::get('room/{room_uuid}/next-again', 'RoomQueuesController@callNextQueueNumberAgain')->name('rooms.queues.callNextQueueNumberAgain');
 
-    Route::get('room/{room_uuid}/{room_queue_uuid}/done', 'RoomQueuesController@doneQueueNumber')->name('rooms.queues.doneQueueNumber');
-    Route::get('room/{room_uuid}/{room_queue_uuid}/done-and-next', 'RoomQueuesController@doneAndNextQueueNumber')->name('rooms.queues.doneAndNextQueueNumber');
+    Route::get('room/{room_uuid}/{room_queue_uuid}/in', 'RoomQueuesController@inQueueNumber')->name('rooms.queues.inQueueNumber');
+
+    Route::get('room/{room_uuid}/{room_queue_uuid}/out', 'RoomQueuesController@outQueueNumber')->name('rooms.queues.outQueueNumber');
+    Route::get('room/{room_uuid}/{room_queue_uuid}/out-and-next', 'RoomQueuesController@outAndNextQueueNumber')->name('rooms.queues.outAndNextQueueNumber');
 
 
     // Desk History

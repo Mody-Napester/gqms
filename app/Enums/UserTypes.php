@@ -9,4 +9,9 @@ class UserTypes
         '2' => 'Desk',
         '3' => 'Admin',
     ];
+    public static $typesReverse = [
+        'Doctor' => '1',
+        'Desk' => '2',
+        'Admin' => '3',
+    ];
 }

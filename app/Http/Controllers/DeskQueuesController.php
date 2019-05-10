@@ -513,7 +513,7 @@ class DeskQueuesController extends Controller
         $data['desks'] = Desk::all();
         $data['floors'] = Floor::all();
         $data['users'] = User::all();
-        $data['statuses'] = \App\QueueStatus::all();
+        $data['statuses'] = \App\QueueStatus::getQueueStatuses('desk');
         $data['deskQueues'] = DeskQueue::all();
         return view('desks.history', $data);
 

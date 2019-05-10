@@ -77,10 +77,24 @@ class RoomQueue extends Model
      */
     public static function getNextRoomQueueTurn($room)
     {
+        $data['skipped'] = self::where('floor_id', $room->floor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('room_id', $room->id)
+            ->where('status', config('vars.room_queue_status.skipped'))
+            ->orderBy('queue_number' , 'DESC')
+            ->get();
+
+        foreach ($data['skipped'] as $skipped){
+            if ($skipped->call_count > 1){
+
+            }
+        }
+
         $data = self::where('floor_id', $room->floor_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('room_id', $room->id)
             ->where('status', config('vars.room_queue_status.waiting'))
+            ->orderBy('queue_number' , 'DESC')
             ->first();
 
         return $data;
@@ -109,7 +123,6 @@ class RoomQueue extends Model
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->orderBy('id', 'DESC')
             ->get();
-
         return $roomQueues;
     }
 
@@ -123,6 +136,13 @@ class RoomQueue extends Model
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('room_id', $room_id)
             ->first();
+
+        if(count($roomQueues) == 0){
+            $roomQueues = self::where('status', config('vars.room_queue_status.patient_in'))
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->where('room_id', $room_id)
+                ->first();
+        }
 
         if(count($roomQueues) == 0){
             $roomQueues = self::where('status', config('vars.room_queue_status.called'))
