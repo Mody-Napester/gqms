@@ -180,7 +180,7 @@
                                 {{--<a href=""><i class="fa fa-search"></i></a>--}}
                             {{--</form>--}}
                             @if(auth()->check())
-                                @if(auth()->user()->desk_id && in_array( auth()->user()->type ,config('vars.go_available_user_types')))
+                                @if((auth()->user()->desk_id || auth()->user()->room_id) && in_array( auth()->user()->type ,config('vars.go_available_user_types')))
                                     <button @click.prevent="availability()" type="button" id="availablity" class="btn btn-danger waves-effect waves-light">
                                         <span>Go not available</span>
                                         <i class="fa fa-fw fa-lock"></i>

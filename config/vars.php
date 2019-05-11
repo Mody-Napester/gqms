@@ -9,6 +9,7 @@ return [
         'kiosk' => 1,
         'reception' => 2,
     ],
+    'default_room_call_count_max' => 2,
     'desk_queue_status' => [
         'waiting' => 1,
         'called' => 2,

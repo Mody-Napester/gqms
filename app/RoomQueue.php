@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Self_;
 
 class RoomQueue extends Model
 {
@@ -75,28 +76,40 @@ class RoomQueue extends Model
     /**
      *  Get Available Room Queue
      */
-    public static function getNextRoomQueueTurn($room)
+    public static function getNextRoomQueueTurn($room, $currentQueue)
     {
-        $data['skipped'] = self::where('floor_id', $room->floor_id)
-            ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->where('room_id', $room->id)
-            ->where('status', config('vars.room_queue_status.skipped'))
-            ->orderBy('queue_number' , 'DESC')
-            ->get();
+        $orderStatus = 'ASC';
 
-        foreach ($data['skipped'] as $skipped){
-            if ($skipped->call_count > 1){
+        if(isset($currentQueue) && $currentQueue->status == config('vars.room_queue_status.call_from_skip')){
+            $data['nextQueue'] = self::where('floor_id', $room->floor_id)
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->where('room_id', $room->id)
+                ->where('status', config('vars.room_queue_status.waiting'))
+                ->orderBy('queue_number' , $orderStatus)
+                ->first();
+        }
+        else{
+            $data['skipped'] = self::where('floor_id', $room->floor_id)
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->where('room_id', $room->id)
+                ->where('status', config('vars.room_queue_status.skipped'))
+                ->where('call_count', '<', config('vars.default_room_call_count_max'))
+                ->orderBy('queue_number' , $orderStatus)
+                ->first();
 
+            if ($data['skipped']){
+                $data['nextQueue'] = $data['skipped'];
+            }else{
+                $data['nextQueue'] = self::where('floor_id', $room->floor_id)
+                    ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                    ->where('room_id', $room->id)
+                    ->where('status', config('vars.room_queue_status.waiting'))
+                    ->orderBy('queue_number' , $orderStatus)
+                    ->first();
             }
         }
 
-        $data = self::where('floor_id', $room->floor_id)
-            ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->where('room_id', $room->id)
-            ->where('status', config('vars.room_queue_status.waiting'))
-            ->first();
-
-        return $data;
+        return $data['nextQueue'];
 
     }
 

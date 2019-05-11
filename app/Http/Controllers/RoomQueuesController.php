@@ -11,6 +11,7 @@ use App\Events\RoomQueueStatus;
 use App\Reservation;
 use App\RoomQueue;
 use App\User;
+use DB;
 use Illuminate\Http\Request;
 
 class RoomQueuesController extends Controller
@@ -67,19 +68,31 @@ class RoomQueuesController extends Controller
             ];
         }
 
-        $data['nextQueue'] = RoomQueue::getNextRoomQueueTurn($data['room']);
+        // Get Current queue number
+        $data['currentQueue'] = RoomQueue::getCurrentRoomQueues($data['room']->id);
+
+        // Get Next queue number
+        $data['nextQueue'] = RoomQueue::getNextRoomQueueTurn($data['room'], $data['currentQueue']);
+
+        // Next Queue Edited Status
+        if($data['nextQueue']->status == config('vars.room_queue_status.waiting')){
+           $status = config('vars.room_queue_status.called');
+        }elseif ($data['nextQueue']->status == config('vars.room_queue_status.skipped')){
+            $status = config('vars.room_queue_status.call_from_skip');
+        }
 
         if($data['nextQueue']){
             // Edit Status
             $data['nextQueueUpdated'] = RoomQueue::edit([
-                'status' => config('vars.room_queue_status.called'),
+                'status' => $status,
+                'call_count' => ($data['nextQueue']->status == config('vars.room_queue_status.skipped'))? DB::raw('call_count + 1') : DB::raw('call_count'),
             ], $data['nextQueue']->id);
 
             // Add to room queue history
             $data['nextRoomQueueUpdated'] = RoomQueueStatusController::store([
                 'user_id' => auth()->user()->id,
                 'room_queue_id' => $data['nextQueue']->id,
-                'queue_status_id' => config('vars.room_queue_status.called'),
+                'queue_status_id' => $status,
             ]);
 
             $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id, $data['room']->id);

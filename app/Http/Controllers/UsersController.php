@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Desk;
 use App\Events\DeskStatus;
+use App\Events\RoomStatus;
 use App\Permission;
 use App\PermissionGroup;
 use App\Role;
+use App\Room;
 use App\User;
 use Illuminate\Http\Request;
 use Validator;
@@ -182,7 +184,8 @@ class UsersController extends Controller
     public function availability()
     {
         if(auth()->check()){
-            if(auth()->user()->desk_id){
+            if(auth()->user()->desk_id || auth()->user()->room_id){
+
                 if(auth()->user()->available == 0){
                     // Will be 1
                     $data['message'] = [
@@ -205,7 +208,13 @@ class UsersController extends Controller
                 ], auth()->user()->id);
 
                 // Broadcast event
-                event(new DeskStatus(Desk::getBy('id', auth()->user()->desk_id)->uuid, (auth()->user()->available == 0)? 1 : 0));
+                if(auth()->user()->desk_id){
+                    event(new DeskStatus(Desk::getBy('id', auth()->user()->desk_id)->uuid, (auth()->user()->available == 0)? 1 : 0));
+                }
+
+                if(auth()->user()->room_id){
+                    event(new RoomStatus(Room::getBy('id', auth()->user()->room_id)->uuid, (auth()->user()->available == 0)? 1 : 0));
+                }
 
                 // Return
                 return response()->json($data);

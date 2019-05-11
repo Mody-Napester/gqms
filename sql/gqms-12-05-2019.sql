@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2019 at 04:29 PM
+-- Generation Time: May 11, 2019 at 05:12 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -93,38 +93,6 @@ CREATE TABLE `desk_queues` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `desk_queues`
---
-
-INSERT INTO `desk_queues` (`id`, `uuid`, `floor_id`, `desk_id`, `queue_number`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'bcc99aed-527b-4368-95b7-6e3fcf91b54b', 1, 1, 'F1-001', 4, '2019-05-06 09:01:12', '2019-05-06 09:02:01'),
-(2, '06d2229d-1316-4e92-9db7-839741f68944', 1, 1, 'F1-002', 4, '2019-05-06 09:01:14', '2019-05-06 09:03:51'),
-(3, 'fe2b84dd-57f3-4408-bd36-a79d35bfe965', 1, 1, 'F1-003', 4, '2019-05-06 09:01:16', '2019-05-06 09:05:37'),
-(4, '7a8d8154-e960-4699-84c6-26970c97141d', 1, 1, 'F1-004', 4, '2019-05-06 09:01:17', '2019-05-06 09:12:09'),
-(5, 'a3cd8827-46e2-4c31-a2b3-30b6c9fb3573', 1, 1, 'F1-005', 2, '2019-05-06 09:01:19', '2019-05-06 09:19:47'),
-(6, '2a90284c-81cf-47b0-9761-4c4c1357f71a', 1, NULL, 'F1-006', 1, '2019-05-06 09:19:31', '2019-05-06 09:19:31'),
-(7, '56e64fcb-6b24-43b0-8d7e-ee0514f2b54d', 1, NULL, 'F1-007', 1, '2019-05-06 09:19:32', '2019-05-06 09:19:32'),
-(8, '44d6d70f-7fb8-4257-949d-b39f311c91b5', 1, NULL, 'F1-008', 1, '2019-05-06 09:19:33', '2019-05-06 09:19:33'),
-(9, 'df8a1e86-4b97-432f-8dc5-f7b3b30f0e33', 1, 1, 'F1-001', 4, '2019-05-07 06:45:39', '2019-05-07 10:34:25'),
-(10, '7004933f-7885-42a3-8559-5e380871d5e9', 1, 1, 'F1-002', 4, '2019-05-07 06:45:42', '2019-05-07 10:38:43'),
-(11, '033ff064-d0b7-4687-bc54-33202c397541', 1, 1, 'F1-003', 4, '2019-05-07 06:45:46', '2019-05-07 10:43:57'),
-(12, '696f9c17-858b-4a0f-9cae-15208faf2da0', 1, 1, 'F1-004', 4, '2019-05-07 06:45:48', '2019-05-07 10:44:55'),
-(13, '180990fa-aed1-4613-9ec1-fd6d7b738e25', 1, NULL, 'F1-005', 1, '2019-05-07 06:45:53', '2019-05-07 06:45:53'),
-(14, '534e91da-b7f2-4c94-8859-8bb053b123fa', 1, 1, 'F1-001', 4, '2019-05-08 06:52:50', '2019-05-08 06:58:19'),
-(15, 'ca0fb9a9-0000-4db1-85f9-5e2ba9fc2232', 1, 1, 'F1-002', 4, '2019-05-08 06:52:51', '2019-05-08 06:59:26'),
-(16, '85fd9d51-3ac2-4e4b-a0d5-138a03645ca4', 1, 1, 'F1-003', 4, '2019-05-08 06:52:52', '2019-05-08 07:23:32'),
-(17, '9a306483-97f1-49d9-8eb4-677b945988d1', 1, 1, 'F1-004', 4, '2019-05-08 06:52:53', '2019-05-08 07:31:31'),
-(18, '721a46b4-5608-4562-b748-4cbed9ffd8aa', 1, 1, 'F1-005', 4, '2019-05-08 06:52:54', '2019-05-08 10:11:07'),
-(19, 'd4dca3a6-6d83-4288-8792-ed837edc78ec', 1, 1, 'F1-006', 4, '2019-05-08 06:52:55', '2019-05-08 10:10:47'),
-(20, 'feef3400-b7f3-4785-8ecd-fab4fecaadb4', 1, 1, 'F1-007', 4, '2019-05-08 06:52:55', '2019-05-08 10:24:13'),
-(21, 'bcf477df-469b-48da-81c2-85ff1a05acc8', 1, 1, 'F1-008', 4, '2019-05-08 06:52:56', '2019-05-08 11:04:47'),
-(22, '0f3424b9-d278-4f91-a744-ce1d0d65da1a', 1, 1, 'F1-009', 4, '2019-05-08 06:52:57', '2019-05-08 11:05:39'),
-(23, '493131dd-2c2b-41f9-bd32-641347d5c947', 1, 1, 'F1-010', 4, '2019-05-08 06:52:58', '2019-05-08 11:11:22'),
-(24, 'ca931cc5-31f5-4c38-9491-29868ea62e98', 1, 1, 'F1-011', 2, '2019-05-08 10:36:03', '2019-05-08 11:11:32'),
-(25, '11eded22-1a28-46ca-853d-98acdf4746c4', 1, NULL, 'F1-012', 1, '2019-05-08 11:03:59', '2019-05-08 11:03:59'),
-(26, '1a5b05c9-6814-4379-9000-8593e4e7b18d', 1, NULL, 'F1-013', 1, '2019-05-08 11:04:06', '2019-05-08 11:04:06');
-
 -- --------------------------------------------------------
 
 --
@@ -139,52 +107,6 @@ CREATE TABLE `desk_queue_statuses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `desk_queue_statuses`
---
-
-INSERT INTO `desk_queue_statuses` (`id`, `user_id`, `desk_queue_id`, `queue_status_id`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, 2, '2019-05-06 09:01:32', '2019-05-06 09:01:32'),
-(2, 3, 1, 4, '2019-05-06 09:01:43', '2019-05-06 09:01:43'),
-(3, 3, 1, 4, '2019-05-06 09:02:02', '2019-05-06 09:02:02'),
-(4, 3, 2, 2, '2019-05-06 09:03:45', '2019-05-06 09:03:45'),
-(5, 3, 2, 4, '2019-05-06 09:03:51', '2019-05-06 09:03:51'),
-(6, 3, 3, 2, '2019-05-06 09:03:55', '2019-05-06 09:03:55'),
-(7, 3, 3, 4, '2019-05-06 09:05:38', '2019-05-06 09:05:38'),
-(8, 3, 4, 2, '2019-05-06 09:05:42', '2019-05-06 09:05:42'),
-(9, 3, 4, 4, '2019-05-06 09:12:09', '2019-05-06 09:12:09'),
-(10, 3, 5, 2, '2019-05-06 09:19:47', '2019-05-06 09:19:47'),
-(11, 3, 9, 2, '2019-05-07 06:48:05', '2019-05-07 06:48:05'),
-(12, 3, 9, 4, '2019-05-07 10:34:25', '2019-05-07 10:34:25'),
-(13, 3, 10, 2, '2019-05-07 10:34:36', '2019-05-07 10:34:36'),
-(14, 3, 10, 4, '2019-05-07 10:38:43', '2019-05-07 10:38:43'),
-(15, 3, 11, 2, '2019-05-07 10:38:49', '2019-05-07 10:38:49'),
-(16, 3, 11, 4, '2019-05-07 10:43:57', '2019-05-07 10:43:57'),
-(17, 3, 12, 2, '2019-05-07 10:44:23', '2019-05-07 10:44:23'),
-(18, 3, 12, 4, '2019-05-07 10:44:55', '2019-05-07 10:44:55'),
-(19, 3, 14, 2, '2019-05-08 06:55:11', '2019-05-08 06:55:11'),
-(20, 3, 14, 4, '2019-05-08 06:58:19', '2019-05-08 06:58:19'),
-(21, 3, 15, 2, '2019-05-08 06:58:26', '2019-05-08 06:58:26'),
-(22, 3, 15, 4, '2019-05-08 06:59:26', '2019-05-08 06:59:26'),
-(23, 3, 16, 2, '2019-05-08 06:59:48', '2019-05-08 06:59:48'),
-(24, 3, 16, 4, '2019-05-08 07:23:32', '2019-05-08 07:23:32'),
-(25, 3, 17, 2, '2019-05-08 07:23:35', '2019-05-08 07:23:35'),
-(26, 3, 17, 4, '2019-05-08 07:31:31', '2019-05-08 07:31:31'),
-(27, 3, 18, 2, '2019-05-08 10:10:39', '2019-05-08 10:10:39'),
-(28, 3, 18, 3, '2019-05-08 10:10:44', '2019-05-08 10:10:44'),
-(29, 3, 19, 2, '2019-05-08 10:10:44', '2019-05-08 10:10:44'),
-(30, 3, 18, 5, '2019-05-08 10:10:47', '2019-05-08 10:10:47'),
-(31, 3, 18, 4, '2019-05-08 10:11:08', '2019-05-08 10:11:08'),
-(32, 3, 20, 2, '2019-05-08 10:11:13', '2019-05-08 10:11:13'),
-(33, 3, 20, 4, '2019-05-08 10:24:13', '2019-05-08 10:24:13'),
-(34, 3, 21, 2, '2019-05-08 10:24:15', '2019-05-08 10:24:15'),
-(35, 3, 21, 4, '2019-05-08 11:04:47', '2019-05-08 11:04:47'),
-(36, 3, 22, 2, '2019-05-08 11:05:30', '2019-05-08 11:05:30'),
-(37, 3, 22, 4, '2019-05-08 11:05:39', '2019-05-08 11:05:39'),
-(38, 3, 23, 2, '2019-05-08 11:11:16', '2019-05-08 11:11:16'),
-(39, 3, 23, 4, '2019-05-08 11:11:22', '2019-05-08 11:11:22'),
-(40, 3, 24, 2, '2019-05-08 11:11:32', '2019-05-08 11:11:32');
 
 -- --------------------------------------------------------
 
@@ -401,7 +323,8 @@ INSERT INTO `permissions` (`id`, `uuid`, `name`, `created_by`, `updated_by`, `de
 (14, '70abc86e-2e7a-4de7-904b-355d81276165', 'security', 1, 1, NULL, '2019-04-12 10:14:26', '2019-04-12 10:14:26'),
 (15, '43222c0a-1741-4461-9a2b-7d0116ad869d', 'resources', 1, 1, NULL, '2019-04-12 10:15:25', '2019-04-12 10:15:25'),
 (16, '2203dff0-9d94-4a5f-aba6-452aee0e0914', 'doctor_queue', 1, 1, NULL, '2019-04-12 11:30:17', '2019-04-12 11:30:17'),
-(17, 'd97066b1-bc3c-4d9f-a5ae-daeb1455b53c', 'rooms', 1, 1, NULL, '2019-04-23 10:58:42', '2019-04-23 10:58:42');
+(17, 'd97066b1-bc3c-4d9f-a5ae-daeb1455b53c', 'rooms', 1, 1, NULL, '2019-04-23 10:58:42', '2019-04-23 10:58:42'),
+(18, 'eccd73b6-31f9-42c7-af91-73a676d78ce4', 'room_queue', 1, 1, NULL, '2019-05-10 11:22:55', '2019-05-10 11:22:55');
 
 -- --------------------------------------------------------
 
@@ -520,7 +443,8 @@ INSERT INTO `permission_group_permission` (`permission_group_id`, `permission_id
 (4, 17),
 (5, 17),
 (6, 17),
-(7, 17);
+(7, 17),
+(8, 18);
 
 -- --------------------------------------------------------
 
@@ -598,12 +522,13 @@ INSERT INTO `permission_role` (`permission_group_id`, `permission_id`, `role_id`
 (5, 17, 1),
 (6, 17, 1),
 (7, 17, 1),
+(6, 8, 2),
+(8, 10, 2),
+(8, 13, 2),
 (8, 10, 3),
 (8, 16, 3),
 (6, 17, 3),
-(6, 8, 2),
-(8, 10, 2),
-(8, 13, 2);
+(8, 18, 3);
 
 -- --------------------------------------------------------
 
@@ -663,7 +588,12 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`id`, `uuid`, `clinic_id`, `doctor_id`, `desk_queue_id`, `source_reservation_serial`, `source_patient_name`, `source_queue_number`, `created_at`, `updated_at`) VALUES
-(1, '1111', 1, 1, 23, '123', 'Saly Ibrahim', '15', '2019-05-05 23:36:31', '2019-05-08 11:11:22');
+(1, '1111', 1, 1, NULL, '123', 'Saly Ibrahim', '15', '2019-05-05 23:36:31', '2019-05-11 13:04:07'),
+(2, '2254884', 1, 1, NULL, '456', 'Mohammed Fathy', '16', '2019-05-05 23:36:31', '2019-05-11 13:04:14'),
+(3, '789797978', 1, 1, NULL, '789', 'Sondos Adel', '17', '2019-05-05 23:36:31', '2019-05-11 13:04:22'),
+(4, '111178', 1, 1, NULL, '123456', 'Ibrahim', '488', '2019-05-05 23:36:31', '2019-05-11 13:04:07'),
+(5, '65464688', 1, 1, NULL, '456789', 'Fathy', '125', '2019-05-05 23:36:31', '2019-05-11 13:04:14'),
+(6, '78979754978', 1, 1, NULL, '789123', 'Adel', '78', '2019-05-05 23:36:31', '2019-05-11 13:04:22');
 
 -- --------------------------------------------------------
 
@@ -692,7 +622,7 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` (`id`, `uuid`, `name`, `icon`, `class`, `color`, `created_by`, `updated_by`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (1, '1ac8d13b-2290-4312-8af9-804323097039', 'Admin', 'user', 'label-success', '#010', 1, 1, NULL, '2019-04-07 06:40:19', '2019-04-23 10:59:46'),
 (2, '1c70bf15-768d-46ff-b2b8-eb32d8c86096', 'Desk', 'user', 'label-danger', '#f00', 1, 1, NULL, '2019-04-11 17:28:15', '2019-04-24 10:54:31'),
-(3, 'ee7945a5-59d8-4a4e-9457-c698639f7797', 'Doctor', 'icon', 'label-warning', 'yellow', 1, 1, NULL, '2019-04-24 09:20:36', '2019-04-24 10:52:08');
+(3, 'ee7945a5-59d8-4a4e-9457-c698639f7797', 'Doctor', 'icon', 'label-warning', 'yellow', 1, 1, NULL, '2019-04-24 09:20:36', '2019-05-10 11:23:35');
 
 -- --------------------------------------------------------
 
@@ -758,16 +688,10 @@ CREATE TABLE `room_queues` (
   `room_id` int(11) DEFAULT NULL,
   `queue_number` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` int(11) NOT NULL,
+  `call_count` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `room_queues`
---
-
-INSERT INTO `room_queues` (`id`, `uuid`, `floor_id`, `room_id`, `queue_number`, `status`, `created_at`, `updated_at`) VALUES
-(8, 'd9e1065c-e28d-404f-b9d1-e28454ffcd20', 1, 1, '15', 6, '2019-05-08 11:11:22', '2019-05-08 11:11:22');
 
 -- --------------------------------------------------------
 
@@ -916,10 +840,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `uuid`, `desk_id`, `room_id`, `login_ip`, `name`, `phone`, `email`, `email_verified_at`, `password`, `remember_token`, `created_by`, `updated_by`, `status`, `type`, `available`, `api_token`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, '3322b3c3-b3ee-45ed-8549-fb1505228790', NULL, NULL, NULL, 'Ahmed Samy', '01002589847', 'ahmsam39@gmail.com', NULL, '$2y$10$fVDOvS5s1Uky4oqVV2lCce1EyHpnly2P4HgNd4TvDyrSit1Qi/252', 'H4gRNaORovyjU9wbSS23cz0O2sNIk8MegV4RzXkkL0u9MQmCpCt5mupOJxUc', 1, 1, 1, 0, 0, NULL, NULL, '2019-04-04 10:58:52', '2019-04-30 05:04:44'),
+(1, '3322b3c3-b3ee-45ed-8549-fb1505228790', NULL, NULL, NULL, 'Ahmed Samy', '01002589847', 'ahmsam39@gmail.com', NULL, '$2y$10$fVDOvS5s1Uky4oqVV2lCce1EyHpnly2P4HgNd4TvDyrSit1Qi/252', 'H4gRNaORovyjU9wbSS23cz0O2sNIk8MegV4RzXkkL0u9MQmCpCt5mupOJxUc', 1, 1, 1, 3, 0, NULL, NULL, '2019-04-04 10:58:52', '2019-04-30 05:04:44'),
 (2, '3018e110-bc9a-46a0-870e-92ae16d0765f', NULL, NULL, NULL, 'Yasser Hamdy', '123456789', 'desk2@gmail.com', NULL, '$2y$10$fVDOvS5s1Uky4oqVV2lCce1EyHpnly2P4HgNd4TvDyrSit1Qi/252', 'bYIN0dzyI0pdNbQjg8wvY37dVOYUyoYiPoD48V4uSG53zYuuxJdVuKVqTDJV', 1, 1, 1, 1, 0, NULL, NULL, '2019-04-07 09:47:57', '2019-04-13 15:38:03'),
 (3, '31e9a2af-6c96-45f4-845c-81737da7bca5', 1, NULL, '10.1.30.58', 'Amany Essam', '123456789', 'desk1@gmail.com', NULL, '$2y$10$fVDOvS5s1Uky4oqVV2lCce1EyHpnly2P4HgNd4TvDyrSit1Qi/252', 'he9OPq4amYGWOlLBTZnc6b5zn4OlTJYMJbRtHWnzeEQ1uthvAZyrGq8HXvDv', 1, 1, 1, 2, 1, NULL, NULL, '2019-04-12 09:10:05', '2019-05-08 06:43:44'),
-(4, 'a0d43faa-2118-4584-958d-1579c8a204d1', NULL, 1, '10.1.30.58', 'Dr Ahmed', '0123456789', 'room1@gmail.com', NULL, '$2y$10$amLKqbkEdxx.1jUQvOmW6.S2Rz5XpfDs5.kvpgekSb2s.JvgNwn5m', 'o3VRRpH6LZOB1cXKjNLb3y9aQSIgrK7dWZ8NyDhwpq4TpPxAz2U2fjpOVTmJ', 1, 1, 1, 1, 1, NULL, NULL, '2019-04-24 09:20:48', '2019-05-08 06:54:28');
+(4, 'a0d43faa-2118-4584-958d-1579c8a204d1', NULL, NULL, NULL, 'Dr Ahmed', '0123456789', 'room1@gmail.com', NULL, '$2y$10$amLKqbkEdxx.1jUQvOmW6.S2Rz5XpfDs5.kvpgekSb2s.JvgNwn5m', '9ydZoCZwkQb2pS5Dt5Ym3UDVCkTmvsH2jZMBuwuJWKGw8J0C1oqVelal49ui', 1, 1, 1, 1, 0, NULL, NULL, '2019-04-24 09:20:48', '2019-05-11 13:08:51');
 
 -- --------------------------------------------------------
 
@@ -999,7 +923,19 @@ INSERT INTO `user_login_histories` (`id`, `user_id`, `login_ip`, `login_data`, `
 (54, 1, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-08 08:51:09', NULL, '2019-05-08 06:51:09', '2019-05-08 06:51:09'),
 (55, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-08 08:54:29', NULL, '2019-05-08 06:54:29', '2019-05-08 06:54:29'),
 (56, 1, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-08 11:32:55', NULL, '2019-05-08 09:32:55', '2019-05-08 09:32:55'),
-(57, 3, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-08 12:10:36', NULL, '2019-05-08 10:10:36', '2019-05-08 10:10:36');
+(57, 3, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-08 12:10:36', NULL, '2019-05-08 10:10:36', '2019-05-08 10:10:36'),
+(58, 1, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-10 13:22:26', NULL, '2019-05-10 11:22:26', '2019-05-10 11:22:26'),
+(59, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-10 19:35:25', NULL, '2019-05-10 17:35:25', '2019-05-10 17:35:25'),
+(60, 3, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-10 19:35:43', NULL, '2019-05-10 17:35:43', '2019-05-10 17:35:43'),
+(61, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-10 19:36:25', NULL, '2019-05-10 17:36:25', '2019-05-10 17:36:25'),
+(62, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-11 01:22:20', NULL, '2019-05-10 23:22:20', '2019-05-10 23:22:20'),
+(63, 3, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-11 02:03:30', NULL, '2019-05-11 00:03:30', '2019-05-11 00:03:30'),
+(64, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-11 03:52:16', NULL, '2019-05-11 01:52:16', '2019-05-11 01:52:16'),
+(65, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-11 03:57:24', NULL, '2019-05-11 01:57:24', '2019-05-11 01:57:24'),
+(66, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-11 03:57:34', NULL, '2019-05-11 01:57:34', '2019-05-11 01:57:34'),
+(67, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-11 13:56:44', NULL, '2019-05-11 11:56:44', '2019-05-11 11:56:44'),
+(68, 4, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-11 14:09:46', NULL, '2019-05-11 12:09:46', '2019-05-11 12:09:46'),
+(69, 3, 'UNKNOWN', '{\"browser_name_regex\":\"~^.*$~\",\"browser_name_pattern\":\"*\",\"browser\":\"Default Browser\",\"version\":\"0\",\"majorver\":\"0\",\"minorver\":\"0\",\"platform\":\"unknown\",\"alpha\":\"\",\"beta\":\"\",\"win16\":\"\",\"win32\":\"\",\"win64\":\"\",\"frames\":\"1\",\"iframes\":\"\",\"tables\":\"1\",\"cookies\":\"\",\"backgroundsounds\":\"\",\"cdf\":\"\",\"vbscript\":\"\",\"javaapplets\":\"\",\"javascript\":\"\",\"activexcontrols\":\"\",\"isbanned\":\"\",\"ismobiledevice\":\"\",\"issyndicationreader\":\"\",\"crawler\":\"\",\"cssversion\":\"0\",\"supportscss\":\"\",\"aol\":\"\",\"aolversion\":\"0\"}', '2019-05-11 14:40:06', NULL, '2019-05-11 12:40:06', '2019-05-11 12:40:06');
 
 -- --------------------------------------------------------
 
@@ -1184,12 +1120,12 @@ ALTER TABLE `desks`
 -- AUTO_INCREMENT for table `desk_queues`
 --
 ALTER TABLE `desk_queues`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `desk_queue_statuses`
 --
 ALTER TABLE `desk_queue_statuses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `doctors`
 --
@@ -1219,7 +1155,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `permission_groups`
 --
@@ -1234,7 +1170,7 @@ ALTER TABLE `queue_statuses`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `roles`
 --
@@ -1249,7 +1185,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT for table `room_queues`
 --
 ALTER TABLE `room_queues`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `room_queue_statuses`
 --
@@ -1279,7 +1215,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_login_histories`
 --
 ALTER TABLE `user_login_histories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 --
 -- AUTO_INCREMENT for table `websockets_statistics_entries`
 --

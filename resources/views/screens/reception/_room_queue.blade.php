@@ -1,5 +1,5 @@
 <div class="col-md-6 pl-0">
-    <div class="bg-blue-2 section mb-2">
+    <div class="bg-green-2 section mb-2">
         <div class="text-white txt-1 text-center">
             إنتظار العيادات
         </div>
@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="col-md-6 p-0">
-                <div class="bg-blue-3 section-1 mb-2">
+                <div class="bg-green-3 section-1 mb-2">
                     <div class="txt-3">
                         <div class="row">
                             <div class="col-md-4 text-center">
