@@ -103,9 +103,6 @@
                     <b class="pull-right">
                         Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
 
-                        <span v-on:click="callNext()" v-if="!next_status" class="get-next" href="">Call Next <i class="fa fa-refresh fa-fw"></i></span>
-                        <span v-on:click="callNextAgain()" v-if="next_status" class="get-next" href="">Call Next Again <i class="fa fa-refresh fa-fw"></i></span>
-
                         <span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>
 
                     </b>
@@ -118,23 +115,29 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <button v-on:click="skip()" v-if="skip_status && next_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                    <button v-on:click="skip()" v-if="skip_status && change_skip_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip <i class="fa fa-fw fa-close"></i>
                                     </button>
-                                    <button v-on:click="skipAndNext()" v-if="!skip_status && next_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                    <button v-on:click="skipAndNext()" v-if="skip_and_next_status && change_skip_and_next_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip and next <i class="fa fa-fw fa-close"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button v-on:click="patientIn()" v-if="next_status" type="button" class="btn btn-block btn-pink waves-effect waves-light">
-                                        Patient in <i class="fa fa-fw fa-arrow-down"></i>
+                                    <button v-on:click="callNext()" v-if="next_status" type="button" class="btn btn-block btn-primary waves-effect waves-light">
+                                        Call Next <i class="fa fa-fw fa-refresh"></i>
+                                    </button>
+                                    <button v-on:click="callNextAgain()" v-if="call_status" type="button" class="btn btn-block btn-warning waves-effect waves-light">
+                                        Call Next Again <i class="fa fa-fw fa-refresh"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
-                                    <button v-on:click="patientOut()" v-if="out_status && next_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-on:click="patientIn()" v-if="in_status" type="button" class="btn btn-block btn-pink waves-effect waves-light">
+                                        Patient in <i class="fa fa-fw fa-arrow-down"></i>
+                                    </button>
+                                    <button v-on:click="patientOut()" v-if="out_status && change_out_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Patient out <i class="fa fa-fw fa-arrow-up"></i>
                                     </button>
-                                    <button v-on:click="patientOutAndNext()" v-if="!out_status && next_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-on:click="patientOutAndNext()" v-if="out_and_next_status && change_out_and_next_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Patient out and next <i class="fa fa-fw fa-arrow-up"></i>
                                     </button>
                                 </div>
@@ -213,28 +216,100 @@
             el : '#app',
             data : {
                 room_queue_uuid : '{{ ($currentRoomQueueNumber)? $currentRoomQueueNumber->uuid : '' }}',
-                active_btn : {{ ($currentRoomQueueNumber && $currentRoomQueueNumber->room_queue_id != config('vars.room_queue_status.patient_in'))? 'true' : 'false' }},
                 waiting_time : '{{ ($currentRoomQueueNumber)? nice_time($currentRoomQueueNumber->created_at) : '00:00' }}',
-                out_status: false,
-                skip_status: false,
-                next_status: {{ ($currentRoomQueueNumber && $currentRoomQueueNumber->room_queue_id != config('vars.room_queue_status.patient_in'))? 'true' : 'false' }},
                 room: '{{ $room->id }}',
                 floor: '{{ $room->floor_id }}',
+
+                current_room_queue_number: '{{ ($currentRoomQueueNumber)? $currentRoomQueueNumber->status : '0' }}',
+
+                next_status: false,
+                call_status: false,
+                skip_status: false,
+                skip_and_next_status: false,
+                in_status: false,
+                out_status: false,
+                out_and_next_status: false,
+
+                change_skip_status:false,
+                change_skip_and_next_status:true,
+
+                change_out_status:false,
+                change_out_and_next_status:true,
+
             },
             methods : {
                 // Configs
                 changeBtn(type){
                     if(type == 'out'){
+                        this.change_out_status = true;
+                        this.change_out_and_next_status = false;
+
                         this.out_status = true;
                     }
                     else if(type == 'outandnext'){
-                        this.out_status = false;
+                        this.change_out_status = false;
+                        this.change_out_and_next_status = true;
+
+                        this.out_and_next_status = true;
                     }
                     else if(type == 'skip'){
+                        this.change_skip_status = true;
+                        this.change_skip_and_next_status = false;
+
                         this.skip_status = true;
                     }
                     else if(type == 'skipandnext'){
+                        this.change_skip_status = false;
+                        this.change_skip_and_next_status = true;
+
+                        this.skip_and_next_status = true;
+                    }
+                },
+                changeBtnStatus(current_room_queue_number){
+                    if(current_room_queue_number == '0'){
+                        this.next_status = true;
+                        this.call_status = false;
                         this.skip_status = false;
+                        this.skip_and_next_status = false;
+                        this.in_status = false;
+                        this.out_status = false;
+                        this.out_and_next_status = false;
+                    }
+                    else if(current_room_queue_number == '{{ config('vars.room_queue_status.called') }}'){
+                        this.next_status = false;
+                        this.call_status = true;
+                        this.skip_status = false;
+                        this.skip_and_next_status = true;
+                        this.in_status = true;
+                        this.out_status = false;
+                        this.out_and_next_status = false;
+                    }
+                    else if(current_room_queue_number == '{{ config('vars.room_queue_status.skipped') }}'){
+                        this.next_status = true;
+                        this.call_status = false;
+                        this.skip_status = false;
+                        this.skip_and_next_status = false;
+                        this.in_status = false;
+                        this.out_status = false;
+                        this.out_and_next_status = false;
+                    }
+                    else if(current_room_queue_number == '{{ config('vars.room_queue_status.patient_in') }}'){
+                        this.next_status = false;
+                        this.call_status = false;
+                        this.skip_status = false;
+                        this.skip_and_next_status = false;
+                        this.in_status = false;
+                        this.out_status = false;
+                        this.out_and_next_status = true;
+                    }
+                    else if(current_room_queue_number == '{{ config('vars.room_queue_status.patient_out') }}'){
+                        this.next_status = true;
+                        this.call_status = false;
+                        this.skip_status = false;
+                        this.skip_and_next_status = false;
+                        this.in_status = false;
+                        this.out_status = false;
+                        this.out_and_next_status = false;
                     }
                 },
 
@@ -248,13 +323,15 @@
 
                             this.room_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
-                            this.active_btn = true;
+
+                            console.log(response.data.roomQueue.status);
+
+                            this.changeBtnStatus(response.data.roomQueue.status);
 
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
-                                this.next_status = true;
                             }else{
                                 addAlert('danger', response.data.message.text);
                             }
@@ -290,8 +367,7 @@
                             $('#count-skip').text(response.data.roomQueuesSkip);
                             $('#count-out').text(response.data.roomQueuesOut);
 
-                            this.active_btn = false;
-                            this.next_status = false;
+                            this.changeBtnStatus(response.data.roomQueue.status);
 
                             removeLoarder();
 
@@ -315,9 +391,12 @@
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.roomQueuesSkip);
                             $('#count-out').text(response.data.roomQueuesOut);
+
                             this.room_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
-                            this.next_status = false;
+
+                            this.changeBtnStatus(response.data.roomQueue.status);
+
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
@@ -340,6 +419,7 @@
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
+                                this.changeBtnStatus(response.data.roomQueue.status);
                                 addAlert('success', response.data.message.text);
                             }else{
                                 addAlert('danger', response.data.message.text);
@@ -360,8 +440,7 @@
                             $('#count-skip').text(response.data.roomQueuesSkip);
                             $('#count-out').text(response.data.roomQueuesOut);
 
-                            this.active_btn = false;
-                            this.next_status = false;
+                            this.changeBtnStatus(response.data.roomQueue.status);
 
                             removeLoarder();
 
@@ -386,7 +465,9 @@
                             $('#count-out').text(response.data.roomQueuesOut);
                             this.room_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
-                            this.next_status = false;
+
+                            this.changeBtnStatus(response.data.roomQueue.status);
+
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
@@ -435,6 +516,7 @@
             },
             mounted() {
                 this.listen();
+                this.changeBtnStatus(this.current_room_queue_number);
             }
         });
 

@@ -78,6 +78,18 @@
                                 $('#' + response.desk).addClass('canceled-res');
                             }
                         });
+
+                    Echo.channel('room-queue-screen')
+                        .listen('RoomStatus', (response) => {
+                            console.log(response);
+                            $('#doctor-' + response.room).text(response.doctor);
+                            $('#clinic-' + response.room).text(response.clinic);
+                            if(response.available == 1){
+                                $('#' + response.room).removeClass('canceled-res');
+                            }else{
+                                $('#' + response.room).addClass('canceled-res');
+                            }
+                        });
                 }
             },
             mounted() {

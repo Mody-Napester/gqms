@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Room;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -45,7 +46,11 @@ class RoomStatus implements ShouldBroadcast
      */
     public function broadcastWith()
     {
+        $room = Room::getBy('uuid', $this->room_uuid);
+
         return [
+            'doctor' => ((isset($room->user) && $this->available == 1)? $room->user->doctor->name_ar : '-'),
+            'clinic' => ((isset($room->user) && $this->available == 1)? $room->user->doctor->clinic->name_ar : '-'),
             'room' => $this->room_uuid,
             'available' => $this->available
         ];

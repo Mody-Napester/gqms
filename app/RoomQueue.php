@@ -94,7 +94,6 @@ class RoomQueue extends Model
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('room_id', $room->id)
             ->where('status', config('vars.room_queue_status.waiting'))
-            ->orderBy('queue_number' , 'DESC')
             ->first();
 
         return $data;
@@ -139,7 +138,7 @@ class RoomQueue extends Model
 
         if(count($roomQueues) == 0){
             $roomQueues = self::where('status', config('vars.room_queue_status.patient_in'))
-                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+//                ->where('created_at', 'like', "%".date('Y-m-d')."%")
                 ->where('room_id', $room_id)
                 ->first();
         }

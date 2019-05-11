@@ -31,8 +31,8 @@
                                 <span class="number-app">{{ $room->name_en }}</span>
                             </div>
                             <div class="col-md-8 text-right">
-                                <span class="text-app-1">{{ ($room->user)? $room->user->doctor->name_ar : '-' }}</span>
-                                <span class="text-app-2">{{ ($room->user)? $room->user->doctor->clinic->name_ar : '-' }}</span>
+                                <span id="doctor-{{ $room->uuid }}" class="text-app-1">{{ ($room->user)? $room->user->doctor->name_ar : '-' }}</span>
+                                <span id="clinic-{{ $room->uuid }}" class="text-app-2">{{ ($room->user)? $room->user->doctor->clinic->name_ar : '-' }}</span>
                             </div>
                         </div>
                     </div>

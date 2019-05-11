@@ -118,6 +118,8 @@ class RoomQueuesController extends Controller
 
         $data = $this->callNext($room_uuid);
 
+        $data['roomQueue'] = RoomQueue::getBy('id', $data['nextRoomQueueUpdated']->room_queue_id);
+
         // Return
         return response()->json($data);
     }
@@ -212,6 +214,8 @@ class RoomQueuesController extends Controller
                 'text' => 'Queue number skipped successfully',
             ];
 
+            $data['roomQueue'] = RoomQueue::getBy('uuid', $room_queue_uuid);
+
             $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id, $data['room']->id);
 
             // Broadcast event
@@ -243,6 +247,8 @@ class RoomQueuesController extends Controller
         if($skippedData['message']['msg_status'] == 1){
 
             $data = $this->callNext($room_uuid);
+
+            $data['roomQueue'] = RoomQueue::getBy('uuid', $room_queue_uuid);
 
             if ($data['message']['msg_status'] == 1){
                 $data['message'] = [
@@ -296,6 +302,8 @@ class RoomQueuesController extends Controller
                 'msg_status' => 1,
                 'text' => 'Patient now in clinic',
             ];
+
+            $data['roomQueue'] = RoomQueue::getBy('uuid', $room_queue_uuid);
 
             $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id, $data['room']->id);
 
@@ -376,6 +384,8 @@ class RoomQueuesController extends Controller
                 'text' => 'Patient now out of the clinic',
             ];
 
+            $data['roomQueue'] = RoomQueue::getBy('uuid', $room_queue_uuid);
+
             $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id, $data['room']->id);
 
             // Broadcast event
@@ -407,6 +417,8 @@ class RoomQueuesController extends Controller
         if($skippedData['message']['msg_status'] == 1){
 
             $data = $this->callNext($room_uuid);
+
+            $data['roomQueue'] = RoomQueue::getBy('uuid', $room_queue_uuid);
 
             if ($data['message']['msg_status'] == 1){
                 $data['message'] = [
