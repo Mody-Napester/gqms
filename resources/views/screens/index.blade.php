@@ -32,8 +32,10 @@
                 <div class="tab-pane active" id="searchResource">
                     <h4 class="header-title m-t-0">Search</h4>
                     <p class="text-muted font-14 m-b-20">
-                        Parsley is a javascript form validation library. It helps you provide your users with feedback on their form submission before sending it to your server.
+                        Search on resource from here.
                     </p>
+
+                    @include('screens.search')
                 </div>
                 <div class="tab-pane" id="createResource">
                     <h4 class="m-t-0 header-title">Create new screen</h4>

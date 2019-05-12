@@ -14,12 +14,24 @@ class FloorsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!User::hasAuthority('index.floors')){
             return redirect('/');
         }
-        $data['floors'] = Floor::all();
+
+        if (empty($request->all())){
+            $data['floors'] = Floor::all();
+        }else{
+            $data['floors'] = new Floor();
+
+            $data['floors'] = ($request->has('name_ar'))? $data['floors']->where('name_ar',$request->get('name_ar')) : $data['floors'];
+            $data['floors'] = ($request->has('name_en'))? $data['floors']->where('name_en',$request->get('name_en')) : $data['floors'];
+            $data['floors'] = ($request->has('status'))? $data['floors']->where('status',$request->get('status')) : $data['floors'];
+
+            $data['floors'] = $data['floors']->get();
+        }
+
         return view('floors.index', $data);
     }
 

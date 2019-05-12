@@ -18,15 +18,31 @@ class RoomsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Check permissions
         if (!User::hasAuthority('index.rooms')){
             return redirect('/');
         }
 
-        $data['rooms'] = Room::all();
         $data['floors'] = Floor::all();
+
+        if (empty($request->all())){
+            $data['rooms'] = Room::all();
+        }else{
+            $data['rooms'] = new Room();
+
+            $data['rooms'] = ($request->has('name_ar') && !empty($request->get('name_ar')))? $data['rooms']->where('name_ar',$request->get('name_ar')) : $data['rooms'];
+            $data['rooms'] = ($request->has('name_en') && !empty($request->get('name_en')))? $data['rooms']->where('name_en',$request->get('name_en')) : $data['rooms'];
+            $data['rooms'] = ($request->has('ip') && !empty($request->get('ip')))? $data['rooms']->where('ip',$request->get('ip')) : $data['rooms'];
+            $data['rooms'] = ($request->has('status'))? $data['rooms']->where('status',$request->get('status')) : $data['rooms'];
+            $data['rooms'] = ($request->has('floor'))? $data['rooms']->where('floor_id', Floor::getBy('uuid', $request->get('floor'))->id) : $data['rooms'];
+
+            $data['rooms'] = $data['rooms']->get();
+
+//            dd($data['rooms']->toSql());
+        }
+
         return view('rooms.index', $data);
     }
 

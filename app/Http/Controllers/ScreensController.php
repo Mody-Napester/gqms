@@ -20,15 +20,33 @@ class ScreensController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if (!User::hasAuthority('index.screens')){
             return redirect('/');
         }
-        $data['screens'] = Screen::all();
+
         $data['screenTypes'] = ScreenType::all();
         $data['floors'] = Floor::all();
         $data['rooms'] = Room::all();
+
+        if (empty($request->all())){
+            $data['screens'] = Screen::all();
+        }else{
+            $data['screens'] = new Screen();
+
+            $data['screens'] = ($request->has('name_ar') && !empty($request->get('name_ar')))? $data['screens']->where('name_ar',$request->get('name_ar')) : $data['screens'];
+            $data['screens'] = ($request->has('name_en') && !empty($request->get('name_en')))? $data['screens']->where('name_en',$request->get('name_en')) : $data['screens'];
+            $data['screens'] = ($request->has('ip') && !empty($request->get('ip')))? $data['screens']->where('ip',$request->get('ip')) : $data['screens'];
+            $data['screens'] = ($request->has('status'))? $data['screens']->where('status',$request->get('status')) : $data['screens'];
+            $data['screens'] = ($request->has('floor'))? $data['screens']->where('floor_id', Floor::getBy('uuid', $request->get('floor'))->id) : $data['screens'];
+
+            $data['screens'] = $data['screens']->get();
+
+//            dd($data['screens']->toSql());
+        }
+
+
         return view('screens.index', $data);
     }
 

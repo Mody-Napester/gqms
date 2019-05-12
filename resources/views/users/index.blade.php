@@ -20,14 +20,22 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card-box">
-                <!-- Create new -->
-                <h4 class="m-t-0 header-title">Create new User</h4>
-                <p class="text-muted font-14 m-b-30">
-                    Create new resource from here.
-                </p>
+            <div class="portlet">
+                <div class="portlet-heading bg-primary">
+                    <h3 class="portlet-title">
+                        <i class="ti-user"></i> Create new User
+                    </h3>
 
-                @include('users.create')
+                    <div class="portlet-widgets">
+                        <a data-toggle="collapse" data-parent="#accordion1" href="#bg-default" class="" aria-expanded="true"><i class="ion-minus-round"></i></a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div id="bg-default" class="panel-collapse collapse show" style="">
+                    <div class="portlet-body">
+                        @include('users.create')
+                    </div>
+                </div>
             </div>
         </div>
         <!-- end card-box -->
