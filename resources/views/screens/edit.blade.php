@@ -27,7 +27,7 @@
                 @endif
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="ip">Screen IP</label>
                 <input type="text" id="ip" autocomplete="off" class="form-control{{ $errors->has('ip') ? ' is-invalid' : '' }}" name="ip" value="{{ $screen->ip }}" required/>
@@ -37,6 +37,25 @@
                         <strong>{{ $errors->first('ip') }}</strong>
                     </span>
                 @endif
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Screen place</label>
+                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($floors as $key => $floor)
+                        <option @if($screen->floor_id == $floor->id) selected @endif value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Enable print</label>
+                <select name="enable_print" id="enable_print" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option @if($screen->enable_print == 0) selected @endif value="0">No</option>
+                    <option @if($screen->enable_print == 1) selected @endif value="1">Yes</option>
+                </select>
             </div>
         </div>
         <div class="col-md-6">
@@ -59,16 +78,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Place</label>
-                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach($floors as $key => $floor)
-                        <option @if($screen->floor_id == $floor->id) selected @endif value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+
         <div @if(count($screen->rooms) == 0 && $screen->screen_type_id != config('vars.screen_types.reception')) style="display: none;" @endif id="rooms-div" class="col-md-6">
             <div class="form-group">
                 <label>Show Rooms</label>
@@ -79,7 +89,21 @@
                 </select>
             </div>
         </div>
-        <div @if(count($screen->floors) == 0 && $screen->screen_type_id != config('vars.screen_types.kiosk')) style="display: none;" @endif id="floor-div" class="col-md-6">
+    </div>
+
+    <div class="row" @if(count($screen->floors) == 0 && $screen->screen_type_id != config('vars.screen_types.kiosk')) style="display: none;" @endif id="floor-div">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="" for="printer">Printer IP</label>
+                <select name="printer" id="printer" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    @foreach($printers as $key => $printer)
+                        <option @if($printer->id == $screen->printer_id) selected @endif value="{{ $printer->uuid }}">{{ $printer->name_en }} - {{ $printer->ip }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
             <div class="form-group">
                 <label>Print For Floors</label>
                 <select name="floors[]" id="floors" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">

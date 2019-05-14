@@ -10,7 +10,7 @@ class EPSON
 
     public static function deskPrint($inputs)
     {
-        $printer = self::USBPrint($inputs['screen_ip']);
+        $printer = self::USBPrint($inputs['printer_ip']);
         $printer->setJustification(Printer::JUSTIFY_CENTER);
 
         // Image

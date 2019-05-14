@@ -1,0 +1,1 @@
+ALTER TABLE `screens` ADD `printer_id` INT NULL AFTER `floor_id`, ADD `enable_print` BOOLEAN NOT NULL DEFAULT FALSE AFTER `printer_id`;

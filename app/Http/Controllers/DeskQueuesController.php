@@ -66,16 +66,16 @@ class DeskQueuesController extends Controller
 
         // Return
         if ($resource){
-//            try{
-//                \EPSON::deskPrint([
-//                    'queue_number' => $resource->queue_number,
-//                    'screen_ip' => $screen->ip
-//                ]);
-//            }catch (\Exception $e){
-//                $data['res'] = [
-//                    $e->getFile(), $e->getMessage(), $e->getLine()
-//                ];
-//            }
+
+            if($screen->enable_print == 1){
+                $printData = [
+                    'queue_number' => $resource->queue_number,
+//                    'screen_ip' => $screen->ip,
+                    'printer_ip' => $screen->printer->ip,
+                ];
+
+                \EPSON::deskPrint($printData);
+            }
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($floor_id);
             $data['queue_number'] = $resource->queue_number;

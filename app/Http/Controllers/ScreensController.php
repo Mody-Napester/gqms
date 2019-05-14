@@ -6,6 +6,7 @@ use App\Desk;
 use App\DeskQueue;
 use App\DeskQueueStatus;
 use App\Floor;
+use App\Printer;
 use App\Room;
 use App\Screen;
 use App\ScreenType;
@@ -29,6 +30,7 @@ class ScreensController extends Controller
         $data['screenTypes'] = ScreenType::all();
         $data['floors'] = Floor::all();
         $data['rooms'] = Room::all();
+        $data['printers'] = Printer::all();
 
         if (empty($request->all())){
             $data['screens'] = Screen::all();
@@ -90,6 +92,8 @@ class ScreensController extends Controller
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
+            'printer_id' => (($request->has('printer'))? $request->printer : null),
+            'enable_print' => (($request->enable_print == 0)? 0 : 1),
             'ip' => $request->ip,
             'floor_id' => $floor->id,
             'screen_type_id' => $request->type,
@@ -149,6 +153,7 @@ class ScreensController extends Controller
         $data['screenTypes'] = ScreenType::all();
         $data['floors'] = Floor::all();
         $data['rooms'] = Room::all();
+        $data['printers'] = Printer::all();
         return response([
             'title'=> "Update screen " . $data['screen']->name_en,
             'view'=> view('screens.edit', $data)->render(),
@@ -196,6 +201,8 @@ class ScreensController extends Controller
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
+            'printer_id' => (($request->has('printer'))? Printer::getBy('uuid', $request->printer)->id : null),
+            'enable_print' => (($request->enable_print == 0)? 0 : 1),
             'ip' => $request->ip,
             'floor_id' => $floor->id,
             'screen_type_id' => $request->type,

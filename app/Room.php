@@ -59,9 +59,15 @@ class Room extends Model
     /**
      *  Get a specific resource
      */
-    public static function getAll($status = 1)
+    public static function getAll($status = null) // 1 or 0
     {
-        return self::where('status', $status)->get();
+        if (is_null($status)){
+            $data = self::all();
+        }else{
+            $data = self::where('status', $status)->get();
+        }
+
+        return $data;
     }
 
     /**

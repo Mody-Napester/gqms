@@ -59,14 +59,6 @@ class Printer extends Model
     /**
      *  Get a specific resource
      */
-    public static function getAll($status = 1)
-    {
-        return self::where('status', $status)->get();
-    }
-
-    /**
-     *  Get a specific resource
-     */
     public static function getBy($by, $resource)
     {
         return self::where($by, $resource)->first();

@@ -26,7 +26,7 @@
                 @endif
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="ip">Screen IP</label>
                 <input type="text" id="ip" autocomplete="off" class="form-control{{ $errors->has('ip') ? ' is-invalid' : '' }}" name="ip" value="{{ old('ip') }}" required/>
@@ -40,9 +40,28 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
+                <label>Screen Place</label>
+                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($floors as $key => $floor)
+                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Enable print</label>
+                <select name="enable_print" id="enable_print" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
                 <label>Type</label>
                 <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    <option>Choose</option>
+                    <option disabled selected>Choose</option>
                     @foreach($screenTypes as $key => $screenType)
                         <option value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>
                     @endforeach
@@ -59,16 +78,6 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Screen Place</label>
-                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach($floors as $key => $floor)
-                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
         <div style="display: none;" id="rooms-div" class="col-md-6">
             <div class="form-group">
                 <label>Show Rooms</label>
@@ -79,7 +88,20 @@
                 </select>
             </div>
         </div>
-        <div style="display: none;" id="floor-div" class="col-md-6">
+    </div>
+    <div class="row" style="display: none;" id="floor-div">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="" for="printer">Printer IP</label>
+                <select name="printer" id="printer" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    @foreach($printers as $key => $printer)
+                        <option value="{{ $printer->uuid }}">{{ $printer->name_en }} - {{ $printer->ip }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
             <div class="form-group">
                 <label>Print For Floors</label>
                 <select name="floors[]" id="floors" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
