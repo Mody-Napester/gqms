@@ -149,10 +149,10 @@
     font-size: 14px;
 }
 
-@font-face {
-    font-family: GE_SS_Two;
-    src: url('/public/assets/fonts/ge-ss-two-medium.ttf') format('ttf');
-}
+/*@font-face {*/
+    /*font-family: GE_SS_Two;*/
+    /*src: url('/public/assets/fonts/ge-ss-two-medium.ttf') format('ttf');*/
+/*}*/
 body{
     font-family: 'Tajawal', sans-serif;
 }

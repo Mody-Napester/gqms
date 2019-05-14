@@ -13,11 +13,18 @@
 
     <title>@yield('title')</title>
 
+    {{--<link href="https://fonts.googleapis.com/css?family=Tajawal:400,500,700,800,900" rel="stylesheet">--}}
+
+    <link href="{{ url('assets/css/arabic-font.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="https://fonts.googleapis.com/css?family=Tajawal:400,500,700,800,900" rel="stylesheet">
+    <style>
+        body{
+            font-family: 'Tajawal', sans-serif;
+        }
+    </style>
 
 </head>
 <body onload="startTime()">
