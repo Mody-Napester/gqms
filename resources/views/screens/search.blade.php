@@ -21,7 +21,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Type</label>
-                <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                <select name="type" id="type_search" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($screenTypes as $key => $screenType)
                         <option value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>

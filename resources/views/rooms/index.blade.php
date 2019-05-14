@@ -89,9 +89,9 @@
                                 <td>{{ $desk->created_at }}</td>
 {{--                                <td>{{ $desk->updated_at }}</td>--}}
                                 <td>
-                                    <a href="{{ route('rooms.show', [$desk->uuid]) }}" target="_blank" class="btn btn-sm btn-primary">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
+                                    {{--<a href="{{ route('rooms.show', [$desk->uuid]) }}" target="_blank" class="btn btn-sm btn-primary">--}}
+                                        {{--<i class="fa fa-eye"></i>--}}
+                                    {{--</a>--}}
                                     <a href="{{ route('rooms.edit', [$desk->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>

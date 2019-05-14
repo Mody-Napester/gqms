@@ -72,7 +72,7 @@
         <div style="display: none;" id="rooms-div" class="col-md-6">
             <div class="form-group">
                 <label>Show Rooms</label>
-                <select name="rooms[]" id="rooms" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                <select name="rooms[]" id="rooms" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     @foreach($rooms as $key => $room)
                         <option value="{{ $room->uuid }}">{{ $room->floor->name_en . ' - ' . $room->name_en }}</option>
                     @endforeach
@@ -95,7 +95,7 @@
     <div class="form-group m-b-0">
         <div>
             <button type="submit" class="btn btn-primary waves-effect waves-light">
-                Submit
+                <i class="fa fa-fw fa-save"></i> Save
             </button>
         </div>
     </div>

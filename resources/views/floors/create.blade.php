@@ -42,7 +42,7 @@
     <div class="form-group m-b-0">
         <div>
             <button type="submit" class="btn btn-primary waves-effect waves-light">
-                <i class="fa fa-fw fa-save"></i> Submit
+                <i class="fa fa-fw fa-save"></i> Save
             </button>
         </div>
     </div>
