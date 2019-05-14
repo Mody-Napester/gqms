@@ -61,6 +61,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
+                        <th>Email</th>
                         <th>Roles</th>
                         <th>Created by</th>
                         <th>Updated by</th>
@@ -75,6 +76,7 @@
                         <tr>
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
                             <td>
                                 @foreach($user->roles as $role)
                                     <span class="label {{ $role->class }}">{{ $role->name }}</span>
