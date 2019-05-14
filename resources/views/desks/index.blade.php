@@ -7,6 +7,9 @@
     <!-- Page-Title -->
     <div class="row">
         <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <a href="#goToAll" class="btn btn-default waves-effect waves-light">Show All <i class="fa fa-fw fa-arrow-down"></i></a>
+            </div>
 
             <h4 class="page-title">Desk</h4>
             <ol class="breadcrumb">
@@ -50,7 +53,7 @@
         <!-- end card-box -->
     </div>
 
-    <div class="row">
+    <div class="row" id="goToAll">
         <div class="col-lg-12">
             <div class="card-box table-responsive">
                 <h4 class="m-t-0 header-title">All Desks</h4>
