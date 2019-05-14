@@ -15,6 +15,13 @@ class CreatePrintersTable extends Migration
     {
         Schema::create('printers', function (Blueprint $table) {
             $table->increments('id');
+            $table->uuid('uuid');
+            $table->string('ip');
+            $table->string('name_ar');
+            $table->string('name_en');
+            $table->integer('created_by');
+            $table->integer('updated_by');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

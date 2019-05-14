@@ -105,9 +105,9 @@
                     <li class="has_sub">
                         <a href="{{ url('translations') }}" class="waves-effect"><i class="ti-flag-alt-2"></i> <span> Translations </span></a>
                     </li>
-                    {{--<li class="has_sub">--}}
-                        {{--<a href="{{ url('translations') }}" class="waves-effect"><i class="ti-id-badge"></i> <span> Tickets </span></a>--}}
-                    {{--</li>--}}
+                    <li class="has_sub">
+                        <a href="{{ route('printers.index') }}" class="waves-effect"><i class="ti-printer"></i> <span> Printers </span></a>
+                    </li>
                 @endif
 
             </ul>
