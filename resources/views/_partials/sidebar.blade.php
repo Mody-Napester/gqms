@@ -22,7 +22,7 @@
                             @if (\App\User::hasAuthority('index.permissions'))
                                 <li><a href="{{ route('permissions.index') }}">Permissions</a></li>
                             @endif
-                            @if (\App\User::hasAuthority('index.authorizations'))
+                            @if (\App\User::hasAuthority('index.roles'))
                                 <li><a href="{{ route('roles.index') }}">Roles</a></li>
                             @endif
                         </ul>
