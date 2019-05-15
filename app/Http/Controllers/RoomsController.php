@@ -85,8 +85,20 @@ class RoomsController extends Controller
 
         // Return
         if ($resource){
-            return back();
+            $data['message'] = [
+                'msg_status' => 1,
+                'type' => 'success',
+                'text' => 'Added successfully',
+            ];
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Error! .. please try again.',
+            ];
         }
+
+        return back()->with('message', $data['message']);
     }
 
     /**
@@ -172,8 +184,20 @@ class RoomsController extends Controller
 
         // Return
         if ($updatedResource){
-            return back();
+            $data['message'] = [
+                'msg_status' => 1,
+                'type' => 'success',
+                'text' => 'Updated successfully',
+            ];
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Error! .. please try again.',
+            ];
         }
+
+        return back()->with('message', $data['message']);
     }
 
     /**
@@ -190,8 +214,27 @@ class RoomsController extends Controller
 
             // Return
             if ($deletedResource){
-                return back();
+                $data['message'] = [
+                    'msg_status' => 1,
+                    'type' => 'success',
+                    'text' => 'Deleted successfully',
+                ];
+            }else{
+                $data['message'] = [
+                    'msg_status' => 0,
+                    'type' => 'danger',
+                    'text' => 'Error! .. please try again.',
+                ];
             }
+
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Sorry, user not exists.',
+            ];
         }
+
+        return back()->with('message', $data['message']);
     }
 }

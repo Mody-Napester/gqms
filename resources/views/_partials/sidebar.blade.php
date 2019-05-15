@@ -57,6 +57,11 @@
                         <a href="{{ route('screens.index') }}" class="waves-effect"><i class="ti-desktop"></i> <span> Screens </span></a>
                     </li>
                     @endif
+                    @if (\App\User::hasAuthority('index.printers'))
+                    <li class="has_sub">
+                        <a href="{{ route('printers.index') }}" class="waves-effect"><i class="ti-printer"></i> <span> Printers </span></a>
+                    </li>
+                    @endif
                 @endif
 
                 {{--<li class="has_sub">--}}
@@ -70,7 +75,7 @@
                 {{--</li>--}}
 
 
-                    @if (\App\User::hasAuthority('use.queues'))
+                    @if (\App\User::hasAuthority('use.queues') && (!is_null(auth()->user()->desk_id) || !is_null(auth()->user()->room_id)))
                         <li class="text-muted menu-title">Queues</li>
                         @if (!is_null(auth()->user()->desk_id) && auth()->user()->login_ip == auth()->user()->desk->ip)
                              @if (\App\User::hasAuthority('use.desk_queue'))
@@ -104,9 +109,6 @@
                     <li class="text-muted menu-title">Settings</li>
                     <li class="has_sub">
                         <a href="{{ url('translations') }}" class="waves-effect"><i class="ti-flag-alt-2"></i> <span> Translations </span></a>
-                    </li>
-                    <li class="has_sub">
-                        <a href="{{ route('printers.index') }}" class="waves-effect"><i class="ti-printer"></i> <span> Printers </span></a>
                     </li>
                 @endif
 
