@@ -151,6 +151,8 @@ class UsersController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'status' => $request->status,
+            'type' => $request->type,
             'password' => ($request->has('password')? bcrypt($request->password) : $resource->password),
             'updated_by' => auth()->user()->id
         ], $resource->id);

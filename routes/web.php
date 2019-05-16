@@ -6,6 +6,8 @@ Route::group(
 
 });
 
+Route::get('/test_oracle', 'SyncVendorDataController@getClientClinics');
+
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('home', 'HomeController@index')->name('home');
 Route::post('queues/{screen_uuid}/{floor_uuid}', 'DeskQueuesController@storeNewQueue')->name('desks.queues.storeNewQueue');

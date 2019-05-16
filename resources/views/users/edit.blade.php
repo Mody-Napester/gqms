@@ -57,7 +57,7 @@
                 <label>Status</label>
                 <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
                     @foreach(App\Enums\UserStatuses::$statuses as $key => $status)
-                        <option @if($status == $user->status) selected @endif value="{{ $key }}">{{ $status }}</option>
+                        <option @if($key == $user->status) selected @endif value="{{ $key }}">{{ $status }}</option>
                     @endforeach
                 </select>
             </div>
@@ -68,7 +68,7 @@
                 <label>Type</label>
                 <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
                     @foreach(App\Enums\UserTypes::$types as $key => $type)
-                        <option @if($type == $user->type) selected @endif value="{{ $key }}">{{ $type }}</option>
+                        <option @if($key == $user->type) selected @endif value="{{ $key }}">{{ $type }}</option>
                     @endforeach
                 </select>
             </div>

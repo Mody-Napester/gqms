@@ -74,7 +74,6 @@
                     {{--<a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Receptions </span></a>--}}
                 {{--</li>--}}
 
-
                     @if (\App\User::hasAuthority('use.queues') && (!is_null(auth()->user()->desk_id) || !is_null(auth()->user()->room_id)))
                         <li class="text-muted menu-title">Queues</li>
                         @if (!is_null(auth()->user()->desk_id) && auth()->user()->login_ip == auth()->user()->desk->ip)
