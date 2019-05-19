@@ -16,8 +16,8 @@
     {{--<link href="https://fonts.googleapis.com/css?family=Tajawal:400,500,700,800,900" rel="stylesheet">--}}
 
     <link href="{{ url('assets/css/arabic-font.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <link href="{{ url('assets/css/ajax-bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/css/ajax-bootstrap-theme.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/custom_screen_ajax.css') }}" rel="stylesheet" type="text/css" />
 
