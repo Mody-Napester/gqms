@@ -294,4 +294,22 @@ class ScreensController extends Controller
 
         return back()->with('message', $data['message']);
     }
+
+    /**
+     * Get Screens Ajax Contents.
+     */
+    public function getScreensAjaxContents($screen)
+    {
+        $data['screen'] = Screen::getBy('uuid', $screen);
+
+        $data['logegdInDeskUsers'] = Desk::logegdInUsers('desk_id');
+        $data['logegdInRoomUsers'] = Room::logegdInUsers('room_id');
+
+        $data['desks'] = Desk::where('floor_id', $data['screen']->floor_id)->get();
+        $data['room'] = Room::where('floor_id', $data['screen']->floor_id)->get();
+
+        foreach($data['desks'] as $desk){
+            
+        }
+    }
 }

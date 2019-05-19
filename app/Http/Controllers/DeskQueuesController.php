@@ -163,6 +163,7 @@ class DeskQueuesController extends Controller
 
         $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('desk_id', $data['desk']->id)
             ->where('status', config('vars.desk_queue_status.called'))
             ->orWhere('status', config('vars.desk_queue_status.call_from_skip'))
             ->first();
@@ -195,9 +196,11 @@ class DeskQueuesController extends Controller
         // Do Code
         if($data['currentQueue']){
             // Edit current
+            DeskQueueStatus::where('desk_queue_id', $data['currentQueue']->id)->delete();
+
             DeskQueue::edit([
                 'desk_id' => $data['desk']->id,
-                'status' => config('vars.desk_queue_status.done'),
+                'status' => config('vars.desk_queue_status.waiting'),
             ], $data['currentQueue']->id);
         }
 
@@ -245,7 +248,7 @@ class DeskQueuesController extends Controller
     /**
      * Skip Queue Number.
      */
-    public function skipQueueNumber($desk_uuid, $desk_queue_uuid)
+    public function skipQueueNumber($desk_uuid, $desk_queue_uuid, $fromCode = false)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
@@ -293,14 +296,18 @@ class DeskQueuesController extends Controller
         }
 
         // Return
-        return response()->json($data);
+        if($fromCode){
+            return $data;
+        }else{
+            return response()->json($data);
+        }
 
     }
 
     /**
      * Skip And Next Queue Number.
      */
-    public function skipAndNextQueueNumber($desk_uuid, $desk_queue_uuid)
+    public function goSkipAndNextQueueNumber($desk_uuid, $desk_queue_uuid)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
@@ -322,6 +329,7 @@ class DeskQueuesController extends Controller
         ]);
 
         if($deskQueueStatusSkip){
+
             $data = $this->callNext($desk_uuid);
 
             if ($data['message']['msg_status'] == 1){
@@ -347,8 +355,30 @@ class DeskQueuesController extends Controller
         }
 
         // Return
-        return response()->json($data);
+        return $data;
 
+    }
+
+    /**
+     * Skip And Next Queue Number.
+     */
+    public function skipAndNextQueueNumber($desk_uuid, $desk_queue_uuid)
+    {
+        // Check if there is a waiting patient
+        $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('status', config('vars.desk_queue_status.waiting'))
+            ->first();
+
+        if($data['nextQueue']){
+            $data = $this->goSkipAndNextQueueNumber($desk_uuid, $desk_queue_uuid);
+        }else{
+            $data = $this->skipQueueNumber($desk_uuid, $desk_queue_uuid, true);
+        }
+
+        // Return
+        return response()->json($data);
     }
 
     /**
@@ -396,7 +426,7 @@ class DeskQueuesController extends Controller
     /**
      * Done Queue Number.
      */
-    public function doneQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial)
+    public function doneQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial, $fromCode = false)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
@@ -447,13 +477,17 @@ class DeskQueuesController extends Controller
         }
 
         // Return
-        return response()->json($data);
+        if($fromCode){
+            return $data;
+        }else{
+            return response()->json($data);
+        }
     }
 
     /**
      * Done And Next Queue Number.
      */
-    public function doneAndNextQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial)
+    public function goDoneAndNextQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial)
     {
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
@@ -495,6 +529,28 @@ class DeskQueuesController extends Controller
                 'msg_status' => 0,
                 'text' => 'Some thing error, please try again after few minutes',
             ];
+        }
+
+        // Return
+        return $data;
+    }
+
+    /**
+     * Done And Next Queue Number.
+     */
+    public function doneAndNextQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial)
+    {
+        // Check if there is a waiting patient
+        $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('status', config('vars.desk_queue_status.waiting'))
+            ->first();
+
+        if($data['nextQueue']){
+            $data = $this->goDoneAndNextQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial);
+        }else{
+            $data = $this->doneQueueNumber($desk_uuid, $desk_queue_uuid, $reservation_serial, true);
         }
 
         // Return

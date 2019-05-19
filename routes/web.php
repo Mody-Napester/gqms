@@ -6,6 +6,8 @@ Route::group(
 
 });
 
+Route::get('/reset', 'HomeController@resetReservations')->name('resetReservations');
+
 Route::get('/test_oracle', 'SyncVendorDataController@getClientClinics');
 
 Route::get('/', 'HomeController@index')->name('home');
@@ -70,6 +72,8 @@ Route::group([
 });
 
 Route::get('screens/{screen}', 'ScreensController@show')->name('screens.show');
+
+Route::get('screens/ajax/{screen}/get-contents', 'ScreensController@getScreensAjaxContents')->name('screens.getScreensAjaxContents');
 
 Route::get('get-my-ip', function(){
     return view('get_my_ip');

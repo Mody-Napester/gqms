@@ -4,6 +4,10 @@
         <div id="sidebar-menu">
             <ul>
                 <li class="has_sub">
+                    <a href="{{ route('resetReservations') }}" class="waves-effect"><i class="ti-reload"></i> <span> Reset Reservations </span></a>
+                </li>
+
+                <li class="has_sub">
                     <a href="{{ route('dashboard.index') }}" class="waves-effect"><i class="ti-dashboard"></i> <span> Dashboard </span></a>
                 </li>
                 <li class="has_sub">

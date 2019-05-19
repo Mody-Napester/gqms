@@ -149,6 +149,7 @@ class RoomQueuesController extends Controller
         $data['room'] = Room::getBy('uuid', $room_uuid);
 
         $data['nextQueue'] = RoomQueue::where('floor_id', $data['room']->floor_id)
+            ->where('room_id', $data['room']->id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', config('vars.room_queue_status.called'))
             ->orWhere('status', config('vars.room_queue_status.call_from_skip'))
@@ -212,7 +213,7 @@ class RoomQueuesController extends Controller
     /**
      * Skip Queue Number.
      */
-    public function skipQueueNumber($room_uuid, $room_queue_uuid)
+    public function skipQueueNumber($room_uuid, $room_queue_uuid, $fromCode = false)
     {
         if (!User::hasAuthority('use.room_queue')){
             return redirect('/');
@@ -242,14 +243,18 @@ class RoomQueuesController extends Controller
         }
 
         // Return
-        return response()->json($data);
+        if($fromCode){
+            return $data;
+        }else{
+            return response()->json($data);
+        }
 
     }
 
     /**
      * Skip And Next Queue Number.
      */
-    public function skipAndNextQueueNumber($room_uuid, $room_queue_uuid)
+    public function goSkipAndNextQueueNumber($room_uuid, $room_queue_uuid)
     {
         if (!User::hasAuthority('use.room_queue')){
             return redirect('/');
@@ -283,8 +288,30 @@ class RoomQueuesController extends Controller
         }
 
         // Return
-        return response()->json($data);
+        return $data;
 
+    }
+
+    /**
+     * Skip And Next Queue Number.
+     */
+    public function skipAndNextQueueNumber($room_uuid, $room_queue_uuid)
+    {
+        // Check if there is a waiting patient
+        $data['desk'] = Room::getBy('uuid', $room_uuid);
+        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('status', config('vars.desk_queue_status.waiting'))
+            ->first();
+
+        if($data['nextQueue']){
+            $data = $this->goSkipAndNextQueueNumber($room_uuid, $room_queue_uuid);
+        }else{
+            $data = $this->skipQueueNumber($room_uuid, $room_queue_uuid, true);
+        }
+
+        // Return
+        return response()->json($data);
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Reservation;
 use Illuminate\Http\Request;
+use DB;
 
 class HomeController extends Controller
 {
@@ -28,5 +30,19 @@ class HomeController extends Controller
         } else {
             return redirect(route('login'));
         }
+    }
+
+    /**
+     * Reset Reservations.
+     */
+    public function resetReservations()
+    {
+        DB::update('update reservations set desk_queue_id = null');
+        DB::delete('delete from room_queues');
+        DB::delete('delete from room_queue_statuses');
+        return back()->with('message', [
+            'text' => 'Successfully Reset',
+            'type' => 'success'
+        ]);
     }
 }

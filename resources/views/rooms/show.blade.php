@@ -311,6 +311,15 @@
                         this.out_status = false;
                         this.out_and_next_status = false;
                     }
+                    else if(current_room_queue_number == '{{ config('vars.room_queue_status.call_from_skip') }}'){
+                        this.next_status = false;
+                        this.call_status = false;
+                        this.skip_status = false;
+                        this.skip_and_next_status = false;
+                        this.in_status = true;
+                        this.out_status = false;
+                        this.out_and_next_status = false;
+                    }
                 },
 
                 // Buttons
