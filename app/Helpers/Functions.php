@@ -2,7 +2,7 @@
 
 // Get path
 function get_path($path){
-    return base_path() . config('custom.public') . '/' . $path;
+    return base_path() . '/' . config('vars.public') . '/' . $path;
 }
 
 // Get path

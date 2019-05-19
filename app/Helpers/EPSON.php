@@ -14,7 +14,7 @@ class EPSON
         $printer->setJustification(Printer::JUSTIFY_CENTER);
 
         // Image
-        $img = EscposImage::load(public_path('assets/images/ganz-logo-print.jpg'));
+        $img = EscposImage::load(get_path('assets/images/ganz-logo-print.jpg'));
         $printer->graphics($img, Printer::IMG_DEFAULT);
 //        $printer->feed(1);
 
