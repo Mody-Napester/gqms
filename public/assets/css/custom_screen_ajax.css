@@ -33,7 +33,7 @@ body {
     display: inline-block;
     outline: none;
     padding: 1.5rem;
-    font-size: 3rem;
+    font-size: 45px;
     text-align: center;
     cursor: pointer;
     color: #fff;
@@ -140,7 +140,7 @@ body {
     display: inline-block;
     outline: none;
     padding: 1.5rem;
-    font-size: 3rem;
+    font-size: 45px;
     text-align: center;
     cursor: pointer;
     color: #fff;
@@ -214,11 +214,11 @@ table, tr, td{
     background-color: #7f8c8d;
 }
 .txt-1{
-    font-size: 3.5rem;
+    font-size: 45px;
     font-weight: bold;
 }
 .txt-2{
-    font-size: 3rem;
+    font-size: 45px;
     font-weight: bold;
 }
 .txt-3{
@@ -228,14 +228,14 @@ table, tr, td{
     background-color: #FFFFFF;
     padding: 2px;
     color: #2E5272;
-    font-size: 3.5rem;
+    font-size: 45px;
     font-weight: bold;
     width:100%;
     display: block;
 }
 .text-app{
     color: #FFFFFF;
-    font-size: 3.5rem;
+    font-size: 45px;
     padding-top: 3px;
     font-weight: bold;
     display: inline-block;
@@ -243,20 +243,20 @@ table, tr, td{
 }
 .text-app-1{
     color: #FFFFFF;
-    font-size: 2.5rem;
+    font-size: 35px;
     font-weight: bold;
     display: block;
 }
 .text-app-2{
     color: #FFFFFF;
-    font-size: 2rem;
+    font-size: 20px;
     padding-top: 1px;
     display: block;
     font-weight: bold;
 }
 .top-div{
     color: #FFFFFF;
-    font-size: 3rem;
+    font-size: 45px;
     font-weight: bold;
     background-color: #7f8c8d;
     padding: 3px 15px;
@@ -272,8 +272,8 @@ table, tr, td{
     text-align: center;
     color: #FFFFFF;
     font-weight: bold;
-    font-size: 3rem;
-    padding-top: 25px;
+    font-size: 45px;
+    padding-top: 20px;
     position: absolute;
     width: 100%;
     height: 100%;
