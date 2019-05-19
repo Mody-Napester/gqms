@@ -35,7 +35,7 @@
         <div class="section-2">
             <table class="table" style="border: 0;margin: 0;">
                 <tr>
-                    <td style="padding: 15px 10px 10px 10px;">
+                    <td style="padding: 10px;">
                         <div class="top-div">{{ $screen->floor->name_en }}</div>
                         <div class="top-div">{{ $screen->name_en }}</div>
                         <div class="top-div">
@@ -55,14 +55,14 @@
 
     <table class="table">
         <tr>
-            <td style="width: 50%;">
+            <td style="width: 50%;text-align: center;">
                 <div class="bg-green-2 section ">
                     <div class="text-white txt-1 text-center">
                         إنتظار العيادات
                     </div>
                 </div>
             </td>
-            <td style="width: 50%;">
+            <td style="width: 50%;text-align: center;">
                 <div class="bg-blue-2 section ">
                     <div class="text-white txt-1 text-center">
                         إنتظار الإستقبال
@@ -79,29 +79,33 @@
                         <td class="res-row">
                             <div id="{{ $room->uuid }}" class="bg-gray-2 section  @if(!in_array($room->id , $logegdInRoomUsers)) canceled-res @endif">
                                 <div class="txt-3 text-center">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <span class="number-app">{{ ($queue = \App\RoomQueue::getCurrentRoomQueues($room->id))? $queue->queue_number : '-'  }}</span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-app">حجز</span>
-                                        </div>
-                                    </div>
+                                    <table class="table">
+                                        <tr>
+                                            <td class="text-center">
+                                                <span class="number-app">{{ ($queue = \App\RoomQueue::getCurrentRoomQueues($room->id))? $queue->queue_number : '-'  }}</span>
+                                            </td>
+                                            <td class="text-right">
+                                                <span class="text-app">حجز</span>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="bg-green-3 section-1">
                                 <div class="txt-3">
-                                    <div class="row">
-                                        <div class="col-md-4 text-center">
-                                            <span class="number-app">{{ $room->name_en }}</span>
-                                        </div>
-                                        <div class="col-md-8 text-right">
-                                            <span id="doctor-{{ $room->uuid }}" class="text-app-1">{{ ($room->user)? $room->user->doctor->name_ar : '-' }}</span>
-                                            <span id="clinic-{{ $room->uuid }}" class="text-app-2">{{ ($room->user)? $room->user->doctor->clinic->name_ar : '-' }}</span>
-                                        </div>
-                                    </div>
+                                    <table class="table">
+                                        <tr>
+                                            <td class="col-md-4 text-center">
+                                                <span class="number-app">{{ $room->name_en }}</span>
+                                            </td>
+                                            <td class="col-md-8 text-right">
+                                                <span id="doctor-{{ $room->uuid }}" class="text-app-1">{{ ($room->user)? $room->user->doctor->name_ar : '-' }}</span>
+                                                <span id="clinic-{{ $room->uuid }}" class="text-app-2">{{ ($room->user)? $room->user->doctor->clinic->name_ar : '-' }}</span>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </td>
@@ -118,28 +122,32 @@
                             <td class="res-row">
                                 <div id="{{ $desk->uuid }}" class="bg-gray-1 section  @if(!in_array($desk->id , $logegdInDeskUsers)) canceled-res @endif">
                                     <div class="txt-3 text-center">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <span class="number-app">{{ ($queue = \App\DeskQueue::getCurrentDeskQueues($desk->id))? $queue->queue_number : '-'  }}</span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <span class="text-app">حجز</span>
-                                            </div>
-                                        </div>
+                                        <table class="table">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <span class="number-app">{{ ($queue = \App\DeskQueue::getCurrentDeskQueues($desk->id))? $queue->queue_number : '-'  }}</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span class="text-app">حجز</span>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <div class="bg-blue-3 section ">
+                                <div class="bg-blue-3 section">
                                     <div class="txt-3 text-center">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <span class="number-app">{{ $desk->name_en }}</span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <span class="text-app">شباك</span>
-                                            </div>
-                                        </div>
+                                        <table class="table">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <span class="number-app">{{ $desk->name_en }}</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span class="text-app">شباك</span>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                             </td>
