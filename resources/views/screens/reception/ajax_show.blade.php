@@ -250,9 +250,9 @@
     //     audio.play();
     // }
 
-    setTimeout(function () {
-        window.location.reload();
-    }, 10000);
+    // setTimeout(function () {
+    //     window.location.reload();
+    // }, 10000);
 
     {{--const app = new Vue({--}}
         {{--el : '#app',--}}
