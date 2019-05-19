@@ -169,6 +169,9 @@ body{
 table, tr, td{
     border: 0;
 }
+.table {
+    width: 100%;
+}
 .section{
     padding: 1.4rem;
 }
