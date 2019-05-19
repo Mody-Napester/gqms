@@ -94,6 +94,7 @@
             <div class="form-group">
                 <label class="" for="printer">Printer IP</label>
                 <select name="printer" id="printer" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option disabled selected>Choose</option>
                     @foreach($printers as $key => $printer)
                         <option value="{{ $printer->uuid }}">{{ $printer->name_en }} - {{ $printer->ip }}</option>
                     @endforeach

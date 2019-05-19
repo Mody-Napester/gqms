@@ -92,7 +92,7 @@ class ScreensController extends Controller
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
-            'printer_id' => (($request->has('printer'))? $request->printer : null),
+            'printer_id' => (($request->has('printer'))? Printer::getBy('uuid', $request->printer)->id : null),
             'enable_print' => (($request->enable_print == 0)? 0 : 1),
             'ip' => $request->ip,
             'floor_id' => $floor->id,
