@@ -309,7 +309,7 @@ class ScreensController extends Controller
         $data['room'] = Room::where('floor_id', $data['screen']->floor_id)->get();
 
         foreach($data['desks'] as $desk){
-            
+
         }
     }
 }
