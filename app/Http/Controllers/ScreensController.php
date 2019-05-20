@@ -8,6 +8,7 @@ use App\DeskQueueStatus;
 use App\Floor;
 use App\Printer;
 use App\Room;
+use App\RoomQueue;
 use App\Screen;
 use App\ScreenType;
 use App\User;
@@ -300,16 +301,35 @@ class ScreensController extends Controller
      */
     public function getScreensAjaxContents($screen)
     {
-        $data['screen'] = Screen::getBy('uuid', $screen);
+        $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
 
         $data['logegdInDeskUsers'] = Desk::logegdInUsers('desk_id');
+        $data['availableDeskUsers'] = Desk::logegdInUsers('available');
         $data['logegdInRoomUsers'] = Room::logegdInUsers('room_id');
+        $data['availableRoomUsers'] = Room::logegdInUsers('available');
 
         $data['desks'] = Desk::where('floor_id', $data['screen']->floor_id)->get();
         $data['room'] = Room::where('floor_id', $data['screen']->floor_id)->get();
 
         foreach($data['desks'] as $desk){
-
+            $data['deskQueues'][$desk->uuid]['status'] = (in_array($desk->id , $data['logegdInDeskUsers']))? 1 : 0 ;
+            $data['deskQueues'][$desk->uuid]['available'] = (in_array($desk->id , $data['availableDeskUsers']))? 1 : 0 ;
+            $data['deskQueues'][$desk->uuid]['queueNumber'] = (DeskQueue::getCurrentDeskQueues($desk->id)? DeskQueue::getCurrentDeskQueues($desk->id)->queue_number : 0);
         }
+
+        foreach($data['room'] as $room){
+            $data['roomQueues'][$room->uuid]['status'] = (in_array($room->id , $data['logegdInRoomUsers']))? 1 : 0 ;
+            $data['roomQueues'][$room->uuid]['available'] = (in_array($room->id , $data['availableRoomUsers']))? 1 : 0 ;
+            $data['roomQueues'][$room->uuid]['queueNumber'] = (RoomQueue::getCurrentRoomQueues($room->id)? RoomQueue::getCurrentRoomQueues($room->id)->queue_number : 0);
+        }
+
+        unset($data['screen']);
+        unset($data['logegdInDeskUsers']);
+        unset($data['logegdInRoomUsers']);
+        unset($data['desks']);
+        unset($data['room']);
+
+        // Return
+        return response()->json($data);
     }
 }

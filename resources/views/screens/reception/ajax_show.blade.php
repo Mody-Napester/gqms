@@ -164,90 +164,17 @@
 <script src="{{ url('assets/js/jquery.min.js') }}"></script>
 <script src="{{ url('js/app.js') }}"></script>
 
-<script type="text/javascript">
-    function startTime()
-    {
-        var today=new Date();
-        var h=today.getHours();
-        var m=today.getMinutes();
-        var s=today.getSeconds();
-
-        // add a zero in front of numbers<10
-        m=checkTime(m);
-        s=checkTime(s);
-        document.getElementById('time-txt').innerHTML=h+":"+m+":"+s;
-        t=setTimeout('startTime()',500);
-    }
-
-    function checkTime(i)
-    {
-        if (i<10)
-        {
-            i="0" + i;
-        }
-        return i;
-    }
-
-    function saveIpInSession()
-    {
-        var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
-
-        if (RTCPeerConnection) (function () {
-            var rtc = new RTCPeerConnection({iceServers: []});
-            if (1 || window.mozRTCPeerConnection) {      // FF [and now Chrome!] needs a channel/stream to proceed
-                rtc.createDataChannel('', {reliable: false});
-            }
-            rtc.onicecandidate = function (evt) {
-                if (evt.candidate) grepSDP("a=" + evt.candidate.candidate);
-            };
-            rtc.createOffer(function (offerDesc) {
-                grepSDP(offerDesc.sdp);
-                rtc.setLocalDescription(offerDesc);
-            }, function (e) {
-                console.warn("offer failed", e);
-            });
-
-
-            var addrs = Object.create(null);
-            addrs["0.0.0.0"] = false;
-
-            function updateDisplay(newAddr) {
-                if (newAddr in addrs) return;
-                else addrs[newAddr] = true;
-                var displayAddrs = Object.keys(addrs).filter(function (k) {
-                    return addrs[k];
-                });
-                console.log(displayAddrs[0]);
-            }
-
-            function grepSDP(sdp) {
-                var hosts = [];
-                sdp.split('\r\n').forEach(function (line) { // c.f. http://tools.ietf.org/html/rfc4566#page-39
-                    if (~line.indexOf("a=candidate")) {     // http://tools.ietf.org/html/rfc4566#section-5.13
-                        var parts = line.split(' '),        // http://tools.ietf.org/html/rfc5245#section-15.1
-                            addr = parts[4],
-                            type = parts[7];
-                        if (type === 'host') updateDisplay(addr);
-                    } else if (~line.indexOf("c=")) {       // http://tools.ietf.org/html/rfc4566#section-5.7
-                        var parts = line.split(' '),
-                            addr = parts[2];
-                        updateDisplay(addr);
-                    }
-                });
-            }
-        })();
-    }
-
-    saveIpInSession();
-</script>
+@include('_scripts.screen')
 
 <script>
-    // function PlaySound(soundObj) {
-    //     var audio = new Audio(soundObj);
-    //     audio.play();
-    // }
+    function PlaySound(soundObj) {
+        var audio = new Audio(soundObj);
+        audio.play();
+    }
 
-    setTimeout(function () {
+    var time = 10000;
+
+    setInterval(function () {
         // Send ajax request
         var url = '{{ route('screens.getScreensAjaxContents', $screen->uuid) }}';
         $.ajax({
@@ -257,83 +184,68 @@
                 console.log('Sending .. ');
             },
             success:function (data) {
+                $.each(data.deskQueues, function(key,valueObj){
+                    // alert(key + "/" + valueObj.toSource() );
 
+                    var targetEl = $('#' + key + ' .number-app');
+
+                    var targetNumber = targetEl.text();
+
+                    if(valueObj.queueNumber != targetNumber && valueObj.queueNumber != 0){
+                        console.log(valueObj.queueNumber);
+
+                        targetEl.text(valueObj.queueNumber);
+                        targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
+                            targetEl.removeClass( "bounce-class" );
+                        });
+
+                        PlaySound('{{ url('assets/sounds/call_1.wav') }}');
+                        // document.getElementById('call_sound').play();
+                    }
+
+                    if(valueObj.status == 0 || valueObj.available == 0){
+                        $('#' + key).addClass('canceled-res');
+                    }
+                    else if(valueObj.status == 1 || valueObj.available == 1){
+                        $('#' + key).removeClass('canceled-res');
+                    }
+
+                });
+
+                $.each(data.roomQueues, function(key,valueObj){
+                    // alert(key + "/" + valueObj.toSource() );
+
+                    var targetEl = $('#' + key + ' .number-app');
+
+                    var targetNumber = targetEl.text();
+
+                    if(valueObj.queueNumber != targetNumber && valueObj.queueNumber != 0){
+                        console.log(valueObj.queueNumber);
+
+                        targetEl.text(valueObj.queueNumber);
+                        targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
+                            targetEl.removeClass( "bounce-class" );
+                        });
+
+                        PlaySound('{{ url('assets/sounds/call_1.wav') }}');
+                        // document.getElementById('call_sound').play();
+                    }
+
+                    if(valueObj.status == 0 || valueObj.available == 0){
+                        $('#' + key).addClass('canceled-res');
+                    }
+                    else if(valueObj.status == 1 || valueObj.available == 1){
+                        $('#' + key).removeClass('canceled-res');
+                    }
+
+                });
             },
             error:function () {
-
+                console.log('error');
             }
         });
 
-    }, 10000);
-
-    const app = new Vue({
-        el : '#app',
-        data : {
-            desk_uuid : '',
-            active_desk : false,
-        },
-        methods : {
-            listen(){
-                // Flash Desk Queue
-                Echo.channel('desk-queue-screen')
-                    .listen('NextDeskQueue', (response) => {
-                        var targetEl = $('#' + response.desk + ' .number-app');
-
-                        targetEl.text(response.queue);
-
-                        targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
-                            targetEl.removeClass( "bounce-class" );
-                        });
-
-                        PlaySound('{{ url('assets/sounds/call_1.wav') }}');
-                        document.getElementById('call_sound').play();
-
-                        console.log(response);
-                    });
-
-                // Flash Room Queue
-                Echo.channel('room-queue-screen')
-                    .listen('NextRoomQueue', (response) => {
-                        var targetEl = $('#' + response.room + ' .number-app');
-
-                        targetEl.text(response.queue);
-
-                        targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
-                            targetEl.removeClass( "bounce-class" );
-                        });
-
-                        PlaySound('{{ url('assets/sounds/call_1.wav') }}');
-                        document.getElementById('call_sound').play();
-
-                        console.log(response);
-                    });
-
-                Echo.channel('desk-queue-screen')
-                    .listen('DeskStatus', (response) => {
-                        if(response.available == 1){
-                            $('#' + response.desk).removeClass('canceled-res');
-                        }else{
-                            $('#' + response.desk).addClass('canceled-res');
-                        }
-                    });
-
-                Echo.channel('room-queue-screen')
-                    .listen('RoomStatus', (response) => {
-                        console.log(response);
-                        $('#doctor-' + response.room).text(response.doctor);
-                        $('#clinic-' + response.room).text(response.clinic);
-                        if(response.available == 1){
-                            $('#' + response.room).removeClass('canceled-res');
-                        }else{
-                            $('#' + response.room).addClass('canceled-res');
-                        }
-                    });
-            }
-        },
-        mounted() {
-            this.listen();
-        }
-    });
+    }, time);
 </script>
 
 </body>
