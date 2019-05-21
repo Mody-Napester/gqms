@@ -38,8 +38,13 @@ class HomeController extends Controller
     public function resetReservations()
     {
         DB::update('update reservations set desk_queue_id = null');
+
         DB::delete('delete from room_queues');
         DB::delete('delete from room_queue_statuses');
+
+        DB::delete('delete from desk_queues');
+        DB::delete('delete from desk_queue_statuses');
+
         return back()->with('message', [
             'text' => 'Successfully Reset',
             'type' => 'success'

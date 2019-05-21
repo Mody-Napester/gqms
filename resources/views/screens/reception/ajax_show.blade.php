@@ -172,6 +172,14 @@
         audio.play();
     }
 
+    function blink(key) {
+        var f = $('#' + key + ' .number-app');
+        setTimeout(function() {
+            f.style.display = (f.style.display == 'none' ? '' : 'none');
+            f.style.display = (f.style.display == 'none' ? '' : 'none');
+        }, 500);
+    }
+
     var time = 10000;
 
     setInterval(function () {
@@ -195,9 +203,12 @@
                         console.log(valueObj.queueNumber);
 
                         targetEl.text(valueObj.queueNumber);
-                        targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
-                            targetEl.removeClass( "bounce-class" );
-                        });
+
+                        // targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
+                        //     targetEl.removeClass( "bounce-class" );
+                        // });
+
+                        blink(key);
 
                         PlaySound('{{ url('assets/sounds/call_1.wav') }}');
                         // document.getElementById('call_sound').play();
