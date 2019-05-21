@@ -95,7 +95,7 @@ class Desk extends Model
      */
     public static function logegdInUsers($filed)
     {
-        $loggedInUsers = User::where('desk_id', '<>', '')->get();
+        $loggedInUsers = User::where('desk_id', '<>', '')->where('available', 1)->get();
         return $loggedInUsers->pluck($filed)->toArray();
     }
 

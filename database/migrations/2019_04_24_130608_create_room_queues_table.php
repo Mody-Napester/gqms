@@ -21,6 +21,7 @@ class CreateRoomQueuesTable extends Migration
             $table->string('queue_number');
             $table->integer('status'); // 1 Waiting, 2 Call, 3 Patient in,4 Skip, 5 Patient out ,6 Call from skip
             $table->integer('call_count')->unsigned()->default(0);
+            $table->boolean('reminder')->default(0); // 1 or 0
             $table->timestamps();
         });
     }

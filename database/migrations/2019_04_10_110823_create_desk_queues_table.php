@@ -20,6 +20,7 @@ class CreateDeskQueuesTable extends Migration
             $table->integer('desk_id')->nullable();
             $table->string('queue_number');
             $table->integer('status'); // 1 Waiting, 2 Call, 3 Pass == Skip, 4 Done,5 Call from pass
+            $table->boolean('reminder')->default(0); // 1 or 0
             $table->timestamps();
         });
     }

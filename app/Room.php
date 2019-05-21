@@ -101,7 +101,7 @@ class Room extends Model
      */
     public static function logegdInUsers($filed)
     {
-        $loggedInUsers = User::where('room_id', '<>', '')->get();
+        $loggedInUsers = User::where('room_id', '<>', '')->where('available', 1)->get();
         return $loggedInUsers->pluck($filed)->toArray();
     }
 

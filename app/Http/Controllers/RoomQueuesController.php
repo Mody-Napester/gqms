@@ -155,6 +155,13 @@ class RoomQueuesController extends Controller
             ->orWhere('status', config('vars.room_queue_status.call_from_skip'))
             ->first();
 
+        if($data['nextQueue']){
+            // Do Code
+            $data['nextRoomQueueUpdated'] = RoomQueue::edit([
+                'reminder' => 1,
+            ], $data['nextQueue']->id);
+        }
+
         event(new NextRoomQueue($data['room']->uuid, $data['nextQueue']->queue_number));
 
         $data['message'] = [

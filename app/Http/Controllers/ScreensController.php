@@ -304,23 +304,31 @@ class ScreensController extends Controller
         $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
 
         $data['logegdInDeskUsers'] = Desk::logegdInUsers('desk_id');
-        $data['availableDeskUsers'] = Desk::logegdInUsers('available');
         $data['logegdInRoomUsers'] = Room::logegdInUsers('room_id');
-        $data['availableRoomUsers'] = Room::logegdInUsers('available');
 
         $data['desks'] = Desk::where('floor_id', $data['screen']->floor_id)->get();
         $data['room'] = Room::where('floor_id', $data['screen']->floor_id)->get();
 
         foreach($data['desks'] as $desk){
             $data['deskQueues'][$desk->uuid]['status'] = (in_array($desk->id , $data['logegdInDeskUsers']))? 1 : 0 ;
-            $data['deskQueues'][$desk->uuid]['available'] = (in_array($desk->id , $data['availableDeskUsers']))? 1 : 0 ;
             $data['deskQueues'][$desk->uuid]['queueNumber'] = (DeskQueue::getCurrentDeskQueues($desk->id)? DeskQueue::getCurrentDeskQueues($desk->id)->queue_number : 0);
+            $data['deskQueues'][$desk->uuid]['reminder'] = (DeskQueue::getCurrentDeskQueues($desk->id)? DeskQueue::getCurrentDeskQueues($desk->id)->reminder : 0);
+
+            $getCurrentDeskQueue = DeskQueue::getCurrentDeskQueues($desk->id);
+            if($getCurrentDeskQueue){
+                DeskQueue::edit(['reminder' => 0], $getCurrentDeskQueue->id);
+            }
         }
 
         foreach($data['room'] as $room){
             $data['roomQueues'][$room->uuid]['status'] = (in_array($room->id , $data['logegdInRoomUsers']))? 1 : 0 ;
-            $data['roomQueues'][$room->uuid]['available'] = (in_array($room->id , $data['availableRoomUsers']))? 1 : 0 ;
             $data['roomQueues'][$room->uuid]['queueNumber'] = (RoomQueue::getCurrentRoomQueues($room->id)? RoomQueue::getCurrentRoomQueues($room->id)->queue_number : 0);
+            $data['roomQueues'][$room->uuid]['reminder'] = (RoomQueue::getCurrentRoomQueues($room->id)? RoomQueue::getCurrentRoomQueues($room->id)->reminder : 0);
+
+            $getCurrentRoomQueue = RoomQueue::getCurrentRoomQueues($room->id);
+            if($getCurrentRoomQueue){
+                RoomQueue::edit(['reminder' => 0], $getCurrentRoomQueue->id);
+            }
         }
 
         unset($data['screen']);
@@ -330,6 +338,7 @@ class ScreensController extends Controller
         unset($data['room']);
 
         // Return
+//        return $data['deskQueues'];
         return response()->json($data);
     }
 }

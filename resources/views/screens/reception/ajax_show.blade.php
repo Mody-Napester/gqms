@@ -75,41 +75,41 @@
                 <!-- Doctor Queue -->
                 <table class="table">
                     @foreach($screen->rooms as $room)
-                    <tr>
-                        <td class="res-row">
-                            <div id="{{ $room->uuid }}" class="bg-gray-2 section  @if(!in_array($room->id , $logegdInRoomUsers)) canceled-res @endif">
-                                <div class="txt-3 text-center">
-                                    <table class="table">
-                                        <tr>
-                                            <td class="text-center">
-                                                <span class="number-app">{{ ($queue = \App\RoomQueue::getCurrentRoomQueues($room->id))? $queue->queue_number : '-'  }}</span>
-                                            </td>
-                                            <td class="text-right">
-                                                <span class="text-app">حجز</span>
-                                            </td>
-                                        </tr>
-                                    </table>
+                        <tr>
+                            <td class="res-row">
+                                <div id="{{ $room->uuid }}" class="bg-gray-2 section  @if(!in_array($room->id , $logegdInRoomUsers)) canceled-res @endif">
+                                    <div class="txt-3 text-center">
+                                        <table class="table">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <span class="number-app">{{ ($queue = \App\RoomQueue::getCurrentRoomQueues($room->id))? $queue->queue_number : '-'  }}</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span class="text-app">حجز</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="bg-green-3 section-1">
-                                <div class="txt-3">
-                                    <table class="table">
-                                        <tr>
-                                            <td class="col-md-4 text-center">
-                                                <span class="number-app">{{ $room->name_en }}</span>
-                                            </td>
-                                            <td class="col-md-8 text-right">
-                                                <span id="doctor-{{ $room->uuid }}" class="text-app-1">{{ ($room->user)? $room->user->doctor->name_ar : '-' }}</span>
-                                                <span id="clinic-{{ $room->uuid }}" class="text-app-2">{{ ($room->user)? $room->user->doctor->clinic->name_ar : '-' }}</span>
-                                            </td>
-                                        </tr>
-                                    </table>
+                            </td>
+                            <td>
+                                <div class="bg-green-3 section-1">
+                                    <div class="txt-3">
+                                        <table class="table">
+                                            <tr>
+                                                <td class="col-md-4 text-center">
+                                                    <span class="number-app">{{ $room->name_en }}</span>
+                                                </td>
+                                                <td class="col-md-8 text-right">
+                                                    <span id="doctor-{{ $room->uuid }}" class="text-app-1">{{ ($room->user)? $room->user->doctor->name_ar : '-' }}</span>
+                                                    <span id="clinic-{{ $room->uuid }}" class="text-app-2">{{ ($room->user)? $room->user->doctor->clinic->name_ar : '-' }}</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     @endforeach
                 </table>
             </td>
@@ -172,24 +172,24 @@
         audio.play();
     }
 
-    function blink(key) {
-        var f = $('#' + key + ' .number-app');
-        setTimeout(function() {
-            f.style.display = (f.style.display == 'none' ? '' : 'none');
-            f.style.background = (f.style.display == '#2BBBAD' ? '' : '#ffffff');
-        }, 500);
-    }
-
-    var notLocked = true;
-    $.fn.animateHighlight = function(highlightColor, duration) {
-        var originalBg = this.css("backgroundColor");
-        if (notLocked) {
-            notLocked = false;
-            this.stop().css("background-color", highlightColor)
-                .animate({backgroundColor: originalBg}, duration);
-            setTimeout( function() { notLocked = true; }, duration);
-        }
-    };
+    // function blink(key) {
+    //     var f = $('#' + key + ' .number-app');
+    //     setTimeout(function() {
+    //         f.style.display = (f.style.display == 'none' ? '' : 'none');
+    //         f.style.background = (f.style.display == '#2BBBAD' ? '' : '#ffffff');
+    //     }, 500);
+    // }
+    //
+    // var notLocked = true;
+    // $.fn.animateHighlight = function(highlightColor, duration) {
+    //     var originalBg = this.css("backgroundColor");
+    //     if (notLocked) {
+    //         notLocked = false;
+    //         this.stop().css("background-color", highlightColor)
+    //             .animate({backgroundColor: originalBg}, duration);
+    //         setTimeout( function() { notLocked = true; }, duration);
+    //     }
+    // };
 
     var time = 3000;
 
@@ -215,39 +215,38 @@
 
                         targetEl.text(valueObj.queueNumber);
 
-                        // targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
-                        //     targetEl.removeClass( "bounce-class" );
-                        // });
-
-                        // targetEl.animate({
-                        //     backgroundColor : '#2BBBAD'
-                        // },100, function () {
-                        //     targetEl.animate({
-                        //         backgroundColor : '#ffffff'
-                        //     },100);
-                        // });
-
-                        // $('#' + key + ' .number-app').animateHighlight("green", 3000);
-
-                        // targetEl.fadeOut(250).fadeIn(250);
-
-                        setInterval(
+                        var i = setInterval(
                             function () {
-                                $(".highlight").css('background', 'lightgreen');
+                                targetEl.css('background', 'lightgreen');
                                 setTimeout(function () {
-                                    $(".highlight").css('background', 'darkgray');
+                                    targetEl.css('background', '#ffffff');
                                 }, 200)
                             }, 500);
 
+                        setTimeout(function( ) { targetEl.css('background', '#ffffff'); clearInterval( i ); }, 10000);
+
                         PlaySound('{{ url('assets/sounds/call_1.wav') }}');
-//                         document.getElementById('call_sound').play();
+                    }else{
+                        if(valueObj.reminder == 1){
+                            var i = setInterval(
+                                function () {
+                                    targetEl.css('background', 'lightgreen');
+                                    setTimeout(function () {
+                                        targetEl.css('background', '#ffffff');
+                                    }, 200)
+                                }, 500);
+
+                            setTimeout(function( ) { targetEl.css('background', '#ffffff'); clearInterval( i ); }, 10000);
+
+                            PlaySound('{{ url('assets/sounds/call_1.wav') }}');
+                        }
                     }
 
-                    if(valueObj.status == 0 || valueObj.available == 0){
-                        $('#' + key).addClass('canceled-res');
-                    }
-                    else if(valueObj.status == 1 || valueObj.available == 1){
+                    if(valueObj.status == 1){
                         $('#' + key).removeClass('canceled-res');
+                    }
+                    else{
+                        $('#' + key).addClass('canceled-res');
                     }
 
                 });
@@ -262,20 +261,25 @@
                     if(valueObj.queueNumber != targetNumber && valueObj.queueNumber != 0){
                         console.log(valueObj.queueNumber);
 
-                        targetEl.text(valueObj.queueNumber);
-                        targetEl.addClass( "bounce-class" ).one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend", function(){
-                            targetEl.removeClass( "bounce-class" );
-                        });
+                        var i = setInterval(
+                            function () {
+                                targetEl.css('background', 'lightgreen');
+                                setTimeout(function () {
+                                    targetEl.css('background', '#ffffff');
+                                }, 200)
+                            }, 500);
+
+                        setTimeout(function( ) { targetEl.css('background', '#ffffff'); clearInterval( i ); }, 10000);
 
                         PlaySound('{{ url('assets/sounds/call_1.wav') }}');
                         // document.getElementById('call_sound').play();
                     }
 
-                    if(valueObj.status == 0 || valueObj.available == 0){
-                        $('#' + key).addClass('canceled-res');
-                    }
-                    else if(valueObj.status == 1 || valueObj.available == 1){
+                    if(valueObj.status == 1){
                         $('#' + key).removeClass('canceled-res');
+                    }
+                    else{
+                        $('#' + key).addClass('canceled-res');
                     }
 
                 });
