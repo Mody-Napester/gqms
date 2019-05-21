@@ -191,7 +191,7 @@
         }
     };
 
-    var time = 10000;
+    var time = 3000;
 
     setInterval(function () {
         // Send ajax request
