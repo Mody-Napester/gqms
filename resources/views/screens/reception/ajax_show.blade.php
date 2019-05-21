@@ -176,9 +176,20 @@
         var f = $('#' + key + ' .number-app');
         setTimeout(function() {
             f.style.display = (f.style.display == 'none' ? '' : 'none');
-            f.style.display = (f.style.display == 'none' ? '' : 'none');
+            f.style.background = (f.style.display == '#2BBBAD' ? '' : '#ffffff');
         }, 500);
     }
+
+    var notLocked = true;
+    $.fn.animateHighlight = function(highlightColor, duration) {
+        var originalBg = this.css("backgroundColor");
+        if (notLocked) {
+            notLocked = false;
+            this.stop().css("background-color", highlightColor)
+                .animate({backgroundColor: originalBg}, duration);
+            setTimeout( function() { notLocked = true; }, duration);
+        }
+    };
 
     var time = 10000;
 
@@ -208,10 +219,28 @@
                         //     targetEl.removeClass( "bounce-class" );
                         // });
 
-                        blink(key);
+                        // targetEl.animate({
+                        //     backgroundColor : '#2BBBAD'
+                        // },100, function () {
+                        //     targetEl.animate({
+                        //         backgroundColor : '#ffffff'
+                        //     },100);
+                        // });
+
+                        // $('#' + key + ' .number-app').animateHighlight("green", 3000);
+
+                        // targetEl.fadeOut(250).fadeIn(250);
+
+                        setInterval(
+                            function () {
+                                $(".highlight").css('background', 'lightgreen');
+                                setTimeout(function () {
+                                    $(".highlight").css('background', 'darkgray');
+                                }, 200)
+                            }, 500);
 
                         PlaySound('{{ url('assets/sounds/call_1.wav') }}');
-                        // document.getElementById('call_sound').play();
+//                         document.getElementById('call_sound').play();
                     }
 
                     if(valueObj.status == 0 || valueObj.available == 0){
