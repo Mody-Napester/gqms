@@ -12,36 +12,7 @@ function nice_time($time){
 
 // Default language
 function lang(){
-    return "english";
-}
-
-// User fullname
-function name($user = null){
-    if($user != null){
-        return $user->fname . ' ' . $user->lname;
-    }else{
-        return auth()->user()->fname . ' ' . auth()->user()->lname;
-    }
-}
-
-// Site languages
-function languages(){
-    $lookup = \App\Lookup::where('name', 'languages')->first();
-    return \App\Lookup::where('parent_id', $lookup->id)->get();
-}
-
-// Get lookup
-function lookup($by, $value){
-    $results = null;
-    $by_array = ['id','uuid','name','parent_id'];
-    if (in_array($by, $by_array)){$results = \App\Lookup::where($by, $value)->first();}
-    return $results;
-}
-
-// Get lookups
-function lookups($value){
-    $lookup = \App\Lookup::where('name', $value)->first();
-    return \App\Lookup::where('parent_id', $lookup->id)->get();
+    return app()->getLocale();
 }
 
 // Get lookups
