@@ -81,4 +81,9 @@ class Reservation extends Model
     public function clinic(){
         return $this->belongsTo('App\Clinic');
     }
+
+    // Room Queue Relation
+    public function roomQueue(){
+        return $this->belongsTo('App\RoomQueue', 'source_queue_number','queue_number');
+    }
 }

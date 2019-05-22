@@ -81,6 +81,10 @@ Route::group([
     Route::get('rooms/queues/history', 'RoomQueuesController@roomQueueHistory')->name('rooms.queues.roomQueueHistory');
     Route::get('rooms/queues/{queue_uuid}/history', 'RoomQueuesController@roomQueueSingleHistory')->name('rooms.queues.roomQueueSingleHistory');
 
+    // All Queues History
+    Route::get('queues/history', 'QueuesController@queuesHistory')->name('queues.queuesHistory');
+    Route::get('queues/{queue_uuid}/history', 'QueuesController@queuesSingleHistory')->name('queues.queuesSingleHistory');
+
     // Go available
     Route::get('user/availability', 'UsersController@availability')->name('users.availability');
 });
