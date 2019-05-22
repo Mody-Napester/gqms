@@ -11,6 +11,7 @@ Route::get('/integration/get-clinics', 'SyncVendorDataController@getClientClinic
 Route::get('/integration/get-specialities', 'SyncVendorDataController@getClientSpecialities');
 Route::get('/integration/get-patients', 'SyncVendorDataController@getClientPatients');
 Route::get('/integration/get-doctors', 'SyncVendorDataController@getClientDoctors');
+Route::get('/integration/get-reservations', 'SyncVendorDataController@getClientReservations');
 //// END Integration Section ////
 
 Route::get('/reset', 'HomeController@resetReservations')->name('resetReservations');
@@ -38,7 +39,13 @@ Route::group([
     Route::resource('rooms', 'RoomsController');
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
-    
+
+    Route::get('clinics', 'ClinicsController@index')->name('clinics.index');
+    Route::get('specialities', 'SpecialitiesController@index')->name('specialities.index');
+    Route::get('doctors', 'DoctorsController@index')->name('doctors.index');
+    Route::get('patients', 'PatientsController@index')->name('patients.index');
+    Route::get('reservations', 'ReservationsController@index')->name('reservations.index');
+
     // Desks Actions
     Route::get('desk/{desk_uuid}/{desk_queue_uuid}/skip', 'DeskQueuesController@skipQueueNumber')->name('desks.queues.skipQueueNumber');
     Route::get('desk/{desk_uuid}/{desk_queue_uuid}/skip-and-next', 'DeskQueuesController@skipAndNextQueueNumber')->name('desks.queues.skipAndNextQueueNumber');
@@ -85,6 +92,3 @@ Route::get('screens/ajax/{screen}/get-contents', 'ScreensController@getScreensAj
 Route::get('get-my-ip', function(){
     return view('get_my_ip');
 })->name('ip.get');
-Route::get('mtm', function(){
-    return view('mtm');
-});

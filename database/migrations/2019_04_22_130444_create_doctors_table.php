@@ -18,9 +18,11 @@ class CreateDoctorsTable extends Migration
             $table->uuid('uuid');
             $table->integer('user_id');
             $table->integer('source_doctor_id');
-            $table->integer('source_clinic_id');
+            $table->integer('source_speciality_id')->nullable();
             $table->string('name_en');
             $table->string('name_ar');
+            $table->string('gander');
+            $table->integer('workstatus');
             $table->timestamps();
         });
     }

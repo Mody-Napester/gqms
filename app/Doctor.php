@@ -11,7 +11,7 @@ class Doctor extends Model
      *
      * @var array
      */
-    protected $fillable = ['created_at', 'updated_at'];
+    protected $fillable = ['user_id','source_doctor_id','source_speciality_id','name_en','name_ar','gander','workstatus', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -46,6 +46,11 @@ class Doctor extends Model
     public static function edit($inputs, $resource)
     {
         return self::where('id', $resource)->update($inputs);
+    }
+
+    public static function editBySourceDoctorId($inputs, $resource)
+    {
+        return self::where('source_doctor_id', $resource)->update($inputs);
     }
 
     /**

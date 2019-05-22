@@ -9,7 +9,7 @@ return [
         'database'       => env('DB_DATABASE_SECOND', ''),
         'username'       => env('DB_USERNAME_SECOND', ''),
         'password'       => env('DB_PASSWORD_SECOND', ''),
-        'charset'        => env('DB_CHARSET_SECOND', 'AL32UTF8'),
+        'charset'        => env('DB_CHARSET_SECOND', 'utf8'),
         'prefix'         => env('DB_PREFIX_SECOND', ''),
         'prefix_schema'  => env('DB_SCHEMA_PREFIX_SECOND', ''),
         'server_version' => env('DB_SERVER_VERSION_SECOND', '11g'),

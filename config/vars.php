@@ -3,6 +3,7 @@
 return [
     'public' => 'public',
     'uuid_ver' => 4,
+    'defualt_password' => 12345678,
     'authorized_users' => [1],
     'default_kiosk_status' => 1,
     'go_available_user_types' => [1, 2],

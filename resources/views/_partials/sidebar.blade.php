@@ -36,6 +36,17 @@
 
                 @if (\App\User::hasAuthority('use.resources'))
                     <li class="text-muted menu-title">Resources</li>
+                    <li class="has_sub">
+                        <a href="javascript:void(0);" class="waves-effect"><i class="ti-home"></i> <span> Ganzory Resources </span> <span class="menu-arrow"></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ route('clinics.index') }}">Clinics</a></li>
+                            <li><a href="{{ route('specialities.index') }}">Specialities</a></li>
+                            <li><a href="{{ route('doctors.index') }}">Doctors</a></li>
+                            <li><a href="{{ route('patients.index') }}">Patients</a></li>
+                            <li><a href="{{ route('reservations.index') }}">Reservations</a></li>
+                        </ul>
+                    </li>
+
                     @if (\App\User::hasAuthority('index.users'))
                         <li class="has_sub">
                             <a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Users </span></a>
@@ -67,16 +78,6 @@
                     </li>
                     @endif
                 @endif
-
-                {{--<li class="has_sub">--}}
-                    {{--<a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Patients </span></a>--}}
-                {{--</li>--}}
-                {{--<li class="has_sub">--}}
-                    {{--<a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Doctors </span></a>--}}
-                {{--</li>--}}
-                {{--<li class="has_sub">--}}
-                    {{--<a href="{{ route('users.index') }}" class="waves-effect"><i class="ti-user"></i> <span> Receptions </span></a>--}}
-                {{--</li>--}}
 
                     @if (\App\User::hasAuthority('use.queues') && (!is_null(auth()->user()->desk_id) || !is_null(auth()->user()->room_id)))
                         <li class="text-muted menu-title">Queues</li>
