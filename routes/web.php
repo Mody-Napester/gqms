@@ -6,6 +6,13 @@ Route::group(
 
 });
 
+//// Integration Section ////////
+Route::get('/integration/get-clinics', 'SyncVendorDataController@getClientClinics');
+Route::get('/integration/get-specialities', 'SyncVendorDataController@getClientSpecialities');
+Route::get('/integration/get-patients', 'SyncVendorDataController@getClientPatients');
+Route::get('/integration/get-doctors', 'SyncVendorDataController@getClientDoctors');
+//// END Integration Section ////
+
 Route::get('/reset', 'HomeController@resetReservations')->name('resetReservations');
 
 Route::get('/test_oracle', 'SyncVendorDataController@getClientClinics');

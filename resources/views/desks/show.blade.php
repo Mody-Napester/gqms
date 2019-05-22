@@ -291,7 +291,6 @@
 
                         axios.get(url)
                             .then((response) => {
-                                console.log(response);
 
                                 if(response.data.message.msg_status == 1){
 
@@ -319,7 +318,6 @@
 
                             })
                             .catch((data) => {
-                                console.log(data);
                             });
 
                     }else {
@@ -348,7 +346,6 @@
                     var url = '{{ route('desks.queues.callNextQueueNumber', $desk->uuid) }}';
                     axios.get(url)
                         .then((response) => {
-                            console.log(response.data);
                             $('.current-queue').text(response.data.nextQueue.queue_number);
 
                             this.desk_queue_uuid = response.data.nextQueue.uuid;
@@ -364,7 +361,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
@@ -381,7 +377,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(data);
                             removeLoarder();
                         });
                 },
@@ -407,7 +402,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
@@ -416,7 +410,6 @@
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/skip-and-next';
                     axios.get(url)
                         .then((response) => {
-                            console.log(response.data);
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.deskQueuesSkip);
                             $('#count-done').text(response.data.deskQueuesDone);
@@ -431,7 +424,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
@@ -459,7 +451,6 @@
                             $('.confirm-done-close').trigger('click');
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
@@ -574,7 +565,6 @@
                     addLoader();
                 },
                 success:function (response) {
-                    console.log(response);
 
                     $('.current-queue').text(response.skippedQueue.queue_number);
 

@@ -333,8 +333,6 @@
                             this.room_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
 
-                            console.log(response.data.roomQueue.status);
-
                             this.changeBtnStatus(response.data.roomQueue.status);
 
                             removeLoarder();
@@ -387,7 +385,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
@@ -396,7 +393,6 @@
                     var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/skip-and-next';
                     axios.get(url)
                         .then((response) => {
-                            console.log(response.data);
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.roomQueuesSkip);
                             $('#count-out').text(response.data.roomQueuesOut);
@@ -415,7 +411,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
@@ -435,7 +430,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
@@ -460,7 +454,6 @@
                             }
                         })
                         .catch((data) => {
-                            console.log(0, data);
                             removeLoarder();
                         });
                 },
@@ -541,7 +534,6 @@
                     addLoader();
                 },
                 success:function (response) {
-                    console.log(response);
 
                     $('.current-queue').text(response.skippedQueue.queue_number);
 

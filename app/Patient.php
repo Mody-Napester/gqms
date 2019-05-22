@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Clinic extends Model
+class Patient extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['source_clinic_id', 'name_en', 'name_ar', 'created_at', 'updated_at'];
+    protected $fillable = ['source_patient_id', 'name_en', 'name_ar', 'phone', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -49,9 +49,9 @@ class Clinic extends Model
     }
 
 
-    public static function editBySourceClinicId($inputs, $resource)
+    public static function editBySourcePatientId($inputs, $resource)
     {
-        return self::where('source_clinic_id', $resource)->update($inputs);
+        return self::where('source_patient_id', $resource)->update($inputs);
     }
 
     /**
@@ -76,10 +76,5 @@ class Clinic extends Model
     public static function getBy($by, $resource)
     {
         return self::where($by, $resource)->first();
-    }
-
-    // Reservations Relation
-    public function reservations(){
-        return $this->hasMany('App\Reservation');
     }
 }
