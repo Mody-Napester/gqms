@@ -21,6 +21,7 @@ class ReservationsController extends Controller
 //        }
 
         $data['reservations'] = Reservation::all();
+//        dd($data['reservations'][0]->patient->name_en);
         return view('reservations.index', $data);
     }
 

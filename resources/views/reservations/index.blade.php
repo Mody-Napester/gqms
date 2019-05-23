@@ -50,7 +50,7 @@
                                 <td>{{ $reservation->doctor_id }}</td>
                                 <td>{{ $reservation->desk_queue_id }}</td>
                                 <td>{{ $reservation->source_reservation_serial }}</td>
-                                <td>{{ $reservation->source_patient_name }}</td>
+                                <td>{{ ($reservation->patient)? $reservation->patient->name_en : '' }}</td>
                                 <td>{{ $reservation->source_queue_number }}</td>
                                 <td>{{ $reservation->created_at }}</td>
                             </tr>

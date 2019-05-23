@@ -11,7 +11,8 @@ class Reservation extends Model
      *
      * @var array
      */
-    protected $fillable = ['room_id', 'desk_queue_id', 'room_queue_id','source_reservation_serial', 'created_at', 'updated_at'];
+    protected $fillable = ['desk_queue_id', 'doctor_id', 'clinic_id', 'source_reservation_serial', 'source_queue_number', 'patientid',  'reservation_date_time', 'speciality_id'
+        , 'servstatus','cashier_flag','created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -49,6 +50,14 @@ class Reservation extends Model
     }
 
     /**
+     *  Update existing resource editBySourceReservationSer
+     */
+    public static function editBySourceReservationSer($inputs, $resource)
+    {
+        return self::where('ser', $resource)->update($inputs);
+    }
+
+    /**
      *  Delete existing resource
      */
     public static function remove($resource)
@@ -57,7 +66,7 @@ class Reservation extends Model
     }
 
     /**
-     *  Get a specific resource
+     *  Get all resources
      */
     public static function getAll($status = 1)
     {
@@ -85,5 +94,10 @@ class Reservation extends Model
     // Room Queue Relation
     public function roomQueue(){
         return $this->belongsTo('App\RoomQueue', 'source_queue_number','queue_number');
+    }
+
+    // Patient Relation
+    public function patient(){
+        return $this->belongsTo('App\Patient', 'patientid', 'source_patient_id');
     }
 }

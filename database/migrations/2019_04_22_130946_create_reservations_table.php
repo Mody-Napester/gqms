@@ -16,12 +16,19 @@ class CreateReservationsTable extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
-            $table->integer('clinic_id');
-            $table->integer('doctor_id');
             $table->integer('desk_queue_id')->nullable();
-            $table->string('source_reservation_serial');
-            $table->string('source_patient_name');
-            $table->string('source_queue_number');
+
+            $table->integer('doctor_id'); // doctor_id
+            $table->integer('clinic_id'); // clinic_id
+            $table->string('source_reservation_serial'); // ser
+            $table->string('source_queue_number'); // que_sys_ser
+
+            $table->string('patientid')->nullable();
+            $table->timestamp('reservation_date_time')->nullable();
+            $table->string('speciality_id')->nullable();
+            $table->string('servstatus')->nullable();
+            $table->string('cashier_flag')->nullable();
+
             $table->timestamps();
         });
     }

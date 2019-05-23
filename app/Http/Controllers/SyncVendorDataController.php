@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 // use app\VW_SPECIALITIES;
@@ -216,9 +217,9 @@ class SyncVendorDataController extends Controller
     // Get all reservation
     public function getClientReservations()
     {
-        $r = DB::connection('oracle')->table('VW_RESERVATIONS')->where('SER', 3747)->first();
-
-        dd($r);
+//        $r = DB::connection('oracle')->table('VW_RESERVATIONS')->where('SER', 3747)->first();
+//
+//        dd($r);
 
         DB::connection('oracle')->table('VW_RESERVATIONS')->where(function ($q) {
             $q->whereNull('queue_system_integ_flag');
@@ -227,30 +228,35 @@ class SyncVendorDataController extends Controller
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
         })->orderBy('patientid')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
-                if ($val->contact_mobile_1) {
-                    $phone = $val->contact_mobile_1;
-                } elseif ($val->contact_hometel_1) {
-                    $phone = $val->contact_hometel_1;
-                } else {
-                    $phone = $val->contact_worktel_1;
-                }
+
                 $array = [
-                    'source_patient_id' => $val->patientid,
-                    'name_ar' => $val->completepatname,
-                    'name_en' => $val->completepatname_en,
-                    'phone' => $phone
+                    'doctor_id' => $val->doctor_id,
+                    'clinic_id' => $val->clinic_id,
+                    'source_reservation_serial' => $val->ser,
+                    'source_queue_number' => $val->que_sys_ser,
+                    'patientid' => $val->patientid,
+                    'reservation_date_time' => $val->reservation_date_time,
+                    'speciality_id' => $val->speciality_id,
+                    'servstatus' => $val->servstatus,
+                    'cashier_flag' => $val->cashier_flag,
                 ];
+
                 if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
-                    Patient::store($array);
-                    DB::connection('oracle')->table('VW_PATIENTS')->where('patientid', $val->patientid)
+
+                    Reservation::store($array);
+                    DB::connection('oracle')->table('VW_RESERVATIONS')->where('ser', $val->ser)
                         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
+
                 } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
-                    $patient = Patient::getBy('source_patient_id', $val->patientid);
-                    if ($patient) {
-                        Patient::editBySourcePatientId($array, $val->patientid);
+
+                    $reservation = Reservation::getBy('ser', $val->ser);
+
+                    if ($reservation) {
+                        Reservation::editBySourceReservationSer($array, $val->ser);
                     } else {
-                        Patient::store($array);
+                        Reservation::store($array);
                     }
+
                 }
             }
         });
