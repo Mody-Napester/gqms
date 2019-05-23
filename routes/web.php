@@ -40,6 +40,9 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    Route::get('doctor-to-floor', 'DoctorToFloorsController@index')->name('doctor-to-floor.index');
+    Route::get('doctor-to-floor/{doctor_uuid}/update', 'DoctorToFloorsController@update')->name('doctor-to-floor.update');
+
     Route::get('clinics', 'ClinicsController@index')->name('clinics.index');
     Route::get('specialities', 'SpecialitiesController@index')->name('specialities.index');
     Route::get('doctors', 'DoctorsController@index')->name('doctors.index');

@@ -65,6 +65,14 @@ class Floor extends Model
     }
 
     /**
+     *  Get all resources
+     */
+    public static function getAll()
+    {
+        return self::all();
+    }
+
+    /**
      *  Relationship with users
      */
     public function createdBy()

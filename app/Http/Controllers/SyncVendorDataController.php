@@ -217,16 +217,12 @@ class SyncVendorDataController extends Controller
     // Get all reservation
     public function getClientReservations()
     {
-//        $r = DB::connection('oracle')->table('VW_RESERVATIONS')->where('SER', 3747)->first();
-//
-//        dd($r);
-
         DB::connection('oracle')->table('VW_RESERVATIONS')->where(function ($q) {
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
             $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
-        })->orderBy('patientid')->chunk(100, function ($data) {
+        })->orderBy('ser')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
 
                 $array = [

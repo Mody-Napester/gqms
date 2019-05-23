@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Doctor extends Model
+class DoctorToFloor extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -22,17 +22,6 @@ class Doctor extends Model
     ];
 
     /**
-     *  Setup model event hooks
-     */
-    public static function boot()
-    {
-        parent::boot();
-        self::creating(function ($model) {
-            $model->uuid = (string) \Webpatser\Uuid\Uuid::generate(config('vars.uuid_ver'));
-        });
-    }
-
-    /**
      *  Create new resource
      */
     public static function store($inputs)
@@ -48,11 +37,6 @@ class Doctor extends Model
         return self::where('id', $resource)->update($inputs);
     }
 
-    public static function editBySourceDoctorId($inputs, $resource)
-    {
-        return self::where('source_doctor_id', $resource)->update($inputs);
-    }
-
     /**
      *  Delete existing resource
      */
@@ -62,7 +46,7 @@ class Doctor extends Model
     }
 
     /**
-     *  Get all resources
+     *  Get a specific resource
      */
     public static function getAll()
     {

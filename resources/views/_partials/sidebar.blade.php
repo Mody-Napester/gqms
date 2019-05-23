@@ -46,6 +46,12 @@
                             <li><a href="{{ route('reservations.index') }}">Reservations</a></li>
                         </ul>
                     </li>
+                    <li class="has_sub">
+                        <a href="{{ route('queues.queuesHistory') }}" class="waves-effect"><i class="ti-server"></i> <span> Queues History</span></a>
+                    </li>
+                    <li class="has_sub">
+                        <a href="{{ route('doctor-to-floor.index') }}" class="waves-effect"><i class="ti-bookmark"></i> <span> Doctor to floors</span></a>
+                    </li>
 
                     @if (\App\User::hasAuthority('index.users'))
                         <li class="has_sub">
@@ -77,10 +83,6 @@
                         <a href="{{ route('printers.index') }}" class="waves-effect"><i class="ti-printer"></i> <span> Printers </span></a>
                     </li>
                     @endif
-
-                    <li class="has_sub">
-                        <a href="{{ route('queues.queuesHistory') }}" class="waves-effect"><i class="ti-server"></i> <span> Queues History</span></a>
-                    </li>
                 @endif
 
                     @if (\App\User::hasAuthority('use.queues') && (!is_null(auth()->user()->desk_id) || !is_null(auth()->user()->room_id)))
