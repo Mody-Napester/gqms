@@ -398,9 +398,9 @@ class DeskQueuesController extends Controller
             $room = $reservation->doctor->user->room;
             if(empty($reservation->desk_queue_id)){
                 $data['serial'] = $reservation->source_reservation_serial;
-                $data['patient'] = $reservation->patient->name_en;
-                $data['doctor'] = $reservation->doctor->name_en;
-                $data['clinic'] = $reservation->clinic->name_en;
+                $data['patient'] = ($reservation->patient)? $reservation->patient->name_en : '';
+                $data['doctor'] = ($reservation->doctor)? $reservation->doctor->name_en : '';
+                $data['clinic'] = ($reservation->clinic)? $reservation->clinic->name_en : '';
 
                 $data['message'] = [
                     'msg_status' => 1,
