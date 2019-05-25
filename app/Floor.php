@@ -104,4 +104,9 @@ class Floor extends Model
     public function screens(){
         return $this->hasMany('App\Screen');
     }
+
+    // Doctors Relation
+    public function doctors(){
+        return $this->belongsToMany('App\Doctor', 'doctor_to_floors');
+    }
 }

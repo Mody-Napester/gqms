@@ -91,4 +91,9 @@ class Doctor extends Model
     public function reservations(){
         return $this->hasMany('App\Reservation');
     }
+
+    // Doctor To Floor Relation
+    public function inFloor(){
+        return $this->belongsTo('App\DoctorToFloor');
+    }
 }

@@ -26,6 +26,8 @@
         }
     </style>
 
+    @yield('head')
+
 </head>
 <body onload="startTime()">
 

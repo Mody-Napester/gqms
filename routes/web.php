@@ -14,7 +14,7 @@ Route::get('/integration/get-doctors', 'SyncVendorDataController@getClientDoctor
 Route::get('/integration/get-reservations', 'SyncVendorDataController@getClientReservations');
 //// END Integration Section ////
 
-Route::get('/reset', 'HomeController@resetReservations')->name('resetReservations');
+Route::get('/reset', 'HomeController@resetQueues')->name('resetQueues');
 
 Route::get('/test_oracle', 'SyncVendorDataController@getClientClinics');
 
@@ -41,7 +41,7 @@ Route::group([
     Route::resource('screens', 'ScreensController')->except(['show']);
 
     Route::get('doctor-to-floor', 'DoctorToFloorsController@index')->name('doctor-to-floor.index');
-    Route::get('doctor-to-floor/{doctor_uuid}/update', 'DoctorToFloorsController@update')->name('doctor-to-floor.update');
+    Route::post('doctor-to-floor/{floor_uuid}/update', 'DoctorToFloorsController@update')->name('doctor-to-floor.update');
 
     Route::get('clinics', 'ClinicsController@index')->name('clinics.index');
     Route::get('specialities', 'SpecialitiesController@index')->name('specialities.index');
@@ -95,6 +95,8 @@ Route::group([
 Route::get('screens/{screen}', 'ScreensController@show')->name('screens.show');
 
 Route::get('screens/ajax/{screen}/get-contents', 'ScreensController@getScreensAjaxContents')->name('screens.getScreensAjaxContents');
+
+Route::get('doctors/get/floors/{doctor_uuid}', 'DoctorToFloorsController@getDoctorFloor')->name('doctor-to-floor.getDoctorFloor');
 
 Route::get('get-my-ip', function(){
     return view('get_my_ip');

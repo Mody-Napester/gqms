@@ -4,7 +4,7 @@
         <div id="sidebar-menu">
             <ul>
                 <li class="has_sub">
-                    <a href="{{ route('resetReservations') }}" class="waves-effect"><i class="ti-reload"></i> <span> Reset Reservations </span></a>
+                    <a href="{{ route('resetQueues') }}" class="waves-effect"><i class="ti-reload"></i> <span> Reset Queues </span></a>
                 </li>
 
                 <li class="has_sub">
@@ -36,22 +36,6 @@
 
                 @if (\App\User::hasAuthority('use.resources'))
                     <li class="text-muted menu-title">Resources</li>
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="ti-home"></i> <span> Ganzory Resources </span> <span class="menu-arrow"></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="{{ route('clinics.index') }}">Clinics</a></li>
-                            <li><a href="{{ route('specialities.index') }}">Specialities</a></li>
-                            <li><a href="{{ route('doctors.index') }}">Doctors</a></li>
-                            <li><a href="{{ route('patients.index') }}">Patients</a></li>
-                            <li><a href="{{ route('reservations.index') }}">Reservations</a></li>
-                        </ul>
-                    </li>
-                    <li class="has_sub">
-                        <a href="{{ route('queues.queuesHistory') }}" class="waves-effect"><i class="ti-server"></i> <span> Queues History</span></a>
-                    </li>
-                    <li class="has_sub">
-                        <a href="{{ route('doctor-to-floor.index') }}" class="waves-effect"><i class="ti-bookmark"></i> <span> Doctor to floors</span></a>
-                    </li>
 
                     @if (\App\User::hasAuthority('index.users'))
                         <li class="has_sub">
@@ -83,10 +67,24 @@
                         <a href="{{ route('printers.index') }}" class="waves-effect"><i class="ti-printer"></i> <span> Printers </span></a>
                     </li>
                     @endif
+
+                    <li class="has_sub">
+                        <a href="javascript:void(0);" class="waves-effect"><i class="ti-home"></i> <span> Ganzory Resources </span> <span class="menu-arrow"></span></a>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ route('clinics.index') }}">Clinics</a></li>
+                            <li><a href="{{ route('specialities.index') }}">Specialities</a></li>
+                            <li><a href="{{ route('doctors.index') }}">Doctors</a></li>
+                            <li><a href="{{ route('patients.index') }}">Patients</a></li>
+                            <li><a href="{{ route('reservations.index') }}">Reservations</a></li>
+                        </ul>
+                    </li>
                 @endif
 
-                    @if (\App\User::hasAuthority('use.queues') && (!is_null(auth()->user()->desk_id) || !is_null(auth()->user()->room_id)))
+                    @if (\App\User::hasAuthority('use.queues'))
                         <li class="text-muted menu-title">Queues</li>
+                        <li class="has_sub">
+                            <a href="{{ route('queues.queuesHistory') }}" class="waves-effect"><i class="ti-server"></i> <span> Queues History</span></a>
+                        </li>
                         @if (!is_null(auth()->user()->desk_id) && auth()->user()->login_ip == auth()->user()->desk->ip)
                              @if (\App\User::hasAuthority('use.desk_queue'))
                                 <li class="has_sub">
@@ -117,6 +115,9 @@
 
                 @if (\App\User::hasAuthority('use.settings'))
                     <li class="text-muted menu-title">Settings</li>
+                    <li class="has_sub">
+                        <a href="{{ route('doctor-to-floor.index') }}" class="waves-effect"><i class="ti-bookmark"></i> <span> Doctor to floors</span></a>
+                    </li>
                     <li class="has_sub">
                         <a href="{{ url('translations') }}" class="waves-effect"><i class="ti-flag-alt-2"></i> <span> Translations </span></a>
                     </li>

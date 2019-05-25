@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Desk;
 use App\DeskQueue;
 use App\DeskQueueStatus;
+use App\Doctor;
 use App\Floor;
 use App\Printer;
 use App\Room;
@@ -71,7 +72,7 @@ class ScreensController extends Controller
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
             'status' => 'required',
-            'ip' => 'required',
+            'ip' => 'required|unique:screens',
             'floor' => 'required',
             'type' => 'required',
             'floors' => 'required_if:type,' . config('vars.screen_types.kiosk'),
@@ -140,6 +141,8 @@ class ScreensController extends Controller
     public function show($screen)
     {
         $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
+
+        $data['doctors'] = Doctor::all();
 
         if($data['screen']->screen_type_id == config('vars.screen_types.kiosk')){
             return view('screens.kiosk.show', $data);

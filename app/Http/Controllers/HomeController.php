@@ -33,9 +33,9 @@ class HomeController extends Controller
     }
 
     /**
-     * Reset Reservations.
+     * Reset Queues.
      */
-    public function resetReservations()
+    public function resetQueues()
     {
         DB::update('update reservations set desk_queue_id = null');
 

@@ -17,38 +17,6 @@
         </div>
     </div>
 
-    {{--<div class="row">--}}
-        {{--<div class="col-lg-12">--}}
-            {{--<ul class="nav nav-tabs navtab-bg nav-justified">--}}
-                {{--<li class="nav-item">--}}
-                    {{--<a href="#searchResource" data-toggle="tab" aria-expanded="false" class="nav-link active">Search & filter</a>--}}
-                {{--</li>--}}
-                {{--<li class="nav-item">--}}
-                    {{--<a href="#createResource" data-toggle="tab" aria-expanded="true" class="nav-link">Create new</a>--}}
-                {{--</li>--}}
-            {{--</ul>--}}
-            {{--<div class="tab-content">--}}
-                {{--<div class="tab-pane active" id="searchResource">--}}
-                    {{--<h4 class="header-title m-t-0">Search</h4>--}}
-                    {{--<p class="text-muted font-14 m-b-20">--}}
-                        {{--Search on resource from here.--}}
-                    {{--</p>--}}
-
-                    {{--@include('floors.search')--}}
-                {{--</div>--}}
-                {{--<div class="tab-pane" id="createResource">--}}
-                    {{--<h4 class="m-t-0 header-title">Create new floor</h4>--}}
-                    {{--<p class="text-muted font-14 m-b-30">--}}
-                        {{--Create new resource from here.--}}
-                    {{--</p>--}}
-
-                    {{--@include('floors.create')--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-        {{--<!-- end card-box -->--}}
-    {{--</div>--}}
-
     <div class="row" id="goToAll">
         <div class="col-lg-12">
             <div class="card-box table-responsive">
@@ -60,9 +28,8 @@
                 <table id="datatable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th style="width: 15%">Id</th>
                             <th style="width: 15%">Floor</th>
-                            <th style="width: 55%">Doctors</th>
+                            <th style="width: 80%">Doctors</th>
                             <th style="width: 15%">Control</th>
                         </tr>
                     </thead>
@@ -70,19 +37,18 @@
                     <tbody>
                         @foreach($floors as $floor)
                             <tr>
-                                <td>{{ $floor->id }}</td>
                                 <td>{{ $floor->name_en }}</td>
                                 <td>
                                     <select name="floor-{{$floor->uuid}}[]" id="floor-{{$floor->uuid}}" multiple class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                                         @foreach($doctors as $key => $doctor)
-                                            {{--<option @if($floor->floor_id == $floor->id) selected @endif value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>--}}
-                                            <option value="{{ $doctor->uuid }}">{{ $doctor->name_en }}</option>
+                                            <option @if(in_array($doctor->id, $floor->doctors()->pluck('doctor_id')->toArray())) selected @endif value="{{ $doctor->uuid }}">{{ $doctor->name_en }}</option>
                                         @endforeach
+                                        {{--<option v-for="doctor in doctors" :value="doctor.uuid">@{{ doctor.name_en }}</option>--}}
                                     </select>
                                 </td>
                                 <td>
-                                    <a @click.prevent="update('{{ $floor->uuid }}')" href="{{ route('doctor-to-floor.update', [$floor->uuid]) }}" class="update-modal btn btn-sm btn-success floor-{{$floor->uuid}}">
-                                        Update <i class="fa fa-edit"></i>
+                                    <a @click.prevent="update('{{ $floor->uuid }}')" class="btn btn-sm btn-success floor-{{$floor->uuid}}">
+                                        Update {{ $floor->name_en }}
                                     </a>
                                 </td>
                             </tr>
@@ -102,14 +68,18 @@
             el : '#app',
             data : {
                 floor_uuid: '',
+                doctors: {!! $doctors->toJson() !!},
+                selected_doctors: {},
             },
             methods : {
                 update(floor_uuid){
                     addLoader();
                     this.floor_uuid = floor_uuid;
-                    var url = {{ url('dashboard') }} + '/doctor-to-floor/' + this.floor_uuid + '/update';
+                    var url = '{{ url('dashboard') }}' + '/doctor-to-floor/' + this.floor_uuid + '/update';
 
-                    axios.get(url)
+                    var selected_doctors = $('#floor-' + floor_uuid).val();
+
+                    axios.post(url, {doctors : selected_doctors})
                         .then((response) => {
                             removeLoarder();
 
@@ -122,6 +92,7 @@
                         .catch((data) => {
                             removeLoarder();
                         });
+
                 },
             }
         });
