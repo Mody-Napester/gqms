@@ -5,8 +5,8 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label class="" for="email">Email</label>
-                <input type="email" id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $user->email }}" required autofocus/>
+                <label class="" for="email">Email Or Username</label>
+                <input type="text" id="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $user->email }}" required autofocus/>
 
                 @if ($errors->has('email'))
                     <span class="invalid-feedback" role="alert">
@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label class="" for="name">Username</label>
+                <label class="" for="name">Name</label>
                 <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $user->name }}" required>
 
                 @if ($errors->has('name'))
