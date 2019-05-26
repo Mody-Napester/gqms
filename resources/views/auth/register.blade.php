@@ -13,7 +13,7 @@
                     @csrf
 
                     <div class="form-group-custom">
-                        <input type="email" id="email" class="{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus/>
+                        <input type="text" id="email" class="{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus/>
                         <label class="control-label" for="email">Email</label><i class="bar"></i>
 
                         @if ($errors->has('email'))

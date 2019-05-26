@@ -436,10 +436,43 @@ class DeskQueuesController extends Controller
 //                ];
 //            }
         }else{
-            $data['message'] = [
-                'msg_status' => 0,
-                'text' => 'Reservation not found',
-            ];
+            // Sync reservations
+            $sync = new SyncVendorDataController();
+            if ($sync->getClientReservations()){
+                $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
+
+                if ($reservation){
+                    $room = $reservation->doctor->user->room;
+                    if(empty($reservation->desk_queue_id)){
+                        $data['serial'] = $reservation->source_reservation_serial;
+                        $data['patient'] = ($reservation->patient)? $reservation->patient->name_en : '';
+                        $data['doctor'] = ($reservation->doctor)? $reservation->doctor->name_en : '';
+                        $data['clinic'] = ($reservation->clinic)? $reservation->clinic->name_en : '';
+
+                        $data['message'] = [
+                            'msg_status' => 1,
+                            'text' => 'Reservation exists',
+                        ];
+                    }else{
+                        $data['message'] = [
+                            'msg_status' => 0,
+                            'text' => 'Reservation already routed to room ' . $room->name_en,
+                        ];
+                    }
+                }else{
+                    $data['message'] = [
+                        'msg_status' => 0,
+                        'text' => 'Reservation not found',
+                    ];
+                }
+
+            }else{
+                $data['message'] = [
+                    'msg_status' => 0,
+                    'text' => 'Reservation not found or connection failed',
+                ];
+            }
+
         }
 
         // Return

@@ -14,7 +14,7 @@
                     <input type="hidden" id="login_ip" name="login_ip" value="">
 
                     <div class="form-group-custom">
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="{{ $errors->has('email') ? ' is-invalid' : '' }}"/>
+                        <input id="email" type="text" name="email" value="{{ old('email') }}" required autofocus class="{{ $errors->has('email') ? ' is-invalid' : '' }}"/>
                         <label class="control-label" for="email">Username</label><i class="bar"></i>
 
                         @if ($errors->has('email'))

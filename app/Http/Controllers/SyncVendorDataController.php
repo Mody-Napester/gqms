@@ -16,9 +16,25 @@ use DB;
 
 class SyncVendorDataController extends Controller
 {
+    public function syncAndTestConnection(){
+        if (DB::connection('oracle')->getDatabaseName()){
+            if (config('vars.syncData') == true){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
     // Get all clinics
     public function getClientClinics()
     {
+        if ($this->syncAndTestConnection() == false){
+            return false;
+        }
+
         DB::connection('oracle')->table('VW_CLINICS')->where(function ($q) {
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
@@ -26,28 +42,21 @@ class SyncVendorDataController extends Controller
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
         })->orderBy('clinic_id')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
+                $array = [
+                    'source_clinic_id' => $val->clinic_id,
+                    'name_ar' => $val->clinic_name_ar,
+                    'name_en' => $val->clinic_name_en
+                ];
                 if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
-                    Clinic::store([
-                        'source_clinic_id' => $val->clinic_id,
-                        'name_ar' => $val->clinic_name_ar,
-                        'name_en' => $val->clinic_name_en
-                    ]);
+                    Clinic::store($array);
                     DB::connection('oracle')->table('VW_CLINICS')->where('clinic_id', $val->clinic_id)
                         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
                 } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
                     $clinic = Clinic::getBy('source_clinic_id', $val->clinic_id);
                     if ($clinic) {
-                        Clinic::editBySourceClinicId([
-                            'source_clinic_id' => $val->clinic_id,
-                            'name_ar' => $val->clinic_name_ar,
-                            'name_en' => $val->clinic_name_en,
-                        ], $val->clinic_id);
+                        Clinic::editBySourceClinicId($array, $val->clinic_id);
                     } else {
-                        Clinic::store([
-                            'source_clinic_id' => $val->clinic_id,
-                            'name_ar' => $val->clinic_name_ar,
-                            'name_en' => $val->clinic_name_en
-                        ]);
+                        Clinic::store($array);
                     }
                 }
             }
@@ -58,6 +67,10 @@ class SyncVendorDataController extends Controller
     // Get all specialities
     public function getClientSpecialities()
     {
+        if ($this->syncAndTestConnection() == false){
+            return false;
+        }
+
         DB::connection('oracle')->table('vw_specialities')->where(function ($q) {
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
@@ -65,28 +78,21 @@ class SyncVendorDataController extends Controller
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
         })->orderBy('speciality_id')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
+                $array = [
+                    'source_speciality_id' => $val->speciality_id,
+                    'name_ar' => $val->speciality_name_ar,
+                    'name_en' => $val->speciality_name_en
+                ];
                 if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
-                    Speciality::store([
-                        'source_speciality_id' => $val->speciality_id,
-                        'name_ar' => $val->speciality_name_ar,
-                        'name_en' => $val->speciality_name_en
-                    ]);
+                    Speciality::store($array);
                     DB::connection('oracle')->table('vw_specialities')->where('speciality_id', $val->speciality_id)
                         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
                 } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
                     $speciality = Speciality::getBy('source_speciality_id', $val->speciality_id);
                     if ($speciality) {
-                        Speciality::editBySourceSpecialityId([
-                            'source_speciality_id' => $val->speciality_id,
-                            'name_ar' => $val->speciality_name_ar,
-                            'name_en' => $val->speciality_name_en,
-                        ], $val->speciality_id);
+                        Speciality::editBySourceSpecialityId($array, $val->speciality_id);
                     } else {
-                        Speciality::store([
-                            'source_speciality_id' => $val->speciality_id,
-                            'name_ar' => $val->speciality_name_ar,
-                            'name_en' => $val->speciality_name_en
-                        ]);
+                        Speciality::store($array);
                     }
                 }
             }
@@ -97,6 +103,10 @@ class SyncVendorDataController extends Controller
     // Get all doctors
     public function getClientDoctors()
     {
+        if ($this->syncAndTestConnection() == false){
+            return false;
+        }
+
         DB::connection('oracle')->table('vw_doctor_table')->where(function ($q) {
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
@@ -177,6 +187,10 @@ class SyncVendorDataController extends Controller
     // Get all patients
     public function getClientPatients()
     {
+        if ($this->syncAndTestConnection() == false){
+            return false;
+        }
+
         DB::connection('oracle')->table('VW_PATIENTS')->where(function ($q) {
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
@@ -217,6 +231,10 @@ class SyncVendorDataController extends Controller
     // Get all reservation
     public function getClientReservations()
     {
+        if ($this->syncAndTestConnection() == false){
+            return false;
+        }
+
         DB::connection('oracle')->table('VW_RESERVATIONS')->where(function ($q) {
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');

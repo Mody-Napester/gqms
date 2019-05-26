@@ -2,6 +2,7 @@
 
 return [
     'public' => 'public',
+    'syncData' => true,
     'uuid_ver' => 4,
     'defualt_password' => 12345678,
     'authorized_users' => [1],
