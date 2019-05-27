@@ -17,8 +17,8 @@ use DB;
 class SyncVendorDataController extends Controller
 {
     public function syncAndTestConnection(){
-        if (DB::connection('oracle')->getDatabaseName()){
-            if (config('vars.syncData') == true){
+        if (config('vars.syncData') == true){
+            if (DB::connection('oracle')->getDatabaseName()){
                 return true;
             }else{
                 return false;

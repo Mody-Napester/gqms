@@ -6,29 +6,38 @@ Route::group(
 
 });
 
-//// Integration Section ////////
+//// Integration And Sync Section ////////
 Route::get('/integration/get-clinics', 'SyncVendorDataController@getClientClinics');
 Route::get('/integration/get-specialities', 'SyncVendorDataController@getClientSpecialities');
 Route::get('/integration/get-patients', 'SyncVendorDataController@getClientPatients');
 Route::get('/integration/get-doctors', 'SyncVendorDataController@getClientDoctors');
 Route::get('/integration/get-reservations', 'SyncVendorDataController@getClientReservations');
-//// END Integration Section ////
 
-Route::get('/reset', 'HomeController@resetQueues')->name('resetQueues');
+Route::get('/integration/sync/{what}', 'SyncButtonsController@syncClient')->name('integration.syncClient');
+//// END Integration And Sync Section ////
 
-Route::get('/test_oracle', 'SyncVendorDataController@getClientClinics');
-
+// Globals
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('home', 'HomeController@index')->name('home');
+Route::get('get-my-ip', function(){ return view('get_my_ip'); })->name('ip.get');
 Route::post('queues/{screen_uuid}/{floor_uuid}', 'DeskQueuesController@storeNewQueue')->name('desks.queues.storeNewQueue');
+Route::get('/reset', 'HomeController@resetQueues')->name('resetQueues');
 
+// Screens
+Route::get('screens/{screen}', 'ScreensController@show')->name('screens.show');
+Route::get('screens/ajax/{screen}/get-contents', 'ScreensController@getScreensAjaxContents')->name('screens.getScreensAjaxContents');
+Route::get('doctors/get/floors/{doctor_uuid}', 'DoctorToFloorsController@getDoctorFloor')->name('doctor-to-floor.getDoctorFloor');
+
+// Auth
 Auth::routes(['verify' => true]);
 Route::get('logout', 'Auth\LoginController@logout');
 
+// Admin
 Route::group([
     'prefix'=>'dashboard',
     'middleware' => ['auth']
 ],function (){
+    // System Resources
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
     Route::resource('permission-groups', 'PermissionGroupsController');
     Route::resource('permissions', 'PermissionsController');
@@ -40,9 +49,11 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    // Doctor to floor
     Route::get('doctor-to-floor', 'DoctorToFloorsController@index')->name('doctor-to-floor.index');
     Route::post('doctor-to-floor/{floor_uuid}/update', 'DoctorToFloorsController@update')->name('doctor-to-floor.update');
 
+    // Ganzory Resources
     Route::get('clinics', 'ClinicsController@index')->name('clinics.index');
     Route::get('specialities', 'SpecialitiesController@index')->name('specialities.index');
     Route::get('doctors', 'DoctorsController@index')->name('doctors.index');
@@ -91,13 +102,3 @@ Route::group([
     // Go available
     Route::get('user/availability', 'UsersController@availability')->name('users.availability');
 });
-
-Route::get('screens/{screen}', 'ScreensController@show')->name('screens.show');
-
-Route::get('screens/ajax/{screen}/get-contents', 'ScreensController@getScreensAjaxContents')->name('screens.getScreensAjaxContents');
-
-Route::get('doctors/get/floors/{doctor_uuid}', 'DoctorToFloorsController@getDoctorFloor')->name('doctor-to-floor.getDoctorFloor');
-
-Route::get('get-my-ip', function(){
-    return view('get_my_ip');
-})->name('ip.get');

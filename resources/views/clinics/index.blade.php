@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="btn-group pull-right m-t-15">
-                <a href="" class="btn btn-danger waves-effect waves-light">Sync <i class="fa fa-fw fa-refresh"></i></a>
+                <a @click.prevent="syncClient('clinics')" class="btn btn-danger waves-effect waves-light">Sync <i class="fa fa-fw fa-refresh"></i></a>
             </div>
 
             <h4 class="page-title">Clinics</h4>
@@ -28,32 +28,49 @@
                     Here you will find all the resources to make actions on them.
                 </p>
 
-                <table id="datatable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Source clinic id</th>
-                            <th>Name ar</th>
-                            <th>Name en</th>
-                            <th>Created at</th>
-                        </tr>
-                    </thead>
+                <div class="get-synced-data">
+                    @include('clinics._list')
+                </div>
 
-                    <tbody>
-                        @foreach($clinics as $clinic)
-                            <tr>
-                                <td>{{ $clinic->id }}</td>
-                                <td>{{ $clinic->source_clinic_id }}</td>
-                                <td>{{ $clinic->name_ar }}</td>
-                                <td>{{ $clinic->name_en }}</td>
-                                <td>{{ $clinic->created_at }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
     <!-- end row -->
 
+@endsection
+
+@section('scripts')
+    <script>
+        const app = new Vue({
+            el : '#app',
+            data : {
+            },
+            methods : {
+                syncClient(what){
+                    addLoader();
+
+                    var url = '{{ url('integration/sync') }}/' + what;
+
+                    axios.get(url)
+                        .then((response) => {
+                            if(response.data.message.msg_status == 1){
+                                $('.get-synced-data').html(response.data.view);
+                                // Default Datatable
+                                $('#datatable').DataTable();
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+
+                            removeLoarder();
+                        })
+                        .catch((data) => {
+                            addAlert('danger', 'Error!!');
+                            removeLoarder();
+                        });
+
+                },
+            }
+        });
+    </script>
 @endsection
