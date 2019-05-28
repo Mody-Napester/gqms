@@ -16,8 +16,8 @@
         @foreach($reservations as $reservation)
             <tr>
                 <td>{{ $reservation->id }}</td>
-                <td>{{ $reservation->clinic_id }}</td>
-                <td>{{ $reservation->doctor_id }}</td>
+                <td>{{ ($reservation->clinic)? $reservation->clinic->name_en : '-' }}</td>
+                <td>{{ ($reservation->doctor)? $reservation->doctor->name_en : '-' }}</td>
                 <td>{{ $reservation->desk_queue_id }}</td>
                 <td>{{ $reservation->source_reservation_serial }}</td>
                 <td>{{ ($reservation->patient)? $reservation->patient->name_en : '' }}</td>

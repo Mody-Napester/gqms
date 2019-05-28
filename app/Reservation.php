@@ -83,12 +83,12 @@ class Reservation extends Model
 
     // Doctor Relation
     public function doctor(){
-        return $this->belongsTo('App\Doctor');
+        return $this->belongsTo('App\Doctor', 'doctor_id', 'source_doctor_id');
     }
 
     // Clinic Relation
     public function clinic(){
-        return $this->belongsTo('App\Clinic');
+        return $this->belongsTo('App\Clinic', 'clinic_id', 'source_clinic_id');
     }
 
     // Room Queue Relation
