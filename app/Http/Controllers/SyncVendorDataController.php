@@ -137,6 +137,10 @@ class SyncVendorDataController extends Controller
                             'gander' => $val->emp_gendur,
                             'workstatus' => $val->workstatus == 1 ? 1 : 0
                         ]);
+
+                        // Add Role Relation
+                        $user->roles()->attach(config('vars.roles.doctor'));
+
                         DB::connection('oracle')->table('vw_doctor_table')->where('emp_id', $val->emp_id)
                             ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
                     } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {

@@ -8,6 +8,11 @@ return [
     'authorized_users' => [1],
     'default_kiosk_status' => 1,
     'go_available_user_types' => [1, 2],
+    'roles' => [
+        'admin' => 1,
+        'desk' => 2,
+        'doctor' => 3,
+    ],
     'screen_types' => [
         'kiosk' => 1,
         'reception' => 2,
