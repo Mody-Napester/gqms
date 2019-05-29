@@ -142,23 +142,28 @@ class ScreensController extends Controller
     {
         $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
 
-        $data['doctors'] = Doctor::where('');
+        if($data['screen']){
+            $data['doctors'] = Doctor::where('');
 
-        if($data['screen']->screen_type_id == config('vars.screen_types.kiosk')){
-            return view('screens.kiosk.show', $data);
-        }
-        else if($data['screen']->screen_type_id == config('vars.screen_types.reception')){
-            $data['logegdInDeskUsers'] = Desk::logegdInUsers('desk_id');
-            $data['logegdInRoomUsers'] = Room::logegdInUsers('room_id');
+            if($data['screen']->screen_type_id == config('vars.screen_types.kiosk')){
+                return view('screens.kiosk.show', $data);
+            }
+            else if($data['screen']->screen_type_id == config('vars.screen_types.reception')){
+                $data['logegdInDeskUsers'] = Desk::logegdInUsers('desk_id');
+                $data['logegdInRoomUsers'] = Room::logegdInUsers('room_id');
 
-            $data['desks'] = Desk::where('floor_id', $data['screen']->floor_id)->get();
-            $data['room'] = Room::where('floor_id', $data['screen']->floor_id)->get();
+                $data['desks'] = Desk::where('floor_id', $data['screen']->floor_id)->get();
+                $data['room'] = Room::where('floor_id', $data['screen']->floor_id)->get();
 
-            return view('screens.reception.ajax_show', $data);
-//            return view('screens.reception.show', $data);
+//                return view('screens.reception.ajax_show', $data);
+            return view('screens.reception.show', $data);
+            }else{
+                return redirect(route('dashboard.index'));
+            }
         }else{
-            return redirect(route('dashboard.index'));
+            return 'Screen Not Found';
         }
+
     }
 
     /**

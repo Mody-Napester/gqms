@@ -150,8 +150,8 @@
 }
 
 /*@font-face {*/
-    /*font-family: GE_SS_Two;*/
-    /*src: url('/public/assets/fonts/ge-ss-two-medium.ttf') format('ttf');*/
+/*font-family: GE_SS_Two;*/
+/*src: url('/public/assets/fonts/ge-ss-two-medium.ttf') format('ttf');*/
 /*}*/
 body{
     font-family: 'Tajawal', sans-serif;
@@ -184,7 +184,7 @@ body{
     background-color: #7f8c8d;
 }
 .txt-1{
-    font-size: 2rem;
+    font-size: 5rem;
     font-weight: bold;
 }
 .txt-2{
@@ -198,14 +198,14 @@ body{
     background-color: #FFFFFF;
     padding: 2px;
     color: #2E5272;
-    font-size: 2rem;
+    font-size: 6rem;
     font-weight: bold;
     width:100%;
     display: block;
 }
 .text-app{
     color: #FFFFFF;
-    font-size: 2rem;
+    font-size: 5rem;
     padding-top: 3px;
     font-weight: bold;
     display: inline-block;
@@ -213,13 +213,13 @@ body{
 }
 .text-app-1{
     color: #FFFFFF;
-    font-size: 1.4rem;
+    font-size: 56px;
     font-weight: bold;
     display: block;
 }
 .text-app-2{
     color: #FFFFFF;
-    font-size: 1rem;
+    font-size: 47px;
     padding-top: 1px;
     display: block;
 }
@@ -241,8 +241,8 @@ body{
     text-align: center;
     color: #FFFFFF;
     font-weight: bold;
-    font-size: 2rem;
-    padding-top: 20px;
+    font-size: 2.5rem;
+    padding-top: 60px;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -319,7 +319,7 @@ body{
     }
     50% {
         background-color: green;
-        transform: scale(1.5);
+        transform: scale(1.3);
         color: #FFFFFF;
     }
     100% {

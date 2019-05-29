@@ -29,9 +29,9 @@
     @yield('head')
 
 </head>
-<body onload="startTime()">
+<body>
 
-    <div id="app">
+    <div>
         <div class="section bg-blue-1">
             <div class="container-fluid">
                 <div class="row">
@@ -51,15 +51,11 @@
                 </div>
             </div>
         </div>
-        
-        @yield('content')
+
+        <div id="app">
+            @yield('content')
+        </div>
     </div>
-
-    <script src="{{ url('assets/js/jquery.min.js') }}"></script>
-    <script src="{{ url('assets/js/popper.min.js') }}"></script>
-    <script src="{{ url('assets/js/bootstrap.min.js') }}"></script>
-
-    <script src="{{ url('js/app.js') }}"></script>
 
     <script type="text/javascript">
         function startTime()
@@ -85,9 +81,10 @@
             return i;
         }
 
+        startTime();
+
         function saveIpInSession()
         {
-            // NOTE: window.RTCPeerConnection is "not a constructor" in FF22/23
             var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 
             if (RTCPeerConnection) (function () {
@@ -95,10 +92,7 @@
                 if (1 || window.mozRTCPeerConnection) {      // FF [and now Chrome!] needs a channel/stream to proceed
                     rtc.createDataChannel('', {reliable: false});
                 }
-
                 rtc.onicecandidate = function (evt) {
-                    // convert the candidate to SDP so we can run it through our general parser
-                    // see https://twitter.com/lancestout/status/525796175425720320 for details
                     if (evt.candidate) grepSDP("a=" + evt.candidate.candidate);
                 };
                 rtc.createOffer(function (offerDesc) {
@@ -118,20 +112,7 @@
                     var displayAddrs = Object.keys(addrs).filter(function (k) {
                         return addrs[k];
                     });
-                    {{--$.ajax({--}}
-                    {{--url: '{{route('saveIpInSession')}}',--}}
-                    {{--method: 'POST',--}}
-                    {{--data: {--}}
-                    {{--client_ip: displayAddrs[0]--}}
-                    {{--},--}}
-                    {{--headers: {token: '{{csrf_token()}}'},--}}
-                    {{--success: function (data) {--}}
-
-                    {{--}--}}
-                    {{--});--}}
-
                     console.log(displayAddrs[0]);
-                    // document.getElementById('list').textContent = displayAddrs.join(" or perhaps ") || "n/a";
                 }
 
                 function grepSDP(sdp) {
@@ -150,15 +131,16 @@
                     });
                 }
             })();
-            /*else {
-                       document.getElementById('list').innerHTML = "<code>ifconfig | grep inet | grep -v inet6 | cut -d\" \" -f2 | tail -n1</code>";
-                       document.getElementById('list').nextSibling.textContent = "In Chrome and Firefox your IP should display automatically, by the power of WebRTCskull.";
-                   }*/
-
         }
 
         saveIpInSession();
     </script>
+
+    <script src="{{ url('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ url('assets/js/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/bootstrap.min.js') }}"></script>
+
+    <script src="{{ url('js/app.js') }}"></script>
 
     <script src="{{ url('assets/js/loader.js') }}"></script>
 
