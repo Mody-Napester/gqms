@@ -82,8 +82,8 @@
                                     <span class="label {{ $role->class }}">{{ $role->name }}</span>
                                 @endforeach
                             </td>
-                            <td>{{ $user->createdBy->name }}</td>
-                            <td>{{ $user->updatedBy->name }}</td>
+                            <td>{!! ($user->createdBy)? $user->createdBy->name : '<span class="badge badge-danger">SYSTEM</span>' !!}</td>
+                            <td>{!! ($user->updatedBy)? $user->updatedBy->name : '<span class="badge badge-danger">SYSTEM</span>' !!}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>{{ $user->updated_at }}</td>
                             <td>

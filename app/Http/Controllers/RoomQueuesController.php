@@ -24,6 +24,7 @@ class RoomQueuesController extends Controller
         // 1 - Get Reservation
         $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
 
+        $doctor = $reservation->doctor;
         $room = $reservation->doctor->user->room;
 
         $checkRoomQueue = RoomQueue::getBy('queue_number', $reservation->source_queue_number);
@@ -32,7 +33,8 @@ class RoomQueuesController extends Controller
             // 2 - Generate And Store Room Queue number
             $roomQueue = RoomQueue::store([
                 'floor_id' => $desk->floor_id,
-                'room_id' => $room->id,
+                'room_id' => ($room)? $room->id : '0',
+//                'doctor_id' => ($doctor)? $doctor->id : '0',
                 'queue_number' => $reservation->source_queue_number,
                 'status' => config('vars.room_queue_status.waiting'),
             ]);
@@ -74,14 +76,14 @@ class RoomQueuesController extends Controller
         // Get Next queue number
         $data['nextQueue'] = RoomQueue::getNextRoomQueueTurn($data['room'], $data['currentQueue']);
 
-        // Next Queue Edited Status
-        if($data['nextQueue']->status == config('vars.room_queue_status.waiting')){
-           $status = config('vars.room_queue_status.called');
-        }elseif ($data['nextQueue']->status == config('vars.room_queue_status.skipped')){
-            $status = config('vars.room_queue_status.call_from_skip');
-        }
-
         if($data['nextQueue']){
+            // Next Queue Edited Status
+            if($data['nextQueue']->status == config('vars.room_queue_status.waiting')){
+                $status = config('vars.room_queue_status.called');
+            }elseif ($data['nextQueue']->status == config('vars.room_queue_status.skipped')){
+                $status = config('vars.room_queue_status.call_from_skip');
+            }
+
             // Edit Status
             $data['nextQueueUpdated'] = RoomQueue::edit([
                 'status' => $status,

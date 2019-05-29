@@ -62,40 +62,40 @@
 
             <div class="current-queue-div card-box">
                 <!-- Change btns -->
-                <div class="queue-settings-container">
-                    <div class="queue-settings-btns">
-                        <div class="queue-settings-close"><i class="fa fa-fw fa-close"></i></div>
-                        <div style="overflow: auto;height: 100%">
-                            <p>Done button</p>
-                            <div class="radio radio-success" v-on:click="changeBtn('out')">
-                                <input style="margin-top: 4px;" type="radio" name="queue_done" id="radio1">
-                                <label for="radio1">
-                                    Patient out
-                                </label>
-                            </div>
-                            <div class="radio radio-success" v-on:click="changeBtn('outandnext')">
-                                <input style="margin-top: 4px;" type="radio" checked name="queue_done" id="radio2">
-                                <label for="radio2">
-                                    Patient out and next
-                                </label>
-                            </div>
-                            <hr>
-                            <p>Skip button</p>
-                            <div class="radio radio-danger" v-on:click="changeBtn('skip')">
-                                <input style="margin-top: 4px;" type="radio" name="queue_skip" id="radio3">
-                                <label for="radio3">
-                                    Skip
-                                </label>
-                            </div>
-                            <div class="radio radio-danger" v-on:click="changeBtn('skipandnext')">
-                                <input style="margin-top: 4px;" type="radio" checked name="queue_skip" id="radio4">
-                                <label for="radio4">
-                                    Skip and next
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {{--<div class="queue-settings-container">--}}
+                    {{--<div class="queue-settings-btns">--}}
+                        {{--<div class="queue-settings-close"><i class="fa fa-fw fa-close"></i></div>--}}
+                        {{--<div style="overflow: auto;height: 100%">--}}
+                            {{--<p>Done button</p>--}}
+                            {{--<div class="radio radio-success" v-on:click="changeBtn('out')">--}}
+                                {{--<input style="margin-top: 4px;" type="radio" name="queue_done" id="radio1">--}}
+                                {{--<label for="radio1">--}}
+                                    {{--Patient out--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
+                            {{--<div class="radio radio-success" v-on:click="changeBtn('outandnext')">--}}
+                                {{--<input style="margin-top: 4px;" type="radio" checked name="queue_done" id="radio2">--}}
+                                {{--<label for="radio2">--}}
+                                    {{--Patient out and next--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
+                            {{--<hr>--}}
+                            {{--<p>Skip button</p>--}}
+                            {{--<div class="radio radio-danger" v-on:click="changeBtn('skip')">--}}
+                                {{--<input style="margin-top: 4px;" type="radio" name="queue_skip" id="radio3">--}}
+                                {{--<label for="radio3">--}}
+                                    {{--Skip--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
+                            {{--<div class="radio radio-danger" v-on:click="changeBtn('skipandnext')">--}}
+                                {{--<input style="margin-top: 4px;" type="radio" checked name="queue_skip" id="radio4">--}}
+                                {{--<label for="radio4">--}}
+                                    {{--Skip and next--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
 
                 <!-- Waiting time -->
                 <h4 class="m-t-0 m-b-20 header-title">
@@ -103,7 +103,7 @@
                     <b class="pull-right">
                         Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
 
-                        <span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>
+                        {{--<span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>--}}
 
                     </b>
                 </h4>
@@ -115,12 +115,12 @@
 
                             <div class="row">
                                 <div class="col-md-4">
-                                    <button v-on:click="skip()" v-if="skip_status && change_skip_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
+                                    <button v-on:click="skip()" v-if="skip_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
                                         Skip <i class="fa fa-fw fa-close"></i>
                                     </button>
-                                    <button v-on:click="skipAndNext()" v-if="skip_and_next_status && change_skip_and_next_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">
-                                        Skip and next <i class="fa fa-fw fa-close"></i>
-                                    </button>
+                                    {{--<button v-on:click="skipAndNext()" v-if="skip_and_next_status && change_skip_and_next_status" type="button" class="btn btn-block btn-danger waves-effect waves-light">--}}
+                                        {{--Skip and next <i class="fa fa-fw fa-close"></i>--}}
+                                    {{--</button>--}}
                                 </div>
                                 <div class="col-md-4">
                                     <button v-on:click="callNext()" v-if="next_status" type="button" class="btn btn-block btn-primary waves-effect waves-light">
@@ -134,12 +134,12 @@
                                     <button v-on:click="patientIn()" v-if="in_status" type="button" class="btn btn-block btn-pink waves-effect waves-light">
                                         Patient in <i class="fa fa-fw fa-arrow-down"></i>
                                     </button>
-                                    <button v-on:click="patientOut()" v-if="out_status && change_out_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
+                                    <button v-on:click="patientOut()" v-if="out_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
                                         Patient out <i class="fa fa-fw fa-arrow-up"></i>
                                     </button>
-                                    <button v-on:click="patientOutAndNext()" v-if="out_and_next_status && change_out_and_next_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
-                                        Patient out and next <i class="fa fa-fw fa-arrow-up"></i>
-                                    </button>
+                                    {{--<button v-on:click="patientOutAndNext()" v-if="out_and_next_status && change_out_and_next_status" type="button" class="btn btn-block btn-success waves-effect waves-light">--}}
+                                        {{--Patient out and next <i class="fa fa-fw fa-arrow-up"></i>--}}
+                                    {{--</button>--}}
                                 </div>
                             </div>
                         </div>
@@ -278,8 +278,8 @@
                     else if(current_room_queue_number == '{{ config('vars.room_queue_status.called') }}'){
                         this.next_status = false;
                         this.call_status = true;
-                        this.skip_status = false;
-                        this.skip_and_next_status = true;
+                        this.skip_status = true;
+                        this.skip_and_next_status = false;
                         this.in_status = true;
                         this.out_status = false;
                         this.out_and_next_status = false;
@@ -299,8 +299,8 @@
                         this.skip_status = false;
                         this.skip_and_next_status = false;
                         this.in_status = false;
-                        this.out_status = false;
-                        this.out_and_next_status = true;
+                        this.out_status = true;
+                        this.out_and_next_status = false;
                     }
                     else if(current_room_queue_number == '{{ config('vars.room_queue_status.patient_out') }}'){
                         this.next_status = true;

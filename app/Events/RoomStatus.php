@@ -49,8 +49,8 @@ class RoomStatus implements ShouldBroadcast
         $room = Room::getBy('uuid', $this->room_uuid);
 
         return [
-            'doctor' => ((isset($room->user) && $this->available == 1)? $room->user->doctor->name_ar : '-'),
-            'clinic' => ((isset($room->user) && $this->available == 1)? $room->user->doctor->clinic->name_ar : '-'),
+            'doctor' => ((isset($room->user) && isset($room->user->doctor) && $this->available == 1)? $room->user->doctor->name_ar : '-'),
+            'clinic' => ((isset($room->user) && isset($room->user->doctor) && isset($room->user->doctor->clinic)  && $this->available == 1)? $room->user->doctor->clinic->name_ar : '-'),
             'room' => $this->room_uuid,
             'available' => $this->available
         ];

@@ -84,7 +84,7 @@ class Doctor extends Model
 
     // Clinic Relation
     public function clinic(){
-        return $this->belongsTo('App\Clinic', 'source_clinic_id');
+        return $this->belongsTo('App\Clinic', 'source_clinic_id', 'source_doctor_id');
     }
 
     // Reservations Relation
