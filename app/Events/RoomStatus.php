@@ -50,7 +50,7 @@ class RoomStatus implements ShouldBroadcast
 
         return [
             'doctor' => ((isset($room->user) && isset($room->user->doctor) && $this->available == 1)? $room->user->doctor->name_ar : '-'),
-            'clinic' => ((isset($room->user) && isset($room->user->doctor) && isset($room->user->doctor->clinic)  && $this->available == 1)? $room->user->doctor->clinic->name_ar : '-'),
+            'clinic' => ((isset($room->user) && isset($room->user->doctor) && isset($room->user->doctor->speciality)  && $this->available == 1)? $room->user->doctor->speciality->name_ar : '-'),
             'room' => $this->room_uuid,
             'available' => $this->available
         ];

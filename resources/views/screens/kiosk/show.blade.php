@@ -30,7 +30,7 @@
         <div class="kiosk-screen-in">
             <div class="mb-4">
                 <select class="select2" style="width: 100%;" id="select2">
-                    <option selected disabled>اختر الدكتور</option>
+                    <option selected disabled value="">ابحث عن الدكتور</option>
                     @foreach($doctors as $doctor)
                         <option value="{{ $doctor->uuid }}">د / {{ $doctor->name_ar }}</option>
                     @endforeach
@@ -75,6 +75,9 @@
                             console.log(0, response.data);
                             removeLoarder();
                         });
+
+                    $('.floors-item').show();
+                    $('#select2').val('').select2();
                 },
                 getFloors(doctor){
                     addLoader();

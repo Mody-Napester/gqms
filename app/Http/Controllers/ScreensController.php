@@ -142,7 +142,7 @@ class ScreensController extends Controller
     {
         $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
 
-        $data['doctors'] = Doctor::all();
+        $data['doctors'] = Doctor::where('');
 
         if($data['screen']->screen_type_id == config('vars.screen_types.kiosk')){
             return view('screens.kiosk.show', $data);

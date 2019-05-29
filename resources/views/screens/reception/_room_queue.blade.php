@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-md-8 text-right">
                                 <span id="doctor-{{ $room->uuid }}" class="text-app-1">{{ ($room->user)? $room->user->doctor->name_ar : '-' }}</span>
-                                <span id="clinic-{{ $room->uuid }}" class="text-app-2">{{ ($room->user)? $room->user->doctor->clinic->name_ar : '-' }}</span>
+                                <span id="clinic-{{ $room->uuid }}" class="text-app-2">{{ ($room->user)? $room->user->doctor->speciality->name_ar : '-' }}</span>
                             </div>
                         </div>
                     </div>
