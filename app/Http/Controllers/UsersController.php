@@ -138,8 +138,8 @@ class UsersController extends Controller
         // Check validation
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $resource->id,
-            'phone' => 'required|max:20',
+            'email' => 'required|string|max:255|unique:users,email,' . $resource->id,
+//            'phone' => 'required|max:20',
         ]);
 
         if ($validator->fails()){
@@ -150,10 +150,10 @@ class UsersController extends Controller
         $updatedResource = User::edit([
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
+            'phone' => ($request->has('phone'))? $request->phone : '00',
             'status' => $request->status,
             'type' => $request->type,
-            'password' => ($request->has('password')? bcrypt($request->password) : $resource->password),
+            'password' => (($request->has('password'))? bcrypt($request->password) : $resource->password),
             'updated_by' => auth()->user()->id
         ], $resource->id);
 

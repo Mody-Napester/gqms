@@ -48,6 +48,16 @@ class LoginController extends Controller
     // After Login
     protected function authenticated(\Illuminate\Http\Request $request, $user)
     {
+        // Check user status
+        if($user->status == 0 && !in_array($user->id, config('vars.authorized_users'))){
+            auth()->logout();
+            $data['message'] = [
+                'type' => 'danger',
+                'text' => 'Sorry your account is not activated',
+            ];
+            return redirect(route('login'))->with('message', $data['message']);
+        }
+
         // Check if user and ip exists in desks or in rooms
         if($user->type == 1){ // Doctor
             $data['resource'] = Room::getBy('ip', $request->login_ip);

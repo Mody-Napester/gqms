@@ -62,6 +62,8 @@
                         <th>Id</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Status</th>
+                        <th>Type</th>
                         <th>Roles</th>
                         <th>Created by</th>
                         <th>Updated by</th>
@@ -77,6 +79,14 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>
+                                @if($user->status == 0)
+                                    <span class="badge badge-danger"><i class="fa fa-fw fa-lock"></i></span>
+                                @else
+                                    <span class="badge badge-success"><i class="fa fa-fw fa-unlock"></i></span>
+                                @endif
+                            </td>
+                            <td>{{ \App\Enums\UserTypes::$types[$user->type] }}</td>
                             <td>
                                 @foreach($user->roles as $role)
                                     <span class="label {{ $role->class }}">{{ $role->name }}</span>

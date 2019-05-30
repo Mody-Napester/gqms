@@ -17,7 +17,13 @@
                 <td>{{ $doctor->name_ar }}</td>
                 <td>{{ $doctor->name_en }}</td>
                 <td>{{ $doctor->gander }}</td>
-                <td>{{ $doctor->workstatus }}</td>
+                <td>
+                    @if($doctor->workstatus == 0)
+                        <span class="badge badge-danger"><i class="fa fa-fw fa-lock"></i></span>
+                    @else
+                        <span class="badge badge-success"><i class="fa fa-fw fa-unlock"></i></span>
+                    @endif
+                </td>
                 <td>{{ $doctor->created_at }}</td>
             </tr>
         @endforeach

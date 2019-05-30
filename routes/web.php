@@ -30,6 +30,11 @@ Route::get('doctors/get/floors/{doctor_uuid}', 'DoctorToFloorsController@getDoct
 
 // Auth
 Auth::routes(['verify' => true]);
+
+Route::get('register', function (){
+    return redirect('login');
+});
+
 Route::get('logout', 'Auth\LoginController@logout');
 
 // Admin

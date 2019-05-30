@@ -54,9 +54,16 @@
 
                 </form>
 
+                @if(session('message'))
+                    <div class="row alert alert-{{ session('message')['type'] }} clearfix">
+                        <div class="col-md-10 p-0 m-0">{{ session('message')['text'] }}</div>
+                        <div class="col-md-2 p-0 m-0 text-right">
+                            <i class="alert-close fa fa-fw fa-close"></i>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
-
     </div>
 @endsection
 

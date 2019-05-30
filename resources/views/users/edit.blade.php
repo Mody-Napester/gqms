@@ -30,7 +30,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="phone">Phone</label>
-                <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ $user->phone }}" required>
+                <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="phone" value="{{ $user->phone }}">
 
                 @if ($errors->has('phone'))
                     <span class="invalid-feedback" role="alert">
