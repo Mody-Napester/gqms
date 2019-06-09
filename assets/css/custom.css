@@ -22,8 +22,8 @@
 .btn-print {
     display: inline-block;
     outline: none;
-    padding: 1.5rem;
-    font-size: 2rem;
+    padding: 1.3rem;
+    font-size: 1.5rem;
     text-align: center;
     cursor: pointer;
     color: #fff;
@@ -129,8 +129,8 @@
 .return-screen-qn{
     display: inline-block;
     outline: none;
-    padding: 1.5rem;
-    font-size: 2rem;
+    padding: 1.3rem;
+    font-size: 1.5rem;
     text-align: center;
     cursor: pointer;
     color: #fff;

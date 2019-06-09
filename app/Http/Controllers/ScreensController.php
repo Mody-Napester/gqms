@@ -134,16 +134,18 @@ class ScreensController extends Controller
     }
 
     /**
-     * Display the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param string $screen
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View|string
      */
-    public function show($screen)
+    public function show(string $screen)
     {
         $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
 
+        $data['arabic_alphas'] = ['أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م',
+            'ن','ه','و','ى','ي'];
+
         if($data['screen']){
-            $data['doctors'] = Doctor::where('');
+            $data['doctors'] = Doctor::all();
 
             if($data['screen']->screen_type_id == config('vars.screen_types.kiosk')){
                 return view('screens.kiosk.show', $data);
