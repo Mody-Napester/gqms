@@ -28,35 +28,35 @@
 
 @section('content')
 
-    <div class="text-center pt-2 pb-2 mb-2" style="direction: rtl !important;background-color: #eeeeee">
+    <div class="alpha-container text-center pt-2 pb-2 mb-2" style="direction: rtl !important;background-color: #eeeeee">
         @foreach($arabic_alphas as $arabic_alpha)
-            <div style="min-width: 40px;font-size: 30px;font-weight: bold;padding: 3px 3px;display: inline-block;background-color: #0a6aa1;color: #ffffff;cursor: pointer">{{ $arabic_alpha }}</div>
+            <div style="border-radius: 3px; min-width: 40px;font-size: 30px;font-weight: bold;padding: 3px 3px;display: inline-block;background-color: #0a6aa1;color: #ffffff;cursor: pointer">{{ $arabic_alpha }}</div>
         @endforeach
     </div>
 
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-fluid b-container">
+        <div class="row" style="height: 100%;">
             <div class="col-md-6 text-center">
-                <div style="background-color: #eeeeee;padding: 10px;">
-                    <div style="display: inline-block;">
+                <div class="kiosk-screen" style="background-color: #eeeeee;">
+                    <div class="kiosk-screen-in">
                         @foreach($screen->floors as $floor)
                             <div class="mb-4 floors-item" id="{{ $floor->uuid }}">
                                 <div class="qn-{{$floor->uuid}} return-screen-qn">-</div>
                                 <button @click.prevent="printQueue('{{$floor->uuid}}')" class="btn-print">
                                     <span style="background-color: rgba(64, 85, 102, .7);padding: 0 10px">{{ $floor->name_en }}</span>
-                                    <span> اضغط هنا لطباعة حجز</span>
+                                    <span> طباعة حجز</span>
                                 </button>
                             </div>
                         @endforeach
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" style="height: 100%;">
-                <div class="" style="background-color: #eeeeee;overflow: auto;font-weight: bold;text-transform: capitalize;font-size: 20px">
+            <div class="col-md-6" style="height: 100%;overflow: auto;">
+                <div class="" style="background-color: #dddddd;font-weight: bold;text-transform: capitalize;font-size: 20px">
                     @foreach($doctors as $doctor)
                         <div class="row">
                             <div class="col-md-3 text-center">
-                                <div style="background-color: #ffffff;padding: 5px;margin: 5px;">{{ 'f1' }}</div>
+                                <div style="background-color: #ffffff;padding: 5px;margin: 5px;">{{ ($floor = \DB::table('doctor_to_floors')->where('doctor_id', $doctor->id)->first())? \App\Floor::getBy('id', $floor->floor_id)->name_en : '-' }}</div>
                             </div>
                             <div class="col-md-9">
                                 <div style="background-color: #ffffff;padding: 5px;margin: 5px;text-align: right;">{{ $doctor->name_ar }}</div>
@@ -94,8 +94,9 @@
 @endsection
 
 @section('scripts')
+
     <script>
-        $('.kiosk-screen').height($(window).height() - 93);
+        // $('.kiosk-screen').height($(window).height() - 93);
 
         const app = new Vue({
             el: '#app',
@@ -147,12 +148,31 @@
         });
     </script>
 
-
-    <script src="{{ url('assets/plugins/select2/js/select2.min.js') }}" type="text/javascript"></script>
-
     <script>
-        // Select2
-        $(".select2").select2();
-        // $("#select2").select2({ dropdownCssClass: "select2CssClass" });
+        function bHeight() {
+            var windowHeight = $(window).height();
+            var sectionHeight = $('.section').height();
+            var alphaContainerHeight = $('.alpha-container').height();
+            // var bContainerHeight = windowHeight - (sectionHeight + alphaContainerHeight);
+            var bContainerHeight = windowHeight - (180);
+
+            return bContainerHeight;
+        }
+
+        $(window).on('load', function () {
+            $('.b-container').height(bHeight());
+        });
+        // $(window).on('resize', function () {
+        //     $('.b-container').height(bHeight());
+        // });
+
     </script>
+
+    {{--<script src="{{ url('assets/plugins/select2/js/select2.min.js') }}" type="text/javascript"></script>--}}
+
+    {{--<script>--}}
+        {{--$(".select2").select2();--}}
+        {{--// $("#select2").select2({ dropdownCssClass: "select2CssClass" });--}}
+        {{----}}
+    {{--</script>--}}
 @endsection

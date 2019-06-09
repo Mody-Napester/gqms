@@ -8,7 +8,7 @@
 }
 .kiosk-screen{
     background-color: #dfe6e9;
-    height: 600px;
+    height: 100%;
     position: relative;
 }
 .kiosk-screen-in{

@@ -141,8 +141,7 @@ class ScreensController extends Controller
     {
         $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
 
-        $data['arabic_alphas'] = ['أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م',
-            'ن','ه','و','ى','ي'];
+        $data['arabic_alphas'] = ['أ','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ى','ي'];
 
         if($data['screen']){
             $data['doctors'] = Doctor::all();
