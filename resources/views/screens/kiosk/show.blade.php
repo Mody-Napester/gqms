@@ -29,8 +29,10 @@
 @section('content')
 
     <div class="alpha-container text-center pt-2 pb-2 mb-2" style="direction: rtl !important;background-color: #eeeeee">
-        @foreach($arabic_alphas as $arabic_alpha)
-            <div style="border-radius: 3px; min-width: 40px;font-size: 30px;font-weight: bold;padding: 3px 3px;display: inline-block;background-color: #0a6aa1;color: #ffffff;cursor: pointer">{{ $arabic_alpha }}</div>
+        @foreach($arabic_alphas as $letter)
+            <div style="border-radius: 3px; min-width: 40px;font-size: 30px;
+            font-weight: bold;padding: 3px 3px;display: inline-block;
+            background-color: #0a6aa1;color: #ffffff;cursor: pointer" @click.prevent="searchByLetter('{{ $letter }}')">{{ $letter }}</div>
         @endforeach
     </div>
 
@@ -52,17 +54,8 @@
                 </div>
             </div>
             <div class="col-md-6" style="height: 100%;overflow: auto;">
-                <div class="" style="background-color: #dddddd;font-weight: bold;text-transform: capitalize;font-size: 20px">
-                    @foreach($doctors as $doctor)
-                        <div class="row">
-                            <div class="col-md-3 text-center">
-                                <div style="background-color: #ffffff;padding: 5px;margin: 5px;">{{ ($floor = \DB::table('doctor_to_floors')->where('doctor_id', $doctor->id)->first())? \App\Floor::getBy('id', $floor->floor_id)->name_en : '-' }}</div>
-                            </div>
-                            <div class="col-md-9">
-                                <div style="background-color: #ffffff;padding: 5px;margin: 5px;text-align: right;">{{ $doctor->name_ar }}</div>
-                            </div>
-                        </div>
-                    @endforeach
+                <div class="doctors-floors" style="background-color: #dddddd;font-weight: bold;text-transform: capitalize;font-size: 20px">
+                    @include('screens.kiosk._doctor_floors')
                 </div>
             </div>
         </div>
@@ -100,8 +93,24 @@
 
         const app = new Vue({
             el: '#app',
-            data: {},
+            data: {
+
+            },
             methods: {
+                searchByLetter(letter) {
+                    addLoader();
+                    var url = '{{ url('screens/search-by-letter') }}/' + letter;
+                    axios.get(url)
+                        .then((response) => {
+                            // console.log(letter);
+                            console.log(response);
+                            $('.doctors-floors').html(response.data.view);
+                            removeLoarder();
+                        })
+                        .catch((response) => {
+                            removeLoarder();
+                        });
+                },
                 printQueue(floor_uuid) {
                     addLoader();
                     var url = '{{ url('/') }}/queues/{{$screen->uuid}}/' + floor_uuid;

@@ -26,6 +26,7 @@ Route::get('/reset', 'HomeController@resetQueues')->name('resetQueues');
 // Screens
 Route::get('screens/{screen}', 'ScreensController@show')->name('screens.show');
 Route::get('screens/ajax/{screen}/get-contents', 'ScreensController@getScreensAjaxContents')->name('screens.getScreensAjaxContents');
+Route::get('screens/search-by-letter/{letter}', 'ScreensController@searchByLetter')->name('screens.searchByLetter');
 Route::get('doctors/get/floors/{doctor_uuid}', 'DoctorToFloorsController@getDoctorFloor')->name('doctor-to-floor.getDoctorFloor');
 
 // Auth
