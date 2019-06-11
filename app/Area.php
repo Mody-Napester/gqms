@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Desk extends Model
+class Area extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['floor_id', 'area_id', 'ip','name_ar', 'name_en', 'status', 'created_by', 'updated_by'];
+    protected $fillable = ['floor_id', 'speciality_id', 'name_ar', 'name_en','status', 'created_by', 'updated_by'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -59,17 +59,17 @@ class Desk extends Model
     /**
      *  Get a specific resource
      */
-    public static function getAll($status = 1)
-    {
-        return self::where('status', $status)->get();
-    }
-
-    /**
-     *  Get a specific resource
-     */
     public static function getBy($by, $resource)
     {
         return self::where($by, $resource)->first();
+    }
+
+    /**
+     *  Get all resources
+     */
+    public static function getAll()
+    {
+        return self::all();
     }
 
     /**
@@ -90,13 +90,9 @@ class Desk extends Model
 
     }
 
-    /**
-     *  Logged in users
-     */
-    public static function logegdInUsers($filed)
-    {
-        $loggedInUsers = User::where('desk_id', '<>', '')->where('available', 1)->get();
-        return $loggedInUsers->pluck($filed)->toArray();
+    // Desks Relation
+    public function desks(){
+        return $this->hasMany('App\Desk');
     }
 
     // Floor Relation
@@ -104,9 +100,9 @@ class Desk extends Model
         return $this->belongsTo('App\Floor');
     }
 
-    // Area Relation
-    public function area(){
-        return $this->belongsTo('App\Area');
+    // Speciality Relation
+    public function speciality(){
+        return $this->belongsTo('App\Speciality');
     }
 
 }

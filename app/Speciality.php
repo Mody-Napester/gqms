@@ -77,4 +77,9 @@ class Speciality extends Model
     {
         return self::where($by, $resource)->first();
     }
+
+    // Area Relation
+    public function area(){
+        return $this->hasOne('App\Area');
+    }
 }

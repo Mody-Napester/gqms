@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Area;
-use App\Desk;
-use App\DeskQueue;
-use App\DeskQueueStatus;
 use App\Floor;
-use App\QueueStatus;
+use App\Speciality;
 use App\User;
 use Validator;
 use Illuminate\Http\Request;
 
-class DesksController extends Controller
+class AreasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,32 +18,26 @@ class DesksController extends Controller
      */
     public function index(Request $request)
     {
-        // Check permissions
-        if (!User::hasAuthority('index.desks')){
+        if (!User::hasAuthority('index.areas')){
             return redirect('/');
         }
 
-        $data['floors'] = Floor::all();
-        $data['areas'] = Area::where('status', 1)->get();
+        $data['floors'] = Floor::where('status', 1)->get();
+        $data['specialities'] = Speciality::all();
 
         if (empty($request->all())){
-            $data['desks'] = Desk::all();
+            $data['areas'] = Area::all();
         }else{
-            $data['desks'] = new Desk();
+            $data['areas'] = new Area();
 
-            $data['desks'] = ($request->has('name_ar') && !empty($request->get('name_ar')))? $data['desks']->where('name_ar',$request->get('name_ar')) : $data['desks'];
-            $data['desks'] = ($request->has('name_en') && !empty($request->get('name_en')))? $data['desks']->where('name_en',$request->get('name_en')) : $data['desks'];
-            $data['desks'] = ($request->has('ip') && !empty($request->get('ip')))? $data['desks']->where('ip',$request->get('ip')) : $data['desks'];
-            $data['desks'] = ($request->has('status'))? $data['desks']->where('status',$request->get('status')) : $data['desks'];
-            $data['desks'] = ($request->has('floor'))? $data['desks']->where('floor_id', Floor::getBy('uuid', $request->get('floor'))->id) : $data['desks'];
-            $data['desks'] = ($request->has('area'))? $data['desks']->where('area_id', Area::getBy('uuid', $request->get('area'))->id) : $data['desks'];
+            $data['areas'] = ($request->has('name_ar'))? $data['areas']->where('name_ar',$request->get('name_ar')) : $data['areas'];
+            $data['areas'] = ($request->has('name_en'))? $data['areas']->where('name_en',$request->get('name_en')) : $data['areas'];
+            $data['areas'] = ($request->has('status'))? $data['areas']->where('status',$request->get('status')) : $data['areas'];
 
-            $data['desks'] = $data['desks']->get();
-
-//            dd($data['desks']->toSql());
+            $data['areas'] = $data['areas']->get();
         }
 
-        return view('desks.index', $data);
+        return view('areas.index', $data);
     }
 
     /**
@@ -58,7 +49,7 @@ class DesksController extends Controller
     public function store(Request $request)
     {
         // Check permissions
-        if (!User::hasAuthority('store.desks')){
+        if (!User::hasAuthority('store.areas')){
             return redirect('/');
         }
 
@@ -67,23 +58,43 @@ class DesksController extends Controller
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
             'status' => 'required',
-            'ip' => 'required|unique:desks',
-            'area' => 'required',
-//            'floor' => 'required',
+            'floor' => 'required',
+            'speciality' => 'required',
         ]);
 
         if ($validator->fails()){
             return back()->withErrors($validator)->withInput();
         }
 
+        $floor = Floor::getBy('uuid', $request->floor);
+        if (!$floor){
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Please select floor!',
+            ];
+
+            return back()->with('message', $data['message']);
+        }
+        $speciality = Speciality::getBy('uuid', $request->speciality);
+        if (!$speciality){
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Please select speciality!',
+            ];
+
+            return back()->with('message', $data['message']);
+        }
+
+
         // Do Code
-        $resource = Desk::store([
+        $resource = Area::store([
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
-            'ip' => $request->ip,
-            'area_id' => Area::getBy('uuid', $request->area)->id,
-//            'floor_id' => Floor::getBy('uuid', $request->floor)->id,
+            'floor_id' => $floor->id,
+            'speciality_id' => $speciality->id,
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
         ]);
@@ -107,47 +118,30 @@ class DesksController extends Controller
     }
 
     /**
-     * Display the resource.
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function show($uuid)
+    public function show($id)
     {
-        if (!User::hasAuthority('show.desks')){
-            return redirect('/');
-        }
-
-        $data['desk'] = Desk::getBy('uuid', $uuid);
-
-        // Check if user login from current desk
-        if (is_null(auth()->user()->desk_id) || auth()->user()->login_ip != auth()->user()->desk->ip){
-            return redirect(route('dashboard.index'));
-        }
-        if (auth()->user()->desk_id != $data['desk']->id) {
-            return redirect(route('dashboard.index'));
-        }
-
-        $data['deskQueueStatues'] = QueueStatus::getQueueStatuses('desk');
-
-        // Get today's desk queues
-        $data['deskQueues'] = DeskQueue::getDeskQueues($data['desk']->floor_id);
-        $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 3);
-        $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 4);
-
-        $data['currentDeskQueueNumber'] = DeskQueue::getCurrentDeskQueues($data['desk']->id);
-
-        return view('desks.show', $data);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
+     *
+     * @param  string  $uuid
+     * @return \Illuminate\Http\Response
      */
     public function edit($uuid)
     {
-        $data['desk'] = Desk::getBy('uuid', $uuid);
-        $data['floors'] = Floor::all();
-        $data['areas'] = Area::where('status', 1)->get();
+        $data['area'] = Area::getBy('uuid', $uuid);
+        $data['floors'] = Floor::where('status', 1)->get();
+        $data['specialities'] = Speciality::all();
         return response([
-            'title'=> "Update desk " . $data['desk']->name_en,
-            'view'=> view('desks.edit', $data)->render(),
+            'title'=> "Update area " . $data['area']->name_en,
+            'view'=> view('areas.edit', $data)->render(),
         ]);
     }
 
@@ -163,31 +157,50 @@ class DesksController extends Controller
         // Check permissions
 
         // Get Resource
-        $resource = Desk::getBy('uuid', $uuid);
+        $resource = Area::getBy('uuid', $uuid);
 
         // Check validation
         $validator = Validator::make($request->all(), [
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
             'status' => 'required',
-            'ip' => 'required',
-            'area' => 'required',
-//            'floor' => 'required',
+            'floor' => 'required',
+            'speciality' => 'required',
         ]);
 
         if ($validator->fails()){
             return back()->withErrors($validator)->withInput();
         }
 
+        $floor = Floor::getBy('uuid', $request->floor);
+        if (!$floor){
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Please select floor!',
+            ];
+
+            return back()->with('message', $data['message']);
+        }
+        $speciality = Speciality::getBy('uuid', $request->speciality);
+        if (!$speciality){
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Please select speciality!',
+            ];
+
+            return back()->with('message', $data['message']);
+        }
+
         // Do Code
-        $updatedResource = Desk::edit([
+        $updatedResource = Area::edit([
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
-            'ip' => $request->ip,
-            'area_id' => Area::getBy('uuid', $request->area)->id,
-//            'floor_id' => Floor::getBy('uuid', $request->floor)->id,
-            'updated_by' => auth()->user()->id,
+            'floor_id' => $floor->id,
+            'speciality_id' => $speciality->id,
+            'updated_by' => auth()->user()->id
         ], $resource->id);
 
         // Return
@@ -216,9 +229,9 @@ class DesksController extends Controller
      */
     public function destroy($uuid)
     {
-        $resource = Desk::getBy('uuid', $uuid);
+        $resource = Area::getBy('uuid', $uuid);
         if ($resource){
-            $deletedResource = Desk::remove($resource->id);
+            $deletedResource = Area::remove($resource->id);
 
             // Return
             if ($deletedResource){

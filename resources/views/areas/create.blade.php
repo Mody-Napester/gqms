@@ -1,4 +1,4 @@
-<form method="post" action="{{ route('desks.store') }}" enctype="multipart/form-data">
+<form method="post" action="{{ route('areas.store') }}" enctype="multipart/form-data">
     @csrf
 
     <div class="row">
@@ -26,34 +26,26 @@
                 @endif
             </div>
         </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="" for="ip">Desk IP</label>
-                <input type="text" id="ip" autocomplete="off" class="form-control{{ $errors->has('ip') ? ' is-invalid' : '' }}" name="ip" value="{{ old('ip') }}" required/>
-
-                @if ($errors->has('ip'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('ip') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
-        {{--<div class="col-md-6">--}}
-            {{--<div class="form-group">--}}
-                {{--<label>Floor</label>--}}
-                {{--<select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>--}}
-                    {{--@foreach($floors as $key => $floor)--}}
-                        {{--<option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>--}}
-                    {{--@endforeach--}}
-                {{--</select>--}}
-            {{--</div>--}}
-        {{--</div>--}}
         <div class="col-md-6">
             <div class="form-group">
-                <label>Reception area</label>
-                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach($areas as $key => $area)
-                        <option value="{{ $area->uuid }}">{{ $area->name_en }} - {{ $area->floor->name_en }}</option>
+                <label>Floors</label>
+                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($floors as $key => $floor)
+                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Speciality</label>
+                <select name="speciality" id="speciality" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($specialities as $key => $speciality)
+                        @if($speciality->area)
+                            <option disabled  value="{{ $speciality->uuid }}">{{ $speciality->name_en }} - (Area : {{ $speciality->area->name_en }})</option>
+                        @else
+                            <option value="{{ $speciality->uuid }}">{{ $speciality->name_en }}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -62,7 +54,7 @@
             <div class="form-group">
                 <label>Status</label>
                 <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach(App\Enums\DeskStatuses::$statuses as $key => $status)
+                    @foreach(App\Enums\FloorStatuses::$statuses as $key => $status)
                         <option value="{{ $key }}">{{ $status['en'] }}</option>
                     @endforeach
                 </select>
@@ -74,7 +66,7 @@
     <div class="form-group m-b-0">
         <div>
             <button type="submit" class="btn btn-primary waves-effect waves-light">
-                Submit
+                <i class="fa fa-fw fa-save"></i> Save
             </button>
         </div>
     </div>

@@ -50,6 +50,7 @@ Route::group([
     Route::resource('roles', 'RolesController');
     Route::resource('users', 'UsersController');
     Route::resource('floors', 'FloorsController');
+    Route::resource('areas', 'AreasController');
     Route::resource('desks', 'DesksController');
     Route::resource('rooms', 'RoomsController');
     Route::resource('printers', 'PrintersController');

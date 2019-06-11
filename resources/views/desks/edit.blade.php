@@ -39,12 +39,22 @@
                 @endif
             </div>
         </div>
+        {{--<div class="col-md-6">--}}
+            {{--<div class="form-group">--}}
+                {{--<label>Floor</label>--}}
+                {{--<select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>--}}
+                    {{--@foreach($floors as $key => $floor)--}}
+                        {{--<option @if($desk->floor_id == $floor->id) selected @endif value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>--}}
+                    {{--@endforeach--}}
+                {{--</select>--}}
+            {{--</div>--}}
+        {{--</div>--}}
         <div class="col-md-6">
             <div class="form-group">
-                <label>Floor</label>
-                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach($floors as $key => $floor)
-                        <option @if($desk->floor_id == $floor->id) selected @endif value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                <label>Reception area</label>
+                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($areas as $key => $area)
+                        <option @if($desk->area_id == $area->id) selected @endif value="{{ $area->uuid }}">{{ $area->name_en }} - {{ $area->floor->name_en }}</option>
                     @endforeach
                 </select>
             </div>

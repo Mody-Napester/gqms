@@ -18,13 +18,24 @@
                 <input type="text" id="ip" autocomplete="off" class="form-control" name="ip" @if(request()->has('ip')) value="{{ request()->get('ip') }}" @endif />
             </div>
         </div>
+        {{--<div class="col-md-6">--}}
+            {{--<div class="form-group">--}}
+                {{--<label>Floor</label>--}}
+                {{--<select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">--}}
+                    {{--<option selected disabled>Choose</option>--}}
+                    {{--@foreach($floors as $key => $floor)--}}
+                        {{--<option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>--}}
+                    {{--@endforeach--}}
+                {{--</select>--}}
+            {{--</div>--}}
+        {{--</div>--}}
         <div class="col-md-6">
             <div class="form-group">
-                <label>Floor</label>
-                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                <label>Reception area</label>
+                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
                     <option selected disabled>Choose</option>
-                    @foreach($floors as $key => $floor)
-                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                    @foreach($areas as $key => $area)
+                        <option value="{{ $area->uuid }}">{{ $area->name_en }} - {{ $area->floor->name_en }}</option>
                     @endforeach
                 </select>
             </div>
