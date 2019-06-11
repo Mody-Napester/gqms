@@ -98,6 +98,11 @@ class Screen extends Model
         return $this->belongsToMany('App\Room', 'screen_room');
     }
 
+    // Desks Relation
+    public function desks(){
+        return $this->belongsToMany('App\Desk', 'screen_desk');
+    }
+
     // Printer Relation
     public function printer(){
         return $this->belongsTo('App\Printer');

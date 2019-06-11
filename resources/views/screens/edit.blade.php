@@ -79,14 +79,30 @@
             </div>
         </div>
 
-        <div @if(count($screen->rooms) == 0 && $screen->screen_type_id != config('vars.screen_types.reception')) style="display: none;" @endif id="rooms-div" class="col-md-6">
-            <div class="form-group">
-                <label>Show Rooms</label>
-                <select name="rooms[]" id="rooms" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
-                    @foreach($rooms as $key => $room)
-                        <option @if(in_array($room->id, $screen->rooms()->pluck('room_id')->toArray())) selected @endif value="{{ $room->uuid }}">{{ $room->floor->name_en . ' - ' . $room->name_en }}</option>
-                    @endforeach
-                </select>
+        <div @if(count($screen->rooms) == 0 && $screen->screen_type_id != config('vars.screen_types.reception')) style="display: none;" @endif id="rooms-div" class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Show Desks</label>
+                        <select name="desks[]" id="desks" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                            @foreach($desks as $key => $desk)
+                                <option @if(in_array($desk->id, $screen->desks()->pluck('desk_id')->toArray())) selected @endif value="{{ $desk->uuid }}">
+                                    {{ (($desk->area)? $desk->area->name_en : '') . ' - ' . $desk->name_en }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Show Rooms</label>
+                        <select name="rooms[]" id="rooms" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                            @foreach($rooms as $key => $room)
+                                <option @if(in_array($room->id, $screen->rooms()->pluck('room_id')->toArray())) selected @endif value="{{ $room->uuid }}">
+                                    {{ $room->floor->name_en . ' - ' . $room->name_en }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

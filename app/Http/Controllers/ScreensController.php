@@ -33,6 +33,7 @@ class ScreensController extends Controller
         $data['floors'] = Floor::all();
         $data['rooms'] = Room::all();
         $data['printers'] = Printer::all();
+        $data['desks'] = Desk::getAll();
 
         if (empty($request->all())){
             $data['screens'] = Screen::all();
@@ -114,6 +115,11 @@ class ScreensController extends Controller
                 $resource->rooms()->attach(Room::getBy('uuid', $room)->id);
             }
         }
+        if ($request->has('desks')){
+            foreach ($request->desks as $desk){
+                $resource->desks()->attach(Desk::getBy('uuid', $desk)->id);
+            }
+        }
 
         // Return
         if ($resource){
@@ -177,6 +183,7 @@ class ScreensController extends Controller
         $data['floors'] = Floor::all();
         $data['rooms'] = Room::all();
         $data['printers'] = Printer::all();
+        $data['desks'] = Desk::getAll();
         return response([
             'title'=> "Update screen " . $data['screen']->name_en,
             'view'=> view('screens.edit', $data)->render(),
@@ -246,6 +253,14 @@ class ScreensController extends Controller
 
             foreach ($request->rooms as $room){
                 $resource->rooms()->attach(Room::getBy('uuid', $room)->id);
+            }
+        }
+
+        if ($request->has('desks')){
+            $resource->desks()->detach();
+
+            foreach ($request->desks as $desk){
+                $resource->desks()->attach(Desk::getBy('uuid', $desk)->id);
             }
         }
 
