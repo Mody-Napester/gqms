@@ -12,7 +12,7 @@
                 <input type="text" id="name_en" autocomplete="off" class="form-control" name="name_en" @if(request()->has('name_en')) value="{{ request()->get('name_en') }}" @endif />
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="ip">Screen IP</label>
                 <input type="text" id="ip" autocomplete="off" class="form-control" name="ip" @if(request()->has('ip')) value="{{ request()->get('ip') }}" @endif />
@@ -20,11 +20,11 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>Type</label>
-                <select name="type" id="type_search" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                <label>Screen Place</label>
+                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
-                    @foreach($screenTypes as $key => $screenType)
-                        <option value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>
+                    @foreach($areas as $key => $area)
+                        <option value="{{ $area->uuid }}">{{ $area->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -42,11 +42,11 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>Screen Place</label>
-                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                <label>Type</label>
+                <select name="type" id="type_search" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
-                    @foreach($areas as $key => $area)
-                        <option value="{{ $area->uuid }}">{{ $area->name_en }}</option>
+                    @foreach($screenTypes as $key => $screenType)
+                        <option value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>
                     @endforeach
                 </select>
             </div>

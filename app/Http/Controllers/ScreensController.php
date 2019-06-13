@@ -385,4 +385,14 @@ class ScreensController extends Controller
         $data['view'] = view('screens.kiosk._doctor_floors', $data)->render();
         return response()->json($data);
     }
+
+    /**
+     * Get Doctors By Letter.
+     */
+    public function filterByArea($area_uuid)
+    {
+        $data['desks'] = Desk::where('area_id', Area::getBy('uuid', $area_uuid)->id)->get();
+        $data['view'] = view('screens._desks_areas', $data)->render();
+        return response()->json($data);
+    }
 }

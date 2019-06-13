@@ -56,6 +56,9 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    // Screen modifications
+    Route::get('screens/filter/areas/{area_uuid}', 'ScreensController@filterByArea')->name('screens.filterByArea');
+
     // Doctor to floor
     Route::get('doctor-to-floor', 'DoctorToFloorsController@index')->name('doctor-to-floor.index');
     Route::post('doctor-to-floor/{floor_uuid}/update', 'DoctorToFloorsController@update')->name('doctor-to-floor.update');

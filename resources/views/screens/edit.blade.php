@@ -42,28 +42,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Screen place</label>
-                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                <select name="area" id="area" class="select2 filter-area" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    <option disabled selected>Choose</option>
                     @foreach($areas as $key => $area)
                         <option @if($screen->area_id == $area->id) selected @endif value="{{ $area->uuid }}">{{ $area->name_en }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Enable print</label>
-                <select name="enable_print" id="enable_print" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
-                    <option @if($screen->enable_print == 0) selected @endif value="0">No</option>
-                    <option @if($screen->enable_print == 1) selected @endif value="1">Yes</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Type</label>
-                <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach($screenTypes as $key => $screenType)
-                        <option @if($screen->screen_type_id == $screenType->id) selected @endif value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -78,11 +60,21 @@
                 </select>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Type</label>
+                <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($screenTypes as $key => $screenType)
+                        <option @if($screen->screen_type_id == $screenType->id) selected @endif value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
         <div @if(count($screen->rooms) == 0 && $screen->screen_type_id != config('vars.screen_types.reception')) style="display: none;" @endif id="rooms-div" class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group filter-desks">
                         <label>Show Desks</label>
                         <select name="desks[]" id="desks" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                             @foreach($desks as $key => $desk)
@@ -108,6 +100,16 @@
     </div>
 
     <div class="row" @if(count($screen->floors) == 0 && $screen->screen_type_id != config('vars.screen_types.kiosk')) style="display: none;" @endif id="floor-div">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Enable print</label>
+                <select name="enable_print" id="enable_print" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option @if($screen->enable_print == 0) selected @endif value="0">No</option>
+                    <option @if($screen->enable_print == 1) selected @endif value="1">Yes</option>
+                </select>
+            </div>
+        </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="printer">Printer IP</label>

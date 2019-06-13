@@ -90,9 +90,9 @@
                                 <td>{{ ($screen->area)? $screen->area->name_en : '-'}}</td>
                                 <td>{{ App\Enums\ScreenStatuses::$statuses[$screen->status]['en'] }}</td>
                                 <td>{{ $screen->createdBy->name }}</td>
-{{--                                <td>{{ $screen->updatedBy->name }}</td>--}}
+                                {{--<td>{{ $screen->updatedBy->name }}</td>--}}
                                 <td>{{ $screen->created_at }}</td>
-{{--                                <td>{{ $screen->updated_at }}</td>--}}
+                                {{--<td>{{ $screen->updated_at }}</td>--}}
                                 <td>
                                     <a href="{{ route('screens.show', [$screen->slug]) }}" target="_blank" class="btn btn-sm btn-primary">
                                         <i class="fa fa-eye"></i>
@@ -117,6 +117,32 @@
 
 @section('scripts')
     <script>
+        const app = new Vue({
+            el : '#app',
+            data : {
+            },
+            methods : {
+                // Buttons
+                filterByArea(area){
+                    addLoader();
+
+                    var url = '{{ url('dashboard/screens/filter/areas') }}/' + area;
+
+                    axios.get(url)
+                        .then((response) => {
+                            $('.filter-desks').html(response.data.view);
+                            $('.select2').select2();
+                            removeLoarder();
+                        })
+                        .catch((data) => {
+                            removeLoarder();
+                        });
+                },
+            },
+        });
+    </script>
+
+    <script>
         $(document).ready(function () {
             $('body').on('change', '#type', function () {
                 var type = $(this).val();
@@ -127,6 +153,12 @@
                    $('#floor-div').hide(0);
                    $('#rooms-div').show(0);
                }
+            });
+            
+            // Filter the area
+            $('.filter-area').on('change', function () {
+                var area = $(this).val();
+               app.filterByArea(area);
             });
         });
     </script>

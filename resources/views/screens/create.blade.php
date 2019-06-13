@@ -41,29 +41,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Screen Place</label>
-                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                <select name="area" id="area" class="select2 filter-area" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    <option disabled selected>Choose</option>
                     @foreach($areas as $key => $area)
                         <option value="{{ $area->uuid }}">{{ $area->name_en }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Enable print</label>
-                <select name="enable_print" id="enable_print" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Type</label>
-                <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    <option disabled selected>Choose</option>
-                    @foreach($screenTypes as $key => $screenType)
-                        <option value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -78,16 +59,22 @@
                 </select>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Type</label>
+                <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    <option disabled selected>Choose</option>
+                    @foreach($screenTypes as $key => $screenType)
+                        <option value="{{ $screenType->id }}">{{ $screenType->name_en }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
         <div style="display: none;" id="rooms-div" class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Show Desks</label>
-                        <select name="desks[]" id="desks" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
-                            @foreach($desks as $key => $desk)
-                                <option value="{{ $desk->uuid }}">{{ (($desk->area)? $desk->area->name_en : '-') . ' - ' . $desk->name_en }}</option>
-                            @endforeach
-                        </select>
+                    <div class="form-group filter-desks">
+                        @include('screens._desks_areas')
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -104,6 +91,17 @@
         </div>
     </div>
     <div class="row" style="display: none;" id="floor-div">
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Enable print</label>
+                <select name="enable_print" id="enable_print" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+        </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="printer">Printer IP</label>
