@@ -67,9 +67,9 @@ class Floor extends Model
     /**
      *  Get all resources
      */
-    public static function getAll()
+    public static function getAll($status = 1)
     {
-        return self::all();
+        return self::where('status', $status)->get();
     }
 
     /**
@@ -90,6 +90,10 @@ class Floor extends Model
 
     }
 
+    // Areas Relation
+    public function areas(){
+        return $this->hasMany('App\Area');
+    }
     // Desks Relation
     public function desks(){
         return $this->hasMany('App\Desk');

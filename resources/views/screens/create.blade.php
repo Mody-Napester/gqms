@@ -41,9 +41,9 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Screen Place</label>
-                <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach($floors as $key => $floor)
-                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach($areas as $key => $area)
+                        <option value="{{ $area->uuid }}">{{ $area->name_en }}</option>
                     @endforeach
                 </select>
             </div>

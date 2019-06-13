@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
 use App\Desk;
 use App\DeskQueue;
 use App\DeskQueueStatus;
@@ -49,17 +50,18 @@ class DeskQueuesController extends Controller
      * @param  string $screen_uuid
      * @return \Illuminate\Http\Response
      */
-    public function storeNewQueue($screen_uuid, $floor_uuid)
+    public function storeNewQueue($screen_uuid, $area_uuid)
     {
         $screen = Screen::getBy('uuid', $screen_uuid);
 
-        $floor_id = Floor::getBy('uuid', $floor_uuid)->id;
+        $area = Area::getBy('uuid', $area_uuid);
 
         if($screen->screen_type_id == config('vars.screen_types.kiosk')){ // Kiosk
             // Do Code
             $resource = DeskQueue::store([
-                'floor_id' => $floor_id,
-                'queue_number' => deskQueueNumberFormat($floor_id, 100),
+                'floor_id' => $area->floor->id,
+                'area_id' => $area->id,
+                'queue_number' => deskQueueNumberFormat($area, 100),
                 'status' => config('vars.default_kiosk_status'),
             ]);
         }
@@ -77,10 +79,10 @@ class DeskQueuesController extends Controller
                 \EPSON::deskPrint($printData);
             }
 
-            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($floor_id);
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($area->id);
             $data['queue_number'] = $resource->queue_number;
 
-            event(new QueueStatus($data['availableDeskQueue'], $floor_id));
+            event(new QueueStatus($data['availableDeskQueue'], $area->id));
 
             return response($data);
         }
@@ -92,7 +94,7 @@ class DeskQueuesController extends Controller
     public function callNext($desk_uuid)
     {
         $data['desk'] = Desk::getBy('uuid', $desk_uuid);
-        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+        $data['nextQueue'] = DeskQueue::where('area_id', $data['desk']->area_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', config('vars.desk_queue_status.waiting'))
             ->first();
@@ -127,7 +129,7 @@ class DeskQueuesController extends Controller
 
         // Broadcast event
         if (isset($data['nextDeskQueueUpdated'])){
-            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->area_id));
             event(new NextDeskQueue($data['desk']->uuid, $data['nextQueue']->queue_number));
         }
 
@@ -161,7 +163,7 @@ class DeskQueuesController extends Controller
 
         $data['desk'] = Desk::getBy('uuid', $desk_uuid);
 
-        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+        $data['nextQueue'] = DeskQueue::where('area_id', $data['desk']->area_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('desk_id', $data['desk']->id)
             ->where('status', config('vars.desk_queue_status.called'))
@@ -231,13 +233,13 @@ class DeskQueuesController extends Controller
                 'text' => 'Called skipped number',
             ];
 
-            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->area_id);
             $data['waitingTime'] = nice_time($data['skippedQueue']->created_at);
             $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
             $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
             // Broadcast event
-            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->area_id));
             event(new NextDeskQueue($data['desk']->uuid, $data['skippedQueue']->queue_number));
 
         }else{
@@ -286,13 +288,13 @@ class DeskQueuesController extends Controller
                 'text' => 'Queue number skipped successfully',
             ];
 
-            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->area_id);
 
             $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
             $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
             // Broadcast event
-            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->area_id));
 //            event(new NextDeskQueue($data['desk']->uuid, $deskQueue->queue_number));
 
         }else{
@@ -373,7 +375,7 @@ class DeskQueuesController extends Controller
     {
         // Check if there is a waiting patient
         $data['desk'] = Desk::getBy('uuid', $desk_uuid);
-        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+        $data['nextQueue'] = DeskQueue::where('area_id', $data['desk']->area_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', config('vars.desk_queue_status.waiting'))
             ->first();
@@ -511,13 +513,13 @@ class DeskQueuesController extends Controller
                 'text' => 'Queue was done successfully with getting next number',
             ];
 
-            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->area_id);
 
             $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
             $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
             // Broadcast event
-            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->floor_id));
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->area_id));
 //            event(new NextDeskQueue($data['desk']->uuid, $deskQueue->queue_number));
 
             /*
@@ -598,7 +600,8 @@ class DeskQueuesController extends Controller
     {
         // Check if there is a waiting patient
         $data['desk'] = Desk::getBy('uuid', $desk_uuid);
-        $data['nextQueue'] = DeskQueue::where('floor_id', $data['desk']->floor_id)
+
+        $data['nextQueue'] = DeskQueue::where('area_id', $data['desk']->area_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', config('vars.desk_queue_status.waiting'))
             ->first();

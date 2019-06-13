@@ -11,7 +11,7 @@ class DeskQueue extends Model
      *
      * @var array
      */
-    protected $fillable = ['floor_id', 'queue_number', 'status'];
+    protected $fillable = ['floor_id', 'area_id', 'queue_number', 'status'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -75,9 +75,9 @@ class DeskQueue extends Model
     /**
      *  Get Available Desk Queue
      */
-    public static function getAvailableDeskQueueView($floor_id)
+    public static function getAvailableDeskQueueView($area_id)
     {
-        $data['deskQueues'] = self::getDeskQueues($floor_id);
+        $data['deskQueues'] = self::getDeskQueues($area_id);
         $data['deskQueueStatues'] = QueueStatus::getQueueStatuses('desk');
         $availableDeskQueue = view('desks._available_desk_queue', $data)->render();
 
@@ -87,9 +87,9 @@ class DeskQueue extends Model
     /**
      *  Get All Desk Queues
      */
-    public static function getDeskQueues($floor_id)
+    public static function getDeskQueues($area_id)
     {
-        $deskQueues = self::where('floor_id', $floor_id)
+        $deskQueues = self::where('area_id', $area_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->orderBy('id', 'DESC')
             ->get();

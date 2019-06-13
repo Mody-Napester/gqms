@@ -19,6 +19,7 @@
     <link href="{{ url('assets/css/arabic-font.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ url('assets/css/icons.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
 
     <style>
@@ -37,7 +38,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6 text-left">
-                        <div class="top-div">{{ $screen->floor->name_en }}</div>
+                        <div class="top-div">{{ $screen->area->name_en }}</div>
                         <div class="top-div">{{ $screen->name_en }}</div>
                         <div class="top-div">
                             <div id="time-txt" style="width: 150px;text-align: center;"></div>
@@ -46,6 +47,11 @@
                     <div class="col-md-6">
                         <div class="text-white txt-2 text-right">
                             <span>مستشفى الجنزورى التخصصى</span>
+                            <span style="font-size: 26px;
+    background-color: rgba(0,0,0,.2);padding: 6px;
+    margin-right: 10px;cursor: pointer;text-align: center;border-radius: 5px;" onclick="location.reload();">
+                                <i class="fa fa-refresh fa-fw"></i>
+                            </span>
                             <img class="logo-image" src="{{ url('assets/images/ganz-logo.jpg') }}" alt="">
                         </div>
                     </div>

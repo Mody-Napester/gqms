@@ -18,7 +18,7 @@
                                 </div>
                                 <div class="table-detail text-right">
                                     <h4 class="m-t-0 m-b-5"><b>{{ $desk->name_en }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">{{ $desk->floor->name_en }}</h5>
+                                    <h5 class="text-muted m-b-0 m-t-0">{{ $desk->area->name_en }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -506,7 +506,7 @@
 
                 // Websockets
                 listen(){
-                    Echo.channel('available-desk-queue-{{ $desk->floor_id }}')
+                    Echo.channel('available-desk-queue-{{ $desk->area_id }}')
                         .listen('QueueStatus', (response) => {
                             $('#all-queues').html('');
                             $('#all-queues').append(response.view);

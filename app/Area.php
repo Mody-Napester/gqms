@@ -67,9 +67,9 @@ class Area extends Model
     /**
      *  Get all resources
      */
-    public static function getAll()
+    public static function getAll($status = 1)
     {
-        return self::all();
+        return self::where('status', $status)->get();
     }
 
     /**
@@ -98,6 +98,12 @@ class Area extends Model
     // Floor Relation
     public function floor(){
         return $this->belongsTo('App\Floor');
+    }
+
+
+    // Screen Relation
+    public function screen(){
+        return $this->hasMany('App\Screen');
     }
 
     // Speciality Relation

@@ -120,9 +120,8 @@ function server_get_client_ip() {
 }
 
 // Desk Queue Number Format
-function deskQueueNumberFormat($floor_id, $scheme){
-    $lastNumber = \App\DeskQueue::getDeskQueues($floor_id)->count() + 1;
-//    $lastNumber = 101; // Testing
+function deskQueueNumberFormat($area, $scheme){
+    $lastNumber = \App\DeskQueue::getDeskQueues($area->id)->count() + 1;
 
     $lastNumberZeros = '';
     
@@ -139,7 +138,7 @@ function deskQueueNumberFormat($floor_id, $scheme){
         $lastNumber = $lastNumberZeros . $lastNumber;
     }
 
-    return \App\Floor::getBy('id', $floor_id)->name_en . '-' . $lastNumber;
+    return $area->floor->name_en . '-' . $area->name_en . '-' . $lastNumber;
 }
 
 // Room Queue Number Format

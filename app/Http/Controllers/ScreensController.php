@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
 use App\Desk;
 use App\DeskQueue;
 use App\DeskQueueStatus;
@@ -34,6 +35,7 @@ class ScreensController extends Controller
         $data['rooms'] = Room::all();
         $data['printers'] = Printer::all();
         $data['desks'] = Desk::getAll();
+        $data['areas'] = Area::getAll();
 
         if (empty($request->all())){
             $data['screens'] = Screen::all();
@@ -70,11 +72,12 @@ class ScreensController extends Controller
 
         // Check validation
         $validator = Validator::make($request->all(), [
-            'name_ar' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255|unique:screens,name_ar',
+            'name_en' => 'required|string|max:255|unique:screens,name_en',
             'status' => 'required',
             'ip' => 'required|unique:screens',
-            'floor' => 'required',
+//            'floor' => 'required',
+            'area' => 'required',
             'type' => 'required',
             'floors' => 'required_if:type,' . config('vars.screen_types.kiosk'),
         ]);
@@ -84,10 +87,12 @@ class ScreensController extends Controller
         }
 
         // Floor
-        $floor = Floor::getBy('uuid', $request->floor);
+//        $floor = Floor::getBy('uuid', $request->floor);
+
+        $area = Area::getBy('uuid', $request->area);
 
         // Generate Slug
-        $slug = str_slug($floor->name_en . '-' . $request->name_en);
+        $slug = str_slug($request->name_en . '-' . $area->id);
 
         // Do Code
         $resource = Screen::store([
@@ -98,7 +103,8 @@ class ScreensController extends Controller
             'printer_id' => (($request->has('printer'))? Printer::getBy('uuid', $request->printer)->id : null),
             'enable_print' => (($request->enable_print == 0)? 0 : 1),
             'ip' => $request->ip,
-            'floor_id' => $floor->id,
+            'area_id' => $area->id,
+            'floor_id' => $area->floor->id,
             'screen_type_id' => $request->type,
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
@@ -184,6 +190,8 @@ class ScreensController extends Controller
         $data['rooms'] = Room::all();
         $data['printers'] = Printer::all();
         $data['desks'] = Desk::getAll();
+        $data['areas'] = Area::getAll();
+
         return response([
             'title'=> "Update screen " . $data['screen']->name_en,
             'view'=> view('screens.edit', $data)->render(),
@@ -206,11 +214,12 @@ class ScreensController extends Controller
 
         // Check validation
         $validator = Validator::make($request->all(), [
-            'name_ar' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255|unique:screens,name_ar,'. $resource->id,
+            'name_en' => 'required|string|max:255|unique:screens,name_en,'. $resource->id,
             'status' => 'required',
             'ip' => 'required',
-            'floor' => 'required',
+//            'floor' => 'required',
+            'area' => 'required',
             'type' => 'required',
             'floors' => 'required_if:type,' . config('vars.screen_types.kiosk'),
         ]);
@@ -219,11 +228,11 @@ class ScreensController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        // Floor
-        $floor = Floor::getBy('uuid', $request->floor);
+        // Area
+        $area = Area::getBy('uuid', $request->area);
 
         // Generate Slug
-        $slug = str_slug($floor->name_en . '-' . $request->name_en);
+        $slug = str_slug($request->name_en . '-' . $area->id);
 
         // Do Code
         $updatedResource = Screen::edit([
@@ -234,7 +243,8 @@ class ScreensController extends Controller
             'printer_id' => (($request->has('printer'))? Printer::getBy('uuid', $request->printer)->id : null),
             'enable_print' => (($request->enable_print == 0)? 0 : 1),
             'ip' => $request->ip,
-            'floor_id' => $floor->id,
+            'area_id' => $area->id,
+            'floor_id' => $area->floor->id,
             'screen_type_id' => $request->type,
             'updated_by' => auth()->user()->id,
         ], $resource->id);

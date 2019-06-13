@@ -20,7 +20,7 @@ Route::get('/integration/sync/{what}', 'SyncButtonsController@syncClient')->name
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('home', 'HomeController@index')->name('home');
 Route::get('get-my-ip', function(){ return view('get_my_ip'); })->name('ip.get');
-Route::post('queues/{screen_uuid}/{floor_uuid}', 'DeskQueuesController@storeNewQueue')->name('desks.queues.storeNewQueue');
+Route::post('queues/{screen_uuid}/{area_uuid}', 'DeskQueuesController@storeNewQueue')->name('desks.queues.storeNewQueue');
 Route::get('/reset', 'HomeController@resetQueues')->name('resetQueues');
 
 // Screens

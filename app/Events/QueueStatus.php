@@ -15,17 +15,17 @@ class QueueStatus implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $availableDeskQueue;
-    public $floor_id;
+    public $area_id;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($availableDeskQueue, $floor_id)
+    public function __construct($availableDeskQueue, $area_id)
     {
         $this->availableDeskQueue = $availableDeskQueue;
-        $this->floor_id = $floor_id;
+        $this->area_id = $area_id;
     }
 
     /**
@@ -35,7 +35,7 @@ class QueueStatus implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('available-desk-queue-' . $this->floor_id);
+        return new Channel('available-desk-queue-' . $this->area_id);
     }
 
     /**

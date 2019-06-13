@@ -16,7 +16,8 @@ class CreateDeskQueuesTable extends Migration
         Schema::create('desk_queues', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
-            $table->integer('floor_id');
+            $table->integer('floor_id')->unsigned();
+            $table->integer('area_id')->unsigned();
             $table->integer('desk_id')->nullable();
             $table->string('queue_number');
             $table->integer('status'); // 1 Waiting, 2 Call, 3 Pass == Skip, 4 Done,5 Call from pass

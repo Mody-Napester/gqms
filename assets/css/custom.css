@@ -10,14 +10,15 @@
     background-color: #dfe6e9;
     height: 100%;
     position: relative;
+    padding-top: 20px;
 }
 .kiosk-screen-in{
     text-align: center;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /*margin: 0;*/
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%, -50%);*/
 }
 .btn-print {
     display: inline-block;
@@ -252,7 +253,7 @@ body{
 }
 
 .logo-image{
-    width:50px;
+    width:51px;
     display: inline-block;
 }
 

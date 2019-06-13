@@ -353,6 +353,14 @@
                     }
                 }
             });
+
+
+            // Alerts
+            @if($errors->all())
+                @foreach($errors->all() as $error)
+                    addAlert('danger', '{{$error}}', 1);
+                @endforeach
+            @endif
         </script>
     </body>
 </html>

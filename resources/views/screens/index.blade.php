@@ -69,7 +69,7 @@
                             <th>Name en</th>
                             <th>Screen IP</th>
                             <th>Printer IP</th>
-                            <th>Floor</th>
+                            <th>Area</th>
                             <th>Status</th>
                             <th>Created by</th>
                             {{--<th>Updated by</th>--}}
@@ -87,7 +87,7 @@
                                 <td>{{ $screen->name_en }}</td>
                                 <td>{{ $screen->ip }}</td>
                                 <td>{{ ($screen->printer)? $screen->printer->ip : '000.000.000.000' }}</td>
-                                <td>{{ $screen->floor->name_en }}</td>
+                                <td>{{ ($screen->area)? $screen->area->name_en : '-'}}</td>
                                 <td>{{ App\Enums\ScreenStatuses::$statuses[$screen->status]['en'] }}</td>
                                 <td>{{ $screen->createdBy->name }}</td>
 {{--                                <td>{{ $screen->updatedBy->name }}</td>--}}

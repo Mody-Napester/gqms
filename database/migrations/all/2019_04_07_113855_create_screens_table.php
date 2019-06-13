@@ -18,7 +18,8 @@ class CreateScreensTable extends Migration
             $table->uuid('uuid');
             $table->string('slug');
             $table->integer('screen_type_id');
-            $table->integer('floor_id');
+            $table->integer('floor_id')->unsigned();
+            $table->integer('area_id')->unsigned();
             $table->string('printer_id')->nullable();
             $table->boolean('enable_print')->default(0);
             $table->string('ip');

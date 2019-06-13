@@ -38,22 +38,24 @@
 
     <div class="container-fluid b-container">
         <div class="row" style="height: 100%;">
-            <div class="col-md-6 text-center">
-                <div class="kiosk-screen" style="background-color: #eeeeee;">
+            <div class="col-md-5 text-center">
+                <div class="kiosk-screen" style="background-color: #dddddd;">
                     <div class="kiosk-screen-in">
                         @foreach($screen->floors as $floor)
-                            <div class="mb-4 floors-item" id="{{ $floor->uuid }}">
-                                <div class="qn-{{$floor->uuid}} return-screen-qn">-</div>
-                                <button @click.prevent="printQueue('{{$floor->uuid}}')" class="btn-print">
-                                    <span style="background-color: rgba(64, 85, 102, .7);padding: 0 10px">{{ $floor->name_en }}</span>
-                                    <span> طباعة حجز</span>
-                                </button>
-                            </div>
+                            @foreach($floor->areas as $area)
+                                <div class="mb-4 floors-item" id="{{ $floor->uuid }}">
+                                    <div class="qn-{{$area->uuid}} return-screen-qn">-</div>
+                                    <button @click.prevent="printQueue('{{$area->uuid}}')" class="btn-print">
+                                        <span style="background-color: rgba(64, 85, 102, .7);padding: 0 10px;direction: ltr;text-align: left">{{ $area->name_en }}-{{ $floor->name_en }}</span>
+                                        <span> طباعة حجز</span>
+                                    </button>
+                                </div>
+                            @endforeach
                         @endforeach
                     </div>
                 </div>
             </div>
-            <div class="col-md-6" style="height: 100%;overflow: auto;">
+            <div class="col-md-7 pl-0" style="height: 100%;overflow: auto;">
                 <div class="doctors-floors" style="background-color: #dddddd;font-weight: bold;text-transform: capitalize;font-size: 20px">
                     @include('screens.kiosk._doctor_floors')
                 </div>
@@ -111,15 +113,15 @@
                             removeLoarder();
                         });
                 },
-                printQueue(floor_uuid) {
+                printQueue(area_uuid) {
                     addLoader();
-                    var url = '{{ url('/') }}/queues/{{$screen->uuid}}/' + floor_uuid;
+                    var url = '{{ url('/') }}/queues/{{$screen->uuid}}/' + area_uuid;
                     axios.post(url, {
                         _token: '{{ csrf_token() }}'
                     })
                         .then((response) => {
                             console.log(response);
-                            $('.qn-' + floor_uuid).text(response.data.queue_number);
+                            $('.qn-' + area_uuid).text(response.data.queue_number);
                             removeLoarder();
                         })
                         .catch((response) => {
@@ -128,7 +130,7 @@
                         });
 
                     $('.floors-item').show();
-                    $('#select2').val('').select2();
+                    // $('#select2').val('').select2();
                 },
                 getFloors(doctor) {
                     addLoader();

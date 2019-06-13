@@ -12,7 +12,7 @@ class Screen extends Model
      *
      * @var array
      */
-    protected $fillable = ['slug','floor_id', 'screen_type_id', 'ip', 'printer_id', 'enable_print','name_ar', 'name_en', 'status', 'created_by', 'updated_by'];
+    protected $fillable = ['slug', 'floor_id', 'area_id', 'screen_type_id', 'ip', 'printer_id', 'enable_print','name_ar', 'name_en', 'status', 'created_by', 'updated_by'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -86,6 +86,11 @@ class Screen extends Model
     // Floor Relation
     public function floor(){
         return $this->belongsTo('App\Floor');
+    }
+
+    // Area Relation
+    public function area(){
+        return $this->belongsTo('App\Area');
     }
 
     // Floors Relation
