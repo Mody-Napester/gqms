@@ -187,7 +187,7 @@ class ScreensController extends Controller
         $ip = server_get_client_ip();
         $screen = Screen::where('ip', $ip)->first();
         if($screen){
-            $this->show($screen);
+            return $this->show($screen->uuid);
         }else{
             return 'Screen Not Found';
         }

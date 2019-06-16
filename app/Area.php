@@ -111,4 +111,9 @@ class Area extends Model
         return $this->belongsTo('App\Speciality');
     }
 
+    // Specialities Relation
+    public function specialities(){
+        return $this->belongsToMany('App\Speciality', 'area_speciality');
+    }
+
 }

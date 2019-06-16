@@ -24,7 +24,7 @@ Route::post('queues/{screen_uuid}/{area_uuid}', 'DeskQueuesController@storeNewQu
 Route::get('/reset', 'HomeController@resetQueues')->name('resetQueues');
 
 // Screens
-Route::get('screens/unified-url', 'ScreensController@showByUnifiedUrl')->name('screens.showByUnifiedUrl');
+Route::get('screens/unified/url', 'ScreensController@showByUnifiedUrl')->name('screens.showByUnifiedUrl');
 Route::get('screens/{screen}', 'ScreensController@show')->name('screens.show');
 Route::get('screens/ajax/{screen}/get-contents', 'ScreensController@getScreensAjaxContents')->name('screens.getScreensAjaxContents');
 Route::get('screens/search-by-letter/{letter}', 'ScreensController@searchByLetter')->name('screens.searchByLetter');
