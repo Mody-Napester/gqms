@@ -180,6 +180,20 @@ class ScreensController extends Controller
     }
 
     /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View|string
+     */
+    public function showByUnifiedUrl()
+    {
+        $ip = server_get_client_ip();
+        $screen = Screen::where('ip', $ip)->first();
+        if($screen){
+            $this->show($screen);
+        }else{
+            return 'Screen Not Found';
+        }
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit($uuid)
