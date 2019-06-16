@@ -39,10 +39,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Speciality</label>
-                <select name="speciality" id="speciality" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                <select name="specialities[]" id="speciality" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
                     @foreach($specialities as $key => $speciality)
-                        @if($speciality->area)
-                            <option disabled  value="{{ $speciality->uuid }}">{{ $speciality->name_en }} - (Area : {{ $speciality->area->name_en }})</option>
+                        @if($area = $speciality->areas()->where('speciality_id', $speciality->id)->first())
+                            <option disabled  value="{{ $speciality->uuid }}">{{ $speciality->name_en }} - (Area : {{ $area->name_en }})</option>
                         @else
                             <option value="{{ $speciality->uuid }}">{{ $speciality->name_en }}</option>
                         @endif

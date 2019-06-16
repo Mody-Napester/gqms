@@ -86,7 +86,11 @@
                                 <td>{{ $area->name_ar }}</td>
                                 <td>{{ $area->name_en }}</td>
                                 <td>{{ $area->floor->name_en }}</td>
-                                <td>{{ $area->speciality->name_en }}</td>
+                                <td>
+                                    @foreach($area->specialities as $speciality)
+                                        <span class="badge badge-warning">{{ $speciality->name_en }}</span>
+                                    @endforeach
+                                </td>
                                 <td>{{ App\Enums\AreaStatuses::$statuses[$area->status]['en'] }}</td>
                                 <td>{{ $area->createdBy->name }}</td>
                                 <td>{{ $area->updatedBy->name }}</td>

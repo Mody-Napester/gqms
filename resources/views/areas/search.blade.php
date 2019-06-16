@@ -28,13 +28,7 @@
                 <label>Speciality</label>
                 <select name="speciality" id="speciality" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
                     @foreach($specialities as $key => $speciality)
-                        @foreach($specialities as $key => $speciality)
-                            @if($speciality->area)
-                                <option value="{{ $speciality->uuid }}">{{ $speciality->name_en }} - (Area : {{ $speciality->area->name_en }})</option>
-                            @else
-                                <option value="{{ $speciality->uuid }}">{{ $speciality->name_en }}</option>
-                            @endif
-                        @endforeach
+                        <option value="{{ $speciality->uuid }}">{{ $speciality->name_en }}</option>
                     @endforeach
                 </select>
             </div>

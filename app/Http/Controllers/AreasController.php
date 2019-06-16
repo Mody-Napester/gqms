@@ -18,6 +18,10 @@ class AreasController extends Controller
      */
     public function index(Request $request)
     {
+//        $speciality = Speciality::getBy('id', 1);
+//        $r = ($speciality->areas)? $speciality->areas()->where('speciality_id', $speciality->id)->first() : '-';
+//        dd($r);
+
         if (!User::hasAuthority('index.areas')){
             return redirect('/');
         }
@@ -76,31 +80,37 @@ class AreasController extends Controller
 
             return back()->with('message', $data['message']);
         }
-        $speciality = Speciality::getBy('uuid', $request->speciality);
-        if (!$speciality){
-            $data['message'] = [
-                'msg_status' => 0,
-                'type' => 'danger',
-                'text' => 'Please select speciality!',
-            ];
 
-            return back()->with('message', $data['message']);
-        }
+//        $speciality = Speciality::getBy('uuid', $request->speciality);
+//        if (!$speciality){
+//            $data['message'] = [
+//                'msg_status' => 0,
+//                'type' => 'danger',
+//                'text' => 'Please select speciality!',
+//            ];
+//
+//            return back()->with('message', $data['message']);
+//        }
 
 
         // Do Code
-        $resource = Area::store([
+        $area = Area::store([
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,
             'floor_id' => $floor->id,
-            'speciality_id' => $speciality->id,
+//            'speciality_id' => $speciality->id,
             'created_by' => auth()->user()->id,
             'updated_by' => auth()->user()->id,
         ]);
 
+        // Specialities
+        foreach ($request->specialities as $speciality){
+            $area->specialities()->attach(Speciality::getBy('uuid', $speciality)->id);
+        }
+
         // Return
-        if ($resource){
+        if ($area){
             $data['message'] = [
                 'msg_status' => 1,
                 'type' => 'success',
@@ -165,7 +175,7 @@ class AreasController extends Controller
             'name_en' => 'required|string|max:255',
             'status' => 'required',
             'floor' => 'required',
-            'speciality' => 'required',
+            'specialities' => 'required',
         ]);
 
         if ($validator->fails()){
@@ -182,16 +192,17 @@ class AreasController extends Controller
 
             return back()->with('message', $data['message']);
         }
-        $speciality = Speciality::getBy('uuid', $request->speciality);
-        if (!$speciality){
-            $data['message'] = [
-                'msg_status' => 0,
-                'type' => 'danger',
-                'text' => 'Please select speciality!',
-            ];
 
-            return back()->with('message', $data['message']);
-        }
+//        $speciality = Speciality::getBy('uuid', $request->speciality);
+//        if (!$speciality){
+//            $data['message'] = [
+//                'msg_status' => 0,
+//                'type' => 'danger',
+//                'text' => 'Please select speciality!',
+//            ];
+//
+//            return back()->with('message', $data['message']);
+//        }
 
         // Do Code
         $updatedResource = Area::edit([
@@ -199,9 +210,14 @@ class AreasController extends Controller
             'name_en' => $request->name_en,
             'status' => $request->status,
             'floor_id' => $floor->id,
-            'speciality_id' => $speciality->id,
+//            'speciality_id' => $speciality->id,
             'updated_by' => auth()->user()->id
         ], $resource->id);
+
+        // Specialities
+        foreach ($request->specialities as $speciality){
+            $resource->specialities()->attach(Speciality::getBy('uuid', $speciality)->id);
+        }
 
         // Return
         if ($updatedResource){

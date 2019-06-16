@@ -82,4 +82,10 @@ class Speciality extends Model
     public function area(){
         return $this->hasOne('App\Area');
     }
+
+    // Areas Relation
+    public function areas(){
+        return $this->belongsToMany('App\Area', 'area_speciality');
+    }
+
 }
