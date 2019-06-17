@@ -64,6 +64,10 @@ Route::group([
     Route::get('doctor-to-floor', 'DoctorToFloorsController@index')->name('doctor-to-floor.index');
     Route::post('doctor-to-floor/{floor_uuid}/update', 'DoctorToFloorsController@update')->name('doctor-to-floor.update');
 
+    // Speciality to area
+    Route::get('speciality-to-area', 'AreasController@getSpecialityToArea')->name('areas.getSpecialityToArea');
+    Route::post('speciality-to-area/{area_uuid}/update', 'AreasController@updateSpecialityToArea')->name('areas.updateSpecialityToArea');
+
     // Ganzory Resources
     Route::get('clinics', 'ClinicsController@index')->name('clinics.index');
     Route::get('specialities', 'SpecialitiesController@index')->name('specialities.index');

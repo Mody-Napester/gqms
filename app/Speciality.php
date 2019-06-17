@@ -65,9 +65,9 @@ class Speciality extends Model
     /**
      *  Get a specific resource
      */
-    public static function getAll($status = 1)
+    public static function getAll()
     {
-        return self::where('status', $status)->get();
+        return self::all();
     }
 
     /**

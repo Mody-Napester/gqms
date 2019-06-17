@@ -120,8 +120,11 @@
 
                 @if (\App\User::hasAuthority('use.settings'))
                     <li class="text-muted menu-title">Settings</li>
+                    {{--<li class="has_sub">--}}
+                        {{--<a href="{{ route('doctor-to-floor.index') }}" class="waves-effect"><i class="ti-bookmark"></i> <span> Doctor to floors</span></a>--}}
+                    {{--</li>--}}
                     <li class="has_sub">
-                        <a href="{{ route('doctor-to-floor.index') }}" class="waves-effect"><i class="ti-bookmark"></i> <span> Doctor to floors</span></a>
+                        <a href="{{ route('areas.getSpecialityToArea') }}" class="waves-effect"><i class="ti-layers"></i> <span> Speciality to area</span></a>
                     </li>
                     <li class="has_sub">
                         <a href="{{ url('translations') }}" class="waves-effect"><i class="ti-flag-alt-2"></i> <span> Translations </span></a>

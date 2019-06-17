@@ -274,4 +274,66 @@ class AreasController extends Controller
 
         return back()->with('message', $data['message']);
     }
+
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function getSpecialityToArea()
+    {
+        // Check permissions
+//        if (!User::hasAuthority('index.doctors')){
+//            return redirect('/');
+//        }
+
+        $data['areas'] = Area::getAll();
+        $data['specialities'] = Speciality::getAll();
+        return view('areas.speciality_to_area.index', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateSpecialityToArea(Request $request, $floor_uuid)
+    {
+        // Code
+        if($request->has('doctors')){
+            if (count($request->doctors) > 0){
+                $floor = Floor::getBy('uuid', $floor_uuid);
+
+                if ($floor){
+
+                    $floor->doctors()->detach();
+
+                    foreach ($request->doctors as $doctor_uuid) {
+                        $floor->doctors()->attach(Doctor::getBy('uuid', $doctor_uuid)->id);
+                    }
+
+                    $data['message'] = [
+                        'msg_status' => 1,
+                        'text' => 'Updated!',
+                    ];
+                }else{
+                    $data['message'] = [
+                        'msg_status' => 0,
+                        'text' => 'Floor not exists!',
+                    ];
+                }
+
+            }else{
+                $data['message'] = [
+                    'msg_status' => 0,
+                    'text' => 'Doctors are empty!',
+                ];
+            }
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Please select doctors first!',
+            ];
+        }
+
+        // Return
+        return response()->json($data);
+    }
 }
