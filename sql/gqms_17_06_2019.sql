@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS `areas` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` char(36) NOT NULL,
   `floor_id` int(10) unsigned NOT NULL,
-  `speciality_id` int(10) unsigned NOT NULL,
   `name_ar` varchar(191) NOT NULL,
   `name_en` varchar(191) NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT 'Active = 1, Not Active = 0',
@@ -31,13 +30,31 @@ CREATE TABLE IF NOT EXISTS `areas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Dumping data for table gqms.areas: ~1 rows (approximately)
+-- Dumping data for table gqms.areas: ~3 rows (approximately)
 /*!40000 ALTER TABLE `areas` DISABLE KEYS */;
-INSERT INTO `areas` (`id`, `uuid`, `floor_id`, `speciality_id`, `name_ar`, `name_en`, `status`, `created_by`, `updated_by`, `deleted_at`, `created_at`, `updated_at`) VALUES
-	(1, '12f6939f-e3f6-42f6-8b39-5ab05d278098', 2, 13, 'عيادة الاسنان', 'عيادة الاسنان', 1, 1, 1, NULL, '2019-06-11 10:46:57', '2019-06-11 12:30:13');
+INSERT INTO `areas` (`id`, `uuid`, `floor_id`, `name_ar`, `name_en`, `status`, `created_by`, `updated_by`, `deleted_at`, `created_at`, `updated_at`) VALUES
+	(1, '12f6939f-e3f6-42f6-8b39-5ab05d278098', 1, 'A1', 'A1', 1, 1, 1, NULL, '2019-06-11 10:46:57', '2019-06-16 13:40:18'),
+	(2, '7147f587-a33c-4edd-89fa-801a7222b20c', 2, 'A2', 'A2', 1, 1, 1, NULL, '2019-06-12 13:34:41', '2019-06-16 14:40:46'),
+	(3, 'cd4a5e8e-efae-4427-bb0e-42e570930293', 1, 'A3', 'A3', 1, 1, 1, NULL, '2019-06-12 13:38:18', '2019-06-12 13:38:18');
 /*!40000 ALTER TABLE `areas` ENABLE KEYS */;
+
+-- Dumping structure for table gqms.area_speciality
+CREATE TABLE IF NOT EXISTS `area_speciality` (
+  `area_id` int(11) NOT NULL,
+  `speciality_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table gqms.area_speciality: ~4 rows (approximately)
+/*!40000 ALTER TABLE `area_speciality` DISABLE KEYS */;
+INSERT INTO `area_speciality` (`area_id`, `speciality_id`) VALUES
+	(1, 2),
+	(1, 3),
+	(1, 4),
+	(2, 17),
+	(2, 20);
+/*!40000 ALTER TABLE `area_speciality` ENABLE KEYS */;
 
 -- Dumping structure for table gqms.clinics
 CREATE TABLE IF NOT EXISTS `clinics` (
@@ -133,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `desks` (
 -- Dumping data for table gqms.desks: ~4 rows (approximately)
 /*!40000 ALTER TABLE `desks` DISABLE KEYS */;
 INSERT INTO `desks` (`id`, `uuid`, `floor_id`, `area_id`, `ip`, `name_ar`, `name_en`, `status`, `created_by`, `updated_by`, `deleted_at`, `created_at`, `updated_at`) VALUES
-	(1, 'd4b5d9a2-d0bd-4b78-ac96-bc1c94dabed6', 1, 1, '192.168.1.3', 'شباك 1', 'D1', 1, 1, 1, NULL, '2019-04-11 19:17:28', '2019-06-11 13:09:05'),
+	(1, 'd4b5d9a2-d0bd-4b78-ac96-bc1c94dabed6', 1, 1, '10.1.35.195', 'شباك 1', 'D1', 1, 1, 1, NULL, '2019-04-11 19:17:28', '2019-06-13 10:47:00'),
 	(2, 'c4d2d5ef-05ec-4b9a-b237-0a74a568d4dd', 2, 0, '192.168.1.31', 'شباك 5', 'D5', 1, 1, 1, NULL, '2019-04-11 23:11:44', '2019-05-28 23:11:53'),
 	(3, '48528cbb-f31c-418d-bd10-b44268124e5c', 1, 0, '192.168.1.30', 'شباك 2', 'D2', 1, 1, 1, NULL, '2019-04-19 16:09:04', '2019-05-28 23:11:46'),
 	(4, '04fd4589-95f9-4a30-a9aa-d5cbb106eea2', 1, 0, '10.1.30.59', 'شباك 3', 'D3', 1, 1, 1, NULL, '2019-04-19 16:09:28', '2019-05-12 08:25:51');
@@ -144,6 +161,7 @@ CREATE TABLE IF NOT EXISTS `desk_queues` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `floor_id` int(11) NOT NULL,
+  `area_id` int(10) unsigned NOT NULL,
   `desk_id` int(11) DEFAULT NULL,
   `queue_number` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` int(11) NOT NULL,
@@ -151,18 +169,39 @@ CREATE TABLE IF NOT EXISTS `desk_queues` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.desk_queues: ~6 rows (approximately)
+-- Dumping data for table gqms.desk_queues: ~26 rows (approximately)
 /*!40000 ALTER TABLE `desk_queues` DISABLE KEYS */;
-INSERT INTO `desk_queues` (`id`, `uuid`, `floor_id`, `desk_id`, `queue_number`, `status`, `reminder`, `created_at`, `updated_at`) VALUES
-	(28, 'd4deab69-99c3-4d68-816e-fdffec76ccb1', 1, 1, 'F1-001', 2, 0, '2019-05-29 10:25:28', '2019-05-29 12:56:54'),
-	(29, '23f8b1b9-5354-49fc-8351-2f4897b4f3f3', 1, NULL, 'F1-002', 1, 0, '2019-05-29 10:25:29', '2019-05-29 10:25:29'),
-	(30, 'ea81963b-dd52-416a-ae1c-aa646f5280f7', 1, NULL, 'F1-003', 1, 0, '2019-05-29 10:25:31', '2019-05-29 10:25:31'),
-	(31, '76af4313-8a45-460d-abf5-dc06e12da5d5', 1, NULL, 'F1-001', 1, 0, '2019-05-30 12:17:20', '2019-05-30 12:17:20'),
-	(32, 'ad756191-6de2-47cf-8ab1-f53df7a3baee', 1, NULL, 'F1-001', 1, 0, '2019-06-09 17:34:02', '2019-06-09 17:34:02'),
-	(33, '0b9c0bad-850b-4a19-a45a-c7bdd2af9932', 1, NULL, 'F1-002', 1, 0, '2019-06-09 17:59:55', '2019-06-09 17:59:55'),
-	(34, '3971cd93-7dbe-409b-960b-4aaab32b8091', 2, NULL, 'F2-001', 1, 0, '2019-06-09 17:59:57', '2019-06-09 17:59:57');
+INSERT INTO `desk_queues` (`id`, `uuid`, `floor_id`, `area_id`, `desk_id`, `queue_number`, `status`, `reminder`, `created_at`, `updated_at`) VALUES
+	(28, 'd4deab69-99c3-4d68-816e-fdffec76ccb1', 1, 0, 1, 'F1-001', 2, 0, '2019-05-29 10:25:28', '2019-05-29 12:56:54'),
+	(29, '23f8b1b9-5354-49fc-8351-2f4897b4f3f3', 1, 0, NULL, 'F1-002', 1, 0, '2019-05-29 10:25:29', '2019-05-29 10:25:29'),
+	(30, 'ea81963b-dd52-416a-ae1c-aa646f5280f7', 1, 0, NULL, 'F1-003', 1, 0, '2019-05-29 10:25:31', '2019-05-29 10:25:31'),
+	(31, '76af4313-8a45-460d-abf5-dc06e12da5d5', 1, 0, NULL, 'F1-001', 1, 0, '2019-05-30 12:17:20', '2019-05-30 12:17:20'),
+	(32, 'ad756191-6de2-47cf-8ab1-f53df7a3baee', 1, 0, NULL, 'F1-001', 1, 0, '2019-06-09 17:34:02', '2019-06-09 17:34:02'),
+	(33, '0b9c0bad-850b-4a19-a45a-c7bdd2af9932', 1, 0, NULL, 'F1-002', 1, 0, '2019-06-09 17:59:55', '2019-06-09 17:59:55'),
+	(34, '3971cd93-7dbe-409b-960b-4aaab32b8091', 2, 0, NULL, 'F2-001', 1, 0, '2019-06-09 17:59:57', '2019-06-09 17:59:57'),
+	(35, 'c8b26b3d-9d4e-420f-8b10-07e672b848ea', 2, 0, NULL, 'F2-001', 1, 0, '2019-06-12 10:58:18', '2019-06-12 10:58:18'),
+	(36, 'ac01e949-737d-468a-9369-5553f3b665b2', 2, 0, NULL, 'F2-002', 1, 0, '2019-06-12 11:57:03', '2019-06-12 11:57:03'),
+	(37, '77384e2c-74ab-42b2-b7dd-e91e61e1c2e3', 2, 1, NULL, 'F2-عيادة الاسنان-001', 1, 0, '2019-06-12 13:23:51', '2019-06-12 13:23:51'),
+	(38, 'b1e77457-cc56-4c9a-9b61-d6bf67b163f2', 2, 1, NULL, 'F2-عيادة الاسنان-002', 1, 0, '2019-06-12 13:24:27', '2019-06-12 13:24:27'),
+	(39, 'f3ff6245-c5f3-4f02-afab-1e5105939621', 2, 1, NULL, 'F2-A1-003', 1, 0, '2019-06-12 13:34:09', '2019-06-12 13:34:09'),
+	(40, 'b6951209-3f8e-42e2-98cb-b247f3975e3c', 2, 1, NULL, 'F2-A1-004', 1, 0, '2019-06-12 13:37:36', '2019-06-12 13:37:36'),
+	(41, '98eef311-0877-45fa-bfda-8f764603757d', 1, 2, NULL, 'F1-A2-001', 1, 0, '2019-06-12 13:37:38', '2019-06-12 13:37:38'),
+	(42, '959619cc-a117-471b-adb1-43370f05be3e', 1, 2, NULL, 'F1-A2-002', 1, 0, '2019-06-12 13:37:43', '2019-06-12 13:37:43'),
+	(43, '275e085a-16fa-4e90-9aee-19a3ebe285f2', 1, 2, NULL, 'F1-A2-003', 1, 0, '2019-06-12 13:38:28', '2019-06-12 13:38:28'),
+	(44, 'aa820723-efc2-451d-9bdf-fbb247be71e1', 1, 3, NULL, 'F1-A3-001', 1, 0, '2019-06-12 13:38:29', '2019-06-12 13:38:29'),
+	(45, 'a5074d4f-1dde-4b5a-a17b-8f15ef1f027a', 2, 1, NULL, 'F2-A1-005', 1, 0, '2019-06-12 13:38:31', '2019-06-12 13:38:31'),
+	(46, 'f7ac97f4-c75b-4774-bfee-6cdde4cd058b', 1, 3, NULL, 'F1-A3-002', 1, 0, '2019-06-12 13:38:33', '2019-06-12 13:38:33'),
+	(47, 'fe2029db-b408-4e66-a62a-a297e991b2d7', 1, 2, NULL, 'F1-A2-004', 1, 0, '2019-06-12 13:38:34', '2019-06-12 13:38:34'),
+	(48, 'b7a6f015-3732-4035-a0f4-fac32c318953', 2, 1, NULL, 'F2-A1-006', 1, 0, '2019-06-12 13:38:36', '2019-06-12 13:38:36'),
+	(49, '61075737-d6aa-499b-8ef1-bae7acb01d60', 1, 1, 1, 'F1-A1-001', 2, 0, '2019-06-13 12:17:46', '2019-06-13 12:18:12'),
+	(50, '44dd1b81-304c-44d0-b86f-b7a6dd612a16', 1, 3, NULL, 'F1-A3-001', 1, 0, '2019-06-13 12:17:48', '2019-06-13 12:17:48'),
+	(51, '5e4874d3-3386-4b60-869f-64edb0d8bd9d', 2, 2, NULL, 'F2-A2-001', 1, 0, '2019-06-13 12:17:49', '2019-06-13 12:17:49'),
+	(52, 'b8b142ae-b88c-4add-bc18-691bc20ac619', 1, 3, NULL, 'F1-A3-002', 1, 0, '2019-06-13 12:17:59', '2019-06-13 12:17:59'),
+	(53, '9d9b0a43-84f1-4e51-ab57-609e8ada0b9a', 1, 1, NULL, 'F1-A1-002', 1, 0, '2019-06-13 12:18:04', '2019-06-13 12:18:04'),
+	(54, '4ae20273-7d68-4474-9c0c-7913b0744df2', 1, 1, 1, 'F1-A1-001', 5, 1, '2019-06-16 08:09:19', '2019-06-16 15:02:39'),
+	(55, '1df03583-99b2-4cf6-8584-e638cd6c355c', 1, 3, NULL, 'F1-A3-001', 1, 0, '2019-06-16 08:10:14', '2019-06-16 08:10:14');
 /*!40000 ALTER TABLE `desk_queues` ENABLE KEYS */;
 
 -- Dumping structure for table gqms.desk_queue_statuses
@@ -174,12 +213,18 @@ CREATE TABLE IF NOT EXISTS `desk_queue_statuses` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.desk_queue_statuses: ~0 rows (approximately)
+-- Dumping data for table gqms.desk_queue_statuses: ~7 rows (approximately)
 /*!40000 ALTER TABLE `desk_queue_statuses` DISABLE KEYS */;
 INSERT INTO `desk_queue_statuses` (`id`, `user_id`, `desk_queue_id`, `queue_status_id`, `created_at`, `updated_at`) VALUES
-	(23, 3, 28, 2, '2019-05-29 10:25:39', '2019-05-29 10:25:39');
+	(23, 3, 28, 2, '2019-05-29 10:25:39', '2019-05-29 10:25:39'),
+	(24, 3, 49, 2, '2019-06-13 12:18:13', '2019-06-13 12:18:13'),
+	(25, 3, 54, 2, '2019-06-16 15:02:18', '2019-06-16 15:02:18'),
+	(26, 3, 54, 3, '2019-06-16 15:02:31', '2019-06-16 15:02:31'),
+	(27, 3, 54, 5, '2019-06-16 15:02:34', '2019-06-16 15:02:34'),
+	(28, 3, 54, 3, '2019-06-16 15:02:37', '2019-06-16 15:02:37'),
+	(29, 3, 54, 5, '2019-06-16 15:02:39', '2019-06-16 15:02:39');
 /*!40000 ALTER TABLE `desk_queue_statuses` ENABLE KEYS */;
 
 -- Dumping structure for table gqms.doctors
@@ -708,19 +753,19 @@ CREATE TABLE IF NOT EXISTS `floor_kiosk` (
   `kiosk_id` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.floor_kiosk: ~10 rows (approximately)
+-- Dumping data for table gqms.floor_kiosk: ~8 rows (approximately)
 /*!40000 ALTER TABLE `floor_kiosk` DISABLE KEYS */;
 INSERT INTO `floor_kiosk` (`floor_id`, `kiosk_id`) VALUES
 	(1, 9),
 	(2, 9),
-	(2, 3),
-	(3, 3),
 	(1, 5),
 	(2, 5),
 	(3, 5),
 	(6, 5),
 	(1, 1),
-	(2, 1);
+	(2, 1),
+	(2, 3),
+	(3, 3);
 /*!40000 ALTER TABLE `floor_kiosk` ENABLE KEYS */;
 
 -- Dumping structure for table gqms.lookups
@@ -765,9 +810,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.migrations: ~32 rows (approximately)
+-- Dumping data for table gqms.migrations: ~31 rows (approximately)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
@@ -802,7 +847,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(55, '2019_05_14_123040_create_printers_table', 8),
 	(56, '2019_05_23_120458_create_doctor_to_floors_table', 9),
 	(57, '2019_06_11_080021_create_areas_table', 10),
-	(58, '2019_06_11_170437_create_screen_desk_table', 11);
+	(58, '2019_06_11_170437_create_screen_desk_table', 11),
+	(59, '2019_06_16_081722_create_area_speciality_table', 12);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table gqms.password_resets
@@ -950,7 +996,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.permissions: ~19 rows (approximately)
+-- Dumping data for table gqms.permissions: ~18 rows (approximately)
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
 INSERT INTO `permissions` (`id`, `uuid`, `name`, `created_by`, `updated_by`, `deleted_at`, `created_at`, `updated_at`) VALUES
 	(1, '5e55aa21-7713-430d-991b-df8229b7c0eb', 'users', 1, 1, NULL, '2019-04-07 08:39:29', '2019-04-07 08:39:29'),
@@ -1006,7 +1052,7 @@ CREATE TABLE IF NOT EXISTS `permission_group_permission` (
   `permission_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.permission_group_permission: ~87 rows (approximately)
+-- Dumping data for table gqms.permission_group_permission: ~79 rows (approximately)
 /*!40000 ALTER TABLE `permission_group_permission` DISABLE KEYS */;
 INSERT INTO `permission_group_permission` (`permission_group_id`, `permission_id`) VALUES
 	(1, 1),
@@ -4449,6 +4495,7 @@ CREATE TABLE IF NOT EXISTS `screens` (
   `slug` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
   `screen_type_id` int(11) NOT NULL,
   `floor_id` int(11) NOT NULL,
+  `area_id` int(11) unsigned NOT NULL,
   `printer_id` int(11) DEFAULT NULL,
   `enable_print` tinyint(1) NOT NULL DEFAULT '0',
   `ip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -4461,16 +4508,29 @@ CREATE TABLE IF NOT EXISTS `screens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.screens: ~6 rows (approximately)
+-- Dumping data for table gqms.screens: ~4 rows (approximately)
 /*!40000 ALTER TABLE `screens` DISABLE KEYS */;
-INSERT INTO `screens` (`id`, `uuid`, `slug`, `screen_type_id`, `floor_id`, `printer_id`, `enable_print`, `ip`, `name_ar`, `name_en`, `status`, `created_by`, `updated_by`, `deleted_at`, `created_at`, `updated_at`) VALUES
-	(1, '01b60345-ceea-4284-a143-2c54f23b01f6', 'f1-k1', 1, 1, 1, 0, '10.1.10.160', 'كشك الدور الاول', 'K1', 1, 1, 1, NULL, '2019-04-11 23:37:41', '2019-05-20 09:47:55'),
-	(2, '2035e89b-f53e-4df9-817b-73643205dcbd', 'f2-reception-2', 2, 2, 1, 0, '192.168.1.10', 'ريسبشن الدور الثانى', 'Reception 2', 1, 1, 1, NULL, '2019-04-12 00:06:16', '2019-06-11 17:39:40'),
-	(3, 'ba9a4182-af94-4bcb-827a-380fe358b06c', 'kshk-aldor-althan', 1, 2, NULL, 0, '192.168.1.8', 'كشك الدور الثانى', 'Kiosk Floor 2', 1, 1, 1, NULL, '2019-04-13 14:45:43', '2019-04-21 09:25:51'),
-	(4, '98d560b7-9f66-4543-bbb4-ff8ffda64fed', 'f1-reception-1', 2, 1, 1, 0, '192.168.1.2', 'ريسبشن الدور الالول', 'Reception 1', 1, 1, 1, NULL, '2019-04-14 07:38:26', '2019-06-11 17:43:29');
+INSERT INTO `screens` (`id`, `uuid`, `slug`, `screen_type_id`, `floor_id`, `area_id`, `printer_id`, `enable_print`, `ip`, `name_ar`, `name_en`, `status`, `created_by`, `updated_by`, `deleted_at`, `created_at`, `updated_at`) VALUES
+	(1, '01b60345-ceea-4284-a143-2c54f23b01f6', 'k1-1', 1, 1, 1, 1, 0, '127.0.0.1', 'كشك الدور الاول', 'K1', 1, 1, 1, NULL, '2019-04-11 23:37:41', '2019-06-16 08:31:36'),
+	(2, '2035e89b-f53e-4df9-817b-73643205dcbd', 'f2-reception-2', 2, 2, 0, 1, 0, '192.168.1.10', 'ريسبشن الدور الثانى', 'Reception 2', 1, 1, 1, NULL, '2019-04-12 00:06:16', '2019-06-11 17:39:40'),
+	(3, 'ba9a4182-af94-4bcb-827a-380fe358b06c', 'kiosk-floor-2-2', 1, 2, 2, 1, 0, '127.322.0.1', 'كشك الدور الثانى', 'Kiosk Floor 2', 1, 1, 1, NULL, '2019-04-13 14:45:43', '2019-06-16 08:31:49'),
+	(4, '98d560b7-9f66-4543-bbb4-ff8ffda64fed', 'reception-1-1', 2, 2, 1, 1, 0, '192.168.1.2', 'ريسبشن الدور الالول', 'Reception 1', 1, 1, 1, NULL, '2019-04-14 07:38:26', '2019-06-13 09:49:49');
 /*!40000 ALTER TABLE `screens` ENABLE KEYS */;
+
+-- Dumping structure for table gqms.screen_desk
+CREATE TABLE IF NOT EXISTS `screen_desk` (
+  `screen_id` int(11) NOT NULL,
+  `desk_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Dumping data for table gqms.screen_desk: ~2 rows (approximately)
+/*!40000 ALTER TABLE `screen_desk` DISABLE KEYS */;
+INSERT INTO `screen_desk` (`screen_id`, `desk_id`) VALUES
+	(2, 1),
+	(4, 1);
+/*!40000 ALTER TABLE `screen_desk` ENABLE KEYS */;
 
 -- Dumping structure for table gqms.screen_room
 CREATE TABLE IF NOT EXISTS `screen_room` (
@@ -4478,7 +4538,7 @@ CREATE TABLE IF NOT EXISTS `screen_room` (
   `room_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.screen_room: ~6 rows (approximately)
+-- Dumping data for table gqms.screen_room: ~8 rows (approximately)
 /*!40000 ALTER TABLE `screen_room` DISABLE KEYS */;
 INSERT INTO `screen_room` (`screen_id`, `room_id`) VALUES
 	(5, 2),
@@ -4655,7 +4715,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `uuid`, `desk_id`, `room_id`, `login_ip`, `name`, `phone`, `email`, `email_verified_at`, `password`, `remember_token`, `created_by`, `updated_by`, `status`, `type`, `available`, `api_token`, `deleted_at`, `created_at`, `updated_at`) VALUES
 	(1, '3322b3c3-b3ee-45ed-8549-fb1505228790', NULL, NULL, NULL, 'Admin', '123456789', 'admin@admin.com', NULL, '$2y$10$fVDOvS5s1Uky4oqVV2lCce1EyHpnly2P4HgNd4TvDyrSit1Qi/252', '0jlFbsmVv2dRnqHh8s59b1NNVwyyF52IDHdzl4BKEYn5AksbpPGR1lQTLAzu', 1, 1, 0, 3, 1, NULL, NULL, '2019-04-04 10:58:52', '2019-04-30 05:04:44'),
-	(3, '31e9a2af-6c96-45f4-845c-81737da7bca5', NULL, NULL, NULL, 'Amany Essam', '123456789', 'desk1@gmail.com', NULL, '$2y$10$fVDOvS5s1Uky4oqVV2lCce1EyHpnly2P4HgNd4TvDyrSit1Qi/252', 'r3Kwd6439b1YYwAHDjRY1vFkgTjofh5zDe5CNiVghPP2LmRTHcJztdJXlqGJ', 1, 1, 1, 2, 0, NULL, NULL, '2019-04-12 09:10:05', '2019-05-29 11:11:13'),
+	(3, '31e9a2af-6c96-45f4-845c-81737da7bca5', 1, NULL, '10.1.35.195', 'Amany Essam', '123456789', 'desk1@gmail.com', NULL, '$2y$10$fVDOvS5s1Uky4oqVV2lCce1EyHpnly2P4HgNd4TvDyrSit1Qi/252', 'mbCt5d4sf7KT4aLl6DI0L8TD5o2cKSslhCAF3KfZAAPKf8JMmOyJTsHjOexo', 1, 1, 1, 2, 1, NULL, NULL, '2019-04-12 09:10:05', '2019-06-16 14:59:23'),
 	(4, 'a0d43faa-2118-4584-958d-1579c8a204d1', NULL, NULL, NULL, 'Dr Fady Ashraf', '0123456789', 'room1@gmail.com', NULL, '$2y$10$amLKqbkEdxx.1jUQvOmW6.S2Rz5XpfDs5.kvpgekSb2s.JvgNwn5m', 'KVJxXIIlrqg1dAKaijcKKpGY2X1jOuo63LWnLmBQQwO7qLCeEFGTJX3DADzk', 1, 1, 1, 1, 0, NULL, NULL, '2019-04-24 09:20:48', '2019-05-29 11:12:11'),
 	(5, 'f92931a5-ccd8-4fa9-b595-09ec37f69d7a', NULL, NULL, NULL, 'Ebtesam Adel Abdulmaksoud Sayed', NULL, 'ebtesam10', NULL, '$2y$10$W5j5UPfl1oogNSlOX1U21OJ08spRtEsKwsIyRco7obFGZDg2dzoJu', NULL, 0, 1, 1, 1, 0, NULL, NULL, '2019-05-28 13:12:32', '2019-05-30 08:29:50'),
 	(6, 'c6ae9b5f-d251-4bab-b6bf-7dfaa79ee81c', NULL, NULL, NULL, 'Ebtesam - Ali Abdullah', NULL, 'ebtesam11', NULL, '$2y$10$jJHKS4vQv5j33ZIaye/Nw.moZyGx6umjNQsA/dEDxWnYFHdySC3U.', NULL, 0, 1, 1, 1, 0, NULL, NULL, '2019-05-28 13:12:32', '2019-05-30 08:30:09'),
@@ -5124,9 +5184,9 @@ CREATE TABLE IF NOT EXISTS `user_login_histories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table gqms.user_login_histories: ~120 rows (approximately)
+-- Dumping data for table gqms.user_login_histories: ~118 rows (approximately)
 /*!40000 ALTER TABLE `user_login_histories` DISABLE KEYS */;
 INSERT INTO `user_login_histories` (`id`, `user_id`, `login_ip`, `login_data`, `login_date_time`, `logout_date_time`, `created_at`, `updated_at`) VALUES
 	(1, 3, 'UNKNOWN', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-04-20 09:19:15', NULL, '2019-04-20 07:19:15', '2019-04-20 07:19:15'),
@@ -5253,7 +5313,14 @@ INSERT INTO `user_login_histories` (`id`, `user_id`, `login_ip`, `login_data`, `
 	(122, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-10 11:30:56', NULL, '2019-06-10 09:30:56', '2019-06-10 09:30:56'),
 	(123, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-11 09:41:25', NULL, '2019-06-11 07:41:25', '2019-06-11 07:41:25'),
 	(124, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-11 11:44:53', NULL, '2019-06-11 09:44:53', '2019-06-11 09:44:53'),
-	(125, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-11 18:55:15', NULL, '2019-06-11 16:55:15', '2019-06-11 16:55:15');
+	(125, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-11 18:55:15', NULL, '2019-06-11 16:55:15', '2019-06-11 16:55:15'),
+	(126, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-12 10:21:57', NULL, '2019-06-12 08:21:56', '2019-06-12 08:21:56'),
+	(127, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-13 10:19:13', NULL, '2019-06-13 08:19:13', '2019-06-13 08:19:13'),
+	(128, 3, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-13 12:32:06', NULL, '2019-06-13 10:32:06', '2019-06-13 10:32:06'),
+	(129, 3, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-13 12:49:20', NULL, '2019-06-13 10:49:20', '2019-06-13 10:49:20'),
+	(130, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-16 09:16:08', NULL, '2019-06-16 07:16:08', '2019-06-16 07:16:08'),
+	(131, 1, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-16 14:37:31', NULL, '2019-06-16 12:37:31', '2019-06-16 12:37:31'),
+	(132, 3, '127.0.0.1', '{"browser_name_regex":"~^.*$~","browser_name_pattern":"*","browser":"Default Browser","version":"0","majorver":"0","minorver":"0","platform":"unknown","alpha":"","beta":"","win16":"","win32":"","win64":"","frames":"1","iframes":"","tables":"1","cookies":"","backgroundsounds":"","cdf":"","vbscript":"","javaapplets":"","javascript":"","activexcontrols":"","isbanned":"","ismobiledevice":"","issyndicationreader":"","crawler":"","cssversion":"0","supportscss":"","aol":"","aolversion":"0"}', '2019-06-16 16:59:24', NULL, '2019-06-16 14:59:24', '2019-06-16 14:59:24');
 /*!40000 ALTER TABLE `user_login_histories` ENABLE KEYS */;
 
 -- Dumping structure for table gqms.websockets_statistics_entries
