@@ -138,7 +138,8 @@ function deskQueueNumberFormat($area, $scheme){
         $lastNumber = $lastNumberZeros . $lastNumber;
     }
 
-    return $area->floor->name_en . '-' . $area->name_en . '-' . $lastNumber;
+//    return $area->floor->name_en . '-' . $area->name_en . '-' . $lastNumber;
+    return $area->name_en . '-' . $lastNumber;
 }
 
 // Room Queue Number Format

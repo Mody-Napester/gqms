@@ -30,7 +30,7 @@
                                 <span class="number-app">{{ $desk->name_en }}</span>
                             </div>
                             <div class="col-md-6">
-                                <span class="text-app">شباك</span>
+                                <span class="text-app">كاشير</span>
                             </div>
                         </div>
                     </div>

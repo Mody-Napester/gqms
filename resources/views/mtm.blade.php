@@ -367,7 +367,7 @@
                                             <span class="number-app">3</span>
                                         </div>
                                         <div class="col-md-6">
-                                            <span class="text-app">شباك</span>
+                                            <span class="text-app">كاشير</span>
                                         </div>
                                     </div>
                                 </div>
@@ -400,7 +400,7 @@
                                             <span class="number-app">3</span>
                                         </div>
                                         <div class="col-md-6">
-                                            <span class="text-app">شباك</span>
+                                            <span class="text-app">كاشير</span>
                                         </div>
                                     </div>
                                 </div>
@@ -433,7 +433,7 @@
                                             <span class="number-app">3</span>
                                         </div>
                                         <div class="col-md-6">
-                                            <span class="text-app">شباك</span>
+                                            <span class="text-app">كاشير</span>
                                         </div>
                                     </div>
                                 </div>
@@ -466,7 +466,7 @@
                                             <span class="number-app">3</span>
                                         </div>
                                         <div class="col-md-6">
-                                            <span class="text-app">شباك</span>
+                                            <span class="text-app">كاشير</span>
                                         </div>
                                     </div>
                                 </div>

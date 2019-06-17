@@ -144,7 +144,7 @@
                                                     <span class="number-app">{{ $desk->name_en }}</span>
                                                 </td>
                                                 <td class="text-right">
-                                                    <span class="text-app">شباك</span>
+                                                    <span class="text-app">كاشير</span>
                                                 </td>
                                             </tr>
                                         </table>
