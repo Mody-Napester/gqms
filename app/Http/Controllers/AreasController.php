@@ -282,9 +282,9 @@ class AreasController extends Controller
     public function getSpecialityToArea()
     {
         // Check permissions
-//        if (!User::hasAuthority('index.doctors')){
-//            return redirect('/');
-//        }
+        if (!User::hasAuthority('update.speciality_to_area')){
+            return redirect('/');
+        }
 
         $data['areas'] = Area::getAll();
         $data['specialities'] = Speciality::getAll();
@@ -296,6 +296,11 @@ class AreasController extends Controller
      */
     public function updateSpecialityToArea(Request $request, $area_uuid)
     {
+        // Check permissions
+        if (!User::hasAuthority('update.speciality_to_area')){
+            return redirect('/');
+        }
+
         // Code
         if($request->has('specialities')){
             if (count($request->specialities) > 0){
