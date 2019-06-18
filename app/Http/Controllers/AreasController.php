@@ -294,19 +294,19 @@ class AreasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateSpecialityToArea(Request $request, $floor_uuid)
+    public function updateSpecialityToArea(Request $request, $area_uuid)
     {
         // Code
-        if($request->has('doctors')){
-            if (count($request->doctors) > 0){
-                $floor = Floor::getBy('uuid', $floor_uuid);
+        if($request->has('specialities')){
+            if (count($request->specialities) > 0){
+                $area = Area::getBy('uuid', $area_uuid);
 
-                if ($floor){
+                if ($area){
 
-                    $floor->doctors()->detach();
+                    $area->specialities()->detach();
 
-                    foreach ($request->doctors as $doctor_uuid) {
-                        $floor->doctors()->attach(Doctor::getBy('uuid', $doctor_uuid)->id);
+                    foreach ($request->specialities as $speciality_uuid) {
+                        $area->specialities()->attach(Speciality::getBy('uuid', $speciality_uuid)->id);
                     }
 
                     $data['message'] = [
@@ -316,20 +316,20 @@ class AreasController extends Controller
                 }else{
                     $data['message'] = [
                         'msg_status' => 0,
-                        'text' => 'Floor not exists!',
+                        'text' => 'Area not exists!',
                     ];
                 }
 
             }else{
                 $data['message'] = [
                     'msg_status' => 0,
-                    'text' => 'Doctors are empty!',
+                    'text' => 'Speciality are empty!',
                 ];
             }
         }else{
             $data['message'] = [
                 'msg_status' => 0,
-                'text' => 'Please select doctors first!',
+                'text' => 'Please select speciality first!',
             ];
         }
 

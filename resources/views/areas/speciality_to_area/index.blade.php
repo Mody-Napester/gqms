@@ -38,9 +38,13 @@
                             <tr>
                                 <td>{{ $area->name_en }}</td>
                                 <td>
-                                    <select name="floor-{{$area->uuid}}[]" id="area-{{$area->uuid}}" multiple class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                                    <select name="area-{{$area->uuid}}[]" id="area-{{$area->uuid}}" multiple class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                                         @foreach($specialities as $key => $speciality)
-                                            <option @if(in_array($speciality->id, $area->specialities()->pluck('speciality_id')->toArray())) selected @endif value="{{ $speciality->uuid }}">{{ $speciality->name_en }}</option>
+                                            @if($theArea = $speciality->areas()->where('speciality_id', $speciality->id)->first())
+                                                <option @if($area->id == $theArea->pivot->area_id) selected @else disabled @endif value="{{ $speciality->uuid }}">{{ $speciality->name_en }} - (Area : {{ $theArea->name_en }})</option>
+                                            @else
+                                                <option @if($speciality->id == $area->speciality_id) selected @endif value="{{ $speciality->uuid }}">{{ $speciality->name_en }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </td>
