@@ -7,6 +7,7 @@
         <th>Gander</th>
         <th>Work status</th>
         <th>Created at</th>
+        <th>Nickname</th>
     </tr>
     </thead>
 
@@ -25,6 +26,17 @@
                     @endif
                 </td>
                 <td>{{ $doctor->created_at }}</td>
+
+                <td>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" value="{{ $doctor->name_en }}">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary"><i class="fa fa-fw fa-save"></i></button>
+                        </div>
+                    </div>
+                </td>
             </tr>
         @endforeach
     </tbody>

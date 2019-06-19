@@ -2,6 +2,7 @@
     <thead>
     <tr>
         <th>Id</th>
+        <th>Patient Id</th>
         <th>Clinic</th>
         <th>Doctor</th>
         <th>Desk queue</th>
@@ -16,6 +17,7 @@
         @foreach($reservations as $reservation)
             <tr>
                 <td>{{ $reservation->id }}</td>
+                <td>{{ $reservation->patientid }}</td>
                 <td>{{ ($reservation->clinic)? $reservation->clinic->name_en : '-' }}</td>
                 <td>{{ ($reservation->doctor)? $reservation->doctor->name_en : '-' }}</td>
                 <td>{{ ($reservation->desk_queue_id)? 'Served' : '' }}</td>

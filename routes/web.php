@@ -57,6 +57,9 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    // Doctor modifications
+    Route::get('doctors/{doctor_uuid}/update-nickName', 'DoctorsController@updateNickName')->name('screens.updateNickName');
+
     // Screen modifications
     Route::get('screens/filter/areas/{area_uuid}', 'ScreensController@filterByArea')->name('screens.filterByArea');
 

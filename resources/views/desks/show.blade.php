@@ -275,7 +275,7 @@
                 done_status: false,
                 skip_status: false,
                 reservation_serial: '',
-                rooms: {!! $desk->floor->rooms !!},
+{{--                rooms: {!! $desk->floor->rooms !!},--}}
                 reservationDiv: false,
                 serial: '-',
                 patient: '-',

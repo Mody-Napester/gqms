@@ -2,6 +2,7 @@
     <thead>
     <tr>
         <th>Id</th>
+        <th>Ganz Id</th>
         <th>Name ar</th>
         <th>Name en</th>
         <th>phone</th>
@@ -14,6 +15,7 @@
     @foreach($patients as $patient)
         <tr>
             <td>{{ $patient->id }}</td>
+            <td>{{ $patient->source_patient_id }}</td>
             <td>{{ $patient->name_ar }}</td>
             <td>{{ $patient->name_en }}</td>
             <td>{{ $patient->phone }}</td>
