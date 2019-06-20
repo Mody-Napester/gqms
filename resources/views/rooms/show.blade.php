@@ -511,6 +511,7 @@
                 listen(){
                     Echo.channel('available-room-queue-' + this.floor + '-' + this.room)
                         .listen('RoomQueueStatus', (response) => {
+                            console.log('fff');
                             $('#all-queues').html('');
                             $('#all-queues').append(response.view);
                         });

@@ -128,7 +128,7 @@ class DesksController extends Controller
         $data['deskQueueStatues'] = QueueStatus::getQueueStatuses('desk');
 
         // Get today's desk queues
-        $data['deskQueues'] = DeskQueue::getDeskQueues($data['desk']->floor_id);
+        $data['deskQueues'] = DeskQueue::getDeskQueues($data['desk']->area_id);
         $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 3);
         $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, 4);
 

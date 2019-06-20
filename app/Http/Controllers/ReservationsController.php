@@ -20,7 +20,8 @@ class ReservationsController extends Controller
 //            return redirect('/');
 //        }
 
-        $data['reservations'] = Reservation::all();
+//        $data['reservations'] = Reservation::all();
+        $data['reservations'] = Reservation::where('doctor_id',952)->get();
 //        dd($data['reservations'][0]->patient->name_en);
         return view('reservations.index', $data);
     }

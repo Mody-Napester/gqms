@@ -113,7 +113,7 @@ class DeskQueuesController extends Controller
                 'queue_status_id' => config('vars.desk_queue_status.called'),
             ]);
 
-            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->floor_id);
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->area_id);
 
             $data['waitingTime'] = nice_time($data['nextQueue']->created_at);
 

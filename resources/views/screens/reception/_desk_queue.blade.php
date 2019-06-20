@@ -5,7 +5,7 @@
         </div>
     </div>
 
-@foreach($screen->desks as $desk)
+@foreach($screen->desks()->orderBy('desk_id', 'ASC')->get() as $desk)
     <!-- Start Reservation Row -->
         <div class="res-row row m-0">
             <div class="col-md-6 p-0">

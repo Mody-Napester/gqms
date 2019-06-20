@@ -174,6 +174,7 @@ class ScreensController extends Controller
                 return redirect(route('dashboard.index'));
             }
         }else{
+            return request()->url();
             return 'Screen Not Found';
         }
 
