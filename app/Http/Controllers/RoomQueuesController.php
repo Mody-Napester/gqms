@@ -32,7 +32,7 @@ class RoomQueuesController extends Controller
         if (!$checkRoomQueue){
             // 2 - Generate And Store Room Queue number
             $roomQueue = RoomQueue::store([
-                'floor_id' => $desk->floor_id,
+                'floor_id' => $desk->area->floor_id,
                 'room_id' => ($room)? $room->id : '0',
 //                'doctor_id' => ($doctor)? $doctor->id : '0',
                 'queue_number' => $reservation->source_queue_number,
@@ -174,6 +174,80 @@ class RoomQueuesController extends Controller
         // Return
         return response()->json($data);
     }
+
+
+    /**
+     * Call Skipped Queue Number.
+     */
+    public function callSkippedAgain($room_uuid, $queue_uuid)
+    {
+        if (!User::hasAuthority('use.room_queue')){
+            return redirect('/');
+        }
+
+        $data['skippedQueue'] = RoomQueue::getBy('uuid', $queue_uuid);
+        $data['room'] = Room::getBy('uuid', $room_uuid);
+
+        // Get Current queue number
+        $data['currentQueue'] = RoomQueue::getCurrentRoomQueues($data['room']->id);
+
+        // Get Next queue number
+        $data['nextQueue'] = RoomQueue::getNextRoomQueueTurn($data['room'], $data['currentQueue']);
+
+        // Do Code
+        if($data['currentQueue']){
+            // Edit current
+            RoomQueueStatusController::where('room_queue_id', $data['currentQueue']->id)->delete();
+
+            RoomQueue::edit([
+                'room_id' => $data['room']->id,
+                'status' => config('vars.room_queue_status.waiting'),
+            ], $data['currentQueue']->id);
+        }
+
+        // Edit skipped
+        RoomQueue::edit([
+            'room_id' => $data['room']->id,
+            'status' => config('vars.room_queue_status.call_from_skip'),
+        ], $data['skippedQueue']->id);
+
+        // Do Code
+        $roomQueueStatusSkip = RoomQueueStatusController::store([
+            'user_id' => auth()->user()->id,
+            'room_queue_id' => $data['skippedQueue']->id,
+            'queue_status_id' => config('vars.room_queue_status.call_from_skip'),
+        ]);
+
+        if($roomQueueStatusSkip){
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Called skipped number',
+            ];
+
+            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id, $data['room']->id);
+            $data['waitingTime'] = nice_time($data['skippedQueue']->created_at);
+            $data['roomQueuesSkip'] = RoomQueueStatusController::getRoomQueues(auth()->user()->id, config('vars.room_queue_status.skipped'));
+            $data['roomQueuesOut'] = RoomQueueStatusController::getRoomQueues(auth()->user()->id, config('vars.room_queue_status.patient_out'));
+
+            // Broadcast event to room
+            event(new RoomQueueStatus($data['availableRoomQueue'], $data['room']->floor_id, $data['room']->id));
+
+            // Broadcast event to screen
+            event(new NextRoomQueue($data['room']->uuid, $data['nextQueue']->queue_number));
+
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Some thing error, please try again after few minutes',
+            ];
+        }
+
+        // Return
+        return response()->json($data);
+
+    }
+
 
     /**
      * Skip Queue Number.
