@@ -4,6 +4,7 @@
         <th>#</th>
         <th>Name ar</th>
         <th>Name en</th>
+        <th>Speciality</th>
         <th>Gander</th>
         <th>Work status</th>
         <th>Created at</th>
@@ -17,6 +18,7 @@
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $doctor->name_ar }}</td>
                 <td>{{ $doctor->name_en }}</td>
+                <td>{{ ($doctor->speciality)? $doctor->speciality->name_en : '-'}}</td>
                 <td>{{ $doctor->gander }}</td>
                 <td>
                     @if($doctor->workstatus == 0)
