@@ -11,7 +11,7 @@ class Doctor extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id','source_doctor_id','source_speciality_id','name_en','name_ar','gander','workstatus', 'created_at', 'updated_at'];
+    protected $fillable = ['user_id','source_doctor_id','nickname','source_speciality_id','name_en','name_ar','gander','workstatus', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.

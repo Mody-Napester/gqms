@@ -28,11 +28,19 @@
 
 @section('content')
 
-    <div class="alpha-container text-center pt-2 pb-2 mb-2" style="direction: rtl !important;background-color: #eeeeee">
+    <div class="alpha-container text-center pt-2 pb-2 mb-2 spe-alph" style="direction: rtl !important;background-color: #eeeeee">
         @foreach($arabic_alphas as $letter)
             <div style="border-radius: 3px; min-width: 40px;font-size: 30px;
             font-weight: bold;padding: 3px 3px;display: inline-block;
-            background-color: #0a6aa1;color: #ffffff;cursor: pointer" @click.prevent="searchByLetter('{{ $letter }}')">{{ $letter }}</div>
+            background-color: #dc3545;color: #ffffff;cursor: pointer" @click.prevent="searchByLetter('speciality', '{{ $letter }}')">{{ $letter }}</div>
+        @endforeach
+    </div>
+
+    <div class="alpha-container text-center pt-2 pb-2 mb-2 doc-alph" style="display: none;direction: rtl !important;background-color: #eeeeee">
+        @foreach($arabic_alphas as $letter)
+            <div style="border-radius: 3px; min-width: 40px;font-size: 30px;
+            font-weight: bold;padding: 3px 3px;display: inline-block;
+            background-color: #0a6aa1;color: #ffffff;cursor: pointer" @click.prevent="searchByLetter('doctor', '{{ $letter }}')">{{ $letter }}</div>
         @endforeach
     </div>
 
@@ -99,7 +107,7 @@
 
             },
             methods: {
-                searchByLetter(letter) {
+                searchByLetter(type, letter) {
                     addLoader();
                     var url = '{{ url('screens/search-by-letter') }}/' + letter;
                     axios.get(url)
@@ -173,17 +181,32 @@
         $(window).on('load', function () {
             $('.b-container').height(bHeight());
         });
+
         // $(window).on('resize', function () {
         //     $('.b-container').height(bHeight());
         // });
 
+        $('body').on('click', '.top-btns-toggle',function () {
+            if ($('.top-btns').css('top') == '0px'){
+                $('.top-btns').animate({
+                    top:'-60px'
+                },100);
+            } else{
+                $('.top-btns').animate({
+                    top:'0'
+                },100);
+            }
+
+            console.log($('.top-btns').css('top'));
+        });
+
+        $('body').on('click', '.top-btns-speciality',function () {
+            $('.spe-alph').show();
+            $('.doc-alph').hide();
+        });
+        $('body').on('click', '.top-btns-doctor',function () {
+            $('.spe-alph').hide();
+            $('.doc-alph').show();
+        });
     </script>
-
-    {{--<script src="{{ url('assets/plugins/select2/js/select2.min.js') }}" type="text/javascript"></script>--}}
-
-    {{--<script>--}}
-        {{--$(".select2").select2();--}}
-        {{--// $("#select2").select2({ dropdownCssClass: "select2CssClass" });--}}
-        {{----}}
-    {{--</script>--}}
 @endsection

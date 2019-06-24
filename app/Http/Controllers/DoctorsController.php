@@ -25,6 +25,35 @@ class DoctorsController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     */
+    public function updateNickName(Request $request, $doctor_uuid)
+    {
+        $doctor = Doctor::getBy('uuid', $doctor_uuid);
+
+        $editedDoctor = $doctor->update([
+            'nickname' => $request->nickname
+        ]);
+
+        // Return
+        if ($editedDoctor){
+            $data['message'] = [
+                'msg_status' => 1,
+                'type' => 'success',
+                'text' => 'Updated successfully',
+            ];
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Error! .. please try again.',
+            ];
+        }
+
+        return response()->json($data);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

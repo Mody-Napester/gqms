@@ -43,6 +43,8 @@
         const app = new Vue({
             el : '#app',
             data : {
+                nickname : '',
+                doctor_uuid : '',
             },
             methods : {
                 syncClient(what){
@@ -69,7 +71,31 @@
                         });
 
                 },
+
+                updateDoctor(uuid){
+                    addLoader();
+
+                    this.doctor_uuid = uuid;
+                    this.nickname = $('#'+uuid).val();
+
+                    var url = '{{ url('dashboard/doctors') }}/' + this.doctor_uuid + '/' + this.nickname + '/update-nickName';
+
+                    axios.get(url)
+                        .then((response) => {
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }else{
+                                addAlert('danger', response.data.message.text);
+                            }
+                            removeLoarder();
+                        })
+                        .catch((data) => {
+                            addAlert('danger', 'Error!!');
+                            removeLoarder();
+                        });
+                },
             }
         });
+
     </script>
 @endsection

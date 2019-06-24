@@ -31,11 +31,11 @@
 
                 <td>
                     <div class="row">
-                        <div class="col-md-8">
-                            <input class="form-control" type="text" value="{{ $doctor->name_en }}">
+                        <div class="col-md-8 pr-0">
+                            <input class="form-control" type="text" id="{{ $doctor->uuid }}" value="{{ $doctor->nickname }}">
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-primary"><i class="fa fa-fw fa-save"></i></button>
+                            <button @click.prevent="updateDoctor('{{ $doctor->uuid }}')" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-save"></i></button>
                         </div>
                     </div>
                 </td>

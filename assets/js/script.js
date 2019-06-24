@@ -99,7 +99,7 @@ $(document).ready(function(){
         targetModal.modal();
     });
 
-    // General Update
+    // History
     $('body').on('click', '.history-modal', function (event) {
         event.preventDefault();
         var url, targetModal;

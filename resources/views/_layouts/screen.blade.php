@@ -26,6 +26,38 @@
         body{
             font-family: 'Tajawal', sans-serif;
         }
+        .top-btns{
+            position: absolute;
+            z-index: 9999;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffffff;
+            padding-top: 10px;
+            text-align: center;
+            top: -60px;
+        }
+        .top-btns .top-btns-doctor, .top-btns .top-btns-speciality{
+            cursor: pointer;
+            border-radius: 3px;
+            display: inline-block;
+            padding: 10px;
+            font-size: 18px;
+            width: 150px;
+
+        }
+        .top-btns-toggle{
+            cursor: pointer;
+            border-radius: 3px;
+            display: inline-block;
+            background-color: rgba(0,0,0,.5);
+            padding: 10px;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .top-btns-doctor{background-color: #0a6aa1;margin-right: 5px;}
+        .top-btns-speciality{background-color: #dc3545;}
+
     </style>
 
     @yield('head')
@@ -34,6 +66,15 @@
 <body>
 
     <div>
+        <div class="top-btns">
+            <div class="top-btns-doctor"><i class="fa fa-heart fa-fw"></i> Doctor</div>
+            <div class="top-btns-speciality"><i class="fa fa-hospital-o fa-fw"></i> Speciality</div>
+            <br>
+            <div class="top-btns-toggle">
+                <i class="fa fa-arrow-down fa-fw"></i>
+            </div>
+        </div>
+
         <div class="section bg-blue-1">
             <div class="container-fluid">
                 <div class="row">
@@ -47,11 +88,11 @@
                     <div class="col-md-6">
                         <div class="text-white txt-2 text-right">
                             <span>مستشفى الجنزورى التخصصى</span>
-                            <span style="font-size: 26px;
-    background-color: rgba(0,0,0,.2);padding: 6px;
-    margin-right: 10px;cursor: pointer;text-align: center;border-radius: 5px;" onclick="location.reload();">
-                                <i class="fa fa-refresh fa-fw"></i>
-                            </span>
+                            @if($screen->screen_type_id == config('vars.screen_types.kiosk'))
+                                <span style="font-size: 26px;background-color: rgba(0,0,0,.2);padding: 6px;margin-right: 10px;cursor: pointer;text-align: center;border-radius: 5px;" onclick="location.reload();">
+                                    <i class="fa fa-refresh fa-fw"></i>
+                                </span>
+                            @endif
                             <img class="logo-image" src="{{ url('assets/images/ganz-logo.jpg') }}" alt="">
                         </div>
                     </div>
