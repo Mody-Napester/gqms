@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DoctorSchedule;
 use App\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -273,6 +274,63 @@ class SyncVendorDataController extends Controller
                         Reservation::editBySourceReservationSer($array, $val->ser);
                     } else {
                         Reservation::store($array);
+                    }
+
+                }
+            }
+        });
+        return true;
+    }
+
+    // Get all schedules
+    public function getClientSchedules()
+    {
+        if ($this->syncAndTestConnection() == false){
+            return false;
+        }
+
+        DB::connection('oracle')->table('VW_DOCTOR_SCHEDULE')->where(function ($q) {
+            $q->whereNull('queue_system_integ_flag');
+            $q->orWhere('queue_system_integ_flag', '');
+            $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+            $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
+        })->where('', 'like', '%2019')->chunk(100, function ($data) {
+            foreach ($data as $key => $val) {
+
+                $array = [
+                    'daynumber' => $val->daynumber,
+                    'dayname_ar' => $val->dayname_ar,
+                    'dayname_en' => $val->dayname_en,
+                    'shift_flag' => $val->shift_flag,
+                    'starttime' => $val->starttime,
+                    'endtime' => $val->endtime,
+                    'duration_by_hour' => $val->duration_by_hour,
+                    'time_slot_by_minute' => $val->time_slot_by_minute,
+                    'startdate' => $val->startdate,
+                    'enddate' => $val->enddate,
+                    'week_frequency_flag' => $val->week_frequency_flag,
+                    'emp_id' => $val->emp_id,
+                    'place_id1' => $val->place_id1,
+                    'hosp_id' => $val->hosp_id,
+                    'serial' => $val->serial,
+                    'queue_system_integ_fla' => $val->queue_system_integ_fla,
+                ];
+
+                if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
+
+                    DoctorSchedule::store($array);
+
+                    DB::connection('oracle')->table('VW_DOCTOR_SCHEDULE')->where('serial', $val->serial)
+                        ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
+
+                } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+
+                    $schedule = DoctorSchedule::getBy('serial', $val->serial);
+
+                    if ($schedule) {
+                        DoctorSchedule::editBySourceScheduleSerial($array, $val->serial);
+                    } else {
+                        DoctorSchedule::store($array);
                     }
 
                 }

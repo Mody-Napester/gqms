@@ -77,6 +77,7 @@ Route::group([
     Route::get('doctors', 'DoctorsController@index')->name('doctors.index');
     Route::get('patients', 'PatientsController@index')->name('patients.index');
     Route::get('reservations', 'ReservationsController@index')->name('reservations.index');
+    Route::get('schedules', 'DoctorScheduleController@index')->name('schedules.index');
 
     // Desks Actions
     Route::get('desk/{desk_uuid}/{desk_queue_uuid}/skip', 'DeskQueuesController@skipQueueNumber')->name('desks.queues.skipQueueNumber');

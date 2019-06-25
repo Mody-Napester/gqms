@@ -67,8 +67,8 @@
 
     <div>
         <div class="top-btns">
-            <div class="top-btns-doctor"><i class="fa fa-heart fa-fw"></i> Doctor</div>
-            <div class="top-btns-speciality"><i class="fa fa-hospital-o fa-fw"></i> Speciality</div>
+            <div class="top-btns-doctor"><i class="fa fa-heart fa-fw"></i> الاطباء</div>
+            <div class="top-btns-speciality"><i class="fa fa-hospital-o fa-fw"></i> التخصصات</div>
             <br>
             <div class="top-btns-toggle">
                 <i class="fa fa-arrow-down fa-fw"></i>

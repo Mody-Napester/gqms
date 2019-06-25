@@ -26,30 +26,28 @@
     @endforeach
 @else
     @foreach($specialities as $speciality)
-        @foreach($speciality->doctors as $doctor)
-            <div class="row text-center">
-                <div class="col-md-2 pr-0">
-                    <div style="background-color: #ffffff;padding: 5px;margin: 5px;">
-                        @if($speciality->areas)
-                            @if($area = $speciality->areas()->first())
-                                {{ $area->name_en . '-' . $area->floor->name_en }}
-                            @else
-                                -
-                            @endif
-                        @else
-                            -
-                        @endif
-                    </div>
-                </div>
-
-                <div class="col-md-6 p-0">
-                    <div style="background-color: #ffffff;padding: 5px;margin: 5px;text-align: right;">{{ $doctor->name_ar }}</div>
-                </div>
-
-                <div class="col-md-4 pl-0">
-                    <div style="background-color: #ffffff;padding: 5px;margin: 5px;">{{ $speciality->name_ar }}</div>
+        @if(count($speciality->areas) > 0)
+        <div class="row text-center">
+            <div class="col-md-3 pr-0">
+                <div style="background-color: #ffffff;padding: 5px;margin: 5px;">
+                    @if($area = $speciality->areas()->first())
+                        {{ $area->name_en . '-' . $area->floor->name_en }}
+                    @else
+                        -
+                    @endif
                 </div>
             </div>
-        @endforeach
+
+            {{--<div class="col-md-6 p-0">--}}
+            {{--<div style="background-color: #ffffff;padding: 5px;margin: 5px;text-align: right;">{{ $doctor->name_ar }}</div>--}}
+            {{--</div>--}}
+
+            <div class="col-md-9 pl-0">
+                <div style="background-color: #ffffff;padding: 5px;margin: 5px;">{{ $speciality->name_ar }}</div>
+            </div>
+        </div>
+        {{--@foreach($speciality->doctors as $doctor)--}}
+        {{--@endforeach--}}
+        @endif
     @endforeach
 @endif

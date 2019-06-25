@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Clinic;
 use App\Doctor;
+use App\DoctorSchedule;
 use App\Patient;
 use App\Reservation;
 use App\Speciality;
@@ -34,6 +35,9 @@ class SyncButtonsController extends Controller
         }
         elseif ($what == 'specialities'){
             return $this->syncSpecialities();
+        }
+        elseif ($what == 'schedules'){
+            return $this->syncSchedules();
         }
     }
 
@@ -136,6 +140,28 @@ class SyncButtonsController extends Controller
 
             $data['specialities'] = Speciality::all();
             $data['view'] = view('specialities._list', $data)->render();
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'text' => 'Connection or sync failed',
+            ];
+        }
+
+        // Return
+        return response()->json($data);
+    }
+
+    // Sync Schedules
+    public function syncSchedules()
+    {
+        if ($this->sync->getClientSchedules()){
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Sync Done ..',
+            ];
+
+            $data['schedules'] = DoctorSchedule::all();
+            $data['view'] = view('schedules._list', $data)->render();
         }else{
             $data['message'] = [
                 'msg_status' => 0,

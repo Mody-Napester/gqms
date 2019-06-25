@@ -81,6 +81,7 @@
                             <li><a href="{{ route('doctors.index') }}">Doctors</a></li>
                             <li><a href="{{ route('patients.index') }}">Patients</a></li>
                             <li><a href="{{ route('reservations.index') }}">Reservations</a></li>
+                            <li><a href="{{ route('schedules.index') }}">Schedules</a></li>
                         </ul>
                     </li>
                 @endif

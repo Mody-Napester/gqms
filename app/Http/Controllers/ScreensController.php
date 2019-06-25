@@ -154,7 +154,7 @@ class ScreensController extends Controller
     {
         $data['screen'] = Screen::where('uuid', $screen)->orWhere('slug', $screen)->first();
 
-        $data['arabic_alphas'] = ['ا','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ى','ي'];
+        $data['arabic_alphas'] = ['الكل','ا','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ى','ي'];
 
         if($data['screen']){
             $data['doctors'] = Doctor::all();
@@ -401,10 +401,18 @@ class ScreensController extends Controller
     {
         $data['type'] = $type;
         if ($data['type'] == 'doctor'){
-            $data['doctors'] = Doctor::where('name_ar', 'LIKE', $letter.'%')->get();
+            if ($letter == 'الكل'){
+                $data['doctors'] = Doctor::all();
+            }else{
+                $data['doctors'] = Doctor::where('name_ar', 'LIKE', $letter.'%')->get();
+            }
         }
         elseif ($data['type'] == 'speciality'){
-            $data['specialities'] = Speciality::where('name_ar', 'LIKE', $letter.'%')->get();
+            if ($letter == 'الكل'){
+                $data['specialities'] = Speciality::all();
+            }else{
+                $data['specialities'] = Speciality::where('name_ar', 'LIKE', $letter.'%')->get();
+            }
         }
 
         $data['view'] = view('screens.kiosk._doctor_floors', $data)->render();
