@@ -13,6 +13,7 @@ use App\Room;
 use App\RoomQueue;
 use App\Screen;
 use App\ScreenType;
+use App\Speciality;
 use App\User;
 use Validator;
 use Illuminate\Http\Request;
@@ -157,6 +158,8 @@ class ScreensController extends Controller
 
         if($data['screen']){
             $data['doctors'] = Doctor::all();
+            $data['specialities'] = Speciality::all();
+            $data['type'] = 'speciality';
 
             if($data['screen']->screen_type_id == config('vars.screen_types.kiosk')){
                 return view('screens.kiosk.show', $data);
@@ -394,10 +397,18 @@ class ScreensController extends Controller
     /**
      * Get Doctors By Letter.
      */
-    public function searchByLetter($letter)
+    public function searchByLetter($type, $letter)
     {
-        $data['doctors'] = Doctor::where('name_ar', 'LIKE', $letter.'%')->get();
+        $data['type'] = $type;
+        if ($data['type'] == 'doctor'){
+            $data['doctors'] = Doctor::where('name_ar', 'LIKE', $letter.'%')->get();
+        }
+        elseif ($data['type'] == 'speciality'){
+            $data['specialities'] = Speciality::where('name_ar', 'LIKE', $letter.'%')->get();
+        }
+
         $data['view'] = view('screens.kiosk._doctor_floors', $data)->render();
+
         return response()->json($data);
     }
 

@@ -109,7 +109,7 @@
             methods: {
                 searchByLetter(type, letter) {
                     addLoader();
-                    var url = '{{ url('screens/search-by-letter') }}/' + letter;
+                    var url = '{{ url('screens/search-by-letter') }}/' + type + '/' + letter;
                     axios.get(url)
                         .then((response) => {
                             // console.log(letter);

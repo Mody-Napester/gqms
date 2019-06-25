@@ -88,4 +88,9 @@ class Speciality extends Model
         return $this->belongsToMany('App\Area', 'area_speciality');
     }
 
+    // Doctors Relation
+    public function doctors(){
+        return $this->hasMany('App\Doctor', 'source_speciality_id', 'source_speciality_id');
+    }
+
 }
