@@ -101,14 +101,14 @@
                     <div class="confirm-done">
                         <div class="">
                             <div class="input-group">
-                                <input v-model="reservation_serial" placeholder="Enter Reservation Serial .."
-                                       name="reservation_serial" id="reservation_serial" type="text"
+                                <input v-model="reservation_resource" placeholder="Enter reservation serial or patient pin number.."
+                                       name="reservation_resource" id="reservation_resource" type="text"
                                        class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button v-on:click="checkReservationSerial()" class="btn btn-secondary waves-effect waves-light" type="button"><i class="fa fa-fw fa-search"></i> Search</button>
+                                    <button v-on:click="checkReservationExists()" class="btn btn-secondary waves-effect waves-light" type="button"><i class="fa fa-fw fa-search"></i> Search</button>
                                 </div>
                             </div>
-                            <div class="invalid-feedback reservation_serial_feedback"></div>
+                            <div class="invalid-feedback reservation_resource_feedback"></div>
                             {{--<div>--}}
                                 {{--<select v-model="selected_room" name="room_uuid" class="selected_room form-control">--}}
                                     {{--<option value="choose" disabled>Choose Room..</option>--}}
@@ -118,24 +118,8 @@
                             {{--</div>--}}
                         </div>
 
-                        <div v-if="reservationDiv" class="card-box get-patient-data mt-3 mb-0">
-                            <table class="table table-sm table-striped table-bordered">
-                                <tr>
-                                    <td>Serial</td>
-                                    <td>@{{ serial }}</td>
-                                    <td>Doctor</td>
-                                    <td>@{{ doctor }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Patient</td>
-                                    <td>@{{ patient }}</td>
-                                    <td>Clinic</td>
-                                    <td>@{{ clinic }}</td>
-                                </tr>
-                            </table>
-                            <div class="text-right">
-                                <button v-on:click="confirmDoneOrDoneAndNext()" class="btn btn-primary"><i class="fa fa-fw fa-save"></i> Confirm</button>
-                            </div>
+                        <div style="max-height: 200px;overflow: auto;display: none;" class="card-box get-patient-data mt-3 mb-0">
+
                         </div>
                     </div>
                 </div>
@@ -260,8 +244,8 @@
 
                 $('.confirm-done-container').hide(0);
 
-                $('#reservation_serial').removeClass('is-invalid');
-                $('.reservation_serial_feedback').text('').hide(0);
+                $('#reservation_resource').removeClass('is-invalid');
+                $('.reservation_resource_feedback').text('').hide(0);
             });
         })
     </script>
@@ -274,9 +258,7 @@
                 waiting_time : '{{ ($currentDeskQueueNumber)? nice_time($currentDeskQueueNumber->created_at) : '00:00' }}',
                 done_status: false,
                 skip_status: false,
-                reservation_serial: '',
-{{--                rooms: {!! $desk->floor->rooms !!},--}}
-                reservationDiv: false,
+                reservation_resource: '',
                 serial: '-',
                 patient: '-',
                 doctor: '-',
@@ -284,61 +266,64 @@
             },
             methods : {
                 // Buttons
-                checkReservationSerial(){
+                checkReservationExists(){
                     addLoader('.current-queue-div');
-                    if (this.reservation_serial.length > 0){
-                        var url = '{{ url('dashboard') }}/desk/reservation/' + this.reservation_serial + '/check';
+                    if (this.reservation_resource.length > 0){
+                        var url = '{{ url('dashboard') }}/desk/reservation/' + this.reservation_resource + '/check';
 
                         axios.get(url)
                             .then((response) => {
+                                if(response.data.message.msg_status != 0){
+                                    $('.get-patient-data').show(0);
+                                    $('.get-patient-data').html(response.data.view);
 
-                                if(response.data.message.msg_status == 1){
-
-                                    this.reservationDiv = true;
-
-                                    this.reservation_serial = response.data.serial;
-
-                                    this.serial = response.data.serial;
-                                    this.patient = response.data.patient;
-                                    this.doctor = response.data.doctor;
-                                    this.clinic = response.data.clinic;
-
-                                    $('#reservation_serial').removeClass('is-invalid');
-                                    $('.reservation_serial_feedback').text('').hide(0);
+                                    if(Object.keys(response.data.messages).length > 0){
+                                        // Loop
+                                        for (var message in response.data.messages) {
+                                            addAlert('danger', response.data.messages[message].text, 1);
+                                        }
+                                    }else{
+                                        $('#reservation_resource').removeClass('is-invalid');
+                                        $('.reservation_resource_feedback').text('').hide(0);
+                                    }
 
                                     removeLoarder();
                                 }else{
-                                    this.reservationDiv = false;
-
-                                    $('#reservation_serial').addClass('is-invalid');
-                                    $('.reservation_serial_feedback').text(response.data.message.text).show(0);
+                                    $('.get-patient-data').hide(0);
+                                    $('#reservation_resource').addClass('is-invalid');
+                                    $('.reservation_resource_feedback').text(response.data.message.text).show(0);
 
                                     removeLoarder();
                                 }
 
                             })
                             .catch((data) => {
+                                removeLoarder();
+                                addAlert('danger', 'Server Error!');
                             });
 
                     }else {
                         removeLoarder();
-                        $('#reservation_serial').addClass('is-invalid');
-                        $('.reservation_serial_feedback').text('Enter reservation serial').show(0);
+                        $('#reservation_resource').addClass('is-invalid');
+                        $('.reservation_resource_feedback').text('Enter reservation serial').show(0);
                     }
                 },
-                confirmDoneOrDoneAndNext(){
-                    if(this.done_status = true){
+                confirmDoneOrDoneAndNext(reservation_resource){
+                    this.reservation_resource = reservation_resource;
+
+                    if(this.done_status == true){
                         this.done();
                     }
-                    else if(this.done_status = false){
+                    else if(this.done_status == false){
                         this.doneAndNext();
                     }
 
-                    this.reservation_serial = '';
-                    this.reservationDiv = false,
+                    this.reservation_resource = '';
+                    $('.get-patient-data').html('');
+                    $('.get-patient-data').hide(0);
 
-                    $('#reservation_serial').removeClass('is-invalid');
-                    $('.reservation_serial_feedback').text('').hide(0);
+                    $('#reservation_resource').removeClass('is-invalid');
+                    $('.reservation_resource_feedback').text('').hide(0);
                 },
 
                 next(){
@@ -430,7 +415,7 @@
 
                 done(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_serial + '/done';
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_resource + '/done';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text('-');
@@ -452,11 +437,14 @@
                         })
                         .catch((data) => {
                             removeLoarder();
+                            addAlert('danger', 'Server Error!');
                         });
+
+                    console.log('done');
                 },
                 doneAndNext(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid  + '/done-and-next';
+                    var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_resource + '/done-and-next';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text(response.data.nextQueue.queue_number);
@@ -477,7 +465,10 @@
                         })
                         .catch((data) => {
                             removeLoarder();
+                            addAlert('danger', 'Server Error!');
                         });
+
+                    console.log('done and next');
                 },
 
                 callSkippedAgain(skipped_queue_uuid){
@@ -551,6 +542,12 @@
             mounted() {
                 this.listen();
             }
+        });
+
+        $('body').on('click','.data-reservation' ,function () {
+            var data_reservation = $(this).attr('id');
+
+            app.confirmDoneOrDoneAndNext(data_reservation);
         });
 
         function callSkippedAgain(skipped_queue_uuid){

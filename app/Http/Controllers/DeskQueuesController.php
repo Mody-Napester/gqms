@@ -394,105 +394,103 @@ class DeskQueuesController extends Controller
     /**
      * Done Queue Number.
      */
-    public function checkReservationSerial($reservation_serial){
-        $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
+    public function checkReservationExists($reservation_resource){
 
-        if ($reservation){
-            $room = $reservation->doctor->user->room;
-//            if(empty($reservation->desk_queue_id)){
-//                $data['serial'] = $reservation->source_reservation_serial;
-//                $data['patient'] = ($reservation->patient)? $reservation->patient->name_en : '';
-//                $data['doctor'] = ($reservation->doctor)? $reservation->doctor->name_en : '';
-//                $data['clinic'] = ($reservation->clinic)? $reservation->clinic->name_en : '';
-//
-//                $data['message'] = [
-//                    'msg_status' => 1,
-//                    'text' => 'Reservation exists',
-//                ];
-//            }else{
-//                $data['message'] = [
-//                    'msg_status' => 0,
-//                    'text' => 'Reservation already routed to room ' . $room->name_en,
-//                ];
-//            }
-            if ($room){
-                if(empty($reservation->desk_queue_id)){
+        $reservations = Reservation::where('source_reservation_serial', $reservation_resource)
+            ->orWhere('source_reservation_patient_pin', $reservation_resource)->get();
+        if(count($reservations) > 0){
+            foreach ($reservations as $key => $reservation){
+                $room = ($reservation->doctor)? $reservation->doctor->user->room : false;
+                
+                if(empty($reservation->desk_queue_id)){ // Check if reservation already routed to desk before
                     if ($reservation->patient){
-                        $data['serial'] = $reservation->source_reservation_serial;
-                        $data['patient'] = $reservation->patient->name_en;
-                        $data['doctor'] = $reservation->doctor->name_en;
-                        $data['clinic'] = $reservation->clinic->name_en;
+                        $data['reservations'][$key]['serial'] = $reservation->source_reservation_serial;
+                        $data['reservations'][$key]['patient'] = $reservation->patient->name_en;
+                        $data['reservations'][$key]['doctor'] = $reservation->doctor->name_en;
+                        $data['reservations'][$key]['clinic'] = $reservation->clinic->name_en;
+
+
+                        if ($room){ // Check doctor in room room
+                            $data['reservations'][$key]['room'] = 1;
+                        }else{
+                            $data['reservations'][$key]['room'] = 0;
+                            $data['messages'][$key] = [
+                                'msg_status' => 0,
+                                'text' => 'Reservation of serial ('. $reservation->source_reservation_serial .') exists but doctor not in room',
+                            ];
+                        }
 
                         $data['message'] = [
                             'msg_status' => 1,
-                            'text' => 'Reservation exists',
+                            'text' => 'Reservation Found',
                         ];
                     }else{
-                        $data['message'] = [
+                        $data['messages'][$key] = [
                             'msg_status' => 0,
-                            'text' => 'Patient not exists or not synced yet',
+                            'text' => 'Patient for reservation of serial ('. $reservation->source_reservation_serial .') is not exists or not synced yet',
                         ];
                     }
                 }else{
-                    $data['message'] = [
+                    $data['messages'][$key] = [
                         'msg_status' => 0,
-                        'text' => 'Reservation already routed to room ' . $room->name_en,
+                        'text' => 'Reservation of serial ('. $reservation->source_reservation_serial .') already routed to room ' . $room->name_en,
                     ];
                 }
-            }else{
-                $data['message'] = [
-                    'msg_status' => 0,
-                    'text' => 'Reservation exists but doctor not available',
-                ];
             }
-        }
-
-//        else{
-//            // Sync reservations
-//            $sync = new SyncVendorDataController();
-//            if ($sync->getClientReservations()){
-//                $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
-//
-//                if ($reservation){
-//                    $room = $reservation->doctor->user->room;
-//                    if(empty($reservation->desk_queue_id)){
-//                        $data['serial'] = $reservation->source_reservation_serial;
-//                        $data['patient'] = ($reservation->patient)? $reservation->patient->name_en : '';
-//                        $data['doctor'] = ($reservation->doctor)? $reservation->doctor->name_en : '';
-//                        $data['clinic'] = ($reservation->clinic)? $reservation->clinic->name_en : '';
-//
-//                        $data['message'] = [
-//                            'msg_status' => 1,
-//                            'text' => 'Reservation exists',
-//                        ];
-//                    }else{
-//                        $data['message'] = [
-//                            'msg_status' => 0,
-//                            'text' => 'Reservation already routed to room ' . $room->name_en,
-//                        ];
-//                    }
-//                }else{
-//                    $data['message'] = [
-//                        'msg_status' => 0,
-//                        'text' => 'Reservation not found',
-//                    ];
-//                }
-//
-//            }else{
-//                $data['message'] = [
-//                    'msg_status' => 0,
-//                    'text' => 'Reservation not found or connection failed',
-//                ];
-//            }
-//
-//        }
-
-        else{
+        }else{
             $data['message'] = [
                 'msg_status' => 0,
-                'text' => 'Reservation not found',
+                'text' => 'No Reservation Found!',
             ];
         }
+
+        if(isset($data['reservations'])){
+            $data['view'] = view('desks._patient_reservations', $data)->render();
+        }else{
+            $data['view'] = 'No Data';
+        }
+
+        /* Archived Logic */
+        //        else{
+        //            // Sync reservations
+        //            $sync = new SyncVendorDataController();
+        //            if ($sync->getClientReservations()){
+        //                $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
+        //
+        //                if ($reservation){
+        //                    $room = $reservation->doctor->user->room;
+        //                    if(empty($reservation->desk_queue_id)){
+        //                        $data['serial'] = $reservation->source_reservation_serial;
+        //                        $data['patient'] = ($reservation->patient)? $reservation->patient->name_en : '';
+        //                        $data['doctor'] = ($reservation->doctor)? $reservation->doctor->name_en : '';
+        //                        $data['clinic'] = ($reservation->clinic)? $reservation->clinic->name_en : '';
+        //
+        //                        $data['message'] = [
+        //                            'msg_status' => 1,
+        //                            'text' => 'Reservation exists',
+        //                        ];
+        //                    }else{
+        //                        $data['message'] = [
+        //                            'msg_status' => 0,
+        //                            'text' => 'Reservation already routed to room ' . $room->name_en,
+        //                        ];
+        //                    }
+        //                }else{
+        //                    $data['message'] = [
+        //                        'msg_status' => 0,
+        //                        'text' => 'Reservation not found',
+        //                    ];
+        //                }
+        //
+        //            }else{
+        //                $data['message'] = [
+        //                    'msg_status' => 0,
+        //                    'text' => 'Reservation not found or connection failed',
+        //                ];
+        //            }
+        //
+        //        }
+
 
         // Return
         return response()->json($data);

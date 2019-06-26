@@ -21,6 +21,7 @@ class CreateReservationsTable extends Migration
             $table->integer('doctor_id'); // doctor_id
             $table->integer('clinic_id'); // clinic_id
             $table->string('source_reservation_serial'); // ser
+            $table->string('source_reservation_patient_pin'); // que_sys_ser
             $table->string('source_queue_number'); // que_sys_ser
 
             $table->string('patientid')->nullable();

@@ -31,7 +31,7 @@ class CreateDoctorSchedulesTable extends Migration
             $table->string('place_id1');
             $table->string('hosp_id');
             $table->string('serial');
-            $table->string('queue_system_integ_fla');
+            $table->string('queue_system_integ_flag');
             $table->timestamps();
         });
     }

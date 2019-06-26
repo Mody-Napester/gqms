@@ -313,7 +313,7 @@ class SyncVendorDataController extends Controller
                     'place_id1' => $val->place_id1,
                     'hosp_id' => $val->hosp_id,
                     'serial' => $val->serial,
-                    'queue_system_integ_fla' => $val->queue_system_integ_fla,
+                    'queue_system_integ_flag' => $val->queue_system_integ_flag,
                 ];
 
                 if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
