@@ -66,14 +66,16 @@
 <body>
 
     <div>
-        <div class="top-btns">
-            <div class="top-btns-doctor"><i class="fa fa-heart fa-fw"></i> الاطباء</div>
-            <div class="top-btns-speciality"><i class="fa fa-hospital-o fa-fw"></i> التخصصات</div>
-            <br>
-            <div class="top-btns-toggle">
-                <i class="fa fa-arrow-down fa-fw"></i>
+        @if($screen->screen_type_id == config('vars.screen_types.kiosk'))
+            <div class="top-btns">
+                <div class="top-btns-doctor"><i class="fa fa-heart fa-fw"></i> الاطباء</div>
+                <div class="top-btns-speciality"><i class="fa fa-hospital-o fa-fw"></i> التخصصات</div>
+                <br>
+                <div class="top-btns-toggle">
+                    <i class="fa fa-arrow-down fa-fw"></i>
+                </div>
             </div>
-        </div>
+        @endif
 
         <div class="section bg-blue-1">
             <div class="container-fluid">

@@ -157,6 +157,82 @@
 body{
     font-family: 'Tajawal', sans-serif;
 }
+/* CM Table */
+.cm-table{
+    width: 100%;
+
+}
+.cm-space{height: 10px;}
+.cm-tr{height: 130px}
+.cm-tr td{
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+}
+.cm-bg-green{background-color: #376d60;}
+.cm-txt-green{color: #376d60;}
+.cm-bg-blue{background-color: #3D6489;}
+.cm-txt-blue{color: #3D6489;}
+.cm-header{
+    color: #ffffff;
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.cm-queue-number{
+    width: 35%;
+}
+
+.cm-place{
+    width: 15%;
+}
+
+.cm-user{
+    width: 50%;
+}
+.cm-number{
+    background-color: #ffffff;
+    padding: 10px;
+    font-size: 50px;
+    font-weight: bold;
+    display: block;
+}
+.cm-text-1{
+    text-align: right;
+    direction: rtl;
+    font-size: 30px;
+    font-weight: bold;
+    display: block;
+    color: #ffffff;
+}
+.cm-text-2{
+    text-align: right;
+    direction: rtl;
+    font-size: 30px;
+    font-weight: bold;
+    display: block;
+    color: #ffffff;
+}
+.cm-canceled-res{
+    position: relative;
+}
+.cm-canceled-res:after{
+    content: 'غير متاح';
+    text-align: center;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 40px;
+    padding-top: 30px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #666;
+}
+/**/
 .section{
     padding: 1.2rem;
 }

@@ -401,7 +401,7 @@ class DeskQueuesController extends Controller
         if(count($reservations) > 0){
             foreach ($reservations as $key => $reservation){
                 $room = ($reservation->doctor)? $reservation->doctor->user->room : false;
-                
+
                 if(empty($reservation->desk_queue_id)){ // Check if reservation already routed to desk before
                     if ($reservation->patient){
                         $data['reservations'][$key]['serial'] = $reservation->source_reservation_serial;
