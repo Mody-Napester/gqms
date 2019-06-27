@@ -234,7 +234,9 @@ class RoomQueuesController extends Controller
             event(new RoomQueueStatus($data['availableRoomQueue'], $data['room']->floor_id, $data['room']->id));
 
             // Broadcast event to screen
-            event(new NextRoomQueue($data['room']->uuid, $data['nextQueue']->queue_number));
+            if($data['nextQueue']){
+                event(new NextRoomQueue($data['room']->uuid, $data['nextQueue']->queue_number));
+            }
 
         }else{
             $data['message'] = [

@@ -101,7 +101,7 @@
                     <div class="confirm-done">
                         <div class="">
                             <div class="input-group">
-                                <input v-model="reservation_resource" placeholder="Enter reservation serial or patient pin number.."
+                                <input v-model="reservation_resource" placeholder="Enter reservation serial or patient id number.."
                                        name="reservation_resource" id="reservation_resource" type="text"
                                        class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 <div class="input-group-append">

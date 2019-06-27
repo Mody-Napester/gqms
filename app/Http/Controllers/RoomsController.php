@@ -164,7 +164,7 @@ class RoomsController extends Controller
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
             'status' => 'required',
-            'ip' => 'required',
+            'ip' => 'required|unique:rooms,ip,' . $resource->id,
             'floor' => 'required',
         ]);
 

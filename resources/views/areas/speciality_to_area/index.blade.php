@@ -90,6 +90,8 @@
                             }else{
                                 addAlert('danger', response.data.message.text);
                             }
+
+                            window.location.reload();
                         })
                         .catch((data) => {
                             removeLoarder();

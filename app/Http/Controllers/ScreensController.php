@@ -156,7 +156,7 @@ class ScreensController extends Controller
 
         $data['arabic_alphas'] = ['الكل','ا','إ','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ى','ي'];
 
-        if($data['screen']){
+        if($data['screen'] && $data['screen']->area_id > 0){
             $data['doctors'] = Doctor::all();
             $data['specialities'] = Speciality::all();
             $data['type'] = 'speciality';
@@ -177,8 +177,7 @@ class ScreensController extends Controller
                 return redirect(route('dashboard.index'));
             }
         }else{
-            return request()->url();
-            return 'Screen Not Found';
+            return view('screens._screen_not_available', ['screen'=> $data['screen']]);
         }
 
     }

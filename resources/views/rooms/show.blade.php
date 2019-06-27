@@ -486,6 +486,7 @@
                 callSkippedAgain(skipped_queue_uuid){
                     addLoader();
                     var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + skipped_queue_uuid + '/call-skipped';
+
                     axios.get(url)
                         .then((response) => {
                             removeLoarder();
@@ -511,7 +512,6 @@
                 listen(){
                     Echo.channel('available-room-queue-' + this.floor + '-' + this.room)
                         .listen('RoomQueueStatus', (response) => {
-                            console.log('fff');
                             $('#all-queues').html('');
                             $('#all-queues').append(response.view);
                         });
@@ -524,36 +524,37 @@
         });
 
         function callSkippedAgain(skipped_queue_uuid){
-            addLoader();
-            var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + skipped_queue_uuid + '/call-skipped';
+            app.callSkippedAgain(skipped_queue_uuid);
+            {{--addLoader();--}}
+            {{--var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + skipped_queue_uuid + '/call-skipped';--}}
 
-            // Get contents
-            $.ajax({
-                method:'GET',
-                url:url,
-                beforeSend:function () {
-                    addLoader();
-                },
-                success:function (response) {
+            {{--// Get contents--}}
+            {{--$.ajax({--}}
+                {{--method:'GET',--}}
+                {{--url:url,--}}
+                {{--beforeSend:function () {--}}
+                    {{--addLoader();--}}
+                {{--},--}}
+                {{--success:function (response) {--}}
 
-                    $('.current-queue').text(response.skippedQueue.queue_number);
+                    {{--$('.current-queue').text(response.skippedQueue.queue_number);--}}
 
-                    app.room_queue_uuid = response.skippedQueue.uuid;
-                    app.waiting_time = response.waitingTime;
-                    app.active_btn = true;
+                    {{--app.room_queue_uuid = response.skippedQueue.uuid;--}}
+                    {{--app.waiting_time = response.waitingTime;--}}
+                    {{--app.active_btn = true;--}}
 
-                    if(response.message.msg_status == 1){
-                        addAlert('success', response.message.text);
-                    }else{
-                        addAlert('danger', response.message.text);
-                    }
+                    {{--if(response.message.msg_status == 1){--}}
+                        {{--addAlert('success', response.message.text);--}}
+                    {{--}else{--}}
+                        {{--addAlert('danger', response.message.text);--}}
+                    {{--}--}}
 
-                    removeLoarder();
-                },
-                error:function () {
+                    {{--removeLoarder();--}}
+                {{--},--}}
+                {{--error:function () {--}}
 
-                }
-            });
+                {{--}--}}
+            {{--});--}}
         }
     </script>
 @endsection
