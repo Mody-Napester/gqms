@@ -11,7 +11,7 @@ class DoctorSchedule extends Model
      *
      * @var array
      */
-    protected $fillable = ['daynumber, dayname_ar, dayname_en, shift_flag, starttime, endtime, duration_by_hour, time_slot_by_minute, startdate, enddate, week_frequency_flag, emp_id, place_id1, hosp_id, serial, queue_system_integ_flag', 'created_at', 'updated_at'];
+    protected $fillable = ['daynumber', 'dayname_ar', 'dayname_en', 'shift_flag', 'starttime', 'endtime', 'duration_by_hour', 'time_slot_by_minute', 'startdate', 'enddate', 'week_frequency_flag', 'emp_id', 'place_id1', 'hosp_id', 'serial', 'queue_system_integ_flag', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -82,7 +82,7 @@ class DoctorSchedule extends Model
 
     // Doctor Relation
     public function doctor(){
-        return $this->belongsTo('App\Doctor', 'doctor_id', 'source_doctor_id');
+        return $this->belongsTo('App\Doctor', 'emp_id', 'source_doctor_id');
     }
 
 }

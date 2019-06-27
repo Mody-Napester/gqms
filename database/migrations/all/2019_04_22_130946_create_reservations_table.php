@@ -13,6 +13,17 @@ class CreateReservationsTable extends Migration
      */
     public function up()
     {
+        // ser,
+        //patientid,
+        //reservation_date_time,
+        //doctor_id,
+        //clinic_id,
+        //speciality_id,
+        //que_sys_ser,
+        //servstatus,
+        //cashier_flag,
+        //queue_system_integ_flag
+
         Schema::create('reservations', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
@@ -21,7 +32,6 @@ class CreateReservationsTable extends Migration
             $table->integer('doctor_id'); // doctor_id
             $table->integer('clinic_id'); // clinic_id
             $table->string('source_reservation_serial'); // ser
-            $table->string('source_reservation_patient_pin'); // que_sys_ser
             $table->string('source_queue_number'); // que_sys_ser
 
             $table->string('patientid')->nullable();

@@ -97,6 +97,11 @@ class Doctor extends Model
         return $this->hasMany('App\Reservation');
     }
 
+    // Schedules Relation
+    public function schedules(){
+        return $this->hasMany('App\DoctorSchedule', 'source_doctor_id', 'emp_id');
+    }
+
     // Doctor To Floor Relation
     public function inFloor(){
         return $this->belongsTo('App\DoctorToFloor');

@@ -294,7 +294,7 @@ class SyncVendorDataController extends Controller
             $q->orWhere('queue_system_integ_flag', '');
             $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
-        })->where('', 'like', '%2019')->chunk(100, function ($data) {
+        })->orderBy('serial')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
 
                 $array = [
@@ -323,7 +323,8 @@ class SyncVendorDataController extends Controller
                     DB::connection('oracle')->table('VW_DOCTOR_SCHEDULE')->where('serial', $val->serial)
                         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
 
-                } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+                }
+                else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
 
                     $schedule = DoctorSchedule::getBy('serial', $val->serial);
 

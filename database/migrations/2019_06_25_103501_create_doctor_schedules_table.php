@@ -16,22 +16,22 @@ class CreateDoctorSchedulesTable extends Migration
         Schema::create('doctor_schedules', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
-            $table->string('daynumber');
-            $table->string('dayname_ar');
-            $table->string('dayname_en');
-            $table->string('shift_flag');
-            $table->string('starttime');
-            $table->string('endtime');
-            $table->string('duration_by_hour');
-            $table->string('time_slot_by_minute');
-            $table->string('startdate');
-            $table->string('enddate');
-            $table->string('week_frequency_flag');
-            $table->string('emp_id');
-            $table->string('place_id1');
-            $table->string('hosp_id');
-            $table->string('serial');
-            $table->string('queue_system_integ_flag');
+            $table->string('daynumber')->nullable();
+            $table->string('dayname_ar')->nullable();
+            $table->string('dayname_en')->nullable();
+            $table->string('shift_flag')->nullable();
+            $table->string('starttime')->nullable();
+            $table->string('endtime')->nullable();
+            $table->string('duration_by_hour')->nullable();
+            $table->string('time_slot_by_minute')->nullable();
+            $table->string('startdate')->nullable();
+            $table->string('enddate')->nullable();
+            $table->string('week_frequency_flag')->nullable();
+            $table->string('emp_id')->nullable();
+            $table->string('place_id1')->nullable();
+            $table->string('hosp_id')->nullable();
+            $table->string('serial')->nullable();
+            $table->string('queue_system_integ_flag')->nullable();
             $table->timestamps();
         });
     }

@@ -397,7 +397,7 @@ class DeskQueuesController extends Controller
     public function checkReservationExists($reservation_resource){
 
         $reservations = Reservation::where('source_reservation_serial', $reservation_resource)
-            ->orWhere('source_reservation_patient_pin', $reservation_resource)->get();
+            ->orWhere('patientid', $reservation_resource)->get();
         if(count($reservations) > 0){
             foreach ($reservations as $key => $reservation){
                 $room = ($reservation->doctor)? $reservation->doctor->user->room : false;

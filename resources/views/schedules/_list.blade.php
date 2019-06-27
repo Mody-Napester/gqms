@@ -18,7 +18,7 @@
         @foreach($schedules as $schedule)
             <tr>
                 <td>{{ $schedule->serial }}</td>
-                <td>{{ $schedule->emp_id }}</td>
+                <td>{{ ($schedule->doctor)? $schedule->doctor->name_en : '-' }}</td>
                 <td>{{ $schedule->dayname_ar }}</td>
                 <td>{{ $schedule->starttime }}</td>
                 <td>{{ $schedule->endtime }}</td>
