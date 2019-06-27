@@ -192,7 +192,7 @@ class ScreensController extends Controller
         if($screen){
             return $this->show($screen->uuid);
         }else{
-            return 'Screen Not Found';
+            return view('screens._screen_not_available', ['screen'=> $screen]);
         }
     }
 
