@@ -1,5 +1,12 @@
+
+<?php
+    // Counter
+    $counter = 0;
+?>
+
 @if($type == 'doctor')
     @foreach($doctors as $doctor)
+        @if(DB::table('doctor_schedules')->where('emp_id', $doctor->source_doctor_id)->first())
         <div class="row">
             <div class="col-md-2 text-center pr-0">
     {{--            <div style="background-color: #ffffff;padding: 5px;margin: 5px;">{{ ($floor = \DB::table('doctor_to_floors')->where('doctor_id', $doctor->id)->first())? \App\Floor::getBy('id', $floor->floor_id)->name_en : '-' }}</div>--}}
@@ -23,6 +30,9 @@
                 <div style="background-color: #ffffff;padding: 5px;margin: 5px;text-align: right;">{{ $doctor->name_ar }}</div>
             </div>
         </div>
+
+        <?php $counter++; ?>
+        @endif
     @endforeach
 @else
     @foreach($specialities as $speciality)
@@ -48,6 +58,8 @@
         </div>
         {{--@foreach($speciality->doctors as $doctor)--}}
         {{--@endforeach--}}
+
+        <?php $counter++; ?>
         @endif
     @endforeach
 @endif

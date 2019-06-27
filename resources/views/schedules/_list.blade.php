@@ -2,7 +2,8 @@
     <thead>
     <tr>
         <th>Serial</th>
-        <th>Doctor</th>
+        <th>Doctor (EN)</th>
+        <th>Doctor (AR)</th>
         <th>Day</th>
         <th>Start time</th>
         <th>End time</th>
@@ -19,6 +20,7 @@
             <tr>
                 <td>{{ $schedule->serial }}</td>
                 <td>{{ ($schedule->doctor)? $schedule->doctor->name_en : '-' }}</td>
+                <td>{{ ($schedule->doctor)? $schedule->doctor->name_ar : '-' }}</td>
                 <td>{{ $schedule->dayname_ar }}</td>
                 <td>{{ $schedule->starttime }}</td>
                 <td>{{ $schedule->endtime }}</td>
