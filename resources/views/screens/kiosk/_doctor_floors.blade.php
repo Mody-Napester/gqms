@@ -40,8 +40,12 @@
         <div class="row text-center">
             <div class="col-md-3 pr-0">
                 <div style="background-color: #ffffff;padding: 5px;margin: 5px;">
-                    @if($area = $speciality->areas()->first())
-                        {{ $area->name_en . '-' . ($area->floor)? $area->floor->name_en : '-' }}
+                    @if($speciality->areas)
+                        @if($area = $speciality->areas()->first())
+                            {{ $area->name_en . '-' . ($area->floor)? $area->floor->name_en : '-' }}
+                        @else
+                            -
+                        @endif
                     @else
                         -
                     @endif
