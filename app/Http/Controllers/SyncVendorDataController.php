@@ -62,7 +62,8 @@ class SyncVendorDataController extends Controller
                 }
             }
         });
-        return true;
+
+        return 'done';
     }
 
     // Get all specialities
@@ -98,7 +99,8 @@ class SyncVendorDataController extends Controller
                 }
             }
         });
-        return true;
+
+        return 'done';
     }
 
     // Get all doctors
@@ -186,7 +188,8 @@ class SyncVendorDataController extends Controller
                 }
             }
         });
-        return true;
+
+        return 'done';
     }
 
     // Get all patients
@@ -230,7 +233,8 @@ class SyncVendorDataController extends Controller
                 }
             }
         });
-        return true;
+
+        return 'done';
     }
 
     // Get all reservation
@@ -240,46 +244,54 @@ class SyncVendorDataController extends Controller
             return false;
         }
 
-        DB::connection('oracle')->table('VW_RESERVATIONS')->where(function ($q) {
-            $q->whereNull('queue_system_integ_flag');
-            $q->orWhere('queue_system_integ_flag', '');
-            $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
-            $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
-        })->orderBy('ser')->chunk(100, function ($data) {
-            foreach ($data as $key => $val) {
+        DB::connection('oracle')
+            ->table('VW_RESERVATIONS')
+            // ->where('doctor_id', 856)
+            ->where('reservation_date_time', 'like', date('Y-m-d').'%')
+            ->where(function ($q) {
+                $q->whereNull('queue_system_integ_flag');
+                $q->orWhere('queue_system_integ_flag', '');
+                $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+                $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
+            })->orderBy('ser')->chunk(100, function ($data) {
+                foreach ($data as $key => $val) {
 
-                $array = [
-                    'doctor_id' => $val->doctor_id,
-                    'clinic_id' => $val->clinic_id,
-                    'source_reservation_serial' => $val->ser,
-                    'source_queue_number' => $val->que_sys_ser,
-                    'patientid' => $val->patientid,
-                    'reservation_date_time' => $val->reservation_date_time,
-                    'speciality_id' => $val->speciality_id,
-                    'servstatus' => $val->servstatus,
-                    'cashier_flag' => $val->cashier_flag,
-                ];
+                    $array = [
+                        'clinic_id' => $val->clinic_id,
+                        'doctor_id' => $val->doctor_id,
+                        'source_reservation_serial' => $val->ser,
+                        'source_queue_number' => $val->que_sys_ser,
+                        'patientid' => $val->patientid,
+                        'reservation_date_time' => $val->reservation_date_time,
+                        'speciality_id' => $val->speciality_id,
+                        'servstatus' => $val->servstatus,
+                        'cashier_flag' => $val->cashier_flag,
+                    ];
 
-                if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
+                    if($array){
+                        if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
 
-                    Reservation::store($array);
-                    DB::connection('oracle')->table('VW_RESERVATIONS')->where('ser', $val->ser)
-                        ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
+                            Reservation::store($array);
+                            DB::connection('oracle')->table('VW_RESERVATIONS')->where('ser', $val->ser)
+                                ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
 
-                } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+                        } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
 
-                    $reservation = Reservation::getBy('ser', $val->ser);
+                            $reservation = Reservation::getBy('ser', $val->ser);
 
-                    if ($reservation) {
-                        Reservation::editBySourceReservationSer($array, $val->ser);
-                    } else {
-                        Reservation::store($array);
+                            if ($reservation) {
+                                Reservation::editBySourceReservationSer($array, $val->ser);
+                            } else {
+                                Reservation::store($array);
+                            }
+
+                        }
                     }
 
                 }
-            }
-        });
-        return true;
+            });
+
+        return 'done';
     }
 
     // Get all schedules
@@ -337,6 +349,7 @@ class SyncVendorDataController extends Controller
                 }
             }
         });
-        return true;
+
+        return 'done';
     }
 }

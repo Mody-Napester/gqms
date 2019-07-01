@@ -44,7 +44,7 @@ class SyncButtonsController extends Controller
     // Sync clinics
     public function syncClinics()
     {
-        if ($this->sync->getClientClinics()){
+        if ($this->sync->getClientClinics() == 'done'){
             $data['message'] = [
                 'msg_status' => 1,
                 'text' => 'Sync Done ..',
@@ -66,7 +66,7 @@ class SyncButtonsController extends Controller
     // Sync Doctors
     public function syncDoctors()
     {
-        if ($this->sync->getClientDoctors()){
+        if ($this->sync->getClientDoctors() == 'done'){
             $data['message'] = [
                 'msg_status' => 1,
                 'text' => 'Sync Done ..',
@@ -88,7 +88,7 @@ class SyncButtonsController extends Controller
     // Sync Patients
     public function syncPatients()
     {
-        if ($this->sync->getClientPatients()){
+        if ($this->sync->getClientPatients() == 'done'){
             $data['message'] = [
                 'msg_status' => 1,
                 'text' => 'Sync Done ..',
@@ -110,13 +110,15 @@ class SyncButtonsController extends Controller
     // Sync Patients
     public function syncReservations()
     {
-        if ($this->sync->getClientReservations()){
+        if ($this->sync->getClientReservations() == 'done'){
             $data['message'] = [
                 'msg_status' => 1,
                 'text' => 'Sync Done ..',
             ];
 
-            $data['reservations'] = Reservation::all();
+            // $data['reservations'] = Reservation::where('reservation_date_time', 'like', date('Y-m-d').'%')->get();
+            $data['reservations'] = Reservation::where('reservation_date_time', 'like', '2019%')->get();
+
             $data['view'] = view('reservations._list', $data)->render();
         }else{
             $data['message'] = [
@@ -132,7 +134,7 @@ class SyncButtonsController extends Controller
     // Sync Specialities
     public function syncSpecialities()
     {
-        if ($this->sync->getClientSpecialities()){
+        if ($this->sync->getClientSpecialities() == 'done'){
             $data['message'] = [
                 'msg_status' => 1,
                 'text' => 'Sync Done ..',
@@ -154,7 +156,7 @@ class SyncButtonsController extends Controller
     // Sync Schedules
     public function syncSchedules()
     {
-        if ($this->sync->getClientSchedules()){
+        if ($this->sync->getClientSchedules() == 'done'){
             $data['message'] = [
                 'msg_status' => 1,
                 'text' => 'Sync Done ..',

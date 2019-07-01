@@ -6,6 +6,12 @@ Route::group(
 
 });
 
+Route::get('test', function (){
+    return DB::table('reservations')
+        // ->where('doctor_id', 856)
+        ->where('reservation_date_time', 'like', date('Y-m-d').'%')->get();
+});
+
 //// Integration And Sync Section ////////
 Route::get('/integration/get-clinics', 'SyncVendorDataController@getClientClinics');
 Route::get('/integration/get-specialities', 'SyncVendorDataController@getClientSpecialities');

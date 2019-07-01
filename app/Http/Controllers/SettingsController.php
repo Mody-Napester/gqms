@@ -20,7 +20,7 @@ class SettingsController extends Controller
         }
 
         $data['any'] = '';
-        
+
         return view('settings.index', $data);
     }
 
