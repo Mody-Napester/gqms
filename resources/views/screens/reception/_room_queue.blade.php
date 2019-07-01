@@ -1,5 +1,5 @@
 @foreach($screen->rooms()->orderBy('room_id', 'ASC')->get() as $room)
-    <div class="col-md-6 pl-0">
+    <div class="col-md-6 p-0">
         <!-- Start Reservation Row -->
         <div class="res-row row m-0">
             <div class="col-md-5 p-0">

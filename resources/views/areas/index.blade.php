@@ -85,7 +85,7 @@
                                 <td>{{ $area->id }}</td>
                                 <td>{{ $area->name_ar }}</td>
                                 <td>{{ $area->name_en }}</td>
-                                <td>{{ $area->floor->name_en }}</td>
+                                <td>{{ ($area->floor)? $area->floor->name_en : '-'}}</td>
                                 <td>
                                     @foreach($area->specialities as $speciality)
                                         <span class="badge badge-warning">{{ $speciality->name_en }}</span>
