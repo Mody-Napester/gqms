@@ -5,12 +5,12 @@
 @section('content')
 
     <div class="container-fluid mt-2">
-        <!-- Desk Queue -->
-        @include('screens.reception._desk_queue')
-
         <div class="row">
             <!-- Doctor Queue -->
             @include('screens.reception._room_queue')
+
+            <!-- Desk Queue -->
+            @include('screens.reception._desk_queue')
         </div>
     </div>
 
