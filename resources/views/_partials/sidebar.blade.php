@@ -4,10 +4,6 @@
         <div id="sidebar-menu">
             <ul>
                 <li class="has_sub">
-                    <a href="{{ route('resetQueues') }}" class="waves-effect"><i class="ti-reload"></i> <span> Reset Queues </span></a>
-                </li>
-
-                <li class="has_sub">
                     <a href="{{ route('dashboard.index') }}" class="waves-effect"><i class="ti-dashboard"></i> <span> Dashboard </span></a>
                 </li>
                 <li class="has_sub">
@@ -131,6 +127,9 @@
                     @endif
                     <li class="has_sub">
                         <a href="{{ url('translations') }}" class="waves-effect"><i class="ti-flag-alt-2"></i> <span> Translations </span></a>
+                    </li>
+                    <li class="has_sub">
+                        <a href="{{ route('settings.index') }}" class="waves-effect"><i class="ti-settings"></i> <span> Settings </span></a>
                     </li>
                 @endif
 

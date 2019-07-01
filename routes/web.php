@@ -57,6 +57,9 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    // Settings
+    Route::get('settings', 'SettingsController@index')->name('settings.index');
+
     // Auth modifications
     Route::get('auth/users/logout', 'Auth\CustomAuthController@logoutUsers')->name('auth.logoutUsers');
 

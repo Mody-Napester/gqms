@@ -20,6 +20,10 @@ class CustomAuthController extends Controller
                 'available' => 0,
             ], $user->id);
         }
-        return count($users);
+
+        return back()->with('message', [
+            'text' => 'Successfully Logged out ('. count($users) .') users',
+            'type' => 'success'
+        ]);
     }
 }
