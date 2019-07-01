@@ -14,7 +14,7 @@
                 <div style="background-color: #ffffff;padding: 5px;margin: 5px;">
                     @if($doctor->speciality)
                         @if($area = $doctor->speciality->areas()->where('speciality_id', $doctor->speciality->id)->first())
-                            {{ $area->name_en . '-' . ($area->floor)? $area->floor->name_en : '-' }}
+                            {{ $area->name_en . '-' . (isset($area->floor))? $area->floor->name_en : '-' }}
                         @else
                             -
                         @endif
@@ -42,7 +42,7 @@
                 <div style="background-color: #ffffff;padding: 5px;margin: 5px;">
                     @if($area = $speciality->areas()->first())
                         @if(isset($area->name_en))
-                            {{ $area->name_en . '-' . ($area->floor)? $area->floor->name_en : '-' }}
+                            {{ $area->name_en . '-' . (isset($area->floor))? $area->floor->name_en : '-' }}
                         @else
                             -
                         @endif
