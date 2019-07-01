@@ -53,7 +53,7 @@
                 <label>Reception area</label>
                 <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
                     @foreach($areas as $key => $area)
-                        <option value="{{ $area->uuid }}">{{ $area->name_en }} - {{ $area->floor->name_en }}</option>
+                        <option value="{{ $area->uuid }}">{{ $area->name_en }} - {{ ($area->floor)? $area->floor->name_en : '-' }}</option>
                     @endforeach
                 </select>
             </div>

@@ -82,7 +82,7 @@
                         <label>Show Rooms</label>
                         <select name="rooms[]" id="rooms" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                             @foreach($rooms as $key => $room)
-                                <option value="{{ $room->uuid }}">{{ $room->floor->name_en . ' - ' . $room->name_en }}</option>
+                                <option value="{{ $room->uuid }}">{{ (($room->floor)? $room->floor->name_en : '-') . ' - ' . $room->name_en }}</option>
                             @endforeach
                         </select>
                     </div>

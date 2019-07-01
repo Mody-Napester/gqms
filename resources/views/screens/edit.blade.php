@@ -90,7 +90,7 @@
                         <select name="rooms[]" id="rooms" class="select2" multiple data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                             @foreach($rooms as $key => $room)
                                 <option @if(in_array($room->id, $screen->rooms()->pluck('room_id')->toArray())) selected @endif value="{{ $room->uuid }}">
-                                    {{ $room->floor->name_en . ' - ' . $room->name_en }}</option>
+                                    {{ (($room->floor)? $room->floor->name_en : '-') . ' - ' . $room->name_en }}</option>
                             @endforeach
                         </select>
                     </div>

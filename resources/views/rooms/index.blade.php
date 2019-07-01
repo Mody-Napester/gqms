@@ -85,7 +85,7 @@
                                 <td>{{ $desk->name_ar }}</td>
                                 <td>{{ $desk->name_en }}</td>
                                 <td>{{ $desk->ip }}</td>
-                                <td>{{ $desk->floor->name_en }}</td>
+                                <td>{{ ($desk->floor)? $desk->floor->name_en : '-' }}</td>
                                 <td>{{ App\Enums\RoomStatuses::$statuses[$desk->status]['en'] }}</td>
                                 <td>{{ $desk->createdBy->name }}</td>
 {{--                                <td>{{ $desk->updatedBy->name }}</td>--}}
