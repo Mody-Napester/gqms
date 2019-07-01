@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DeskQueue;
 use App\DeskQueueStatus;
+use App\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -32,6 +33,8 @@ class DashboardController extends Controller
 
         $data['today_total'] = ($data['today_total'] == 0)? 1 : $data['today_total'];
         $data['total_total'] = ($data['total_total'] == 0)? 1 : $data['total_total'];
+
+        $data['loggedInUsers'] = User::where('login_ip', '<>', '')->get();
 
         return view('dashboard.index', $data);
     }

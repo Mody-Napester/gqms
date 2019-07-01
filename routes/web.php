@@ -57,6 +57,9 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    // Auth modifications
+    Route::get('auth/users/logout', 'Auth\CustomAuthController@logoutUsers')->name('auth.logoutUsers');
+
     // Doctor modifications
     Route::get('doctors/{doctor_uuid}/{nickname}/update-nickName', 'DoctorsController@updateNickName')->name('screens.updateNickName');
 

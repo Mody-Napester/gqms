@@ -13,7 +13,7 @@
                     <span class="cm-number cm-txt-green">{{ $room->name_en }}</span>
                 </td>
                 <td class="cm-user">
-                    <span id="doctor-{{ $room->uuid }}" class="cm-text-1">{{ ($room->user)? ((!empty($room->user->doctor->nickname))? $room->user->doctor->nickname : $room->user->doctor->name_ar) : '-' }}</span>
+                    <span id="doctor-{{ $room->uuid }}" class="cm-text-1">{{ ($room->user)? ('د ' . (!empty($room->user->doctor->nickname))? $room->user->doctor->nickname : $room->user->doctor->name_ar) : '-' }}</span>
                     <span id="clinic-{{ $room->uuid }}" class="cm-text-2">{{ ($room->user)? $room->user->doctor->speciality->name_ar : '-' }}</span>
                 </td>
             </tr>
