@@ -171,7 +171,6 @@ class ScreensController extends Controller
                 $data['desks'] = Desk::where('floor_id', $data['screen']->floor_id)->get();
                 $data['room'] = Room::where('floor_id', $data['screen']->floor_id)->get();
 
-//                return view('screens.reception.ajax_show', $data);
             return view('screens.reception.show', $data);
             }else{
                 return redirect(route('dashboard.index'));

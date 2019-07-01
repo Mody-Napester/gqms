@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') Areas @endsection
+@section('title') Reception Areas @endsection
 
 @section('content')
 
@@ -11,7 +11,7 @@
                 <a href="#goToAll" class="btn btn-default waves-effect waves-light">Show All <i class="fa fa-fw fa-arrow-down"></i></a>
             </div>
 
-            <h4 class="page-title">Areas</h4>
+            <h4 class="page-title">Reception Areas</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
                 <li class="breadcrumb-item"><a href="#">Areas</a></li>
@@ -42,7 +42,7 @@
 
                 </div>
                 <div class="tab-pane" id="createResource">
-                    <h4 class="m-t-0 header-title">Create new Floor</h4>
+                    <h4 class="m-t-0 header-title">Create new Reception Area</h4>
                     <p class="text-muted font-14 m-b-30">
                         Create new resource from here.
                     </p>

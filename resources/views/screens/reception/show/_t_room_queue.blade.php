@@ -1,12 +1,5 @@
-<div class="col-md-6 pl-0">
-    <div class="bg-green-2 section mb-2">
-        <div class="text-white txt-1 text-center">
-            إنتظار العيادات
-        </div>
-    </div>
-
-
-    @foreach($screen->rooms()->orderBy('room_id', 'ASC')->get() as $room)
+@foreach($screen->rooms()->orderBy('room_id', 'ASC')->get() as $room)
+    <div class="col-md-6 pl-0">
         <!-- Start Reservation Row -->
         <div class="res-row row m-0">
             <div class="col-md-5 p-0">
@@ -40,6 +33,5 @@
             </div>
         </div>
         <!-- End Reservation Row -->
-    @endforeach
-
-</div>
+    </div>
+@endforeach

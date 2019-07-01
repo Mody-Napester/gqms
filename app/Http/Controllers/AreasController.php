@@ -63,7 +63,7 @@ class AreasController extends Controller
             'name_en' => 'required|string|max:255',
             'status' => 'required',
             'floor' => 'required',
-            'speciality' => 'required',
+            'specialities' => 'required',
         ]);
 
         if ($validator->fails()){
