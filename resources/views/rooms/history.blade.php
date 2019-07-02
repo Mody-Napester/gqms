@@ -56,7 +56,7 @@
                         @foreach($roomQueues as $roomQueue)
                             <tr>
                                 <td>{{ $roomQueue->queue_number }}</td>
-                                <td>{{ $roomQueue->floor->name_en }}</td>
+                                <td>{{ ($roomQueue->floor)? $roomQueue->floor->name_en : '-' }}</td>
                                 <td>{{ ($roomQueue->room)? $roomQueue->room->name_en : '' }}</td>
                                 <td>
                                     <span class="label {{ $roomQueue->queueStatus->class }}">

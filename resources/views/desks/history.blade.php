@@ -56,7 +56,7 @@
                         @foreach($deskQueues as $deskQueue)
                             <tr>
                                 <td>{{ $deskQueue->queue_number }}</td>
-                                <td>{{ $deskQueue->floor->name_en }}</td>
+                                <td>{{ ($deskQueue->floor)? $deskQueue->floor->name_en : '-' }}</td>
                                 <td>{{ ($deskQueue->desk)? $deskQueue->desk->name_en : '' }}</td>
                                 <td>
                                     <span class="label {{ $deskQueue->queueStatus->class }}">
