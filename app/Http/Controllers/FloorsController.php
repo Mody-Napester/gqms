@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
+use App\Desk;
 use App\Floor;
+use App\Room;
+use App\Screen;
 use App\User;
 use Validator;
 use Illuminate\Http\Request;
@@ -173,6 +177,19 @@ class FloorsController extends Controller
     {
         $resource = Floor::getBy('uuid', $uuid);
         if ($resource){
+            $areas = Area::where('floor_id', $resource->id)->get();
+            $desks = Desk::where('floor_id', $resource->id)->get();
+            $rooms = Room::where('floor_id', $resource->id)->get();
+            $screens = Screen::where('floor_id', $resource->id)->get();
+
+            if($areas || $desks || $rooms || $screens){
+                $data['message'] = [
+                    'msg_status' => 0,
+                    'type' => 'danger',
+                    'text' => 'Sorry we cannot delete this floor.',
+                ];
+            }
+
             $deletedResource = Floor::remove($resource->id);
 
             // Return
