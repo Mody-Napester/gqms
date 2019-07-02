@@ -92,7 +92,7 @@
                             <td>{{ $deskQueue->created_at }}</td>
                             <td>{{ ($deskQueue->reservation && $deskQueue->reservation->roomQueue) ? $deskQueue->reservation->roomQueue->created_at : '-' }}</td>
 
-                            <td>{{ $deskQueue->floor->name_en }}</td>
+                            <td>{{ ($deskQueue->floor)? $deskQueue->floor->name_en : '-' }}</td>
 
                             <td class="text-center">
                                 @if($deskQueue->status != config('vars.desk_queue_status.waiting'))
