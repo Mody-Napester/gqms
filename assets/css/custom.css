@@ -261,7 +261,7 @@ body{
     background-color: #7f8c8d;
 }
 .txt-1{
-    font-size: 5rem;
+    font-size: 3rem;
     font-weight: bold;
 }
 .txt-2{
@@ -275,7 +275,7 @@ body{
     background-color: #FFFFFF;
     padding: 2px;
     color: #2E5272;
-    font-size: 6rem;
+    font-size: 3rem;
     font-weight: bold;
     width:100%;
     display: block;
@@ -290,13 +290,13 @@ body{
 }
 .text-app-1{
     color: #FFFFFF;
-    font-size: 56px;
+    font-size: 34px;
     font-weight: bold;
     display: block;
 }
 .text-app-2{
     color: #FFFFFF;
-    font-size: 47px;
+    font-size: 20px;
     padding-top: 1px;
     display: block;
 }
@@ -318,8 +318,8 @@ body{
     text-align: center;
     color: #FFFFFF;
     font-weight: bold;
-    font-size: 2.5rem;
-    padding-top: 60px;
+    font-size: 2rem;
+    padding-top: 30px;
     position: absolute;
     width: 100%;
     height: 100%;
