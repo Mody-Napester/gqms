@@ -19,11 +19,11 @@
 
     <!-- Page-Title -->
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-4">
             <h4 class="m-t-20 m-b-20">Today ({{ ($today_total_is == 0)? 0 : $today_total }})</h4>
 
             <div class="row">
-                <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="col-md-12">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-warning"><i class="ion-load-d text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="col-md-12">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-primary"><i class="ion-location text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="col-md-12">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-danger"><i class="ion-arrow-return-right text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="col-md-12">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-success"><i class="ion-checkmark text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -100,11 +100,13 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="col-sm-4">
             <h4 class="m-t-20 m-b-20">Total ({{ ($total_total_is == 0)? 0 : $total_total }})</h4>
 
             <div class="row">
-                <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="col-md-12">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-warning"><i class="ion-load-d text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -123,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="col-md-12">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-primary"><i class="ion-location text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -142,7 +144,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="col-md-12">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-danger"><i class="ion-arrow-return-right text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -161,7 +163,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="col-md-12">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-success"><i class="ion-checkmark text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -183,12 +185,12 @@
             </div>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
 
             <h4 class="m-t-20 m-b-20">Logged in Users ({{ count($loggedInUsers) }})</h4>
 
-            <div class="card-box">
-                <table class="table table-bordered table-striped table-sm">
+            <div class="card-box p-2">
+                <table class="table table-striped table-sm">
                     <thead>
                     <tr>
                         <td>User</td>
