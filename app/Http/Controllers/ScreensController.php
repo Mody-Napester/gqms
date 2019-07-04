@@ -248,11 +248,11 @@ class ScreensController extends Controller
         $area = Area::getBy('uuid', $request->area);
 
         // Generate Slug
-        $slug = str_slug($request->name_en . '-' . $area->id);
+//        $slug = str_slug($request->name_en . '-' . $area->id);
 
         // Do Code
         $updatedResource = Screen::edit([
-            'slug' => $slug,
+//            'slug' => $slug,
             'name_ar' => $request->name_ar,
             'name_en' => $request->name_en,
             'status' => $request->status,

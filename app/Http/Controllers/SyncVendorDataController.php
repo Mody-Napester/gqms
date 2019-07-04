@@ -246,7 +246,6 @@ class SyncVendorDataController extends Controller
 
         DB::connection('oracle')
             ->table('VW_RESERVATIONS')
-            // ->where('doctor_id', 856)
             ->where('reservation_date_time', 'like', date('Y-m-d').'%')
             ->where(function ($q) {
                 $q->whereNull('queue_system_integ_flag');

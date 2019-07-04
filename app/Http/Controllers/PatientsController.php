@@ -20,7 +20,7 @@ class PatientsController extends Controller
 //            return redirect('/');
 //        }
 
-        $data['patients'] = Patient::all();
+        $data['patients'] = Patient::paginate(100);
         return view('patients.index', $data);
     }
 

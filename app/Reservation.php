@@ -81,6 +81,14 @@ class Reservation extends Model
         return self::where($by, $resource)->first();
     }
 
+    /**
+     *  Get a specific resource
+     */
+    public static function getReservations($condition)
+    {
+        return self::where('reservation_date_time', 'like', $condition)->get();
+    }
+
     // Doctor Relation
     public function doctor(){
         return $this->belongsTo('App\Doctor', 'doctor_id', 'source_doctor_id');

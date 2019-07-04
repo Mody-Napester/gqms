@@ -203,10 +203,18 @@
         $('body').on('click', '.top-btns-speciality',function () {
             $('.spe-alph').show();
             $('.doc-alph').hide();
+
+            app.searchByLetter('speciality', 'الكل');
+
+            $('.top-btns-toggle').trigger('click');
         });
         $('body').on('click', '.top-btns-doctor',function () {
             $('.spe-alph').hide();
             $('.doc-alph').show();
+
+            app.searchByLetter('doctor', 'الكل');
+
+            $('.top-btns-toggle').trigger('click');
         });
     </script>
 @endsection

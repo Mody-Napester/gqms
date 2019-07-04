@@ -398,12 +398,14 @@ class DeskQueuesController extends Controller
 
         $reservations = Reservation::where('source_reservation_serial', $reservation_resource)
             ->orWhere('patientid', $reservation_resource)->get();
+
         if(count($reservations) > 0){
             foreach ($reservations as $key => $reservation){
                 $room = ($reservation->doctor)? $reservation->doctor->user->room : false;
 
                 if(empty($reservation->desk_queue_id)){ // Check if reservation already routed to desk before
                     if ($reservation->patient){
+
                         $data['reservations'][$key]['serial'] = $reservation->source_reservation_serial;
                         $data['reservations'][$key]['patient'] = $reservation->patient->name_en;
                         $data['reservations'][$key]['doctor'] = $reservation->doctor->name_en;
@@ -424,23 +426,39 @@ class DeskQueuesController extends Controller
                             'msg_status' => 1,
                             'text' => 'Reservation Found',
                         ];
-                    }else{
+                    }
+                    else{
+                        $data['reservations'][$key]['room'] = 0;
+
                         $data['messages'][$key] = [
                             'msg_status' => 0,
                             'text' => 'Patient for reservation of serial ('. $reservation->source_reservation_serial .') is not exists or not synced yet',
                         ];
                     }
                 }else{
+                    $data['reservations'][$key]['room'] = 0;
+                    $data['reservations'][$key]['routed'] = 1;
+
+                    $data['reservations'][$key]['serial'] = $reservation->source_reservation_serial;
+                    $data['reservations'][$key]['patient'] = $reservation->patient->name_en;
+                    $data['reservations'][$key]['doctor'] = $reservation->doctor->name_en;
+                    $data['reservations'][$key]['clinic'] = $reservation->clinic->name_en;
+
                     $data['messages'][$key] = [
                         'msg_status' => 0,
                         'text' => 'Reservation of serial ('. $reservation->source_reservation_serial .') already routed to room ' . $room->name_en,
                     ];
                 }
             }
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => count($reservations) . ' Reservations Found',
+            ];
         }else{
             $data['message'] = [
                 'msg_status' => 0,
-                'text' => 'No Reservation Found!',
+                'text' => 'No Reservations Found!',
             ];
         }
 

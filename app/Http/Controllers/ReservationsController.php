@@ -20,9 +20,8 @@ class ReservationsController extends Controller
 //            return redirect('/');
 //        }
 
-        $data['reservations'] = Reservation::where('doctor_id',856)
-            ->where('reservation_date_time', 'like', '2019%')
-            ->get();
+        $data['reservations'] = Reservation::where('id', '>', '200000')->paginate(100);
+
         return view('reservations.index', $data);
     }
 }

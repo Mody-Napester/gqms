@@ -190,7 +190,7 @@
             <h4 class="m-t-20 m-b-20">Logged in Users ({{ count($loggedInUsers) }})</h4>
 
             <div class="card-box p-2">
-                <table class="table table-striped table-sm">
+                <table class="table table-striped table-bordered table-sm">
                     <thead>
                     <tr>
                         <td>User</td>

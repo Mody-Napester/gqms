@@ -25,3 +25,12 @@
     @endforeach
     </tbody>
 </table>
+
+<div class="m-3">
+    <div class="pull-left pt-1 text-muted">
+        Page Pagination
+    </div>
+    <div class="pull-right">
+        {{ $patients->links() }}
+    </div>
+</div>
