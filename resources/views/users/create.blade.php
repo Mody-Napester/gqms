@@ -38,6 +38,18 @@
                 @endif
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                    @foreach(App\Enums\UserStatuses::$statuses as $key => $status)
+                        <option value="{{ $key }}">{{ $status }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="password">Password</label><i class="bar"></i>
@@ -53,12 +65,8 @@
 
         <div class="col-md-6">
             <div class="form-group">
-                <label>Status</label>
-                <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
-                    @foreach(App\Enums\UserStatuses::$statuses as $key => $status)
-                        <option value="{{ $key }}">{{ $status }}</option>
-                    @endforeach
-                </select>
+                <label class="" for="password-confirm">{{ __('Confirm Password') }}</label><i class="bar"></i>
+                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required/>
             </div>
         </div>
 

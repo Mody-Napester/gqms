@@ -106,11 +106,25 @@ class RoomsController extends Controller
      */
     public function show($uuid)
     {
+        // Check permissions
         if (!User::hasAuthority('show.rooms')){
             return redirect('/');
         }
 
+        // Get Room
         $data['room'] = Room::getBy('uuid', $uuid);
+
+        // Check IP
+        if (auth()->user()->room_id != $data['room']){
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'You don\'t have permission.',
+            ];
+
+            return back()->with('message', $data['message']);
+        }
+
 
         // Check if user login from current room
         if (is_null(auth()->user()->room_id) || auth()->user()->login_ip != auth()->user()->room->ip){

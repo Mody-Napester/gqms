@@ -93,16 +93,16 @@
                                 {{--<td>{{ $screen->updatedBy->name }}</td>--}}
                                 <td>{{ $screen->created_at }}</td>
                                 {{--<td>{{ $screen->updated_at }}</td>--}}
-                                <td>
+                                <td class="text-center">
                                     <a href="{{ route('screens.show', [$screen->slug]) }}" target="_blank" class="btn btn-sm btn-primary">
                                         <i class="fa fa-eye"></i>
                                     </a>
                                     <a href="{{ route('screens.edit', [$screen->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <a href="{{ route('screens.destroy', [$screen->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
-                                        <i class="fa fa-times"></i>
-                                    </a>
+                                    {{--<a href="{{ route('screens.destroy', [$screen->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">--}}
+                                        {{--<i class="fa fa-times"></i>--}}
+                                    {{--</a>--}}
                                 </td>
                             </tr>
                         @endforeach

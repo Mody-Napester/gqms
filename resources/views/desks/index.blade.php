@@ -93,16 +93,16 @@
 {{--                                <td>{{ $desk->updatedBy->name }}</td>--}}
                                 <td>{{ $desk->created_at }}</td>
 {{--                                <td>{{ $desk->updated_at }}</td>--}}
-                                <td>
+                                <td class="text-center">
                                     {{--<a href="{{ route('desks.show', [$desk->uuid]) }}" target="_blank" class="btn btn-sm btn-primary">--}}
                                         {{--<i class="fa fa-eye"></i>--}}
                                     {{--</a>--}}
                                     <a href="{{ route('desks.edit', [$desk->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <a href="{{ route('desks.destroy', [$desk->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
-                                        <i class="fa fa-times"></i>
-                                    </a>
+                                    {{--<a href="{{ route('desks.destroy', [$desk->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">--}}
+                                        {{--<i class="fa fa-times"></i>--}}
+                                    {{--</a>--}}
                                 </td>
                             </tr>
                         @endforeach

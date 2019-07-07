@@ -88,13 +88,13 @@
                                 <td>{{ $floor->updatedBy->name }}</td>
                                 <td>{{ $floor->created_at }}</td>
                                 <td>{{ $floor->updated_at }}</td>
-                                <td>
+                                <td class="text-center">
                                     <a href="{{ route('floors.edit', [$floor->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <a href="{{ route('floors.destroy', [$floor->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
-                                        <i class="fa fa-times"></i>
-                                    </a>
+                                    {{--<a href="{{ route('floors.destroy', [$floor->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">--}}
+                                        {{--<i class="fa fa-times"></i>--}}
+                                    {{--</a>--}}
                                 </td>
                             </tr>
                         @endforeach

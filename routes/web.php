@@ -63,6 +63,12 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    // Reset password
+    Route::get('users/{user}/reset_password', 'UsersController@resetPassword')->name('users.reset_password');
+
+    // Update password
+    Route::put('users/{user}/update_password', 'UsersController@updatePassword')->name('users.update_password');
+
     // Settings
     Route::get('settings', 'SettingsController@index')->name('settings.index');
 

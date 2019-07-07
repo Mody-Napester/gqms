@@ -122,7 +122,7 @@ class SyncVendorDataController extends Controller
                         $user = User::create([
                             'email' => ' ',
                             'name' => $val->emp_name_en,
-                            'password' => Hash::make(config('vars.defualt_password')),
+                            'password' => bcrypt(config('vars.default_password')),
                             'type' => UserTypes::$typesReverse['Doctor'],
                             'status' => $val->workstatus == 1 ? 1 : 0,
                             'created_by' => 0,

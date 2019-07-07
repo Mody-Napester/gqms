@@ -83,13 +83,13 @@
                                 <td>{{ $desk->ip }}</td>
                                 <td>{{ $desk->createdBy->name }}</td>
                                 <td>{{ $desk->created_at }}</td>
-                                <td>
+                                <td class="text-center">
                                     <a href="{{ route('printers.edit', [$desk->uuid]) }}" class="update-modal btn btn-sm btn-success">
                                         <i class="fa fa-edit"></i>
                                     </a>
-                                    <a href="{{ route('printers.destroy', [$desk->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">
-                                        <i class="fa fa-times"></i>
-                                    </a>
+                                    {{--<a href="{{ route('printers.destroy', [$desk->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">--}}
+                                        {{--<i class="fa fa-times"></i>--}}
+                                    {{--</a>--}}
                                 </td>
                             </tr>
                         @endforeach

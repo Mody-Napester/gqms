@@ -39,18 +39,6 @@
                 @endif
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="" for="password">Password</label><i class="bar"></i>
-                <input type="password" id="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"/>
-
-                @if ($errors->has('password'))
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
 
         <div class="col-md-6">
             <div class="form-group">
@@ -87,8 +75,39 @@
     <div class="form-group m-b-0">
         <div>
             <button type="submit" class="btn btn-success waves-effect waves-light">
-                Update
+                Update User Data
             </button>
         </div>
     </div>
 </form>
+
+<hr>
+
+<div class="border border-danger p-2">
+    <form method="post" action="{{ route('users.update_password', $user->uuid) }}" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        {{ method_field('PUT') }}
+
+        <label class="text-danger" for="password">Update Password</label>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input type="password" placeholder="Enter new password .." id="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"/>
+
+                    @if ($errors->has('password'))
+                        <span class="invalid-feedback" role="alert">
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-block btn-danger waves-effect waves-light">
+                    Update User Password
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+

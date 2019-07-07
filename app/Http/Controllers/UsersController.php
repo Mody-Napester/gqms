@@ -64,7 +64,7 @@ class UsersController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|unique:users',
             'phone' => 'required|max:20',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
         if ($validator->fails()){
@@ -116,7 +116,7 @@ class UsersController extends Controller
         $data['roles'] = Role::all();
         $data['user'] = User::getBy('uuid', $uuid);
         return response([
-            'title'=> "Update user " . $data['user']->name,
+            'title'=> "Update user ' {$data['user']->name} '",
             'view'=> view('users.edit', $data)->render(),
         ]);
     }
@@ -153,7 +153,7 @@ class UsersController extends Controller
             'phone' => ($request->has('phone'))? $request->phone : '00',
             'status' => $request->status,
             'type' => $request->type,
-            'password' => (($request->has('password'))? bcrypt($request->password) : $resource->password),
+//            'password' => (($request->has('password'))? bcrypt($request->password) : $resource->password),
             'updated_by' => auth()->user()->id
         ], $resource->id);
 
@@ -265,5 +265,73 @@ class UsersController extends Controller
                 return response()->json($data);
             }
         }
+    }
+
+    /**
+     * Reset Password
+     */
+    public function resetPassword($user)
+    {
+        // Check permissions
+//        if (!User::hasAuthority('index.user')){
+//            return redirect('/');
+//        }
+
+        // Get Resource
+        $resource = User::getBy('uuid', $user);
+
+        if($resource){
+            $resource->password = bcrypt(config('vars.default_password'));
+            $resource->save();
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'type' => 'success',
+                'text' => 'Password Has been reset successfully',
+            ];
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Sorry! User not exists.',
+            ];
+        }
+
+        return back()->with('message', $data['message']);
+
+    }
+
+    /**
+     * Update Password
+     */
+    public function updatePassword(Request $request,$user)
+    {
+        // Check permissions
+//        if (!User::hasAuthority('index.user')){
+//            return redirect('/');
+//        }
+
+        // Get Resource
+        $resource = User::getBy('uuid', $user);
+
+        if($resource){
+            $resource->password = bcrypt($request->password);
+            $resource->save();
+
+            $data['message'] = [
+                'msg_status' => 1,
+                'type' => 'success',
+                'text' => 'Password updated successfully',
+            ];
+        }else{
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Sorry! User not exists.',
+            ];
+        }
+
+        return back()->with('message', $data['message']);
+
     }
 }

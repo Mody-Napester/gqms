@@ -163,6 +163,7 @@ class RoomQueue extends Model
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->orderBy('id', 'DESC')
             ->get();
+
         return $roomQueues;
     }
 

@@ -69,6 +69,7 @@
                         <th>Updated by</th>
                         <th>Created at</th>
                         <th>Updated at</th>
+                        <th>Reset</th>
                         <th>Control</th>
                     </tr>
                     </thead>
@@ -96,15 +97,21 @@
                             <td>{!! ($user->updatedBy)? $user->updatedBy->name : '<span class="badge badge-danger">SYSTEM</span>' !!}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>{{ $user->updated_at }}</td>
-                            <td>
+                            <td class="text-center">
+                                <a href="{{ route('users.reset_password', [$user->uuid]) }}"
+                                   class="btn btn-sm btn-danger">
+                                    <i class="fa fa-recycle"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
                                 <a href="{{ route('users.edit', [$user->uuid]) }}"
                                    class="update-modal btn btn-sm btn-success">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="{{ route('users.destroy', [$user->uuid]) }}"
-                                   class="confirm-delete btn btn-sm btn-danger">
-                                    <i class="fa fa-times"></i>
-                                </a>
+                                {{--<a href="{{ route('users.destroy', [$user->uuid]) }}"--}}
+                                   {{--class="confirm-delete btn btn-sm btn-danger">--}}
+                                    {{--<i class="fa fa-times"></i>--}}
+                                {{--</a>--}}
                             </td>
                         </tr>
                     @endforeach
