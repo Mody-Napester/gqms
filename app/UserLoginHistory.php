@@ -20,8 +20,8 @@ class UserLoginHistory extends Model
      */
     protected $hidden = [];
 
-    // Add login history
-    public static function addLoginHistory($user = null){
+    // Store login history
+    public static function store($user = null){
         if (is_null($user)){
             if (auth()->check()){
                 $user = auth()->user();
@@ -42,5 +42,26 @@ class UserLoginHistory extends Model
             return false;
         }
 
+    }
+
+    /**
+     *  Get a specific resource
+     */
+    public static function getAll()
+    {
+        return self::all();
+    }
+
+    /**
+     *  Get a specific resource
+     */
+    public static function getBy($by, $resource)
+    {
+        return self::where($by, $resource)->first();
+    }
+
+    // User Relation
+    public function user(){
+        return $this->belongsTo('App\User');
     }
 }

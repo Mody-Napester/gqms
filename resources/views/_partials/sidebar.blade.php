@@ -133,6 +133,20 @@
                     </li>
                 @endif
 
+                @if (\App\User::hasAuthority('use.logs'))
+                    <li class="text-muted menu-title">Logs</li>
+                    @if (\App\User::hasAuthority('index.logs_user_logins'))
+                        <li class="has_sub">
+                            <a href="{{ route('logs_user_logins.index') }}" class="waves-effect"><i class="ti-layers"></i> <span> User logins</span></a>
+                        </li>
+                    @endif
+                    @if (\App\User::hasAuthority('index.logs_user_actions'))
+                        <li class="has_sub">
+                            <a href="{{ route('logs_user_actions.index') }}" class="waves-effect"><i class="ti-layers"></i> <span> User actions</span></a>
+                        </li>
+                    @endif
+                @endif
+
             </ul>
             <div class="clearfix"></div>
         </div>

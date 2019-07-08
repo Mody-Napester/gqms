@@ -18,7 +18,7 @@
 
 
     <div class="mx-box" style="overflow: auto;">
-        <table id="searchTable" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
+        <table data-page-length='50' id="searchTable" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
             <tr>
                 <th>Queue</th>
                 <th>Status</th>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Area;
 use App\Desk;
+use App\Enums\LogUserActions;
 use App\Floor;
 use App\Room;
 use App\Screen;
@@ -35,6 +36,9 @@ class FloorsController extends Controller
 
             $data['floors'] = $data['floors']->get();
         }
+
+        // Store User Action Log
+        storeLogUserAction(LogUserActions::$name['IndexFloor'], 'Get',route('floors.index'));
 
         return view('floors.index', $data);
     }
@@ -86,6 +90,9 @@ class FloorsController extends Controller
                 'text' => 'Error! .. please try again.',
             ];
         }
+
+        // Store User Action Log
+        storeLogUserAction(LogUserActions::$name['StoreFloor'], 'Post',route('floors.store'));
 
         return back()->with('message', $data['message']);
     }

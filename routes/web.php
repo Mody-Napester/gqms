@@ -63,6 +63,10 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    // User logs
+    Route::get('logs/user/logins', 'LogsController@index_logs_user_logins')->name('logs_user_logins.index');
+    Route::get('logs/user/actions', 'LogsController@index_logs_user_actions')->name('logs_user_actions.index');
+
     // Reset password
     Route::get('users/{user}/reset_password', 'UsersController@resetPassword')->name('users.reset_password');
 

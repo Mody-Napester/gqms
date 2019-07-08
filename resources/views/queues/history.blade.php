@@ -40,7 +40,7 @@
                 {{--Here you will find all the resources to make actions on them.--}}
                 {{--</p>--}}
 
-                <table id="datatable" class="text-center vertical-middle table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <table data-page-length='50' id="datatable" class="text-center vertical-middle table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead style="background-color: #dddddd;">
                     <tr>
                         <th colspan="2">Queue Numbers</th>

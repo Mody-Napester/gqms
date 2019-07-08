@@ -86,8 +86,8 @@ class LoginController extends Controller
 
         }
 
-        // Add user login history
-        UserLoginHistory::addLoginHistory();
+        // Store Log User Login
+        storeLogUserLogin();
     }
 
     // Custom Logout

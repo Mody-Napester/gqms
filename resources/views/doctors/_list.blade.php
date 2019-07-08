@@ -1,4 +1,4 @@
-<table id="datatable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+<table data-page-length='50' id="datatable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
     <thead>
     <tr>
         <th>#</th>

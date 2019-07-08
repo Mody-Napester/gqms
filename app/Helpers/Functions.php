@@ -15,9 +15,35 @@ function lang(){
     return app()->getLocale();
 }
 
-// Get lookups
+// Make string format
 function str_well($value){
     return ucfirst(str_replace('_', ' ', $value));
+}
+
+// Store Log User Login
+function storeLogUserLogin($user = null){
+    return \App\UserLoginHistory::store($user);
+}
+
+// Store Log User Actions
+function storeLogUserAction($action, $method, $url = null, $user = null){
+    $theUrl = (!is_null($url))? $url : '';
+    $theUser = (is_null($user))? auth()->user()->id : $user;
+
+    $log = \App\Log::store([
+        'user_id' => $theUser,
+        'method' => $method,
+        'action' => $action,
+        'url' => $theUrl,
+    ]);
+
+    if ($log){
+        $result = true;
+    }else{
+        $result = false;
+    }
+
+    return $result;
 }
 
 // Upload files
