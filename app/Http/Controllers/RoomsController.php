@@ -115,7 +115,7 @@ class RoomsController extends Controller
         $data['room'] = Room::getBy('uuid', $uuid);
 
         // Check IP
-        if (auth()->user()->room_id != $data['room']){
+        if (auth()->user()->room_id != $data['room']->id){
             $data['message'] = [
                 'msg_status' => 0,
                 'type' => 'danger',

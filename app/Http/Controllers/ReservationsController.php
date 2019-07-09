@@ -20,7 +20,7 @@ class ReservationsController extends Controller
 //            return redirect('/');
 //        }
 
-        $data['reservations'] = Reservation::where('id', '>', '200000')->paginate(100);
+        $data['reservations'] = Reservation::paginate(100);
 
         return view('reservations.index', $data);
     }
