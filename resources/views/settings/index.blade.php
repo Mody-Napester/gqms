@@ -24,14 +24,21 @@
                         <p class="text-muted font-14 m-b-30">
                             Clear all queues and link with reservations.
                         </p>
-                        <a href="{{ route('resetQueues') }}" class="btn btn-danger waves-effect"><i class="fa fa-fw fa-refresh"></i> <span> Reset Queues </span></a>
+                        <a href="{{ route('resetQueues') }}" data-general-confirm-header="Reset reservations"
+                           data-general-confirm-message="Are you sure you want to clear all reservations?"
+                           class="general-confirm btn btn-danger waves-effect">
+                            <i class="fa fa-fw fa-refresh"></i> <span> Reset Queues </span>
+                        </a>
                     </div>
                     <div class="col-md-4">
                         <h4 class="m-t-0 header-title">Logout users</h4>
                         <p class="text-muted font-14 m-b-30">
                             Logout desks and doctors from the system.
                         </p>
-                        <a href="{{ route('auth.logoutUsers') }}" class="btn btn-danger waves-effect"><i class="fa fa-fw fa-sign-out"></i> <span> Logout users </span></a>
+                        <a href="{{ route('auth.logoutUsers') }}" data-general-confirm-header="Logout users"
+                           data-general-confirm-message="Are you sure you want to logout all desks and doctors from the system?"
+                           class="general-confirm btn btn-danger waves-effect">
+                            <i class="fa fa-fw fa-sign-out"></i> <span> Logout users </span></a>
                     </div>
                 </div>
             </div>

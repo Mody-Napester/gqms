@@ -24,7 +24,7 @@
 
     function saveIpInSession()
     {
-        var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+        var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 
         if (RTCPeerConnection) (function () {
             var rtc = new RTCPeerConnection({iceServers: []});
@@ -40,7 +40,6 @@
             }, function (e) {
                 console.warn("offer failed", e);
             });
-
 
             var addrs = Object.create(null);
             addrs["0.0.0.0"] = false;

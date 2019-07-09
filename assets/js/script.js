@@ -137,4 +137,18 @@ $(document).ready(function(){
         $("#confirm_delete_modal").modal({backdrop: true});
     });
 
+    // General Confirm
+    $('body').on('click', ".general-confirm", function(e){
+        e.preventDefault();
+
+        var link = $(this).attr('href');
+        var header = $(this).attr('data-general-confirm-header');
+        var message = $(this).attr('data-general-confirm-message');
+
+        $('#general_confirm_modal_header').text(header);
+        $('#general_confirm_modal_message').text(message);
+        $('#general_confirm_modal_confirm').attr('href', link);
+        $("#general_confirm_modal").modal({backdrop: true});
+    });
+
 });

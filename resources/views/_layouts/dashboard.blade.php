@@ -237,6 +237,8 @@
         @include('_modals.update')
         <!-- Delete Modal -->
         @include('_modals.delete')
+        <!-- Delete Modal -->
+        @include('_modals.general_confirm')
         <!-- Update Modal -->
         @include('_modals.desk_queue_history')
 

@@ -439,7 +439,7 @@
                         })
                         .catch((data) => {
                             removeLoarder();
-                            addAlert('danger', 'Server Error!');
+                            // addAlert('danger', 'Server Error!');
                         });
 
                     console.log('done');
@@ -467,7 +467,7 @@
                         })
                         .catch((data) => {
                             removeLoarder();
-                            addAlert('danger', 'Server Error!');
+                            // addAlert('danger', 'Server Error!');
                         });
 
                     console.log('done and next');
