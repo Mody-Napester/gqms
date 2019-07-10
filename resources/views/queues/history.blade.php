@@ -47,7 +47,7 @@
                         <th colspan="3">Served With</th>
                         <th rowspan="2">Reservation</th>
                         <th colspan="2">Attend Date</th>
-                        <th rowspan="2">Floor</th>
+                        <th colspan="2">Take Time (HH:MM:SS)</th>
                         <th rowspan="2" class="text-center">History</th>
                     </tr>
                     <tr>
@@ -56,6 +56,9 @@
 
                         <th>Desk</th>
                         <th>Room</th>
+                        <th>Doctor</th>
+
+                        <th>Desk</th>
                         <th>Doctor</th>
 
                         <th>Desk</th>
@@ -92,7 +95,24 @@
                             <td>{{ $deskQueue->created_at }}</td>
                             <td>{{ ($deskQueue->reservation && $deskQueue->reservation->roomQueue) ? $deskQueue->reservation->roomQueue->created_at : '-' }}</td>
 
-                            <td>{{ ($deskQueue->floor)? $deskQueue->floor->name_en : '-' }}</td>
+                            <td>
+                                @if($deskQueue->status == config('vars.desk_queue_status.done'))
+                                    {{ getDeskQueuePatientServeTime($deskQueue) }}
+                                @else
+                                    00:00:00
+                                @endif
+                            </td>
+
+                            <td>
+                                @if(($deskQueue->reservation && $deskQueue->reservation->roomQueue))
+                                    @if($deskQueue->reservation->roomQueue->status == config('vars.desk_queue_status.patient_out'))
+                                        {{ getRoomQueuePatientServeTime($deskQueue->reservation->roomQueue) }}
+                                    @endif
+                                @else
+                                    00:00:00
+                                @endif
+                            </td>
+
 
                             <td class="text-center">
                                 @if($deskQueue->status != config('vars.desk_queue_status.waiting'))

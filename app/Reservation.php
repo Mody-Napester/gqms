@@ -84,9 +84,23 @@ class Reservation extends Model
     /**
      *  Get a specific resource
      */
-    public static function getReservations($condition)
+    public static function getReservations($pagination = true, $condition = null)
     {
-        return self::where('reservation_date_time', 'like', $condition)->get();
+        // Condition
+        if(is_null($condition)){
+            $condition = date('Y-m-d').'%';
+        }
+
+        $data = self::where('reservation_date_time', 'like', $condition);
+
+        // Pagination
+        if($pagination){
+            $data = $data->paginate();
+        }else{
+            $data = $data->get();
+        }
+
+        return $data;
     }
 
     // Doctor Relation

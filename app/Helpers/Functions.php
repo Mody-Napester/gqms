@@ -190,3 +190,21 @@ function roomQueueNumberFormat($floor_id, $room_id, $scheme){
 
     return \App\Floor::getBy('id', $floor_id)->name_en . '-' . \App\Room::getBy('id', $room_id)->name_en .'-' . $lastNumber;
 }
+
+function getDeskQueuePatientServeTime($queueOpj){
+    $done = $queueOpj->deskQueueStatusHistories()->where('queue_status_id', config('vars.desk_queue_status.done'))->first()->created_at;
+    $called = $queueOpj->deskQueueStatusHistories()->where('queue_status_id', config('vars.desk_queue_status.called'))->first()->created_at;
+
+    $diffTime = $done->diffInSeconds($called);
+
+    return gmdate('H:i:s', $diffTime);
+}
+
+function getRoomQueuePatientServeTime($queueOpj){
+    $patientOut = $queueOpj->roomQueueStatusHistories()->where('queue_status_id', config('vars.room_queue_status.patient_out'))->first()->created_at;
+    $patientIn = $queueOpj->roomQueueStatusHistories()->where('queue_status_id', config('vars.room_queue_status.patient_in'))->first()->created_at;
+
+    $diffTime = $patientOut->diffInSeconds($patientIn);
+
+    return gmdate('H:i:s', $diffTime);
+}

@@ -117,7 +117,7 @@ class SyncButtonsController extends Controller
             ];
 
             // $data['reservations'] = Reservation::where('reservation_date_time', 'like', date('Y-m-d').'%')->get();
-            $data['reservations'] = Reservation::getReservations(date('Y-m-d').'%');
+            $data['reservations'] = Reservation::getReservations();
 
             $data['view'] = view('reservations._list', $data)->render();
         }else{
