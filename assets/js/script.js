@@ -2,14 +2,14 @@ $(document).ready(function(){
     // Default Datatable
     $('#datatable').DataTable();
 
-    //Buttons examples
+    //Buttons
     var table = $('#datatable-buttons').DataTable({
         lengthChange: false,
-        buttons: ['copy', 'excel', 'pdf']
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
     });
+    table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
 
     // Key Tables
-
     $('#key-table').DataTable({
         keys: true
     });
@@ -24,10 +24,7 @@ $(document).ready(function(){
         }
     });
 
-    table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
-
     $('form').parsley();
-
 
     // Open
     $('body').on('click', '.queue-settings', function() {

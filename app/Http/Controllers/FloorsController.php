@@ -38,7 +38,7 @@ class FloorsController extends Controller
         }
 
         // Store User Action Log
-        storeLogUserAction(LogUserActions::$name['IndexFloor'], 'Get',route('floors.index'));
+        storeLogUserAction(\App\Enums\LogUserActions::$name['IndexFloor'], 'Get',route('floors.index'));
 
         return view('floors.index', $data);
     }
@@ -92,7 +92,7 @@ class FloorsController extends Controller
         }
 
         // Store User Action Log
-        storeLogUserAction(LogUserActions::$name['StoreFloor'], 'Post',route('floors.store'));
+        storeLogUserAction(\App\Enums\LogUserActions::$name['StoreFloor'], 'Post',route('floors.store'));
 
         return back()->with('message', $data['message']);
     }
@@ -117,6 +117,10 @@ class FloorsController extends Controller
     public function edit($uuid)
     {
         $data['floor'] = Floor::getBy('uuid', $uuid);
+
+        // Store User Action Log
+        storeLogUserAction(\App\Enums\LogUserActions::$name['EditFloor'], 'Get',route('floors.edit', $data['floor']->uuid));
+
         return response([
             'title'=> "Update floor " . $data['floor']->name_en,
             'view'=> view('floors.edit', $data)->render(),
@@ -171,6 +175,9 @@ class FloorsController extends Controller
             ];
         }
 
+        // Store User Action Log
+        storeLogUserAction(\App\Enums\LogUserActions::$name['UpdateFloor'], 'Put',route('floors.edit', $data['floor']->uuid));
+
         return back()->with('message', $data['message']);
     }
 
@@ -221,6 +228,9 @@ class FloorsController extends Controller
                 'text' => 'Sorry, user not exists.',
             ];
         }
+
+        // Store User Action Log
+        storeLogUserAction(\App\Enums\LogUserActions::$name['DestroyUser'], 'Delete',route('floors.destroy', $data['floor']->uuid));
 
         return back()->with('message', $data['message']);
     }

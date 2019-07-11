@@ -34,7 +34,7 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Check permissions
         if (!User::hasAuthority('index.users')){
@@ -42,7 +42,27 @@ class UsersController extends Controller
         }
 
         $data['roles'] = Role::all();
-        $data['users'] = User::all();
+
+        if (empty($request->all())){
+            $data['users'] = User::all();
+        }else{
+
+//            dd($request->all());
+
+            $data['users'] = new User();
+
+            $data['users'] = ($request->has('email') && !is_null($request->email))? $data['users']->where('email',$request->get('email')) : $data['users'];
+            $data['users'] = ($request->has('name') && !is_null($request->name))? $data['users']->where('name',$request->get('name')) : $data['users'];
+            $data['users'] = ($request->has('phone') && !is_null($request->phone))? $data['users']->where('phone',$request->get('phone')) : $data['users'];
+            $data['users'] = ($request->has('status'))? $data['users']->where('status',$request->get('status')) : $data['users'];
+            $data['users'] = ($request->has('type'))? $data['users']->where('type',$request->get('type')) : $data['users'];
+
+            $data['users'] = $data['users']->get();
+        }
+
+        // Store User Action Log
+        storeLogUserAction(\App\Enums\LogUserActions::$name['IndexUser'], 'Get',route('users.index'));
+
         return view('users.index', $data);
     }
 

@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="email">Email Or Username</label>
-                <input type="text" id="email" autocomplete="off" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus/>
+                <input type="text" id="email" autocomplete="false" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required />
 
                 @if ($errors->has('email'))
                     <span class="invalid-feedback" role="alert">
