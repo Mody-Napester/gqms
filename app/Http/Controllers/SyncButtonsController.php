@@ -94,7 +94,7 @@ class SyncButtonsController extends Controller
                 'text' => 'Sync Done ..',
             ];
 
-            $data['patients'] = Patient::all();
+            $data['patients'] = Patient::getPatients();
             $data['view'] = view('patients._list', $data)->render();
         }else{
             $data['message'] = [

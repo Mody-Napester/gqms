@@ -40,6 +40,7 @@ class SyncVendorDataController extends Controller
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
             $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+            $q->orWhere('queue_system_integ_flag', 'HIS_Update');
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
         })->orderBy('clinic_id')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
@@ -52,7 +53,7 @@ class SyncVendorDataController extends Controller
                     Clinic::store($array);
                     DB::connection('oracle')->table('VW_CLINICS')->where('clinic_id', $val->clinic_id)
                         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
-                } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+                } else {
                     $clinic = Clinic::getBy('source_clinic_id', $val->clinic_id);
                     if ($clinic) {
                         Clinic::editBySourceClinicId($array, $val->clinic_id);
@@ -77,6 +78,7 @@ class SyncVendorDataController extends Controller
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
             $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+            $q->orWhere('queue_system_integ_flag', 'HIS_Update');
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
         })->orderBy('speciality_id')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
@@ -89,7 +91,7 @@ class SyncVendorDataController extends Controller
                     Speciality::store($array);
                     DB::connection('oracle')->table('vw_specialities')->where('speciality_id', $val->speciality_id)
                         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
-                } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+                } else {
                     $speciality = Speciality::getBy('source_speciality_id', $val->speciality_id);
                     if ($speciality) {
                         Speciality::editBySourceSpecialityId($array, $val->speciality_id);
@@ -114,6 +116,7 @@ class SyncVendorDataController extends Controller
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
             $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+            $q->orWhere('queue_system_integ_flag', 'HIS_Update');
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
         })->orderBy('emp_id')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
@@ -146,7 +149,7 @@ class SyncVendorDataController extends Controller
 
                         DB::connection('oracle')->table('vw_doctor_table')->where('emp_id', $val->emp_id)
                             ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
-                    } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+                    } else {
                         $doctor = Doctor::getBy('source_doctor_id', $val->emp_id);
                         if ($doctor) {
                             Doctor::editBySourceDoctorId([
@@ -199,10 +202,13 @@ class SyncVendorDataController extends Controller
             return false;
         }
 
-        DB::connection('oracle')->table('VW_PATIENTS')->where(function ($q) {
+        DB::connection('oracle')
+            ->table('VW_PATIENTS')
+            ->where(function ($q) {
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
             $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+            $q->orWhere('queue_system_integ_flag', 'HIS_Update');
             $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
         })->orderBy('patientid')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
@@ -223,7 +229,7 @@ class SyncVendorDataController extends Controller
                     Patient::store($array);
                     DB::connection('oracle')->table('VW_PATIENTS')->where('patientid', $val->patientid)
                         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
-                } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+                } else {
                     $patient = Patient::getBy('source_patient_id', $val->patientid);
                     if ($patient) {
                         Patient::editBySourcePatientId($array, $val->patientid);
@@ -244,13 +250,16 @@ class SyncVendorDataController extends Controller
             return false;
         }
 
+        $today = date('Y-m-d');
+
         DB::connection('oracle')
             ->table('VW_RESERVATIONS')
-            ->where('reservation_date_time', 'like', date('Y-m-d').'%')
+            ->whereRaw("reservation_date_time >= date '$today'")
             ->where(function ($q) {
                 $q->whereNull('queue_system_integ_flag');
                 $q->orWhere('queue_system_integ_flag', '');
                 $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+                $q->orWhere('queue_system_integ_flag', 'HIS_Update');
                 $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
             })->orderBy('ser')->chunk(100, function ($data) {
                 foreach ($data as $key => $val) {
@@ -269,14 +278,13 @@ class SyncVendorDataController extends Controller
 
                     if($array){
                         if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
-
                             Reservation::store($array);
                             DB::connection('oracle')->table('VW_RESERVATIONS')->where('ser', $val->ser)
                                 ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
 
-                        } else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+                        } else {
 
-                            $reservation = Reservation::getBy('ser', $val->ser);
+                            $reservation = Reservation::getBy('source_reservation_serial', $val->ser);
 
                             if ($reservation) {
                                 Reservation::editBySourceReservationSer($array, $val->ser);
@@ -304,7 +312,7 @@ class SyncVendorDataController extends Controller
             $q->whereNull('queue_system_integ_flag');
             $q->orWhere('queue_system_integ_flag', '');
             $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
-            $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
+            $q->orWhere('queue_system_integ_flag', 'HIS_Update');
         })->orderBy('serial')->chunk(100, function ($data) {
             foreach ($data as $key => $val) {
 
@@ -335,7 +343,7 @@ class SyncVendorDataController extends Controller
                         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
 
                 }
-                else if ($val->queue_system_integ_flag == 'HIS_UPDATE') {
+                else {
 
                     $schedule = DoctorSchedule::getBy('serial', $val->serial);
 

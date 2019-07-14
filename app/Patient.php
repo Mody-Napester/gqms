@@ -48,6 +48,28 @@ class Patient extends Model
         return self::where('id', $resource)->update($inputs);
     }
 
+    /**
+     *  Get a specific resources
+     */
+    public static function getPatients($pagination = true, $condition = null)
+    {
+        // Condition
+        if(is_null($condition)){
+            $condition = date('Y-m-d').'%';
+        }
+
+        $data = self::where('created_at', 'like', $condition);
+
+        // Pagination
+        if($pagination){
+            $data = $data->paginate(100);
+        }else{
+            $data = $data->get();
+        }
+
+        return $data;
+    }
+
 
     public static function editBySourcePatientId($inputs, $resource)
     {

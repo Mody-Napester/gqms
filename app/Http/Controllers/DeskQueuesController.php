@@ -404,17 +404,17 @@ class DeskQueuesController extends Controller
                 $room = ($reservation->doctor)? $reservation->doctor->user->room : false;
 
                 $data['reservations'][$key]['serial'] = $reservation->source_reservation_serial;
-                $data['reservations'][$key]['patient'] = ($reservation->patient)? $reservation->patient->name_en : '-';
-                $data['reservations'][$key]['doctor'] = ($reservation->doctor)? $reservation->doctor->name_en : '-';
-                $data['reservations'][$key]['clinic'] = ($reservation->clinic)? $reservation->clinic->name_en : '-';
+                $data['reservations'][$key]['patient'] = ($reservation->patient)? $reservation->patient->name_ar : '-';
+                $data['reservations'][$key]['doctor'] = ($reservation->doctor)? $reservation->doctor->name_ar : '-';
+                $data['reservations'][$key]['clinic'] = ($reservation->clinic)? $reservation->clinic->name_ar : '-';
 
                 if(empty($reservation->desk_queue_id)){ // Check if reservation already routed to desk before
                     if ($reservation->patient){
 
                         $data['reservations'][$key]['serial'] = $reservation->source_reservation_serial;
-                        $data['reservations'][$key]['patient'] = ($reservation->patient)? $reservation->patient->name_en : '-';
-                        $data['reservations'][$key]['doctor'] = ($reservation->doctor)? $reservation->doctor->name_en : '-';
-                        $data['reservations'][$key]['clinic'] = ($reservation->clinic)? $reservation->clinic->name_en : '-';
+                        $data['reservations'][$key]['patient'] = ($reservation->patient)? $reservation->patient->name_ar : '-';
+                        $data['reservations'][$key]['doctor'] = ($reservation->doctor)? $reservation->doctor->name_ar : '-';
+                        $data['reservations'][$key]['clinic'] = ($reservation->clinic)? $reservation->clinic->name_ar : '-';
 
                         if ($room){ // Check doctor in room room
                             $data['reservations'][$key]['room'] = 1;
@@ -444,9 +444,9 @@ class DeskQueuesController extends Controller
                     $data['reservations'][$key]['routed'] = 1;
 
                     $data['reservations'][$key]['serial'] = $reservation->source_reservation_serial;
-                    $data['reservations'][$key]['patient'] = ($reservation->patient)? $reservation->patient->name_en : '-';
-                    $data['reservations'][$key]['doctor'] = ($reservation->doctor)? $reservation->doctor->name_en : '-';
-                    $data['reservations'][$key]['clinic'] = ($reservation->clinic)? $reservation->clinic->name_en : '-';
+                    $data['reservations'][$key]['patient'] = ($reservation->patient)? $reservation->patient->name_ar : '-';
+                    $data['reservations'][$key]['doctor'] = ($reservation->doctor)? $reservation->doctor->name_ar : '-';
+                    $data['reservations'][$key]['clinic'] = ($reservation->clinic)? $reservation->clinic->name_ar : '-';
 
                     $data['messages'][$key] = [
                         'msg_status' => 0,

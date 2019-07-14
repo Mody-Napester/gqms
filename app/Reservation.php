@@ -54,7 +54,7 @@ class Reservation extends Model
      */
     public static function editBySourceReservationSer($inputs, $resource)
     {
-        return self::where('ser', $resource)->update($inputs);
+        return self::where('source_reservation_serial', $resource)->update($inputs);
     }
 
     /**
@@ -82,7 +82,7 @@ class Reservation extends Model
     }
 
     /**
-     *  Get a specific resource
+     *  Get a specific resources
      */
     public static function getReservations($pagination = true, $condition = null)
     {
@@ -95,7 +95,7 @@ class Reservation extends Model
 
         // Pagination
         if($pagination){
-            $data = $data->paginate();
+            $data = $data->paginate(100);
         }else{
             $data = $data->get();
         }

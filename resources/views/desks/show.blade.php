@@ -299,7 +299,8 @@
                             })
                             .catch((data) => {
                                 removeLoarder();
-                                addAlert('danger', 'Server Error!');
+                                // addAlert('danger', 'Server Error!');
+                                console.log(data);
                                 $('#reservation_resource').removeClass('is-invalid');
                                 $('.reservation_resource_feedback').text('').hide(0);
                             });

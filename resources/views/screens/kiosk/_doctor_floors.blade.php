@@ -42,7 +42,7 @@
                 <div style="background-color: #ffffff;padding: 5px;margin: 5px;">
                     @if($area = $speciality->areas()->first())
                         @if(isset($area->name_en))
-                            {{ $area->name_en . '-' . ((\App\Floor::where('id', $area->floor_id)->first())? 'dd' : '-') }}
+                            {{ $area->name_en . '-' . ((\App\Floor::where('id', $area->floor_id)->first())? \App\Floor::where('id', $area->floor_id)->first()->name_en : '-') }}
                         @else
                             -
                         @endif

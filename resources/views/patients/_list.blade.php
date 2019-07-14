@@ -31,6 +31,9 @@
         Page Pagination
     </div>
     <div class="pull-right">
-        {{ $patients->links() }}
+        {{--@if($patients->hasPages())--}}
+        @if($patients->links() instanceof \Illuminate\Pagination\LengthAwarePaginator)
+            {{ $patients->links() }}
+        @endif
     </div>
 </div>
