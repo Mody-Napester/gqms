@@ -144,10 +144,10 @@
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
 
 
-                                {{--<!-- item-->--}}
-                                {{--<a href="javascript:void(0);" class="dropdown-item notify-item">--}}
-                                    {{--<i class="md md-account-circle"></i> <span>Profile</span>--}}
-                                {{--</a>--}}
+                                <!-- item-->
+                                <a href="{{ route('users.showUserProfile') }}" class="dropdown-item notify-item">
+                                    <i class="md md-account-circle"></i> <span>Profile</span>
+                                </a>
 
                                 {{--<!-- item-->--}}
                                 {{--<a href="javascript:void(0);" class="dropdown-item notify-item">--}}

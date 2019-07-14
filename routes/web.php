@@ -63,6 +63,9 @@ Route::group([
     Route::resource('printers', 'PrintersController');
     Route::resource('screens', 'ScreensController')->except(['show']);
 
+    // User update data
+    Route::get('user/profile', 'UsersController@showUserProfile')->name('users.showUserProfile');
+
     // User logs
     Route::get('logs/user/logins', 'LogsController@index_logs_user_logins')->name('logs_user_logins.index');
     Route::get('logs/user/actions', 'LogsController@index_logs_user_actions')->name('logs_user_actions.index');

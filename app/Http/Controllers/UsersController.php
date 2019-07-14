@@ -129,6 +129,15 @@ class UsersController extends Controller
     }
 
     /**
+     * Show user profile.
+     */
+    public function showUserProfile()
+    {
+        $data['user'] = User::getBy('id', auth()->user()->id);
+        return view('users.profile.show', $data);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit($uuid)
@@ -171,8 +180,8 @@ class UsersController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => ($request->has('phone'))? $request->phone : '00',
-            'status' => $request->status,
-            'type' => $request->type,
+            'status' => ($request->has('status'))? $request->status : $resource->status,
+            'type' => ($request->has('type'))? $request->type : $resource->type,
 //            'password' => (($request->has('password'))? bcrypt($request->password) : $resource->password),
             'updated_by' => auth()->user()->id
         ], $resource->id);
