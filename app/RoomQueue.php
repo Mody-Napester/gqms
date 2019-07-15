@@ -156,13 +156,20 @@ class RoomQueue extends Model
     /**
      *  Get All Room Queues
      */
-    public static function getRoomQueues($floor_id, $room_id)
+    public static function getRoomQueues($floor_id = null, $room_id = null, $doctor_id = null)
     {
-        $roomQueues = self::where('floor_id', $floor_id)
-            ->where('room_id', $room_id)
-            ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->orderBy('id', 'DESC')
-            ->get();
+        if (!is_null($doctor_id)){
+            $roomQueues = self::where('doctor_id', $doctor_id)
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->orderBy('id', 'DESC')
+                ->get();
+        }else{
+            $roomQueues = self::where('floor_id', $floor_id)
+                ->where('room_id', $room_id)
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->orderBy('id', 'DESC')
+                ->get();
+        }
 
         return $roomQueues;
     }

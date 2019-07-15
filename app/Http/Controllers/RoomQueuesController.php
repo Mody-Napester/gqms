@@ -25,16 +25,16 @@ class RoomQueuesController extends Controller
         $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
 
         $doctor = $reservation->doctor;
-        $room = $reservation->doctor->user->room;
+        $room = ($reservation->doctor->user)? $reservation->doctor->user->room : 0;
 
         $checkRoomQueue = RoomQueue::getBy('queue_number', $reservation->source_queue_number);
 
         if (!$checkRoomQueue){
             // 2 - Generate And Store Room Queue number
             $roomQueue = RoomQueue::store([
-                'floor_id' => $desk->area->floor_id,
+                'floor_id' => ($room)? $desk->area->floor_id : '0',
                 'room_id' => ($room)? $room->id : '0',
-//                'doctor_id' => ($doctor)? $doctor->id : '0',
+                'doctor_id' => ($doctor)? $doctor->id : '0',
                 'queue_number' => $reservation->source_queue_number,
                 'status' => config('vars.room_queue_status.waiting'),
             ]);
@@ -45,9 +45,8 @@ class RoomQueuesController extends Controller
             ]);
 
             // 4 - Websockets notification for rooms
-            if($updatedReservation) {
+            if($updatedReservation && $room) {
                 $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($desk->floor_id, $room->id);
-                dd($desk->floor_id, $room->id);
                 event(new RoomQueueStatus($data['availableRoomQueue'], $desk->floor_id, $room->id));
             }
         }else{

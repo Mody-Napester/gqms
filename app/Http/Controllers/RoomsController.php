@@ -137,11 +137,16 @@ class RoomsController extends Controller
         $data['roomQueueStatues'] = QueueStatus::getQueueStatuses('room');
 
         // Get today's room queues
-        $data['roomQueues'] = RoomQueue::getRoomQueues($data['room']->floor_id, $data['room']->id);
+        $data['roomQueues'] = RoomQueue::getRoomQueues($data['room']->floor_id, $data['room']->id, auth()->user()->id);
         $data['roomQueuesSkip'] = RoomQueueStatus::getRoomQueues(auth()->user()->id, config('vars.room_queue_status.skipped'));
         $data['roomQueuesPatientOut'] = RoomQueueStatus::getRoomQueues(auth()->user()->id, config('vars.room_queue_status.patient_out'));
 
         $data['currentRoomQueueNumber'] = RoomQueue::getCurrentRoomQueues($data['room']->id);
+
+        // Edit all room queues for doctor after login with current room
+        RoomQueue::where('doctor_id',  auth()->user()->id)->where('created_at', 'like', "%".date('Y-m-d')."%")->update([
+            'room_id' => $data['room']->id
+        ]);
 
         return view('rooms.show', $data);
     }

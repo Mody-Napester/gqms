@@ -18,6 +18,7 @@ class CreateRoomQueuesTable extends Migration
             $table->uuid('uuid');
             $table->integer('floor_id');
             $table->integer('room_id')->nullable();
+            $table->integer('doctor_id')->nullable();
             $table->string('queue_number');
             $table->integer('status'); // 1 Waiting, 2 Call, 3 Patient in,4 Skip, 5 Patient out ,6 Call from skip
             $table->integer('call_count')->unsigned()->default(0);

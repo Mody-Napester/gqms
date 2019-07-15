@@ -6,10 +6,9 @@ Route::group(
 
 });
 
-Route::get('test', function (){
-    return DB::table('reservations')
-        // ->where('doctor_id', 856)
-        ->where('reservation_date_time', 'like', date('Y-m-d').'%')->get();
+Route::get('test_schedule', function (){
+    DB::table('test_schedule')->insert(['name' => str_random('10')]);
+    return 'Done';
 });
 
 //// Integration And Sync Section ////////
@@ -21,6 +20,9 @@ Route::get('/integration/get-reservations', 'SyncVendorDataController@getClientR
 
 Route::get('/integration/sync/{what}', 'SyncButtonsController@syncClient')->name('integration.syncClient');
 //// END Integration And Sync Section ////
+
+// Auth modifications
+Route::get('auth/users/logout', 'Auth\CustomAuthController@logoutUsers')->name('auth.logoutUsers');
 
 // Globals
 Route::get('/', 'HomeController@index')->name('home');
@@ -38,11 +40,7 @@ Route::get('doctors/get/floors/{doctor_uuid}', 'DoctorToFloorsController@getDoct
 
 // Auth
 Auth::routes(['verify' => true]);
-
-Route::get('register', function (){
-    return redirect('login');
-});
-
+Route::get('register', function (){return redirect('login');});
 Route::get('logout', 'Auth\LoginController@logout');
 
 // Admin
@@ -78,9 +76,6 @@ Route::group([
 
     // Settings
     Route::get('settings', 'SettingsController@index')->name('settings.index');
-
-    // Auth modifications
-    Route::get('auth/users/logout', 'Auth\CustomAuthController@logoutUsers')->name('auth.logoutUsers');
 
     // Doctor modifications
     Route::get('doctors/{doctor_uuid}/{nickname}/update-nickName', 'DoctorsController@updateNickName')->name('screens.updateNickName');

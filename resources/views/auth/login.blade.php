@@ -17,10 +17,11 @@
                         <input id="email" type="text" name="email" value="{{ old('email') }}" required autofocus class="{{ $errors->has('email') ? ' is-invalid' : '' }}"/>
                         <label class="control-label" for="email">Username</label><i class="bar"></i>
 
+
                         @if ($errors->has('email'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
+                            <ul class="parsley-errors-list filled">
+                                <li class="parsley-required">{{ $errors->first('email') }}</li>
+                            </ul>
                         @endif
                     </div>
 
@@ -29,9 +30,9 @@
                         <label class="control-label" for="user-password">Password</label><i class="bar"></i>
 
                         @if ($errors->has('password'))
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
+                            <ul class="parsley-errors-list filled">
+                                <li class="parsley-required">{{ $errors->first('password') }}</li>
+                            </ul>
                         @endif
                     </div>
 
