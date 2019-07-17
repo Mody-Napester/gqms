@@ -35,7 +35,8 @@ class EPSON
         $printer->setTextSize(2, 2);
         $printer->setFont(Printer::FONT_B);
         $printer->setJustification(Printer::JUSTIFY_CENTER);
-        $printer->text(date('h:i:s A - dMY') . "\n");
+        $printer->text(date('h:i:s A - dMY', time()+7200) . "\n");
+//        $printer->text(date('h:i:s A - dMY') . "\n");
 
         $printer->cut();
 

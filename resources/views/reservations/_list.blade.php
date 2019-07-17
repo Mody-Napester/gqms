@@ -36,8 +36,7 @@
         Page Pagination
     </div>
     <div class="pull-right">
-        {{--@if($reservations->hasPages())--}}
-        @if($reservations->links() instanceof \Illuminate\Pagination\LengthAwarePaginator)
+        @if($reservations->hasPages())
             {{ $reservations->links() }}
         @endif
     </div>

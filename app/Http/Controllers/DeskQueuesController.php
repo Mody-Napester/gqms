@@ -74,7 +74,7 @@ class DeskQueuesController extends Controller
                     'queue_number' => $resource->queue_number,
 //                    'screen_ip' => $screen->ip,
                     'printer_ip' => $screen->printer->ip,
-                    'floor' => $screen->area->floor->name_en,
+                    'floor' => $area->floor->name_en,
                 ];
 
                 \EPSON::deskPrint($printData);

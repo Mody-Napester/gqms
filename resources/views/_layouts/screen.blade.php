@@ -83,8 +83,12 @@
                     <div class="col-md-6 text-left">
                         <div class="top-div">{{ $screen->area->name_en }}</div>
                         <div class="top-div">{{ $screen->name_en }}</div>
+                        {{--<div class="top-div">--}}
+                            {{--<div id="time-txt" style="width: 150px;text-align: center;"></div>--}}
+                        {{--</div>--}}
                         <div class="top-div">
-                            <div id="time-txt" style="width: 150px;text-align: center;"></div>
+                            <div id="jqclock" style="width: 200px;text-align: center;" class="jqclock" data-time="<?php echo time(); ?>"></div>
+{{--                            <div style="width: 170px;text-align: center;">{{ time() }}</div>--}}
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -108,31 +112,30 @@
     </div>
 
     <script type="text/javascript">
-        function startTime()
-        {
-            var today=new Date();
-            var h=today.getHours();
-            var m=today.getMinutes();
-            var s=today.getSeconds();
+        // Get JS Time
+        // function startTime()
+        // {
+        //     var today= new Date();
+        //     var h=today.getHours();
+        //     var m=today.getMinutes();
+        //     var s=today.getSeconds();
+        //
+        //     // add a zero in front of numbers<10
+        //     m=checkTime(m);
+        //     s=checkTime(s);
+        //     document.getElementById('time-txt').innerHTML=h+":"+m+":"+s;
+        //     t=setTimeout('startTime()',500);
+        // }
+        //
+        // function checkTime(i)
+        // {
+        //     if (i<10) { i="0" + i;}
+        //     return i;
+        // }
+        //
+        // startTime();
 
-            // add a zero in front of numbers<10
-            m=checkTime(m);
-            s=checkTime(s);
-            document.getElementById('time-txt').innerHTML=h+":"+m+":"+s;
-            t=setTimeout('startTime()',500);
-        }
-
-        function checkTime(i)
-        {
-            if (i<10)
-            {
-                i="0" + i;
-            }
-            return i;
-        }
-
-        startTime();
-
+        // Get Ip
         function saveIpInSession()
         {
             var RTCPeerConnection = /*window.RTCPeerConnection ||*/ window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
@@ -187,8 +190,16 @@
     </script>
 
     <script src="{{ url('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ url('assets/js/jqClock.js') }}"></script>
     <script src="{{ url('assets/js/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/bootstrap.min.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            customtimestamp = parseInt($("#jqclock").data("time"));
+            $("#jqclock").clock({"timestamp": '{{ time()+7200 }}', "calendar": false});
+        });
+    </script>
 
     <script src="{{ url('js/app.js') }}"></script>
 

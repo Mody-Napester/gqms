@@ -13,7 +13,7 @@
                     {{ \App\QueueStatus::where('id', $history->queue_status_id)->first()->name_en }}
                 </span>
             </td>
-            <td>{{ \App\User::getBy('id', $history->user_id)->first()->name }}</td>
+            <td>{{ \App\User::getBy('id', $history->user_id)->name }}</td>
             <td>{{ $history->created_at }}</td>
         </tr>
     @endforeach
@@ -27,7 +27,7 @@
                         {{ \App\QueueStatus::where('id', $history->queue_status_id)->first()->name_en }}
                     </span>
                 </td>
-                <td>{{ \App\User::getBy('id', $history->user_id)->first()->name }}</td>
+                <td>{{ \App\User::getBy('id', $history->user_id)->name }}</td>
                 <td>{{ $history->created_at }}</td>
             </tr>
         @endforeach

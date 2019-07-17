@@ -187,28 +187,7 @@
 
         <div class="col-sm-4">
 
-            <h4 class="m-t-20 m-b-20">Logged in Users ({{ count($loggedInUsers) }})</h4>
-
-            <div class="card-box p-2">
-                <table class="table table-striped table-bordered table-sm">
-                    <thead>
-                    <tr>
-                        <td>User</td>
-                        <td>Type</td>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    @foreach($loggedInUsers as $loggedInUser)
-                        <tr>
-                            <td>{{ $loggedInUser->name }}</td>
-                            <td>{{ \App\Enums\UserTypes::$types[$loggedInUser->type] }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-
-                </table>
-            </div>
+            @include('dashboard._logged_in_users')
 
         </div>
     </div>

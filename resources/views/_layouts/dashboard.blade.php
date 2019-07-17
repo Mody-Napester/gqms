@@ -188,9 +188,18 @@
                             {{--</form>--}}
                             @if(auth()->check())
                                 @if((auth()->user()->desk_id || auth()->user()->room_id) && in_array( auth()->user()->type ,config('vars.go_available_user_types')))
-                                    <button @click.prevent="availability()" type="button" id="availablity" class="btn btn-danger waves-effect waves-light">
-                                        <span>Go not available</span>
-                                        <i class="fa fa-fw fa-lock"></i>
+                                    {{--<button @click.prevent="availability()" type="button" id="availablity" class="btn btn-danger waves-effect waves-light">--}}
+                                        {{--<span>Go not available</span>--}}
+                                        {{--<i class="fa fa-fw fa-lock"></i>--}}
+                                    {{--</button>--}}
+                                    <button @click.prevent="availability()" type="button" id="availablity" class="btn @if(auth()->user()->available == 1) btn-danger @else btn-success @endif waves-effect waves-light">
+                                        @if(auth()->user()->available == 1)
+                                            <span>Go not available</span>
+                                            <i class="fa fa-fw fa-lock"></i>
+                                        @else
+                                            <span>Go available</span>
+                                            <i class="fa fa-fw fa-unlock"></i>
+                                        @endif
                                     </button>
                                 @endif
                             @endif
@@ -336,14 +345,14 @@
                                     addAlert('success', response.data.message.text);
                                     $('#availablity').removeClass('btn-success').addClass('btn-danger');
                                     $('#availablity').find('span').text(response.data.message.btn_txt);
-                                    $('#availablity').find('.fa').removeClass('fa-lock').addClass('fa-unlock');
+                                    $('#availablity').find('.fa').removeClass('fa-unlock').addClass('fa-lock');
 
                                     $('.current-queue-div').removeClass('cover-div');
                                 }else{
                                     addAlert('danger', response.data.message.text);
                                     $('#availablity').removeClass('btn-danger').addClass('btn-success');
                                     $('#availablity').find('span').text(response.data.message.btn_txt);
-                                    $('#availablity').find('.fa').removeClass('fa-unlock').addClass('fa-lock');
+                                    $('#availablity').find('.fa').removeClass('fa-lock').addClass('fa-unlock');
 
                                     $('.current-queue-div').addClass('cover-div');
                                 }
