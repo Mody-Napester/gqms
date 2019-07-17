@@ -89,7 +89,7 @@
                         </div>
                         <div class="tiles-progress">
                             <div class="m-t-20">
-                                <h5 class="text-uppercase font-16">Percentage <span class="pull-right">{{ floor(($today_done/$today_total)*100) }}%</span></h5>
+                                <h5 class="text-uppercase font-16">Percentage <span class="">{{ floor(($today_done/$today_total)*100) }}%</span></h5>
                                 <div class="progress progress-sm m-0">
                                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ floor(($today_done/$today_total)*100) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ floor(($today_done/$today_total)*100) }}%">
                                         <span class="sr-only">{{ floor(($today_done/$today_total)*100) }}% Complete</span>
@@ -106,7 +106,7 @@
             <h4 class="m-t-20 m-b-20">Total ({{ ($total_total_is == 0)? 0 : $total_total }})</h4>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-warning"><i class="ion-load-d text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -115,7 +115,7 @@
                         </div>
                         <div class="tiles-progress">
                             <div class="m-t-20">
-                                <h5 class="text-uppercase font-16">Percentage <span class="pull-right">{{ floor(($total_waiting/$total_total)*100) }}%</span></h5>
+                                <h5 class="text-uppercase font-16"> <span class="">{{ floor(($total_waiting/$total_total)*100) }}%</span></h5>
                                 <div class="progress progress-sm m-0">
                                     <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ floor(($total_waiting/$total_total)*100) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ floor(($total_waiting/$total_total)*100) }}%">
                                         <span class="sr-only">{{ floor(($total_waiting/$total_total)*100) }}% Complete</span>
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="mini-stat clearfix card-box">
                         <span class="mini-stat-icon bg-primary"><i class="ion-location text-white"></i></span>
                         <div class="mini-stat-info text-right text-dark">
@@ -134,7 +134,7 @@
                         </div>
                         <div class="tiles-progress">
                             <div class="m-t-20">
-                                <h5 class="text-uppercase font-16">Percentage <span class="pull-right">{{ floor(($total_called/$total_total)*100) }}%</span></h5>
+                                <h5 class="text-uppercase font-16"> <span class="pull-right">{{ floor(($total_called/$total_total)*100) }}%</span></h5>
                                 <div class="progress progress-sm m-0">
                                     <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="{{ floor(($total_called/$total_total)*100) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ floor(($total_called/$total_total)*100) }}%">
                                         <span class="sr-only">{{ floor(($total_called/$total_total)*100) }}% Complete</span>

@@ -95,12 +95,15 @@ class DeskQueuesController extends Controller
     public function callNext($desk_uuid)
     {
         $data['desk'] = Desk::getBy('uuid', $desk_uuid);
+
         $data['nextQueue'] = DeskQueue::where('area_id', $data['desk']->area_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', config('vars.desk_queue_status.waiting'))
             ->first();
 
         if($data['nextQueue']){
+            $data['haveWaiting'] = 1;
+
             // Do Code
             $data['nextDeskQueueUpdated'] = DeskQueue::edit([
                 'desk_id' => $data['desk']->id,
@@ -121,17 +124,21 @@ class DeskQueuesController extends Controller
                 'msg_status' => 1,
                 'text' => 'Your next number has come',
             ];
-        }else{
+        }
+        else{
+            $data['haveWaiting'] = 0;
             $data['message'] = [
                 'msg_status' => 0,
                 'text' => 'Some thing error, please try again after few minutes',
             ];
         }
 
-        // Broadcast event
-        if (isset($data['nextDeskQueueUpdated'])){
-            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->area_id));
-            event(new NextDeskQueue($data['desk']->uuid, $data['nextQueue']->queue_number));
+        if($data['haveWaiting'] == 1){
+            // Broadcast event
+            if (isset($data['nextDeskQueueUpdated'])){
+                event(new QueueStatus($data['availableDeskQueue'], $data['desk']->area_id));
+                event(new NextDeskQueue($data['desk']->uuid, $data['nextQueue']->queue_number));
+            }
         }
 
         // Return
@@ -419,9 +426,9 @@ class DeskQueuesController extends Controller
                         if ($room){ // Check doctor in room room
                             $data['reservations'][$key]['room'] = 1;
                         }else{
-                            $data['reservations'][$key]['room'] = 0;
+                            $data['reservations'][$key]['room'] = 1;
                             $data['messages'][$key] = [
-                                'msg_status' => 0,
+                                'msg_status' => 2,
                                 'text' => 'Reservation of serial ('. $reservation->source_reservation_serial .') exists but doctor not in room',
                             ];
                         }
@@ -547,8 +554,10 @@ class DeskQueuesController extends Controller
         if($deskQueueStatusDone){
             $data['message'] = [
                 'msg_status' => 1,
-                'text' => 'Queue was done successfully with getting next number',
+                'text' => 'Queue was done successfully',
             ];
+
+            $data['haveWaiting'] = 0;
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->area_id);
 
@@ -587,6 +596,8 @@ class DeskQueuesController extends Controller
         if (!User::hasAuthority('use.desk_queue')){
             return redirect('/');
         }
+
+        $data = [];
 
         $deskQueue = DeskQueue::getBy('uuid', $desk_queue_uuid);
 

@@ -280,7 +280,11 @@
                                     if(Object.keys(response.data.messages).length > 0){
                                         // Loop
                                         for (var message in response.data.messages) {
-                                            addAlert('danger', response.data.messages[message].text, 1);
+                                            if(response.data.messages[message].msg_status == 0){
+                                                addAlert('danger', response.data.messages[message].text, 1);
+                                            }else if (response.data.messages[message].msg_status == 2){
+                                                addAlert('warning', response.data.messages[message].text, 1);
+                                            }
                                         }
                                     }else{
                                         $('#reservation_resource').removeClass('is-invalid');
@@ -325,8 +329,7 @@
                     $('.get-patient-data').html('');
                     $('.get-patient-data').hide(0);
 
-                    $('#reservation_resource').removeClass('is-invalid');
-                    $('.reservation_resource_feedback').text('').hide(0);
+                    $('.confirm-done-close').trigger('click');
                 },
 
                 next(){
@@ -334,22 +337,30 @@
                     var url = '{{ route('desks.queues.callNextQueueNumber', $desk->uuid) }}';
                     axios.get(url)
                         .then((response) => {
-                            $('.current-queue').text(response.data.nextQueue.queue_number);
-
-                            this.desk_queue_uuid = response.data.nextQueue.uuid;
-                            this.waiting_time = response.data.waitingTime;
-                            this.active_btn = true;
-
-                            removeLoarder();
 
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
+
+                                $('.current-queue').text(response.data.nextQueue.queue_number);
+                                this.desk_queue_uuid = response.data.nextQueue.uuid;
+                                this.waiting_time = response.data.waitingTime;
+                                this.active_btn = true;
+
                             }else{
-                                addAlert('danger', response.data.message.text);
+                                if(response.data.haveWaiting === 0){
+                                    console.log(response);
+                                    addAlert('danger', 'No Queue Found');
+                                }else{
+                                    addAlert('danger', response.data.message.text);
+                                }
                             }
+
+                            removeLoarder();
+
                         })
                         .catch((data) => {
                             removeLoarder();
+                            addAlert('danger', data, 1);
                         });
                 },
                 call(){
@@ -374,11 +385,10 @@
                     axios.get(url)
                         .then((response) => {
 
-                            $('.current-queue').text('-');
-
                             $('#count-skip').text(response.data.deskQueuesSkip);
                             $('#count-done').text(response.data.deskQueuesDone);
 
+                            $('.current-queue').text('-');
                             this.active_btn = false;
 
                             removeLoarder();
@@ -410,6 +420,13 @@
                             }else{
                                 addAlert('danger', response.data.message.text);
                             }
+
+                            if(response.data.haveWaiting == 0){
+                                $('.current-queue').text('-');
+                                this.active_btn = false;
+                            }
+
+                            $('.confirm-done-close').trigger('click');
                         })
                         .catch((data) => {
                             removeLoarder();
@@ -450,13 +467,6 @@
                     var url = '{{ url('dashboard') }}/desk/{{$desk->uuid}}/' + this.desk_queue_uuid + '/' + this.reservation_resource + '/done-and-next';
                     axios.get(url)
                         .then((response) => {
-                            $('.current-queue').text(response.data.nextQueue.queue_number);
-                            $('#count-skip').text(response.data.deskQueuesSkip);
-                            $('#count-done').text(response.data.deskQueuesDone);
-                            this.desk_queue_uuid = response.data.nextQueue.uuid;
-                            this.waiting_time = response.data.waitingTime;
-
-                            removeLoarder();
 
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
@@ -464,11 +474,24 @@
                                 addAlert('danger', response.data.message.text);
                             }
 
+                            if(response.data.haveWaiting == 0){
+                                $('.current-queue').text('-');
+                                this.waiting_time = '-';
+                                this.active_btn = false;
+                            }else {
+                                $('.current-queue').text(response.data.nextQueue.queue_number);
+                                $('#count-skip').text(response.data.deskQueuesSkip);
+                                $('#count-done').text(response.data.deskQueuesDone);
+                                this.desk_queue_uuid = response.data.nextQueue.uuid;
+                                this.waiting_time = response.data.waitingTime;
+                            }
+
+                            removeLoarder();
                             $('.confirm-done-close').trigger('click');
                         })
                         .catch((data) => {
                             removeLoarder();
-                            // addAlert('danger', 'Server Error!');
+                            addAlert('danger', data);
                         });
 
                     console.log('done and next');
