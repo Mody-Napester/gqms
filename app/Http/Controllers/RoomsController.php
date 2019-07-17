@@ -125,7 +125,6 @@ class RoomsController extends Controller
             return back()->with('message', $data['message']);
         }
 
-
         // Check if user login from current room
         if (is_null(auth()->user()->room_id) || auth()->user()->login_ip != auth()->user()->room->ip){
             return redirect(route('dashboard.index'));
@@ -144,7 +143,9 @@ class RoomsController extends Controller
         $data['currentRoomQueueNumber'] = RoomQueue::getCurrentRoomQueues($data['room']->id);
 
         // Edit all room queues for doctor after login with current room
-        RoomQueue::where('doctor_id',  auth()->user()->id)->where('created_at', 'like', "%".date('Y-m-d')."%")->update([
+        RoomQueue::where('doctor_id',  auth()->user()->id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->update([
             'room_id' => $data['room']->id
         ]);
 
