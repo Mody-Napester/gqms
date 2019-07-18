@@ -497,6 +497,8 @@
                             this.waiting_time = response.data.waitingTime;
                             this.active_btn = true;
 
+                            this.changeBtnStatus({{ config('vars.room_queue_status.call_from_skip') }});
+
                             if(response.data.message.msg_status == 1){
                                 addAlert('success', response.data.message.text);
                             }else{

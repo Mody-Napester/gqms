@@ -11,6 +11,10 @@ Route::get('test_schedule', function (){
     return 'Done';
 });
 
+Route::get('voice_test', function (){
+    return view('voice_test');
+});
+
 //Route::get('test', function (){
 //    // 1 - Get Reservation
 //    $reservation = \App\Reservation::getBy('source_reservation_serial', 73504);
