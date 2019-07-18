@@ -29,12 +29,14 @@ class RoomQueuesController extends Controller
 
         $checkRoomQueue = RoomQueue::getBy('queue_number', $reservation->source_queue_number);
 
+        $doctor_id = ($doctor)? $doctor->source_doctor_id : '0';
+
         if (!$checkRoomQueue){
             // 2 - Generate And Store Room Queue number
             $roomQueue = RoomQueue::store([
                 'floor_id' => ($room)? $desk->area->floor_id : '0',
                 'room_id' => ($room)? $room->id : '0',
-                'doctor_id' => ($doctor)? $doctor->id : '0',
+                'doctor_id' => $doctor_id,
                 'queue_number' => $reservation->source_queue_number,
                 'status' => config('vars.room_queue_status.waiting'),
             ]);

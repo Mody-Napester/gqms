@@ -143,11 +143,24 @@ class RoomsController extends Controller
         $data['currentRoomQueueNumber'] = RoomQueue::getCurrentRoomQueues($data['room']->id);
 
         // Edit all room queues for doctor after login with current room
-        RoomQueue::where('doctor_id',  auth()->user()->id)
-            ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->update([
-            'room_id' => $data['room']->id
-        ]);
+        $roomQueues = RoomQueue::where('doctor_id',  auth()->user()->doctor->source_doctor_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")->get();
+
+        foreach($roomQueues as $roomQueue){
+            $roomQueue->update([
+                'floor_id' => $data['room']->floor->id,
+                'room_id' => $data['room']->id,
+            ]);
+        }
+
+        $data['roomQueues'] = RoomQueue::where('doctor_id',  auth()->user()->doctor->source_doctor_id)
+        ->where('created_at', 'like', "%".date('Y-m-d')."%")->get();
+
+        // $roomQueues = RoomQueue::where('doctor_id',  auth()->user()->doctor->source_doctor_id)
+        //     ->where('created_at', 'like', "%".date('Y-m-d')."%")
+        //     ->update([
+        //     'room_id' => $data['room']->id
+        // ]);
 
         return view('rooms.show', $data);
     }

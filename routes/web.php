@@ -11,6 +11,12 @@ Route::get('test_schedule', function (){
     return 'Done';
 });
 
+//Route::get('test', function (){
+//    // 1 - Get Reservation
+//    $reservation = \App\Reservation::getBy('source_reservation_serial', 73504);
+//    $doctor = $reservation->doctor;
+//});
+
 //// Integration And Sync Section ////////
 Route::get('/integration/get-clinics', 'SyncVendorDataController@getClientClinics');
 Route::get('/integration/get-specialities', 'SyncVendorDataController@getClientSpecialities');
