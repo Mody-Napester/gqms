@@ -211,6 +211,22 @@ class RoomQueue extends Model
     }
 
     /**
+     *  Get Count Desk Queue
+     */
+    public static function getCountDeskQueues($status, $all = null)
+    {
+        $roomQueues = self::where('status', $status);
+
+        if (is_null($all)){
+            $roomQueues = $roomQueues->where('created_at', 'like', "%".date('Y-m-d')."%")->count();
+        }else{
+            $roomQueues = $roomQueues->count();
+        }
+
+        return $roomQueues;
+    }
+
+    /**
      *  Get Count Room Queue
      */
     public static function getCountRoomQueues($status, $all = null)

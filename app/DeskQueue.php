@@ -11,7 +11,7 @@ class DeskQueue extends Model
      *
      * @var array
      */
-    protected $fillable = ['floor_id', 'area_id', 'queue_number', 'status'];
+    protected $fillable = ['floor_id', 'area_id', 'desk_id', 'queue_number', 'status', 'reminder'];
 
     /**
      * The attributes that should be hidden for arrays.

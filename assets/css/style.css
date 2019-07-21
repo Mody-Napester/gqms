@@ -4146,6 +4146,51 @@ ul.ColVis_collection li {
   border-radius: 50%;
 }
 
+.widget-bg-color-icon .bg-icon-info {
+  background-color: rgba(52, 211, 235, 0.2);
+  border: 1px solid #34d3eb;
+}
+
+.widget-bg-color-icon .bg-icon-primary {
+  background-color: rgba(93, 156, 236, 0.2);
+  border: 1px solid #5d9cec;
+}
+
+.widget-bg-color-icon .bg-icon-pink {
+  background-color: rgba(251, 109, 157, 0.2);
+  border: 1px solid #fb6d9d;
+}
+
+.widget-bg-color-icon .bg-icon-purple {
+  background-color: rgba(114, 102, 186, 0.2);
+  border: 1px solid #7266ba;
+}
+
+.widget-bg-color-icon .bg-icon-success {
+  background-color: rgba(129, 200, 104, 0.2);
+  border: 1px solid #81c868;
+}
+
+.widget-bg-color-icon .bg-icon-custom {
+  background-color: rgba(95, 190, 170, 0.2);
+  border: 1px solid #5fbeaa;
+}
+
+.widget-bg-color-icon .bg-icon-warning {
+  background-color: rgba(255, 189, 74, 0.2);
+  border: 1px solid #ffbd4a;
+}
+
+.widget-bg-color-icon .bg-icon-danger {
+  background-color: rgba(240, 80, 80, 0.2);
+  border: 1px solid #f05050;
+}
+
+.widget-bg-color-icon .bg-icon-inverse {
+  background-color: rgba(76, 86, 103, 0.2);
+  border: 1px solid #4c5667;
+}
+
 .widget-bg-color-icon .bg-icon i {
   font-size: 32px;
   line-height: 80px;
