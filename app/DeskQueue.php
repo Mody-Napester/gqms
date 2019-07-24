@@ -121,17 +121,24 @@ class DeskQueue extends Model
     /**
      *  Get Count Desk Queue
      */
-    public static function getCountDeskQueues($status, $all = null)
-    {
-        $deskQueues = self::where('status', $status);
+    public static function getCountDeskQueues($status, $all = null, $date_from = null, $date_to = null){
+        $queues = self::where('status', $status);
 
         if (is_null($all)){
-            $deskQueues = $deskQueues->where('created_at', 'like', "%".date('Y-m-d')."%")->count();
+            if(is_null($date_from) && is_null($date_to)){
+                $queues = $queues->where('created_at', 'like', "%".date('Y-m-d')."%")->count();
+            }else{
+                $queues = $queues->whereBetween('created_at', [$date_from, $date_to])->count();
+            }
         }else{
-            $deskQueues = $deskQueues->count();
+            if(is_null($date_from) && is_null($date_to)){
+                $queues = $queues->count();
+            }else{
+                $queues = $queues->whereBetween('created_at', [$date_from, $date_to])->count();
+            }
         }
 
-        return $deskQueues;
+        return $queues;
     }
 
 

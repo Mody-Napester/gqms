@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <h4 class="m-t-20 m-b-20">Doctor Queue Today <span class="text-danger">({{ $room['total'] }})</span></h4>
+        <h4 class="m-t-20 m-b-20">Doctor Queue <span class="text-danger">({{ $room['total'] }})</span></h4>
     </div>
 
     <div class="col-md-6 col-lg-6 col-xl-6">

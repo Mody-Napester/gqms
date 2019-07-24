@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <h4 class="m-t-20 m-b-20">Reservations Today</h4>
+        <h4 class="m-t-20 m-b-20">Reservations</h4>
     </div>
 
     <div class="col-md-4">
