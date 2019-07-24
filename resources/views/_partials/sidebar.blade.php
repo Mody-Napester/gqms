@@ -147,6 +147,15 @@
                     @endif
                 @endif
 
+                @if (\App\User::hasAuthority('use.reports'))
+                    <li class="text-muted menu-title">Reports</li>
+                    @if (\App\User::hasAuthority('index.desks_reports'))
+                        <li class="has_sub">
+                            <a href="{{ route('logs_user_logins.index') }}" class="waves-effect"><i class="ti-clipboard"></i> <span> Desks Reports</span></a>
+                        </li>
+                    @endif
+                @endif
+
             </ul>
             <div class="clearfix"></div>
         </div>
