@@ -151,7 +151,12 @@
                     <li class="text-muted menu-title">Reports</li>
                     @if (\App\User::hasAuthority('index.desks_reports'))
                         <li class="has_sub">
-                            <a href="{{ route('logs_user_logins.index') }}" class="waves-effect"><i class="ti-clipboard"></i> <span> Desks Reports</span></a>
+                            <a href="{{ route('reports.desks.index') }}" class="waves-effect"><i class="ti-clipboard"></i> <span> Desks Reports</span></a>
+                        </li>
+                    @endif
+                    @if (\App\User::hasAuthority('index.doctors_reports'))
+                        <li class="has_sub">
+                            <a href="{{ route('reports.doctors.index') }}" class="waves-effect"><i class="ti-clipboard"></i> <span> Doctors Reports</span></a>
                         </li>
                     @endif
                 @endif

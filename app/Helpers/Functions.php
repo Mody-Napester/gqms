@@ -25,6 +25,40 @@ function storeLogUserLogin($user = null){
     return \App\UserLoginHistory::store($user);
 }
 
+// Store Log User Login
+function getDeskReport($user, $status){
+    $report = \App\DeskQueueStatus::getDeskQueues($user->id, $status);
+    return $report;
+}
+
+// Store Log User Login
+function getCurrentDeskReport($user){
+    $report = \App\DeskQueue::where('desk_id', $user->desk->id)
+        ->where('status', config('vars.desk_queue_status.called'))
+        ->where('created_at', 'like', "%".date('Y-m-d')."%")
+        ->orderBy('id', 'DESC')
+        ->first();
+
+    return $report;
+}
+
+// Store Log User Login
+function getDoctorReport($user, $status){
+    $report = \App\DeskQueueStatus::getDeskQueues($user->id, $status);
+    return $report;
+}
+
+// Store Log User Login
+function getCurrentDoctorReport($user){
+    $report = \App\DeskQueue::where('desk_id', $user->desk->id)
+        ->where('status', config('vars.desk_queue_status.called'))
+        ->where('created_at', 'like', "%".date('Y-m-d')."%")
+        ->orderBy('id', 'DESC')
+        ->first();
+
+    return $report;
+}
+
 // Store Log User Actions
 function storeLogUserAction($action, $method, $url = null, $user = null){
     $theUrl = (!is_null($url))? $url : '';

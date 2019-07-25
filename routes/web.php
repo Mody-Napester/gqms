@@ -78,6 +78,10 @@ Route::group([
     Route::get('logs/user/logins', 'LogsController@index_logs_user_logins')->name('logs_user_logins.index');
     Route::get('logs/user/actions', 'LogsController@index_logs_user_actions')->name('logs_user_actions.index');
 
+    // Reports
+    Route::get('reports/desks', 'ReportsController@desksIndex')->name('reports.desks.index');
+    Route::get('reports/doctors', 'ReportsController@doctorsIndex')->name('reports.doctors.index');
+
     // Reset password
     Route::get('users/{user}/reset_password', 'UsersController@resetPassword')->name('users.reset_password');
 
