@@ -30,7 +30,8 @@
                         <th>Room</th>
                         <th>Called</th>
                         <th>Skipped</th>
-                        <th>Done</th>
+                        <th>Patient in</th>
+                        <th>Patient out</th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -42,6 +43,7 @@
                             <td>{{ $user->room->name_en }}</td>
                             <td>{{ getDoctorReport($user, config('vars.room_queue_status.called')) }}</td>
                             <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped')) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in')) }}</td>
                             <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out')) }}</td>
                             <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
                         </tr>

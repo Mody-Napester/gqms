@@ -44,12 +44,25 @@
 
     <div class="col-md-6 col-lg-6 col-xl-6">
         <div class="widget-bg-color-icon card-box">
-            <div class="bg-icon bg-icon-success pull-left">
-                <i class="ion-checkmark text-success"></i>
+            <div class="bg-icon bg-icon-danger pull-left">
+                <i class="ion-arrow-up-a text-danger"></i>
             </div>
             <div class="text-right">
-                <h3 class="text-dark"><b class="counter">{{ $room['done'] }}</b></h3>
-                <p class="text-muted mb-0">Done</p>
+                <h3 class="text-dark"><b class="counter">{{ $room['patient_in'] }}</b></h3>
+                <p class="text-muted mb-0">Patient in</p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6 col-xl-6">
+        <div class="widget-bg-color-icon card-box">
+            <div class="bg-icon bg-icon-success pull-left">
+                <i class="ion-arrow-down-a text-success"></i>
+            </div>
+            <div class="text-right">
+                <h3 class="text-dark"><b class="counter">{{ $room['patient_out'] }}</b></h3>
+                <p class="text-muted mb-0">Patient out</p>
             </div>
             <div class="clearfix"></div>
         </div>

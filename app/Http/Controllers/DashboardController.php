@@ -35,7 +35,8 @@ class DashboardController extends Controller
             $data['room']['waiting']    = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.waiting'));
             $data['room']['called']     = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.called'));
             $data['room']['skipped']    = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.skipped'));
-            $data['room']['done']       = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.done'));
+            $data['room']['patient_in'] = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.patient_in'));
+            $data['room']['patient_out']= RoomQueue::getCountRoomQueues(config('vars.room_queue_status.patient_out'));
         }else{
 
             $data['reservations']['total'] = Reservation::whereBetween('created_at', [$request->date_from, $request->date_to])->count();
@@ -52,7 +53,8 @@ class DashboardController extends Controller
             $data['room']['waiting']    = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.waiting'), null, $request->date_from, $request->date_to);
             $data['room']['called']     = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.called'), null, $request->date_from, $request->date_to);
             $data['room']['skipped']    = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.skipped'), null, $request->date_from, $request->date_to);
-            $data['room']['done']       = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.done'), null, $request->date_from, $request->date_to);
+            $data['room']['patient_in'] = RoomQueue::getCountRoomQueues(config('vars.room_queue_status.patient_in'), null, $request->date_from, $request->date_to);
+            $data['room']['patient_out']= RoomQueue::getCountRoomQueues(config('vars.room_queue_status.patient_out'), null, $request->date_from, $request->date_to);
         }
 
         $data['loggedInUsers'] = User::where('login_ip', '<>', '')->get();

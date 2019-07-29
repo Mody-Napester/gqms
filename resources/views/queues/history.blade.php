@@ -46,8 +46,9 @@
                         <th colspan="2">Queue Numbers</th>
                         <th colspan="3">Served With</th>
                         <th rowspan="2">Reservation</th>
-                        <th colspan="2">Attend Date</th>
-                        <th colspan="2">Take Time (HH:MM:SS)</th>
+                        <th colspan="2">Attend Time</th>
+                        <th colspan="2">Waiting Time</th>
+                        <th colspan="2">Serve Time</th>
                         <th rowspan="2" class="text-center">History</th>
                     </tr>
                     <tr>
@@ -56,6 +57,9 @@
 
                         <th>Desk</th>
                         <th>Room</th>
+                        <th>Doctor</th>
+
+                        <th>Desk</th>
                         <th>Doctor</th>
 
                         <th>Desk</th>
@@ -72,9 +76,9 @@
                             <td>{{ $deskQueue->queue_number }}</td>
                             <td>{{ ($deskQueue->reservation) ? $deskQueue->reservation->source_queue_number : '-' }}</td>
 
-
                             <td>{{ ($deskQueue->desk)? $deskQueue->desk->name_en : '' }}</td>
                             <td>{{ ($deskQueue->reservation && $deskQueue->reservation->roomQueue) ? $deskQueue->reservation->roomQueue->room->name_en : '-' }}</td>
+
                             <td>
                                 @if($deskQueue->reservation && $deskQueue->reservation->roomQueue)
                                     @if($deskQueue->reservation->roomQueue->room)
@@ -95,9 +99,10 @@
                             <td>{{ $deskQueue->created_at }}</td>
                             <td>{{ ($deskQueue->reservation && $deskQueue->reservation->roomQueue) ? $deskQueue->reservation->roomQueue->created_at : '-' }}</td>
 
+                            <!-- Waiting time -->
                             <td>
                                 @if($deskQueue->status == config('vars.desk_queue_status.done'))
-                                    {{ getDeskQueuePatientServeTime($deskQueue) }}
+                                    {{ getQueuePatientTime($deskQueue, 'desk', 'waiting') }}
                                 @else
                                     00:00:00
                                 @endif
@@ -106,7 +111,26 @@
                             <td>
                                 @if(($deskQueue->reservation && $deskQueue->reservation->roomQueue))
                                     @if($deskQueue->reservation->roomQueue->status == config('vars.desk_queue_status.patient_out'))
-                                        {{ getRoomQueuePatientServeTime($deskQueue->reservation->roomQueue) }}
+                                        {{ getQueuePatientTime($deskQueue->reservation->roomQueue, 'room', 'waiting') }}
+                                    @endif
+                                @else
+                                    00:00:00
+                                @endif
+                            </td>
+
+                            <!-- Serve time -->
+                            <td>
+                                @if($deskQueue->status == config('vars.desk_queue_status.done'))
+                                    {{ getQueuePatientTime($deskQueue, 'desk', 'serve') }}
+                                @else
+                                    00:00:00
+                                @endif
+                            </td>
+
+                            <td>
+                                @if(($deskQueue->reservation && $deskQueue->reservation->roomQueue))
+                                    @if($deskQueue->reservation->roomQueue->status == config('vars.desk_queue_status.patient_out'))
+                                        {{ getQueuePatientTime($deskQueue->reservation->roomQueue, 'room', 'serve') }}
                                     @endif
                                 @else
                                     00:00:00
