@@ -25,37 +25,38 @@ class RoomQueuesController extends Controller
         $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
 
         $doctor = $reservation->doctor;
-        $room = ($reservation->doctor->user)? $reservation->doctor->user->room : 0;
 
-        $checkRoomQueue = RoomQueue::getBy('queue_number', $reservation->source_queue_number);
+        if($doctor){
+            $room = ($reservation->doctor->user)? $reservation->doctor->user->room : 0;
+        }else{
+            $room = 0;
+        }
+
+//        $checkRoomQueue = RoomQueue::getBy('queue_number', $reservation->source_queue_number);
 
         $doctor_id = ($doctor)? $doctor->source_doctor_id : '0';
 
-        if (!$checkRoomQueue){
-            // 2 - Generate And Store Room Queue number
-            $roomQueue = RoomQueue::store([
-                'floor_id' => ($room)? $desk->area->floor_id : '0',
-                'room_id' => ($room)? $room->id : '0',
-                'doctor_id' => $doctor_id,
-                'queue_number' => $reservation->source_queue_number,
-                'status' => config('vars.room_queue_status.waiting'),
-            ]);
+        // 2 - Generate And Store Room Queue number
+        $roomQueue = RoomQueue::store([
+            'floor_id' => ($room)? $room->floor_id : '0',
+            'room_id' => ($room)? $room->id : '0',
+            'doctor_id' => $doctor_id,
+            'queue_number' => $reservation->source_queue_number,
+            'status' => config('vars.room_queue_status.waiting'),
+        ]);
 
-            // 3 - Update reservation
-            $updatedReservation = $reservation->update([
-                'desk_queue_id' => $deskQueue->id,
-            ]);
+        // 3 - Update reservation
+        $updatedReservation = $reservation->update([
+            'desk_queue_id' => $deskQueue->id,
+        ]);
 
-            // 4 - Websockets notification for rooms
-            if($updatedReservation && $room) {
-                $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($desk->floor_id, $room->id);
-                event(new RoomQueueStatus($data['availableRoomQueue'], $desk->floor_id, $room->id));
-            }
-        }else{
-            return false;
+        // 4 - Websockets notification for rooms
+        if($updatedReservation && !empty($room)) {
+            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($room->floor_id, $room->id);
+            event(new RoomQueueStatus($data['availableRoomQueue'], $room->floor_id, $room->id));
         }
 
-
+        return true;
     }
 
     /**

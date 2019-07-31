@@ -202,43 +202,115 @@ class SyncVendorDataController extends Controller
             return false;
         }
 
+        $data = DB::connection('oracle')
+            ->table('VW_PATIENTS')
+            ->where(function ($q) {
+                $q->whereNull('queue_system_integ_flag');
+                $q->orWhere('queue_system_integ_flag', '');
+                $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+                $q->orWhere('queue_system_integ_flag', 'HIS_Update');
+                $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
+
+            })
+            ->get();
+
+        // ->count();
+        // dd($data);
+
+        foreach ($data as $key => $val) {
+
+            if ($val->contact_mobile_1) {
+                $phone = $val->contact_mobile_1;
+            } elseif ($val->contact_hometel_1) {
+                $phone = $val->contact_hometel_1;
+            } else {
+                $phone = $val->contact_worktel_1;
+            }
+
+            $array = [
+                'source_patient_id' => $val->patientid,
+                'name_ar' => $val->completepatname,
+                'name_en' => $val->completepatname_en,
+                'phone' => $phone
+            ];
+
+            $patient = Patient::getBy('source_patient_id', $val->patientid);
+
+            if ($patient) {
+                if(strtoupper($val->queue_system_integ_flag) == 'HIS_UPDATE'){
+                    Patient::editBySourcePatientId($array, $val->patientid);
+                }
+            } else {
+                Patient::store($array);
+            }
+
+            DB::connection('oracle')->table('VW_PATIENTS')->where('patientid', $val->patientid)
+                ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
+        }
+
+        dd('--');
+
         DB::connection('oracle')
             ->table('VW_PATIENTS')
             ->where(function ($q) {
-            $q->whereNull('queue_system_integ_flag');
-            $q->orWhere('queue_system_integ_flag', '');
-            $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
-            $q->orWhere('queue_system_integ_flag', 'HIS_Update');
-            $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
-        })->orderBy('patientid')->chunk(100, function ($data) {
-            foreach ($data as $key => $val) {
-                if ($val->contact_mobile_1) {
-                    $phone = $val->contact_mobile_1;
-                } elseif ($val->contact_hometel_1) {
-                    $phone = $val->contact_hometel_1;
-                } else {
-                    $phone = $val->contact_worktel_1;
-                }
-                $array = [
-                    'source_patient_id' => $val->patientid,
-                    'name_ar' => $val->completepatname,
-                    'name_en' => $val->completepatname_en,
-                    'phone' => $phone
-                ];
-                if (empty($val->queue_system_integ_flag) || $val->queue_system_integ_flag == 'HIS_NEW') {
-                    Patient::store($array);
-                    DB::connection('oracle')->table('VW_PATIENTS')->where('patientid', $val->patientid)
-                        ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
-                } else {
+                $q->whereNull('queue_system_integ_flag');
+                $q->orWhere('queue_system_integ_flag', '');
+                $q->orWhere('queue_system_integ_flag', 'HIS_NEW');
+                $q->orWhere('queue_system_integ_flag', 'HIS_Update');
+                $q->orWhere('queue_system_integ_flag', 'HIS_UPDATE');
+            })->orderBy('patientid')->chunk(100, function ($data) {
+
+                foreach ($data as $key => $val) {
+
+                    if ($val->contact_mobile_1) {
+                        $phone = $val->contact_mobile_1;
+                    } elseif ($val->contact_hometel_1) {
+                        $phone = $val->contact_hometel_1;
+                    } else {
+                        $phone = $val->contact_worktel_1;
+                    }
+
+                    $array = [
+                        'source_patient_id' => $val->patientid,
+                        'name_ar' => $val->completepatname,
+                        'name_en' => $val->completepatname_en,
+                        'phone' => $phone
+                    ];
+
+                    // dd($array);
+                    // dd($val->queue_system_integ_flag);
+
                     $patient = Patient::getBy('source_patient_id', $val->patientid);
                     if ($patient) {
-                        Patient::editBySourcePatientId($array, $val->patientid);
+                        if(strtoupper($val->queue_system_integ_flag) == 'HIS_UPDATE'){
+                            Patient::editBySourcePatientId($array, $val->patientid);
+                        }
                     } else {
                         Patient::store($array);
                     }
+                    DB::connection('oracle')->table('VW_PATIENTS')->where('patientid', $val->patientid)
+                        ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
+
+                    // if (strtoupper($val->queue_system_integ_flag) != 'HIS_UPDATE') {
+                    //     // dd('1');
+                    //     Patient::store($array);
+                    //     DB::connection('oracle')->table('VW_PATIENTS')->where('patientid', $val->patientid)
+                    //         ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
+
+                    // } else {
+                    //     // dd('0');
+                    //     $patient = Patient::getBy('source_patient_id', $val->patientid);
+                    //     if ($patient) {
+
+                    //         Patient::editBySourcePatientId($array, $val->patientid);
+                    //     } else {
+
+                    //         Patient::store($array);
+                    //     }
+
+                    // }
                 }
-            }
-        });
+            });
 
         return 'done';
     }

@@ -68,22 +68,24 @@ class LoginController extends Controller
 
         // Update user
         if (isset($data['resource'])){
-            // Update user
-            User::edit([
-                'room_id' => ($user->type == 1)? $data['resource']->id : null,
-                'desk_id' => ($user->type == 2)? $data['resource']->id : null,
-                'login_ip' => $data['resource']->ip,
-                'available' => 1,
-            ], $user->id);
+            if(!User::getBy('room_id', $data['resource']->id)){
+                // Update user
+                User::edit([
+                    'room_id' => ($user->type == 1)? $data['resource']->id : null,
+                    'desk_id' => ($user->type == 2)? $data['resource']->id : null,
+                    'login_ip' => $data['resource']->ip,
+                    'available' => 1,
+                ], $user->id);
 
-            // Broadcast event
-            if($user->type == 1){ // Doctor
-                event(new RoomStatus($data['resource']->uuid, 1));
-            }
-            elseif($user->type == 2){ // Desk
-                event(new DeskStatus($data['resource']->uuid, 1));
-            }
 
+                // Broadcast event
+                if($user->type == 1){ // Doctor
+                    event(new RoomStatus($data['resource']->uuid, 1));
+                }
+                elseif($user->type == 2){ // Desk
+                    event(new DeskStatus($data['resource']->uuid, 1));
+                }
+            }
         }
 
         // Store Log User Login
