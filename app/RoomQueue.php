@@ -88,25 +88,39 @@ class RoomQueue extends Model
             ->orderBy('queue_number' , $orderStatus)
             ->first();
 
-        // Get all next skipped
-        $data['nextSkipped'] = self::where('floor_id', $room->floor_id)
-            ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->where('room_id', $room->id)
-            ->where('status', config('vars.room_queue_status.skipped'))
-            ->where('call_count', '<', config('vars.default_room_call_count_max'))
-            ->orderBy('queue_number' , $orderStatus)
-            ->first();
+//        if($data['nextWaiting']->call_count >= 1 && $data['nextWaiting']->call_count_check = 1){
+//            $data['nextWaiting'] = self::where('floor_id', $room->floor_id)
+//                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+//                ->where('room_id', $room->id)
+//                ->where('status', config('vars.room_queue_status.waiting'))
+//                ->orderBy('queue_number' , $orderStatus)
+//                ->skip(1)
+//                ->first();
+//        }else{
+//
+//        }
 
-        if(isset($currentQueue)){
-            if($currentQueue->status == config('vars.room_queue_status.called')){
-                $data['nextQueue'] = ($data['nextSkipped'])? $data['nextSkipped'] : $data['nextWaiting'];
-            }
-            elseif($currentQueue->status == config('vars.room_queue_status.call_from_skip')){
-                $data['nextQueue'] = ($data['nextWaiting'])? $data['nextWaiting'] : $data['nextSkipped'];
-            }
-        }else{
-            $data['nextQueue'] = $data['nextWaiting'];
-        }
+        // Get all next skipped
+//        $data['nextSkipped'] = self::where('floor_id', $room->floor_id)
+//            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+//            ->where('room_id', $room->id)
+//            ->where('status', config('vars.room_queue_status.skipped'))
+//            ->where('call_count', '<', config('vars.default_room_call_count_max'))
+//            ->orderBy('queue_number' , $orderStatus)
+//            ->first();
+
+//        if(isset($currentQueue)){
+//            if($currentQueue->status == config('vars.room_queue_status.called')){
+//                $data['nextQueue'] = ($data['nextSkipped'])? $data['nextSkipped'] : $data['nextWaiting'];
+//            }
+//            elseif($currentQueue->status == config('vars.room_queue_status.call_from_skip')){
+//                $data['nextQueue'] = ($data['nextWaiting'])? $data['nextWaiting'] : $data['nextSkipped'];
+//            }
+//        }else{
+//            $data['nextQueue'] = $data['nextWaiting'];
+//        }
+
+        $data['nextQueue'] = $data['nextWaiting'];
 
 //        if(isset($currentQueue) && $currentQueue->status == config('vars.room_queue_status.call_from_skip')){
 //            $data['nextQueue'] = self::where('floor_id', $room->floor_id)
@@ -144,9 +158,14 @@ class RoomQueue extends Model
     /**
      *  Get Available Room Queue
      */
-    public static function getAvailableRoomQueueView($floor_id, $room_id)
+    public static function getAvailableRoomQueueView($floor_id, $room_id, $doctor_id = null)
     {
-        $data['roomQueues'] = self::getRoomQueues($floor_id, $room_id);
+        if(!is_null($doctor_id)){
+            $data['roomQueues'] = self::getRoomQueues($floor_id, $room_id);
+        }else{
+            $data['roomQueues'] = self::getRoomQueues($floor_id, $room_id, $doctor_id);
+        }
+
         $data['roomQueueStatues'] = QueueStatus::getQueueStatuses('room');
         $availableRoomQueue = view('rooms._available_room_queue', $data)->render();
 
@@ -158,24 +177,29 @@ class RoomQueue extends Model
      */
     public static function getRoomQueues($floor_id = null, $room_id = null, $doctor_id = null)
     {
+        $orderStatus = 'DESC';
+
         if (!is_null($doctor_id)){
             $roomQueues = self::where('doctor_id', $doctor_id)
                 ->where('created_at', 'like', "%".date('Y-m-d')."%")
-                ->orderBy('id', 'DESC')
+//                ->orderBy('id', $orderStatus)
+                ->orderBy('queue_number' , $orderStatus)
                 ->get();
 
             if(!$roomQueues){
                 $roomQueues = self::where('floor_id', $floor_id)
                     ->where('room_id', $room_id)
                     ->where('created_at', 'like', "%".date('Y-m-d')."%")
-                    ->orderBy('id', 'DESC')
+//                ->orderBy('id', 'DESC')
+                    ->orderBy('queue_number' , $orderStatus)
                     ->get();
             }
         }else{
             $roomQueues = self::where('floor_id', $floor_id)
                 ->where('room_id', $room_id)
                 ->where('created_at', 'like', "%".date('Y-m-d')."%")
-                ->orderBy('id', 'DESC')
+//                ->orderBy('id', $orderStatus)
+                ->orderBy('queue_number' , $orderStatus)
                 ->get();
         }
 

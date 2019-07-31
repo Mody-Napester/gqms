@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Room;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,6 +17,7 @@ class NextRoomQueue implements ShouldBroadcast
 
     public $room_uuid;
     public $queue_number;
+    public $area_id;
 
     /**
      * Create a new event instance.
@@ -25,6 +27,7 @@ class NextRoomQueue implements ShouldBroadcast
     public function __construct($room_uuid, $queue_number)
     {
         $this->room_uuid = $room_uuid;
+        $this->area_id = Room::getBy('uuid', $room_uuid)->area->area_id;
         $this->queue_number = $queue_number;
     }
 

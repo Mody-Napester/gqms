@@ -52,7 +52,11 @@ class RoomQueuesController extends Controller
 
         // 4 - Websockets notification for rooms
         if($updatedReservation && !empty($room)) {
-            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($room->floor_id, $room->id);
+            if($doctor_id == 0){
+                $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($room->floor_id, $room->id);
+            }else{
+                $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($room->floor_id, $room->id, $doctor_id);
+            }
             event(new RoomQueueStatus($data['availableRoomQueue'], $room->floor_id, $room->id));
         }
 

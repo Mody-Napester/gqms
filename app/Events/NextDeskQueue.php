@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Desk;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,6 +17,7 @@ class NextDeskQueue implements ShouldBroadcast
 
     public $desk_uuid;
     public $queue_number;
+    public $area_id;
 
     /**
      * Create a new event instance.
@@ -25,6 +27,7 @@ class NextDeskQueue implements ShouldBroadcast
     public function __construct($desk_uuid, $queue_number)
     {
         $this->desk_uuid = $desk_uuid;
+        $this->floor_id = Desk::getBy('uuid', $desk_uuid)->area->area_id;
         $this->queue_number = $queue_number;
     }
 
@@ -35,7 +38,7 @@ class NextDeskQueue implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('desk-queue-screen');
+        return new Channel('desk-queue-screen-'. $this->floor_id);
     }
 
     /**

@@ -77,13 +77,21 @@
                             <td>{{ ($deskQueue->reservation) ? $deskQueue->reservation->source_queue_number : '-' }}</td>
 
                             <td>{{ ($deskQueue->desk)? $deskQueue->desk->name_en : '' }}</td>
-                            <td>{{ ($deskQueue->reservation && $deskQueue->reservation->roomQueue) ? $deskQueue->reservation->roomQueue->room->name_en : '-' }}</td>
+                            <td>
+                                @if($deskQueue->reservation)
+                                    @if($deskQueue->reservation->roomQueue)
+                                        {{ ($deskQueue->reservation->roomQueue->room) ? $deskQueue->reservation->roomQueue->room->name_en : '-' }}
+                                    @endif
+                                @endif
+                            </td>
 
                             <td>
                                 @if($deskQueue->reservation && $deskQueue->reservation->roomQueue)
                                     @if($deskQueue->reservation->roomQueue->room)
                                         @if($deskQueue->reservation->roomQueue->room->user)
-                                            {{  $deskQueue->reservation->roomQueue->room->user->doctor->name_en }}
+                                            @if($deskQueue->reservation->roomQueue->room->user->doctor)
+                                                {{  $deskQueue->reservation->roomQueue->room->user->doctor->name_en }}
+                                            @endif
                                         @else
                                             {{ '-' }}
                                         @endif
