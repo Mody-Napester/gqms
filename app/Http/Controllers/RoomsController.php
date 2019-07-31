@@ -154,7 +154,11 @@ class RoomsController extends Controller
         }
 
         $data['roomQueues'] = RoomQueue::where('doctor_id',  auth()->user()->doctor->source_doctor_id)
-        ->where('created_at', 'like', "%".date('Y-m-d')."%")->get();
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('floor_id', $data['room']->floor->id)
+            ->where('room_id', $data['room']->id)
+            ->orderBy('queue_number' , 'DESC')
+            ->get();
 
         // $roomQueues = RoomQueue::where('doctor_id',  auth()->user()->doctor->source_doctor_id)
         //     ->where('created_at', 'like', "%".date('Y-m-d')."%")

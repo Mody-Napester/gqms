@@ -15,6 +15,9 @@ Route::get('voice_test', function (){
     return view('voice_test');
 });
 
+// Logout user after close browser
+Route::get('auth/close-browser/logout', 'Auth\CustomAuthController@authCloseBrowserLogout')->name('authCloseBrowserLogout');
+
 //Route::get('test', function (){
 //    // 1 - Get Reservation
 //    $reservation = \App\Reservation::getBy('source_reservation_serial', 73504);
