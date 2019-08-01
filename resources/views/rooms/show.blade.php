@@ -485,21 +485,23 @@
 
                 callSkippedAgain(skipped_queue_uuid){
                     addLoader();
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + skipped_queue_uuid + '/call-skipped';
+
+                    var current_queue_uuid = this.room_queue_uuid;
+
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + skipped_queue_uuid + '/' + current_queue_uuid +'/call-skipped';
 
                     axios.get(url)
                         .then((response) => {
                             removeLoarder();
-
-                            $('.current-queue').text(response.data.skippedQueue.queue_number);
-
-                            this.room_queue_uuid = response.data.skippedQueue.uuid;
-                            this.waiting_time = response.data.waitingTime;
-                            this.active_btn = true;
-
-                            this.changeBtnStatus({{ config('vars.room_queue_status.call_from_skip') }});
-
                             if(response.data.message.msg_status == 1){
+                                $('.current-queue').text(response.data.skippedQueue.queue_number);
+
+                                this.room_queue_uuid = response.data.skippedQueue.uuid;
+                                this.waiting_time = response.data.waitingTime;
+                                this.active_btn = true;
+
+                                this.changeBtnStatus({{ config('vars.room_queue_status.call_from_skip') }});
+
                                 addAlert('success', response.data.message.text);
                             }else{
                                 addAlert('danger', response.data.message.text);

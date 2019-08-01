@@ -132,7 +132,7 @@ Route::group([
     // Rooms Actions
     Route::get('room/{room_uuid}/{room_queue_uuid}/skip', 'RoomQueuesController@skipQueueNumber')->name('rooms.queues.skipQueueNumber');
     Route::get('room/{room_uuid}/{room_queue_uuid}/skip-and-next', 'RoomQueuesController@skipAndNextQueueNumber')->name('rooms.queues.skipAndNextQueueNumber');
-    Route::get('room/{room_uuid}/{queue_uuid}/call-skipped', 'RoomQueuesController@callSkippedAgain')->name('rooms.queues.callSkippedAgain');
+    Route::get('room/{room_uuid}/{skipped_queue_uuid}/{current_queue_uuid}/call-skipped', 'RoomQueuesController@callSkippedAgain')->name('rooms.queues.callSkippedAgain');
 
     Route::get('room/{room_uuid}/next', 'RoomQueuesController@callNextQueueNumber')->name('rooms.queues.callNextQueueNumber');
     Route::get('room/{room_uuid}/next-again', 'RoomQueuesController@callNextQueueNumberAgain')->name('rooms.queues.callNextQueueNumberAgain');

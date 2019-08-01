@@ -76,17 +76,25 @@ class RoomQueue extends Model
     /**
      *  Get Available Room Queue
      */
-    public static function getNextRoomQueueTurn($room, $currentQueue)
+    public static function getNextRoomQueueTurn($room, $currentQueue = null, $doctor_id = null)
     {
         $orderStatus = 'ASC';
 
         // Get all next waiting
-        $data['nextWaiting'] = self::where('floor_id', $room->floor_id)
-            ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->where('room_id', $room->id)
-            ->where('status', config('vars.room_queue_status.waiting'))
-            ->orderBy('queue_number' , $orderStatus)
-            ->first();
+        if(!is_null($doctor_id)){
+            $data['nextWaiting'] = self::where('doctor_id', $doctor_id)
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->where('status', config('vars.room_queue_status.waiting'))
+                ->orderBy('queue_number' , $orderStatus)
+                ->first();
+        }else{
+            $data['nextWaiting'] = self::where('floor_id', $room->floor_id)
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->where('room_id', $room->id)
+                ->where('status', config('vars.room_queue_status.waiting'))
+                ->orderBy('queue_number' , $orderStatus)
+                ->first();
+        }
 
 //        if($data['nextWaiting']->call_count >= 1 && $data['nextWaiting']->call_count_check = 1){
 //            $data['nextWaiting'] = self::where('floor_id', $room->floor_id)
@@ -160,7 +168,7 @@ class RoomQueue extends Model
      */
     public static function getAvailableRoomQueueView($floor_id, $room_id, $doctor_id = null)
     {
-        if(!is_null($doctor_id)){
+        if(is_null($doctor_id)){
             $data['roomQueues'] = self::getRoomQueues($floor_id, $room_id);
         }else{
             $data['roomQueues'] = self::getRoomQueues($floor_id, $room_id, $doctor_id);

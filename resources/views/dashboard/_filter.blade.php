@@ -8,7 +8,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label class="" for="date_to">Date_to</label>
+                <label class="" for="date_to">Date to</label>
                 <input type="date" id="date_to" autocomplete="off" class="form-control" name="date_to"/>
             </div>
         </div>
