@@ -215,12 +215,13 @@
         const app = new Vue({
             el : '#app',
             data : {
-                room_queue_uuid : '{{ ($currentRoomQueueNumber)? $currentRoomQueueNumber->uuid : '' }}',
+                current_room_queue_uuid : '{{ ($currentRoomQueueNumber)? $currentRoomQueueNumber->uuid : '' }}',
+                current_room_queue_number: '{{ ($currentRoomQueueNumber)? $currentRoomQueueNumber->status : '0' }}',
+
                 waiting_time : '{{ ($currentRoomQueueNumber)? nice_time($currentRoomQueueNumber->created_at) : '00:00' }}',
+
                 room: '{{ $room->id }}',
                 floor: '{{ $room->floor_id }}',
-
-                current_room_queue_number: '{{ ($currentRoomQueueNumber)? $currentRoomQueueNumber->status : '0' }}',
 
                 next_status: false,
                 call_status: false,
@@ -325,7 +326,7 @@
                 // Buttons
                 callNext(){
                     addLoader('.current-queue-div');
-                    var url = '{{ route('rooms.queues.callNextQueueNumber', $room->uuid) }}';
+                    var url = '{{ route('rooms.queues.callNextQueueNumber') }}';
                     axios.get(url)
                         .then((response) => {
                             removeLoarder();
@@ -333,7 +334,7 @@
                             if(response.data.message.msg_status == 1){
                                 $('.current-queue').text(response.data.nextQueue.queue_number);
 
-                                this.room_queue_uuid = response.data.nextQueue.uuid;
+                                this.current_room_queue_uuid = response.data.nextQueue.uuid;
                                 this.waiting_time = response.data.waitingTime;
 
                                 this.changeBtnStatus(response.data.roomQueue.status);
@@ -353,7 +354,7 @@
                 },
                 callNextAgain(){
                     addLoader('.current-queue-div');
-                    var url = '{{ route('rooms.queues.callNextQueueNumberAgain', $room->uuid) }}';
+                    var url = '{{ url('dashboard/room') }}/' + this.current_room_queue_uuid + '/next-again';
                     axios.get(url)
                         .then((response) => {
                             removeLoarder();
@@ -369,20 +370,19 @@
                 },
                 skip(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/skip';
+                    var url = '{{ url('dashboard') }}/room/' + this.current_room_queue_uuid + '/skip';
                     axios.get(url)
                         .then((response) => {
-
-                            $('.current-queue').text('-');
-
-                            $('#count-skip').text(response.data.roomQueuesSkip);
-                            $('#count-out').text(response.data.roomQueuesOut);
-
-                            this.changeBtnStatus(response.data.roomQueue.status);
-
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
+                                $('.current-queue').text('-');
+
+                                $('#count-skip').text(response.data.roomQueuesSkip);
+                                $('#count-out').text(response.data.roomQueuesOut);
+
+                                this.changeBtnStatus(response.data.currentQueue.status);
+
                                 addAlert('success', response.data.message.text);
                             }else{
                                 addAlert('danger', response.data.message.text);
@@ -394,14 +394,14 @@
                 },
                 skipAndNext(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/skip-and-next';
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.current_room_queue_uuid + '/skip-and-next';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.roomQueuesSkip);
                             $('#count-out').text(response.data.roomQueuesOut);
 
-                            this.room_queue_uuid = response.data.nextQueue.uuid;
+                            this.current_room_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
 
                             this.changeBtnStatus(response.data.roomQueue.status);
@@ -420,7 +420,7 @@
                 },
                 patientIn(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/in';
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.current_room_queue_uuid + '/in';
                     axios.get(url)
                         .then((response) => {
 
@@ -439,7 +439,7 @@
                 },
                 patientOut(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/out';
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.current_room_queue_uuid + '/out';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text('-');
@@ -463,13 +463,13 @@
                 },
                 patientOutAndNext(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.room_queue_uuid + '/out-and-next';
+                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.current_room_queue_uuid + '/out-and-next';
                     axios.get(url)
                         .then((response) => {
                             $('.current-queue').text(response.data.nextQueue.queue_number);
                             $('#count-skip').text(response.data.roomQueuesSkip);
                             $('#count-out').text(response.data.roomQueuesOut);
-                            this.room_queue_uuid = response.data.nextQueue.uuid;
+                            this.current_room_queue_uuid = response.data.nextQueue.uuid;
                             this.waiting_time = response.data.waitingTime;
 
                             this.changeBtnStatus(response.data.roomQueue.status);
@@ -490,7 +490,7 @@
                 callSkippedAgain(skipped_queue_uuid){
                     addLoader();
 
-                    var current_queue_uuid = this.room_queue_uuid;
+                    var current_queue_uuid = this.current_room_queue_uuid;
 
                     var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + skipped_queue_uuid + '/' + current_queue_uuid +'/call-skipped';
 
@@ -500,7 +500,7 @@
                             if(response.data.message.msg_status == 1){
                                 $('.current-queue').text(response.data.skippedQueue.queue_number);
 
-                                this.room_queue_uuid = response.data.skippedQueue.uuid;
+                                this.current_room_queue_uuid = response.data.skippedQueue.uuid;
                                 this.waiting_time = response.data.waitingTime;
                                 this.active_btn = true;
 
@@ -518,7 +518,7 @@
 
                 // Websockets
                 listen(){
-                    Echo.channel('available-room-queue-' + this.floor + '-' + this.room)
+                    Echo.channel('available-room-queue-{{ auth()->user()->doctor->source_doctor_id }}')
                         .listen('RoomQueueStatus', (response) => {
                             $('#all-queues').html('');
                             $('#all-queues').append(response.view);
@@ -547,7 +547,7 @@
 
                     {{--$('.current-queue').text(response.skippedQueue.queue_number);--}}
 
-                    {{--app.room_queue_uuid = response.skippedQueue.uuid;--}}
+                    {{--app.current_room_queue_uuid = response.skippedQueue.uuid;--}}
                     {{--app.waiting_time = response.waitingTime;--}}
                     {{--app.active_btn = true;--}}
 

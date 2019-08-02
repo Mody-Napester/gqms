@@ -7,6 +7,7 @@ use App\Desk;
 use App\DeskQueue;
 use App\DeskQueueStatus;
 use App\Doctor;
+use App\Events\ReloadScreen;
 use App\Floor;
 use App\Printer;
 use App\Room;
@@ -425,6 +426,20 @@ class ScreensController extends Controller
     {
         $data['desks'] = Desk::where('area_id', Area::getBy('uuid', $area_uuid)->id)->get();
         $data['view'] = view('screens._desks_areas', $data)->render();
+        return response()->json($data);
+    }
+
+    /**
+     * Reload.
+     */
+    public function reload($screen_uuid)
+    {
+        // Broadcast event
+        event(new ReloadScreen($screen_uuid));
+        $data['message'] = [
+            'msg_status' => 1,
+            'text' => 'Screen reloaded successfully',
+        ];
         return response()->json($data);
     }
 }

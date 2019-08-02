@@ -76,25 +76,15 @@ class RoomQueue extends Model
     /**
      *  Get Available Room Queue
      */
-    public static function getNextRoomQueueTurn($room, $currentQueue = null, $doctor_id = null)
+    public static function getNextRoomQueueTurn($doctor_source_id)
     {
-        $orderStatus = 'ASC';
+        $data['nextQueue'] = self::where('doctor_id', $doctor_source_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('status', config('vars.room_queue_status.waiting'))
+            ->orderBy('queue_number' , 'ASC')
+            ->first();
 
-        // Get all next waiting
-        if(!is_null($doctor_id)){
-            $data['nextWaiting'] = self::where('doctor_id', $doctor_id)
-                ->where('created_at', 'like', "%".date('Y-m-d')."%")
-                ->where('status', config('vars.room_queue_status.waiting'))
-                ->orderBy('queue_number' , $orderStatus)
-                ->first();
-        }else{
-            $data['nextWaiting'] = self::where('floor_id', $room->floor_id)
-                ->where('created_at', 'like', "%".date('Y-m-d')."%")
-                ->where('room_id', $room->id)
-                ->where('status', config('vars.room_queue_status.waiting'))
-                ->orderBy('queue_number' , $orderStatus)
-                ->first();
-        }
+        return $data['nextQueue'];
 
 //        if($data['nextWaiting']->call_count >= 1 && $data['nextWaiting']->call_count_check = 1){
 //            $data['nextWaiting'] = self::where('floor_id', $room->floor_id)
@@ -128,7 +118,7 @@ class RoomQueue extends Model
 //            $data['nextQueue'] = $data['nextWaiting'];
 //        }
 
-        $data['nextQueue'] = $data['nextWaiting'];
+
 
 //        if(isset($currentQueue) && $currentQueue->status == config('vars.room_queue_status.call_from_skip')){
 //            $data['nextQueue'] = self::where('floor_id', $room->floor_id)
@@ -159,8 +149,6 @@ class RoomQueue extends Model
 //            }
 //        }
 
-        return $data['nextQueue'];
-
     }
 
     /**
@@ -174,6 +162,18 @@ class RoomQueue extends Model
             $data['roomQueues'] = self::getRoomQueues($floor_id, $room_id, $doctor_id);
         }
 
+        $data['roomQueueStatues'] = QueueStatus::getQueueStatuses('room');
+        $availableRoomQueue = view('rooms._available_room_queue', $data)->render();
+
+        return $availableRoomQueue;
+    }
+
+    /**
+     *  Get Available Room Queue
+     */
+    public static function getAvailableRoomQueueViewByDoctor($doctor_source_id)
+    {
+        $data['roomQueues'] = self::getRoomQueuesByDoctor($doctor_source_id);
         $data['roomQueueStatues'] = QueueStatus::getQueueStatuses('room');
         $availableRoomQueue = view('rooms._available_room_queue', $data)->render();
 
@@ -212,6 +212,18 @@ class RoomQueue extends Model
         }
 
         return $roomQueues;
+    }
+
+    /**
+     *  Get All Room Queues
+     */
+    public static function getRoomQueuesByDoctor($doctor_source_id)
+    {
+        $doctorQueues = self::where('doctor_id', $doctor_source_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->orderBy('queue_number' , 'DESC')
+            ->get();
+        return $doctorQueues;
     }
 
 
@@ -279,6 +291,43 @@ class RoomQueue extends Model
         }
 
         return $queues;
+    }
+
+    /**
+     *  Add or update new queue number to doctor
+     */
+    public static function addOrUpdateQueueNumberToDoctor($doctor_source_id, $reservation_source_serial, $reservation_source_queue_number, $servstatus, $cashier_flag)
+    {
+        $queue = self::where('doctor_id', $doctor_source_id)->where('reservation_source_serial', $reservation_source_serial)->first();
+
+        if ($queue){
+            // If Reservation canceled
+            if($servstatus == 'C'){
+                self::edit([
+                    'serve_source_status' => $servstatus
+                ], $queue->id);
+            }
+        }else{
+            // Check Cashier flag
+            if($cashier_flag == 1){
+                // Add new doctor queue
+                $roomQueue = self::store([
+                    'floor_id' => 0,
+                    'room_id' => 0,
+                    'doctor_id' => $doctor_source_id,
+                    'queue_number' => $reservation_source_queue_number,
+                    'status' => config('vars.room_queue_status.waiting'),
+                    'serve_source_status' => $servstatus,
+                    'reservation_source_serial' => $reservation_source_serial,
+                ]);
+            }
+        }
+
+        // Trigger Doctor Queue Event
+        $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueViewByDoctor($doctor_source_id);
+        event(new \App\Events\RoomQueueStatus($data['availableRoomQueue'], $doctor_source_id));
+
+        return true;
     }
 
 

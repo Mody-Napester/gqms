@@ -10,22 +10,19 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class RoomQueueStatus implements ShouldBroadcast
+class ReloadScreen implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $availableRoomQueue;
-    public $doctor_source_id;
-
+    public $screen_uuid;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($availableRoomQueue, $doctor_source_id)
+    public function __construct($screen_uuid)
     {
-        $this->availableRoomQueue = $availableRoomQueue;
-        $this->doctor_source_id = $doctor_source_id;
+        $this->screen_uuid = $screen_uuid;
     }
 
     /**
@@ -35,18 +32,7 @@ class RoomQueueStatus implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('available-room-queue-' . $this->doctor_source_id);
+        return new Channel('reload-screen-'.$this->screen_uuid);
     }
 
-    /**
-     * Custom the payload
-     *
-     * @return array
-     */
-    public function broadcastWith()
-    {
-        return [
-            'view' => $this->availableRoomQueue
-        ];
-    }
 }

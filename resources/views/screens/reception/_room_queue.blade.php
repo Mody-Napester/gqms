@@ -32,7 +32,7 @@
                                         <span class="number-app">{{ $room->name_en }}</span>
                                     </div>
                                     <div class="col-md-8 text-right">
-                                        <span id="doctor-{{ $room->uuid }}" class="text-app-1">{{ ($room->user)? ((!empty($room->user->doctor->nickname))? 'ا.د' . $room->user->doctor->nickname : 'ا.د' . $room->user->doctor->name_ar) : '-' }}</span>
+                                        <span id="doctor-{{ $room->uuid }}" class="text-app-1">{{ ($room->user)? ((!empty($room->user->doctor->nickname))? 'ا.د/' . $room->user->doctor->nickname : 'ا.د' . $room->user->doctor->name_ar) : '-' }}</span>
                                         <span id="clinic-{{ $room->uuid }}" class="text-app-2">{{ ($room->user)? $room->user->doctor->speciality->name_ar : '-' }}</span>
                                     </div>
                                 </div>

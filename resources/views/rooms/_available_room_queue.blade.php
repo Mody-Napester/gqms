@@ -37,7 +37,7 @@
                             <button onclick="callSkippedAgain('{{ $roomQueue->uuid }}')" class="btn btn-secondary waves-effect"
                                     style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
                         @elseif($roomQueue->queueStatus->id != config('vars.room_queue_status.waiting'))
-                            By {{ $roomQueue->room->name_en }}
+                            From {{ $roomQueue->room->name_en }}
                         @endif
                     </td>
                 </tr>

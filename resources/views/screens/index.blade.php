@@ -94,6 +94,10 @@
                                 <td>{{ $screen->created_at }}</td>
                                 {{--<td>{{ $screen->updated_at }}</td>--}}
                                 <td class="text-center">
+                                    <a @click.prevent="reload('{{$screen->uuid}}')" style="cursor: pointer;" class="btn btn-sm btn-warning"
+                                       data-toggle="tooltip" data-placement="top" title="" data-original-title="Reload Screen">
+                                        <i class="fa fa-refresh"></i>
+                                    </a>
                                     <a href="{{ route('screens.show', [$screen->slug]) }}" target="_blank" class="btn btn-sm btn-primary">
                                         <i class="fa fa-eye"></i>
                                     </a>
@@ -136,6 +140,27 @@
                         })
                         .catch((data) => {
                             removeLoarder();
+                        });
+                },
+                reload(screen_uuid){
+                    addLoader();
+
+                    var url = '{{ url('dashboard/screen/reload') }}/' + screen_uuid;
+
+                    axios.get(url)
+                        .then((response) => {
+                            removeLoarder();
+
+                            if(response.data.message.msg_status == 1){
+                                addAlert('success', response.data.message.text);
+                            }
+                            else {
+                                addAlert('danger', response.data.message.text);
+                            }
+                        })
+                        .catch((data) => {
+                            removeLoarder();
+                            addAlert('danger', 'Server error!');
                         });
                 },
             },

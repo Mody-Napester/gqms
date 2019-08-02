@@ -205,6 +205,26 @@
 
     <script src="{{ url('assets/js/loader.js') }}"></script>
 
+    <script>
+        const screenApp = new Vue({
+            el : '#app',
+            data : {
+            },
+            methods : {
+                listen(){
+                    // Reload Screen
+                    Echo.channel('reload-screen-{{ $screen->uuid }}')
+                        .listen('ReloadScreen', (response) => {
+                            location.reload();
+                        });
+                }
+            },
+            mounted() {
+                this.listen();
+            }
+        });
+    </script>
+
     @yield('scripts')
 
     </body>
