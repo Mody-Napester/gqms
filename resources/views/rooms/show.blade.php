@@ -376,12 +376,14 @@
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
+                                this.current_room_queue_uuid = '';
+
                                 $('.current-queue').text('-');
 
                                 $('#count-skip').text(response.data.roomQueuesSkip);
                                 $('#count-out').text(response.data.roomQueuesOut);
 
-                                this.changeBtnStatus(response.data.currentQueue.status);
+                                this.changeBtnStatus(response.data.roomQueue.status);
 
                                 addAlert('success', response.data.message.text);
                             }else{
@@ -418,9 +420,42 @@
                             removeLoarder();
                         });
                 },
+                callSkippedAgain(skipped_queue_uuid){
+                    addLoader();
+
+                    var current_queue_uuid = this.current_room_queue_uuid;
+
+                    if(current_queue_uuid == ''){
+                        var url = '{{ url('dashboard') }}/room/' + skipped_queue_uuid + '/call-skipped';
+
+                        axios.get(url)
+                            .then((response) => {
+                                removeLoarder();
+                                if(response.data.message.msg_status == 1){
+                                    $('.current-queue').text(response.data.skippedQueue.queue_number);
+
+                                    this.current_room_queue_uuid = response.data.skippedQueue.uuid;
+                                    this.waiting_time = response.data.waitingTime;
+                                    this.active_btn = true;
+
+                                    this.changeBtnStatus({{ config('vars.room_queue_status.call_from_skip') }});
+
+                                    addAlert('success', response.data.message.text);
+                                }else{
+                                    addAlert('danger', response.data.message.text);
+                                }
+                            })
+                            .catch((data) => {
+                                removeLoarder();
+                            });
+                    }else {
+                        removeLoarder();
+                        addAlert('danger', 'Sorry! you already have a queue, please make him out first');
+                    }
+                },
                 patientIn(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.current_room_queue_uuid + '/in';
+                    var url = '{{ url('dashboard') }}/room/' + this.current_room_queue_uuid + '/in';
                     axios.get(url)
                         .then((response) => {
 
@@ -439,19 +474,21 @@
                 },
                 patientOut(){
                     addLoader('.current-queue-div');
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + this.current_room_queue_uuid + '/out';
+                    var url = '{{ url('dashboard') }}/room/' + this.current_room_queue_uuid + '/out';
                     axios.get(url)
                         .then((response) => {
-                            $('.current-queue').text('-');
-
-                            $('#count-skip').text(response.data.roomQueuesSkip);
-                            $('#count-out').text(response.data.roomQueuesOut);
-
-                            this.changeBtnStatus(response.data.roomQueue.status);
-
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
+                                this.current_room_queue_uuid = '';
+
+                                $('.current-queue').text('-');
+
+                                $('#count-skip').text(response.data.roomQueuesSkip);
+                                $('#count-out').text(response.data.roomQueuesOut);
+
+                                this.changeBtnStatus(response.data.roomQueue.status);
+
                                 addAlert('success', response.data.message.text);
                             }else{
                                 addAlert('danger', response.data.message.text);
@@ -486,36 +523,6 @@
                             removeLoarder();
                         });
                 },
-
-                callSkippedAgain(skipped_queue_uuid){
-                    addLoader();
-
-                    var current_queue_uuid = this.current_room_queue_uuid;
-
-                    var url = '{{ url('dashboard') }}/room/{{$room->uuid}}/' + skipped_queue_uuid + '/' + current_queue_uuid +'/call-skipped';
-
-                    axios.get(url)
-                        .then((response) => {
-                            removeLoarder();
-                            if(response.data.message.msg_status == 1){
-                                $('.current-queue').text(response.data.skippedQueue.queue_number);
-
-                                this.current_room_queue_uuid = response.data.skippedQueue.uuid;
-                                this.waiting_time = response.data.waitingTime;
-                                this.active_btn = true;
-
-                                this.changeBtnStatus({{ config('vars.room_queue_status.call_from_skip') }});
-
-                                addAlert('success', response.data.message.text);
-                            }else{
-                                addAlert('danger', response.data.message.text);
-                            }
-                        })
-                        .catch((data) => {
-                            removeLoarder();
-                        });
-                },
-
                 // Websockets
                 listen(){
                     Echo.channel('available-room-queue-{{ auth()->user()->doctor->source_doctor_id }}')

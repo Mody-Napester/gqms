@@ -23,19 +23,14 @@ class RoomQueuesController extends Controller
     {
         // 1 - Get Reservation
         $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
-
         $doctor = $reservation->doctor;
-
         if($doctor){
             $room = ($reservation->doctor->user)? $reservation->doctor->user->room : 0;
         }else{
             $room = 0;
         }
-
 //        $checkRoomQueue = RoomQueue::getBy('queue_number', $reservation->source_queue_number);
-
         $doctor_id = ($doctor)? $doctor->source_doctor_id : '0';
-
         // 2 - Generate And Store Room Queue number
         $roomQueue = RoomQueue::store([
             'floor_id' => ($room)? $room->floor_id : '0',
@@ -225,29 +220,23 @@ class RoomQueuesController extends Controller
             return redirect('/');
         }
 
-        $data['doctor'] = auth()->user()->doctor;
-        $data['room'] = auth()->user()->room;
-
-        if(!$data['room']){
-            $data['message'] = [
-                'msg_status' => 0,
-                'text' => 'Doctor not exists',
-            ];
-        }
-
         $data = $this->skip($room_queue_uuid);
 
         if($data['message']['msg_status'] == 1){
 
-            $data['message'] = [
-                'msg_status' => 1,
-                'text' => 'Queue number skipped successfully',
-            ];
+            $data['doctor'] = auth()->user()->doctor;
+            $data['room'] = auth()->user()->room;
+
+            $data['roomQueue'] = RoomQueue::getBy('uuid', $room_queue_uuid);
 
             // Broadcast event
             $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueViewByDoctor($data['doctor']->source_doctor_id);
             event(new RoomQueueStatus($data['availableRoomQueue'], $data['doctor']->source_doctor_id));
 
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Queue number skipped successfully',
+            ];
         }else{
             $data['message'] = [
                 'msg_status' => 0,
@@ -267,47 +256,20 @@ class RoomQueuesController extends Controller
     /**
      * Call Skipped Queue Number.
      */
-    public function callSkippedAgain($room_uuid, $skipped_queue_uuid, $current_queue_uuid)
+    public function callSkippedAgain($skipped_queue_uuid)
     {
         if (!User::hasAuthority('use.room_queue')){
             return redirect('/');
         }
 
+        $data['doctor'] = auth()->user()->doctor;
+        $data['room'] = auth()->user()->room;
+
+        // Get Next queue number
         $data['skippedQueue'] = RoomQueue::getBy('uuid', $skipped_queue_uuid);
-        $data['room'] = Room::getBy('uuid', $room_uuid);
-
-        if(!empty($current_queue_uuid)){
-            // Get Current queue number
-            //        $data['currentQueue'] = RoomQueue::getCurrentRoomQueues($data['room']->id);
-            $data['currentQueue'] = RoomQueue::getBy('uuid', $current_queue_uuid);
-
-            // Get Next queue number
-            $data['nextQueue'] = RoomQueue::getNextRoomQueueTurn($data['room'], $data['currentQueue'], auth()->user()->doctor->source_doctor_id);
-
-            if(empty($data['currentQueue'])){
-
-                $data['message'] = [
-                    'msg_status' => 0,
-                    'text' => 'Sorry! you already have a queue, please make him out first',
-                ];
-
-                // Return
-                return response()->json($data);
-
-//            // Edit current
-//            RoomQueueStatusController::where('room_queue_id', $data['currentQueue']->id)->delete();
-//
-//            RoomQueue::edit([
-//                'room_id' => $data['room']->id,
-//                'status' => config('vars.room_queue_status.waiting'),
-//            ], $data['currentQueue']->id);
-            }
-
-        }
 
         // Edit skipped
         RoomQueue::edit([
-            'room_id' => $data['room']->id,
             'status' => config('vars.room_queue_status.call_from_skip'),
         ], $data['skippedQueue']->id);
 
@@ -325,21 +287,18 @@ class RoomQueuesController extends Controller
                 'text' => 'Called skipped number',
             ];
 
-            $doctor = auth()->user()->doctor;
-
-            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id, $data['room']->id, $doctor->source_doctor_id);
+            // Queue waiting time
             $data['waitingTime'] = nice_time($data['skippedQueue']->created_at);
+
             $data['roomQueuesSkip'] = RoomQueueStatusController::getRoomQueues(auth()->user()->id, config('vars.room_queue_status.skipped'));
             $data['roomQueuesOut'] = RoomQueueStatusController::getRoomQueues(auth()->user()->id, config('vars.room_queue_status.patient_out'));
 
             // Broadcast event to room
-//            event(new RoomQueueStatus($data['availableRoomQueue'], $data['room']->floor_id, $data['room']->id));
-            event(new RoomQueueStatus($data['availableRoomQueue'], auth()->user()->doctor->source_doctor_id));
+            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueViewByDoctor($data['doctor']->source_doctor_id);
+            event(new RoomQueueStatus($data['availableRoomQueue'], $data['doctor']->source_doctor_id));
 
             // Broadcast event to screen
-            if($data['nextQueue']){
-                event(new NextRoomQueue($data['room']->uuid, $data['nextQueue']->queue_number));
-            }
+            event(new NextRoomQueue($data['room']->uuid, $data['skippedQueue']->queue_number));
 
         }else{
             $data['message'] = [
@@ -419,11 +378,12 @@ class RoomQueuesController extends Controller
     /**
      * Patient in.
      */
-    public function inQueueNumber($room_uuid, $room_queue_uuid)
+    public function inQueueNumber($room_queue_uuid)
     {
-        $roomQueue = RoomQueue::getBy('uuid', $room_queue_uuid);
+        $data['doctor'] = auth()->user()->doctor;
+        $data['room'] = auth()->user()->room;
 
-        $data['room'] = Room::getBy('uuid', $room_uuid);
+        $roomQueue = RoomQueue::getBy('uuid', $room_queue_uuid);
 
         // Edit Status
         RoomQueue::edit([
@@ -447,11 +407,9 @@ class RoomQueuesController extends Controller
 
             $data['roomQueue'] = RoomQueue::getBy('uuid', $room_queue_uuid);
 
-            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id, $data['room']->id);
-
             // Broadcast event
-//            event(new RoomQueueStatus($data['availableRoomQueue'], $data['room']->floor_id, $data['room']->id));
-            event(new RoomQueueStatus($data['availableRoomQueue'], auth()->user()->doctor->source_doctor_id));
+            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueViewByDoctor($data['doctor']->source_doctor_id);
+            event(new RoomQueueStatus($data['availableRoomQueue'], $data['doctor']->source_doctor_id));
 
         }else{
             $data['message'] = [
@@ -468,11 +426,12 @@ class RoomQueuesController extends Controller
     /**
      * Skip Queue Number.
      */
-    public function out($room_uuid, $room_queue_uuid)
+    public function out($room_queue_uuid)
     {
-        $roomQueue = RoomQueue::getBy('uuid', $room_queue_uuid);
+        $data['doctor'] = auth()->user()->doctor;
+        $data['room'] = auth()->user()->room;
 
-        $data['room'] = Room::getBy('uuid', $room_uuid);
+        $roomQueue = RoomQueue::getBy('uuid', $room_queue_uuid);
 
         // Edit Status
         RoomQueue::edit([
@@ -512,13 +471,13 @@ class RoomQueuesController extends Controller
     /**
      * Skip Queue Number.
      */
-    public function outQueueNumber($room_uuid, $room_queue_uuid)
+    public function outQueueNumber($room_queue_uuid)
     {
         if (!User::hasAuthority('use.room_queue')){
             return redirect('/');
         }
 
-        $data = $this->out($room_uuid, $room_queue_uuid);
+        $data = $this->out($room_queue_uuid);
 
         if($data['message']['msg_status'] == 1){
 
@@ -529,11 +488,10 @@ class RoomQueuesController extends Controller
 
             $data['roomQueue'] = RoomQueue::getBy('uuid', $room_queue_uuid);
 
-            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueView($data['room']->floor_id, $data['room']->id);
 
             // Broadcast event
-//            event(new RoomQueueStatus($data['availableRoomQueue'], $data['room']->floor_id, $data['room']->id));
-            event(new RoomQueueStatus($data['availableRoomQueue'], auth()->user()->doctor->source_doctor_id));
+            $data['availableRoomQueue'] = RoomQueue::getAvailableRoomQueueViewByDoctor($data['doctor']->source_doctor_id);
+            event(new RoomQueueStatus($data['availableRoomQueue'], $data['doctor']->source_doctor_id));
 
         }else{
             $data['message'] = [
