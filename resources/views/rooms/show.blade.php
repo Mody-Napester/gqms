@@ -328,18 +328,22 @@
                     var url = '{{ route('rooms.queues.callNextQueueNumber', $room->uuid) }}';
                     axios.get(url)
                         .then((response) => {
-                            $('.current-queue').text(response.data.nextQueue.queue_number);
-
-                            this.room_queue_uuid = response.data.nextQueue.uuid;
-                            this.waiting_time = response.data.waitingTime;
-
-                            this.changeBtnStatus(response.data.roomQueue.status);
-
                             removeLoarder();
 
                             if(response.data.message.msg_status == 1){
+                                $('.current-queue').text(response.data.nextQueue.queue_number);
+
+                                this.room_queue_uuid = response.data.nextQueue.uuid;
+                                this.waiting_time = response.data.waitingTime;
+
+                                this.changeBtnStatus(response.data.roomQueue.status);
+
                                 addAlert('success', response.data.message.text);
-                            }else{
+                            }
+                            else if (response.data.message.msg_status == 2) {
+                                addAlert('warning', response.data.message.text);
+                            }
+                            else {
                                 addAlert('danger', response.data.message.text);
                             }
                         })

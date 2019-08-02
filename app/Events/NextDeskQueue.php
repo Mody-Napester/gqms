@@ -17,7 +17,7 @@ class NextDeskQueue implements ShouldBroadcast
 
     public $desk_uuid;
     public $queue_number;
-    public $area_id;
+    public $area_uuid;
 
     /**
      * Create a new event instance.
@@ -27,8 +27,8 @@ class NextDeskQueue implements ShouldBroadcast
     public function __construct($desk_uuid, $queue_number)
     {
         $this->desk_uuid = $desk_uuid;
-        $this->floor_id = Desk::getBy('uuid', $desk_uuid)->area->area_id;
         $this->queue_number = $queue_number;
+        $this->area_uuid = Desk::getBy('uuid', $desk_uuid)->area->uuid;
     }
 
     /**
@@ -38,7 +38,7 @@ class NextDeskQueue implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('desk-queue-screen-'. $this->floor_id);
+        return new Channel('desk-queue-screen-'. $this->area_uuid);
     }
 
     /**
@@ -50,7 +50,8 @@ class NextDeskQueue implements ShouldBroadcast
     {
         return [
             'desk' => $this->desk_uuid,
-            'queue' => $this->queue_number
+            'queue' => $this->queue_number,
+            'area' => $this->area_uuid
         ];
     }
 }

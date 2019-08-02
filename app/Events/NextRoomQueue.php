@@ -17,7 +17,7 @@ class NextRoomQueue implements ShouldBroadcast
 
     public $room_uuid;
     public $queue_number;
-    public $area_id;
+    public $area_uuid;
 
     /**
      * Create a new event instance.
@@ -27,8 +27,12 @@ class NextRoomQueue implements ShouldBroadcast
     public function __construct($room_uuid, $queue_number)
     {
         $this->room_uuid = $room_uuid;
-        $this->area_id = Room::getBy('uuid', $room_uuid)->area->area_id;
         $this->queue_number = $queue_number;
+
+        // Get Area by screen
+        $screen = Room::getBy('uuid', $room_uuid)->screens()->where('area_id', '<>', '')->first();
+
+        $this->area_uuid = ($screen->area)? $screen->area->uuid : 0;
     }
 
     /**
@@ -38,7 +42,8 @@ class NextRoomQueue implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('room-queue-screen');
+        return new Channel('room-queue-screen-'. $this->area_uuid);
+//        return new Channel('room-queue-screen');
     }
 
     /**
@@ -50,7 +55,8 @@ class NextRoomQueue implements ShouldBroadcast
     {
         return [
             'room' => $this->room_uuid,
-            'queue' => $this->queue_number
+            'queue' => $this->queue_number,
+            'area' => $this->area_uuid
         ];
     }
 }

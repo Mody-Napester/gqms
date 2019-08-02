@@ -122,8 +122,8 @@ class RoomQueuesController extends Controller
             ];
         }else{
             $data['message'] = [
-                'msg_status' => 0,
-                'text' => 'Some thing error, please try again after few minutes',
+                'msg_status' => 2,
+                'text' => 'No patient waiting in queue!',
             ];
         }
 
@@ -142,7 +142,11 @@ class RoomQueuesController extends Controller
 
         $data = $this->callNext($room_uuid);
 
-        $data['roomQueue'] = RoomQueue::getBy('id', $data['nextRoomQueueUpdated']->room_queue_id);
+        if($data['message']['msg_status'] == 2){
+            $data['roomQueue'] = null;
+        }else{
+            $data['roomQueue'] = RoomQueue::getBy('id', $data['nextRoomQueueUpdated']->room_queue_id);
+        }
 
         // Return
         return response()->json($data);
@@ -203,9 +207,9 @@ class RoomQueuesController extends Controller
             $data['currentQueue'] = RoomQueue::getBy('uuid', $current_queue_uuid);
 
             // Get Next queue number
-            $data['nextQueue'] = RoomQueue::getNextRoomQueueTurn($data['room'], $data['currentQueue']);
+            $data['nextQueue'] = RoomQueue::getNextRoomQueueTurn($data['room'], $data['currentQueue'], auth()->user()->doctor->source_doctor_id);
 
-            if($data['currentQueue']){
+            if(empty($data['currentQueue'])){
 
                 $data['message'] = [
                     'msg_status' => 0,

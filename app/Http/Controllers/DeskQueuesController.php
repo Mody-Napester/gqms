@@ -542,49 +542,50 @@ class DeskQueuesController extends Controller
         /*
          * Handle Room Queues
          * */
-        $storeRoomQueue = $this->roomQueuesController->storeNewQueue($reservation_serial, $data['desk'], $deskQueue);
+//        $storeRoomQueue = $this->roomQueuesController->storeNewQueue($reservation_serial, $data['desk'], $deskQueue);
 
-        if($storeRoomQueue == true){
-            // Do Code
-            DeskQueue::edit([
-                'desk_id' => $data['desk']->id,
-                'status' => config('vars.desk_queue_status.done'),
-            ], $deskQueue->id);
+//        if($storeRoomQueue == true){
+//
+//        }else{
+//            $data['message'] = [
+//                'msg_status' => 0,
+//                'text' => 'Some thing error in room .. no next, please try again after few minutes',
+//            ];
+//        }
 
-            // Do Code
-            $deskQueueStatusDone = DeskQueueStatus::store([
-                'user_id' => auth()->user()->id,
-                'desk_queue_id' => $deskQueue->id,
-                'queue_status_id' => config('vars.desk_queue_status.done'),
-            ]);
+        // Do Code
+        DeskQueue::edit([
+            'desk_id' => $data['desk']->id,
+            'status' => config('vars.desk_queue_status.done'),
+        ], $deskQueue->id);
 
-            if($deskQueueStatusDone){
-                $data['message'] = [
-                    'msg_status' => 1,
-                    'text' => 'Queue was done successfully',
-                ];
+        // Do Code
+        $deskQueueStatusDone = DeskQueueStatus::store([
+            'user_id' => auth()->user()->id,
+            'desk_queue_id' => $deskQueue->id,
+            'queue_status_id' => config('vars.desk_queue_status.done'),
+        ]);
 
-                $data['haveWaiting'] = 0;
+        if($deskQueueStatusDone){
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Queue was done successfully',
+            ];
 
-                $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->area_id);
+            $data['haveWaiting'] = 0;
 
-                $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
-                $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
+            $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($data['desk']->area_id);
 
-                // Broadcast event
-                event(new QueueStatus($data['availableDeskQueue'], $data['desk']->area_id));
-//            event(new NextDeskQueue($data['desk']->uuid, $deskQueue->queue_number));
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
-            }else{
-                $data['message'] = [
-                    'msg_status' => 0,
-                    'text' => 'Some thing error in desk .. no next, please try again after few minutes',
-                ];
-            }
+            // Broadcast event
+            event(new QueueStatus($data['availableDeskQueue'], $data['desk']->area_id));
+
         }else{
             $data['message'] = [
                 'msg_status' => 0,
-                'text' => 'Some thing error in room .. no next, please try again after few minutes',
+                'text' => 'Some thing error in desk .. no next, please try again after few minutes',
             ];
         }
 
@@ -618,44 +619,46 @@ class DeskQueuesController extends Controller
         /*
          * Handle Room Queues
          * */
-        $storeRoomQueue = $this->roomQueuesController->storeNewQueue($reservation_serial, $data['desk'], $deskQueue);
+//        $storeRoomQueue = $this->roomQueuesController->storeNewQueue($reservation_serial, $data['desk'], $deskQueue);
 
-        if($storeRoomQueue == true){
-            // Do Code
-            DeskQueue::edit([
-                'desk_id' => Desk::getBy('uuid', $desk_uuid)->id,
-                'status' => config('vars.desk_queue_status.done'),
-            ], $deskQueue->id);
+//        if($storeRoomQueue == true){
+//
+//
+//        }else{
+//            $data['message'] = [
+//                'msg_status' => 0,
+//                'text' => 'Some thing error in room !, please try again after few minutes',
+//            ];
+//        }
 
-            // Do Code
-            $deskQueueStatusDone = DeskQueueStatus::store([
-                'user_id' => auth()->user()->id,
-                'desk_queue_id' => $deskQueue->id,
-                'queue_status_id' => config('vars.desk_queue_status.done'),
-            ]);
+        // Do Code
+        DeskQueue::edit([
+            'desk_id' => Desk::getBy('uuid', $desk_uuid)->id,
+            'status' => config('vars.desk_queue_status.done'),
+        ], $deskQueue->id);
 
-            if($deskQueueStatusDone){
-                $data = $this->callNext($desk_uuid);
+        // Do Code
+        $deskQueueStatusDone = DeskQueueStatus::store([
+            'user_id' => auth()->user()->id,
+            'desk_queue_id' => $deskQueue->id,
+            'queue_status_id' => config('vars.desk_queue_status.done'),
+        ]);
 
-                $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
-                $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
+        if($deskQueueStatusDone){
+            $data = $this->callNext($desk_uuid);
 
-                $data['message'] = [
-                    'msg_status' => 1,
-                    'text' => 'Queue was done successfully with getting next number',
-                ];
+            $data['deskQueuesSkip'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.skipped'));
+            $data['deskQueuesDone'] = DeskQueueStatus::getDeskQueues(auth()->user()->id, config('vars.desk_queue_status.done'));
 
-            }else{
-                $data['message'] = [
-                    'msg_status' => 0,
-                    'text' => 'Some thing error in desk, please try again after few minutes',
-                ];
-            }
+            $data['message'] = [
+                'msg_status' => 1,
+                'text' => 'Queue was done successfully with getting next number',
+            ];
 
         }else{
             $data['message'] = [
                 'msg_status' => 0,
-                'text' => 'Some thing error in room !, please try again after few minutes',
+                'text' => 'Some thing error in desk, please try again after few minutes',
             ];
         }
 

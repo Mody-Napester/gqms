@@ -110,6 +110,11 @@ class Room extends Model
         return $this->belongsTo('App\Floor');
     }
 
+    // Screen Relation
+    public function screens(){
+        return $this->belongsToMany('App\Screen', 'screen_room');
+    }
+
     // User Relation
     public function user(){
         return $this->hasOne('App\User');

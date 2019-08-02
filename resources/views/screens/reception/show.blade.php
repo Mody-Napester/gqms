@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <audio id="call_sound_{{ $screen->area->id }}" preload="none" src="{{ url('assets/sounds/call_1.wav') }}"></audio>
+    <audio id="call_sound" preload="none" src="{{ url('assets/sounds/call_1.wav') }}"></audio>
 
     {{--<embed src="{{ url('assets/sounds/call_1.wav') }}" autostart="false" width="0" height="0" id="sound1" enablejavascript="true">--}}
 
@@ -36,7 +36,7 @@
             methods : {
                 listen(){
                     // Flash Desk Queue
-                    Echo.channel('desk-queue-screen-{{ $screen->area->floor_id }}')
+                    Echo.channel('desk-queue-screen-{{ $screen->area->uuid }}')
                         .listen('NextDeskQueue', (response) => {
                             var targetEl = $('#' + response.desk + ' .number-app');
 
@@ -47,13 +47,14 @@
                             });
 
                             {{--PlaySound('{{ url('assets/sounds/call_1.wav') }}');--}}
-                            document.getElementById('call_sound_{{ $screen->area->floor_id }}').play();
+                            document.getElementById('call_sound').play();
 
                             console.log(response);
                         });
 
                     // Flash Room Queue
-                    Echo.channel('room-queue-screen-{{ $screen->area->floor_id }}')
+                    Echo.channel('room-queue-screen-{{ $screen->area->uuid }}')
+                    // Echo.channel('room-queue-screen')
                         .listen('NextRoomQueue', (response) => {
                             var targetEl = $('#' + response.room + ' .number-app');
 
@@ -64,7 +65,7 @@
                             });
 
                             {{--PlaySound('{{ url('assets/sounds/call_1.wav') }}');--}}
-                            document.getElementById('call_sound_{{ $screen->area->floor_id }}').play();
+                            document.getElementById('call_sound').play();
 
                             console.log(response);
                         });
