@@ -84,7 +84,14 @@ class RoomQueue extends Model
             ->orderBy('queue_number' , 'ASC')
             ->first();
 
-        return $data['nextQueue'];
+        $data['nextQueueIfDuplicates'] = self::where('doctor_id', $doctor_source_id)
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('status', config('vars.room_queue_status.waiting'))
+            ->where('queue_number', $data['nextQueue']->queue_number)
+            ->orderBy('created_at' , 'DESC')
+            ->first();
+
+        return $data['nextQueueIfDuplicates'];
 
 //        if($data['nextWaiting']->call_count >= 1 && $data['nextWaiting']->call_count_check = 1){
 //            $data['nextWaiting'] = self::where('floor_id', $room->floor_id)
@@ -222,7 +229,10 @@ class RoomQueue extends Model
         $doctorQueues = self::where('doctor_id', $doctor_source_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->orderBy('queue_number' , 'DESC')
+            ->groupBy('queue_number')
+//            ->having('created_at', 'max(created_at)')
             ->get();
+
         return $doctorQueues;
     }
 
