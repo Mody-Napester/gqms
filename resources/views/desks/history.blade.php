@@ -18,19 +18,19 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card-box">
-                <h4 class="m-t-0 header-title">Search and filter</h4>
-                <p class="text-muted font-14 m-b-30">
-                    Here you can filter and search on desk queues.
-                </p>
+    {{--<div class="row">--}}
+        {{--<div class="col-lg-12">--}}
+            {{--<div class="card-box">--}}
+                {{--<h4 class="m-t-0 header-title">Search and filter</h4>--}}
+                {{--<p class="text-muted font-14 m-b-30">--}}
+                    {{--Here you can filter and search on desk queues.--}}
+                {{--</p>--}}
 
-                @include('desks._desk_queue_history_filter')
-            </div>
-        </div>
-        <!-- end card-box -->
-    </div>
+                {{--@include('desks._desk_queue_history_filter')--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        {{--<!-- end card-box -->--}}
+    {{--</div>--}}
 
     <div class="row">
         <div class="col-lg-12">

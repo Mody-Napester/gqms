@@ -155,9 +155,19 @@
                             console.log(0, response.data);
                             removeLoarder();
                         });
+                },
+
+                // Websockets
+                listen(){
+                    // Reload Screen
+                    Echo.channel('reload-screen-{{ $screen->uuid }}')
+                        .listen('ReloadScreen', (response) => {
+                            location.reload();
+                        });
                 }
             },
             mounted() {
+                this.listen();
             }
         });
 

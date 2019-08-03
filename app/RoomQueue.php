@@ -12,7 +12,7 @@ class RoomQueue extends Model
      *
      * @var array
      */
-    protected $fillable = ['floor_id', 'room_id', 'doctor_id', 'queue_number', 'status'];
+    protected $fillable = ['floor_id', 'room_id', 'doctor_id', 'serve_source_status', 'reservation_source_serial', 'queue_number', 'status','reminder', 'call_count'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -81,6 +81,7 @@ class RoomQueue extends Model
         $data['nextQueue'] = self::where('doctor_id', $doctor_source_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', config('vars.room_queue_status.waiting'))
+            ->where('serve_source_status', '<>', 'C')
             ->orderBy('queue_number' , 'ASC')
             ->first();
 
@@ -88,6 +89,7 @@ class RoomQueue extends Model
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
             ->where('status', config('vars.room_queue_status.waiting'))
             ->where('queue_number', $data['nextQueue']->queue_number)
+            ->where('serve_source_status', '<>', 'C')
             ->orderBy('created_at' , 'DESC')
             ->first();
 
@@ -228,6 +230,7 @@ class RoomQueue extends Model
     {
         $doctorQueues = self::where('doctor_id', $doctor_source_id)
             ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->where('serve_source_status', '<>', 'C')
             ->orderBy('queue_number' , 'DESC')
             ->groupBy('queue_number')
 //            ->having('created_at', 'max(created_at)')
@@ -310,7 +313,7 @@ class RoomQueue extends Model
     {
         $queue = self::where('doctor_id', $doctor_source_id)->where('reservation_source_serial', $reservation_source_serial)->first();
 
-        if ($queue){
+        if (!is_null($queue)){
             // If Reservation canceled
             if($servstatus == 'C'){
                 self::edit([
@@ -318,7 +321,7 @@ class RoomQueue extends Model
                 ], $queue->id);
             }
         }else{
-            // Check Cashier flag
+            // Check Cashier flag (Reservation payed)
             if($cashier_flag == 1){
                 // Add new doctor queue
                 $roomQueue = self::store([

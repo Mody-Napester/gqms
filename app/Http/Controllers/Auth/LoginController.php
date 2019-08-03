@@ -48,7 +48,7 @@ class LoginController extends Controller
     // After Login
     protected function authenticated(\Illuminate\Http\Request $request, $user)
     {
-        // Check user status
+        // Check user status (account is not activated)
         if($user->status == 0 && !in_array($user->id, config('vars.authorized_users'))){
             auth()->logout();
             $data['message'] = [
@@ -68,24 +68,50 @@ class LoginController extends Controller
 
         // Update user
         if (isset($data['resource'])){
-            if(!User::getBy('room_id', $data['resource']->id)){
-                // Update user
-                User::edit([
-                    'room_id' => ($user->type == 1)? $data['resource']->id : null,
-                    'desk_id' => ($user->type == 2)? $data['resource']->id : null,
-                    'login_ip' => $data['resource']->ip,
-                    'available' => 1,
-                ], $user->id);
 
-
+            // Check in any user already logged in from this Desk or Room
+            $userToLogOut = User::getBy('login_ip', $data['resource']->ip);
+            if($userToLogOut){
                 // Broadcast event
                 if($user->type == 1){ // Doctor
-                    event(new RoomStatus($data['resource']->uuid, 1));
+                    if(isset($userToLogOut->room_id)){
+                        event(new RoomStatus(Room::getBy('id', $userToLogOut->room_id)->uuid, 0));
+                    }
                 }
                 elseif($user->type == 2){ // Desk
-                    event(new DeskStatus($data['resource']->uuid, 1));
+                    if($userToLogOut->desk_id){
+                        event(new DeskStatus(Desk::getBy('id', $userToLogOut->desk_id)->uuid, 0));
+                    }
                 }
+
+                // Logout this user
+                User::edit([
+                    'desk_id' => null,
+                    'room_id' => null,
+                    'login_ip' => null,
+                    'available' => 0,
+                ], $userToLogOut->id);
             }
+
+            // Login current user and update data
+            User::edit([
+                'room_id' => ($user->type == 1)? $data['resource']->id : null,
+                'desk_id' => ($user->type == 2)? $data['resource']->id : null,
+                'login_ip' => $data['resource']->ip,
+                'available' => 1,
+            ], $user->id);
+
+
+            // Broadcast event
+            if($user->type == 1){ // Doctor
+                event(new RoomStatus($data['resource']->uuid, 1));
+            }
+            elseif($user->type == 2){ // Desk
+                event(new DeskStatus($data['resource']->uuid, 1));
+            }
+
+//            if(!User::getBy('room_id', $data['resource']->id)){
+//            }
         }
 
         // Store Log User Login

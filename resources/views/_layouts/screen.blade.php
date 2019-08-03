@@ -1,3 +1,62 @@
+{{--@if($screen->slug == 's4-6')--}}
+        {{--<!DOCTYPE html>--}}
+{{--<html>--}}
+{{--<head>--}}
+    {{--<title>Text To Speech</title>--}}
+
+    {{--<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">--}}
+{{--</head>--}}
+{{--<body>--}}
+
+{{--<div class="container">--}}
+    {{--<div class="row">--}}
+        {{--<div class="col-md-3"></div>--}}
+        {{--<div class="col-md-6 mt-5">--}}
+            {{--<div class="form-group">--}}
+                {{--<label>Select language</label>--}}
+                {{--<select name="language" class="form-control language">--}}
+                    {{--<option value="en">English</option>--}}
+                    {{--<option value="ar">Arabic</option>--}}
+                {{--</select>--}}
+            {{--</div>--}}
+            {{--<div class="form-group">--}}
+                {{--<textarea name="text" class="form-control text"></textarea>--}}
+            {{--</div>--}}
+            {{--<button class="say btn btn-sm btn-primary">Say it</button>--}}
+
+            {{--<audio class="audio" src="" hidden></audio>--}}
+        {{--</div>--}}
+        {{--<div class="col-md-3"></div>--}}
+    {{--</div>--}}
+{{--</div>--}}
+
+{{--<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>--}}
+
+{{--<script type="text/javascript">--}}
+    {{--$(document).ready(function(){--}}
+        {{--$('button.say').on('click', function(){--}}
+            {{--var language = $('.language').val();--}}
+            {{--// var text = $('.text').val();--}}
+            {{--// var text = 'عميل رقم 15 - غرفة 110';--}}
+            {{--// text = encodeURIComponent(text)--}}
+
+            {{--// var urlAPI = "https://translate.google.com/translate_tts?tl=" + language + "&q=" + text + "&client=tw-ob";--}}
+            {{--var urlAPI = "https://translate.google.com/translate_tts?tl=ar&q=عميل رقم 15 - غرفة 110&client=tw-ob";--}}
+            {{--$('.audio').attr('src', urlAPI).get(0).play();--}}
+        {{--});--}}
+
+        {{--setInterval(function () {--}}
+            {{--$('button.say').trigger('click');--}}
+        {{--}, 5000)--}}
+    {{--});--}}
+{{--</script>--}}
+{{--</body>--}}
+{{--</html>--}}
+{{--@else--}}
+
+{{--@endif--}}
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -204,26 +263,6 @@
     <script src="{{ url('js/app.js') }}"></script>
 
     <script src="{{ url('assets/js/loader.js') }}"></script>
-
-    <script>
-        const screenApp = new Vue({
-            el : '#app',
-            data : {
-            },
-            methods : {
-                listen(){
-                    // Reload Screen
-                    Echo.channel('reload-screen-{{ $screen->uuid }}')
-                        .listen('ReloadScreen', (response) => {
-                            location.reload();
-                        });
-                }
-            },
-            mounted() {
-                this.listen();
-            }
-        });
-    </script>
 
     @yield('scripts')
 

@@ -365,7 +365,6 @@ class SyncVendorDataController extends Controller
                         DB::connection('oracle')->table('VW_RESERVATIONS')->where('ser', $val->ser)
                             ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
 
-
 //                        if (empty($val->queue_system_integ_flag) || strtoupper($val->queue_system_integ_flag) == 'HIS_NEW') {
 //                            Reservation::store($array);
 //                        }
@@ -383,8 +382,8 @@ class SyncVendorDataController extends Controller
 //                        }
 //                        DB::connection('oracle')->table('VW_RESERVATIONS')->where('ser', $val->ser)
 //                            ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
+//
                     }
-
                 }
             });
 

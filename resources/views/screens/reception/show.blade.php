@@ -90,6 +90,12 @@
                                 $('#' + response.room).addClass('canceled-res');
                             }
                         });
+
+                    // Reload Screen
+                    Echo.channel('reload-screen-{{ $screen->uuid }}')
+                        .listen('ReloadScreen', (response) => {
+                            location.reload();
+                        });
                 }
             },
             mounted() {

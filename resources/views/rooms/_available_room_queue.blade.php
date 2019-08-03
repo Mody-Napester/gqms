@@ -26,7 +26,7 @@
             </tr>
 
             @foreach($roomQueues as $roomQueue)
-                @if($roomQueue->doctor_id == auth()->user()->doctor->source_doctor_id)
+{{--                @if($roomQueue->doctor_id == auth()->user()->doctor->source_doctor_id)--}}
                 <tr>
                     <td>{{ $roomQueue->queue_number }}</td>
                     <td>
@@ -41,7 +41,7 @@
                         @endif
                     </td>
                 </tr>
-                @endif
+                {{--@endif--}}
             @endforeach
 
         </table>

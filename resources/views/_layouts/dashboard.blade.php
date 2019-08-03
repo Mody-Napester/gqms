@@ -318,6 +318,8 @@
 
         <script>
             var resizefunc = [];
+            // Tooltip
+            $('[data-toggle="tooltip"]').tooltip()
         </script>
 
 {{--        <script src="{{ url('assets/js/jquery.core.js') }}"></script>--}}
@@ -371,9 +373,6 @@
                     addAlert('danger', '{{$error}}', 1);
                 @endforeach
             @endif
-
-            // Tooltip
-            $('[data-toggle="tooltip"]').tooltip()
         </script>
     </body>
 </html>

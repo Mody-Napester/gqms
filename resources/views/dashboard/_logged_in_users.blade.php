@@ -5,6 +5,7 @@
         <thead>
         <tr>
             <td>User</td>
+            <td>From</td>
             <td>Available</td>
             <td>Type</td>
         </tr>
@@ -14,6 +15,13 @@
         @foreach($loggedInUsers as $loggedInUser)
             <tr>
                 <td>{{ $loggedInUser->name }}</td>
+                <td>
+                    @if($loggedInUser->desk_id != null)
+                        {{ $loggedInUser->desk->name_en }}
+                    @elseif($loggedInUser->room_id != null)
+                        {{ $loggedInUser->room->name_en }}
+                    @endif
+                </td>
                 <td>
                     @if($loggedInUser->available == 1)
                         <span class="badge badge-success">Yes</span>
