@@ -15,6 +15,7 @@
     </div>
 
     <audio id="call_sound" preload="none" src="{{ url('assets/sounds/call_1.wav') }}"></audio>
+    {{--<audio id="call_tts_url" autoplay src="http://translate.google.com/translate_tts?tl=en&q=amr%20ahmedyuyui&client=tw-ob"></audio>--}}
 
     {{--<embed src="{{ url('assets/sounds/call_1.wav') }}" autostart="false" width="0" height="0" id="sound1" enablejavascript="true">--}}
 
@@ -48,6 +49,27 @@
 
                             {{--PlaySound('{{ url('assets/sounds/call_1.wav') }}');--}}
                             document.getElementById('call_sound').play();
+
+                            // $('#call_tts_url').attr('src', 'https://translate.google.com/translate_tts?tl=en&q=agent%20number%20'+ response.desk_name +'%20-%20desk%20number%20'+ response.queue +'&client=tw-ob');
+                            // $('#call_tts_url').attr('src', response.ttsULR);
+
+                            // var audio = document.getElementById('call_tts_url');
+                            //
+                            // // Show loading animation.
+                            // // var playPromise = audio.play();
+                            //
+                            // if (playPromise !== undefined) {
+                            //     playPromise.then(_ => {
+                            //         // Automatic playback started!
+                            //         // Show playing UI.
+                            //         console.log('S');
+                            //     })
+                            //     .catch(error => {
+                            //         // Auto-play was prevented
+                            //         // Show paused UI.
+                            //         console.log('E');
+                            //     });
+                            // }
 
                             console.log(response);
                         });

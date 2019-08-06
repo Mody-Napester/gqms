@@ -48,10 +48,18 @@ class NextDeskQueue implements ShouldBroadcast
      */
     public function broadcastWith()
     {
+        $lang = 'en';
+        $desk = Desk::getBy('uuid', $this->desk_uuid);
+//        $text = "عميل رقم {$this->queue_number}{$desk->name_en} - شباك رقم ";
+        $text = "agent number {$this->queue_number} - desk number {$desk->name_en}";
+        $textEncoded = htmlspecialchars(rawurlencode($text));
         return [
             'desk' => $this->desk_uuid,
             'queue' => $this->queue_number,
-            'area' => $this->area_uuid
+            'area' => $this->area_uuid,
+            'desk_name' => $desk->name_en,
+//            'ttsULR' => "https://translate.google.com/translate_tts?tl={$lang}&q={$textEncoded}&client=tw-ob"
+//            'ttsULR' => "https://translate.google.com/translate_tts?tl={$lang}&q=ahmed&client=tw-ob"
         ];
     }
 }
