@@ -21,37 +21,49 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-lg-12">
-            <ul class="nav nav-tabs navtab-bg nav-justified">
-                <li class="nav-item">
-                    <a href="#searchResource" data-toggle="tab" aria-expanded="false" class="nav-link active">Search & filter</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#createResource" data-toggle="tab" aria-expanded="true" class="nav-link">Create new</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="searchResource">
-                    <h4 class="header-title m-t-0">Search</h4>
-                    <p class="text-muted font-14 m-b-20">
-                        Search on resource from here.
-                    </p>
+    @if (\App\User::hasAuthority('search.screens'))
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs navtab-bg nav-justified">
+                    @if (\App\User::hasAuthority('search.screens'))
+                        <li class="nav-item">
+                            <a href="#searchResource" data-toggle="tab" aria-expanded="false" class="nav-link active">Search & filter</a>
+                        </li>
+                    @endif
 
-                    @include('screens.search')
-                </div>
-                <div class="tab-pane" id="createResource">
-                    <h4 class="m-t-0 header-title">Create new screen</h4>
-                    <p class="text-muted font-14 m-b-30">
-                        Create new resource from here.
-                    </p>
+                    @if (\App\User::hasAuthority('create.screens'))
+                        <li class="nav-item">
+                            <a href="#createResource" data-toggle="tab" aria-expanded="true" class="nav-link">Create new</a>
+                        </li>
+                    @endif
+                </ul>
+                <div class="tab-content">
+                    @if (\App\User::hasAuthority('search.screens'))
+                        <div class="tab-pane active" id="searchResource">
+                            <h4 class="header-title m-t-0">Search</h4>
+                            <p class="text-muted font-14 m-b-20">
+                                Search on resource from here.
+                            </p>
 
-                    @include('screens.create')
+                            @include('screens.search')
+                        </div>
+                    @endif
+
+                    @if (\App\User::hasAuthority('create.screens'))
+                        <div class="tab-pane" id="createResource">
+                            <h4 class="m-t-0 header-title">Create new screen</h4>
+                            <p class="text-muted font-14 m-b-30">
+                                Create new resource from here.
+                            </p>
+
+                            @include('screens.create')
+                        </div>
+                    @endif
                 </div>
             </div>
+            <!-- end card-box -->
         </div>
-        <!-- end card-box -->
-    </div>
+    @endif
 
     <div class="row" id="goToAll">
         <div class="col-lg-12">
@@ -94,19 +106,27 @@
                                 <td>{{ $screen->created_at }}</td>
                                 {{--<td>{{ $screen->updated_at }}</td>--}}
                                 <td class="text-center">
-                                    <a @click.prevent="reload('{{$screen->uuid}}')" style="cursor: pointer;" class="btn btn-sm btn-warning"
-                                       data-toggle="tooltip" data-placement="top" title="" data-original-title="Reload Screen">
-                                        <i class="fa fa-refresh"></i>
-                                    </a>
-                                    <a href="{{ route('screens.show', [$screen->slug]) }}" target="_blank" class="btn btn-sm btn-primary">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('screens.edit', [$screen->uuid]) }}" class="update-modal btn btn-sm btn-success">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    {{--<a href="{{ route('screens.destroy', [$screen->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">--}}
-                                        {{--<i class="fa fa-times"></i>--}}
-                                    {{--</a>--}}
+                                    @if (\App\User::hasAuthority('refresh.screens'))
+                                        <a @click.prevent="reload('{{$screen->uuid}}')" style="cursor: pointer;" class="btn btn-sm btn-warning"
+                                           data-toggle="tooltip" data-placement="top" title="" data-original-title="Reload Screen">
+                                            <i class="fa fa-refresh"></i>
+                                        </a>
+                                    @endif
+                                    @if (\App\User::hasAuthority('show.screens'))
+                                        <a href="{{ route('screens.show', [$screen->slug]) }}" target="_blank" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    @endif
+                                    @if (\App\User::hasAuthority('edit.screens'))
+                                        <a href="{{ route('screens.edit', [$screen->uuid]) }}" class="update-modal btn btn-sm btn-success">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    @endif
+                                    @if (\App\User::hasAuthority('delete.screens'))
+                                        {{--<a href="{{ route('screens.destroy', [$screen->uuid]) }}" class="confirm-delete btn btn-sm btn-danger">--}}
+                                            {{--<i class="fa fa-times"></i>--}}
+                                        {{--</a>--}}
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

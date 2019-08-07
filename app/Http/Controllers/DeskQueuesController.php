@@ -694,7 +694,7 @@ class DeskQueuesController extends Controller
      */
     public function deskQueueHistory()
     {
-        if (!User::hasAuthority('use.desk_queue')){
+        if (!User::hasAuthority('use.desk_queue_history')){
             return redirect('/');
         }
 
@@ -711,7 +711,7 @@ class DeskQueuesController extends Controller
      */
     public function deskQueueSingleHistory($queue_uuid) // Ajax
     {
-        if (!User::hasAuthority('use.desk_queue')){
+        if (!User::hasAuthority('use.desk_queue_history')){
             return redirect('/');
         }
 

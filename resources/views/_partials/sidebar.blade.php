@@ -74,17 +74,20 @@
                     </li>
                     @endif
 
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="ti-home"></i> <span> Ganzory Resources </span> <span class="menu-arrow"></span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="{{ route('clinics.index') }}">Clinics</a></li>
-                            <li><a href="{{ route('specialities.index') }}">Specialities</a></li>
-                            <li><a href="{{ route('doctors.index') }}">Doctors</a></li>
-                            <li><a href="{{ route('patients.index') }}">Patients</a></li>
-                            <li><a href="{{ route('reservations.index') }}">Reservations</a></li>
-                            <li><a href="{{ route('schedules.index') }}">Schedules</a></li>
-                        </ul>
-                    </li>
+                    @if (\App\User::hasAuthority('use.ganzory_resources'))
+                        <li class="has_sub">
+                            <a href="javascript:void(0);" class="waves-effect"><i class="ti-home"></i> <span> Ganzory Resources </span> <span class="menu-arrow"></span></a>
+                            <ul class="list-unstyled">
+                                <li><a href="{{ route('clinics.index') }}">Clinics</a></li>
+                                <li><a href="{{ route('specialities.index') }}">Specialities</a></li>
+                                <li><a href="{{ route('doctors.index') }}">Doctors</a></li>
+                                <li><a href="{{ route('patients.index') }}">Patients</a></li>
+                                <li><a href="{{ route('reservations.index') }}">Reservations</a></li>
+                                <li><a href="{{ route('schedules.index') }}">Schedules</a></li>
+                            </ul>
+                        </li>
+                    @endif
+
                 @endif
 
                     @if (\App\User::hasAuthority('use.queues'))

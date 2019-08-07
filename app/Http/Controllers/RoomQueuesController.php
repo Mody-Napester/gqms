@@ -551,7 +551,7 @@ class RoomQueuesController extends Controller
      */
     public function roomQueueHistory()
     {
-        if (!User::hasAuthority('use.room_queue')){
+        if (!User::hasAuthority('use.doctor_queue_history')){
             return redirect('/');
         }
 
@@ -559,7 +559,7 @@ class RoomQueuesController extends Controller
         $data['floors'] = Floor::all();
         $data['users'] = User::where('type', UserTypes::$typesReverse['Doctor'])->get();
         $data['statuses'] = \App\QueueStatus::getQueueStatuses('room');
-        $data['roomQueues'] = RoomQueue::all();
+        $data['roomQueues'] = RoomQueue::orderBy('created_at', 'DESC')->get();
         return view('rooms.history', $data);
 
     }
@@ -568,7 +568,7 @@ class RoomQueuesController extends Controller
      */
     public function roomQueueSingleHistory($queue_uuid) // Ajax
     {
-        if (!User::hasAuthority('use.room_queue')){
+        if (!User::hasAuthority('use.doctor_queue_history')){
             return redirect('/');
         }
 

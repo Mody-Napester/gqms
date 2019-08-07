@@ -15,7 +15,7 @@ class QueuesController extends Controller
      */
     public function queuesHistory()
     {
-        if (!User::hasAuthority('use.desk_queue')){
+        if (!User::hasAuthority('use.all_queue_history')){
             return redirect('/');
         }
 
@@ -23,7 +23,8 @@ class QueuesController extends Controller
         $data['floors'] = Floor::all();
         $data['users'] = User::all();
         $data['statuses'] = \App\QueueStatus::getQueueStatuses('desk');
-        $data['deskQueues'] = DeskQueue::all();
+        $data['deskQueues'] = DeskQueue::paginate(20);
+
         return view('queues.history', $data);
 
     }
@@ -32,7 +33,7 @@ class QueuesController extends Controller
      */
     public function queuesSingleHistory($queue_uuid) // Ajax
     {
-        if (!User::hasAuthority('use.desk_queue')){
+        if (!User::hasAuthority('use.all_queue_history')){
             return redirect('/');
         }
 
