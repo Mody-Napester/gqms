@@ -127,14 +127,20 @@ class DeskQueue extends Model
         if (is_null($all)){
             if(is_null($date_from) && is_null($date_to)){
                 $queues = $queues->where('created_at', 'like', "%".date('Y-m-d')."%")->count();
-            }else{
-                $queues = $queues->whereBetween('created_at', [$date_from, $date_to])->count();
+            }
+            elseif (!is_null($date_from) && is_null($date_to)){
+                $queues = $queues->where('created_at', 'like', "%".date($date_from)."%")->count();
+            }
+            else{
+                $queues = $queues->where('created_at', '>=', $date_from)->where('created_at', '<=', $date_to)->count();
+//                $queues = $queues->whereBetween('created_at', [$date_from, $date_to])->count();
             }
         }else{
             if(is_null($date_from) && is_null($date_to)){
                 $queues = $queues->count();
             }else{
-                $queues = $queues->whereBetween('created_at', [$date_from, $date_to])->count();
+                $queues = $queues->where('created_at', '>=', $date_from)->where('created_at', '<=', $date_to)->count();
+//                $queues = $queues->whereBetween('created_at', [$date_from, $date_to])->count();
             }
         }
 

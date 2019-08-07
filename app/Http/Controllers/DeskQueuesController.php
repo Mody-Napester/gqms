@@ -566,6 +566,12 @@ class DeskQueuesController extends Controller
             'queue_status_id' => config('vars.desk_queue_status.done'),
         ]);
 
+        // Update reservation
+        $reservation = Reservation::getBy('source_reservation_serial', $reservation_serial);
+        $updatedReservation = $reservation->update([
+            'desk_queue_id' => $deskQueue->id,
+        ]);
+
         if($deskQueueStatusDone){
             $data['message'] = [
                 'msg_status' => 1,

@@ -1,4 +1,4 @@
-<h4 class="m-t-20 m-b-20">Logged in Users ({{ count($loggedInUsers) }})</h4>
+<h4 class="m-t-20 m-b-20">Logged in Users <span class="text-info">({{ count($loggedInUsers) }})</span></h4>
 
 <div class="card-box p-2">
     <table class="table table-striped table-bordered table-sm">
@@ -29,7 +29,14 @@
                         <span class="badge badge-danger">No</span>
                     @endif
                 </td>
-                <td>{{ \App\Enums\UserTypes::$types[$loggedInUser->type] }}</td>
+                <td>
+                    @if($loggedInUser->type == 1)
+                        <span class="badge badge-info">Doctor</span>
+                    @else
+                        <span class="badge badge-warning">Desk</span>
+                    @endif
+{{--                    {{ \App\Enums\UserTypes::$types[$loggedInUser->type] }}--}}
+                </td>
             </tr>
         @endforeach
         </tbody>

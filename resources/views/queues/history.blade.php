@@ -88,13 +88,29 @@
                             <td>
                                 @if($deskQueue->reservation && $deskQueue->reservation->roomQueue)
                                     @if($deskQueue->reservation->roomQueue->room)
-                                        @if($deskQueue->reservation->roomQueue->room->user)
-                                            @if($deskQueue->reservation->roomQueue->room->user->doctor)
-                                                {{  $deskQueue->reservation->roomQueue->room->user->doctor->name_en }}
-                                            @endif
-                                        @else
-                                            {{ '-' }}
-                                        @endif
+                                        <?php
+                                            $queue =\App\RoomQueue::where('reservation_source_serial', $deskQueue->reservation->source_queue_number)->first();
+                                            if($queue){
+                                                $doctor = \App\Doctor::where('source_doctor_id', $queue->doctor_id)->first();
+                                                if($doctor){
+                                                    $doctor = $doctor->name_en;
+                                                }else{
+                                                    $doctor = '-';
+                                                }
+                                            }else{
+                                                $doctor = '-';
+                                            }
+                                        ?>
+
+                                        {{ $queue }}
+
+                                        {{--@if($deskQueue->reservation->roomQueue->room->user)--}}
+                                            {{--@if($deskQueue->reservation->roomQueue->room->user->doctor)--}}
+                                                {{--{{  $deskQueue->reservation->roomQueue->room->user->doctor->name_en }}--}}
+                                            {{--@endif--}}
+                                        {{--@else--}}
+                                            {{--{{ '-' }}--}}
+                                        {{--@endif--}}
                                     @else
                                         {{ '-' }}
                                     @endif
@@ -144,7 +160,6 @@
                                     00:00:00
                                 @endif
                             </td>
-
 
                             <td class="text-center">
                                 @if($deskQueue->status != config('vars.desk_queue_status.waiting'))
