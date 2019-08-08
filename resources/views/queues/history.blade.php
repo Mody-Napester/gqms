@@ -46,6 +46,7 @@
                         <th colspan="2">Queue Numbers</th>
                         <th colspan="3">Served With</th>
                         <th rowspan="2">Reservation</th>
+                        <th rowspan="2">Desk Abuse</th>
                         <th colspan="2">Attend Time</th>
                         <th colspan="2">Waiting Time</th>
                         <th colspan="2">Serve Time</th>
@@ -72,73 +73,60 @@
 
                     <tbody>
                     @foreach($deskQueues as $deskQueue)
+                        <?php
+                        if($deskQueue->reservation){
+                            $roomQueue =\App\RoomQueue::where('reservation_source_serial', $deskQueue->reservation->source_reservation_serial)->first();
+                        }
+                        ?>
                         <tr>
                             <td>{{ $deskQueue->queue_number }}</td>
-                            <td>{{ ($deskQueue->reservation) ? $deskQueue->reservation->source_queue_number : '-' }}</td>
+
+                            <td>{{ (isset($roomQueue))? $roomQueue->queue_number : '-' }}</td>
 
                             <td>{{ ($deskQueue->desk)? $deskQueue->desk->name_en : '' }}</td>
+
                             <td>
-                                @if($deskQueue->reservation)
-                                    @if($deskQueue->reservation->roomQueue)
-                                        {{ ($deskQueue->reservation->roomQueue->room) ? $deskQueue->reservation->roomQueue->room->name_en : '-' }}
-                                    @endif
-                                @endif
+                                {{ (isset($roomQueue))? (\App\Room::getBy('id', $roomQueue->room_id))? \App\Room::getBy('id', $roomQueue->room_id)->name_en : '-' : '-' }}
                             </td>
 
                             <td>
-                                @if($deskQueue->reservation && $deskQueue->reservation->roomQueue)
-                                    @if($deskQueue->reservation->roomQueue->room)
-                                        <?php
-                                            $queue =\App\RoomQueue::where('reservation_source_serial', $deskQueue->reservation->source_queue_number)->first();
-                                            if($queue){
-                                                $doctor = \App\Doctor::where('source_doctor_id', $queue->doctor_id)->first();
-                                                if($doctor){
-                                                    $doctor = $doctor->name_en;
-                                                }else{
-                                                    $doctor = '-';
-                                                }
-                                            }else{
-                                                $doctor = '-';
-                                            }
-                                        ?>
-
-                                        {{ $queue }}
-
-                                        {{--@if($deskQueue->reservation->roomQueue->room->user)--}}
-                                            {{--@if($deskQueue->reservation->roomQueue->room->user->doctor)--}}
-                                                {{--{{  $deskQueue->reservation->roomQueue->room->user->doctor->name_en }}--}}
-                                            {{--@endif--}}
-                                        {{--@else--}}
-                                            {{--{{ '-' }}--}}
-                                        {{--@endif--}}
-                                    @else
-                                        {{ '-' }}
-                                    @endif
-                                @else
-                                    {{ '-' }}
-                                @endif
+                                {{ (isset($roomQueue))? (\App\Doctor::getBy('source_doctor_id', $roomQueue->doctor_id))? \App\Doctor::getBy('source_doctor_id', $roomQueue->doctor_id)->name_en : '-' : '-' }}
                             </td>
+
                             <td>{{ ($deskQueue->reservation) ? $deskQueue->reservation->source_reservation_serial : '-' }}</td>
 
-                            <td>{{ $deskQueue->created_at }}</td>
-                            <td>{{ ($deskQueue->reservation && $deskQueue->reservation->roomQueue) ? $deskQueue->reservation->roomQueue->created_at : '-' }}</td>
+                            <td>
+                                @if($deskQueue->reservation)
+                                    <span class="badge badge-success">No</span>
+                                @else
+                                    <span class="badge badge-danger">Yes</span>
+                                @endif
+                            </td>
+
+                            <td>{{ $deskQueue->created_at->addHour(2) }}</td>
+
+                            <td>
+                                {{ (isset($roomQueue))? $roomQueue->created_at->addHour(2) : '-' }}
+                            </td>
 
                             <!-- Waiting time -->
                             <td>
                                 @if($deskQueue->status == config('vars.desk_queue_status.done'))
                                     {{ getQueuePatientTime($deskQueue, 'desk', 'waiting') }}
                                 @else
-                                    00:00:00
+                                    -
                                 @endif
                             </td>
 
                             <td>
-                                @if(($deskQueue->reservation && $deskQueue->reservation->roomQueue))
-                                    @if($deskQueue->reservation->roomQueue->status == config('vars.desk_queue_status.patient_out'))
-                                        {{ getQueuePatientTime($deskQueue->reservation->roomQueue, 'room', 'waiting') }}
+                                @if(isset($roomQueue))
+                                    @if($roomQueue->status == config('vars.room_queue_status.patient_out'))
+                                        {{ getQueuePatientTime($roomQueue, 'room', 'waiting') }}
+                                    @else
+                                        -
                                     @endif
                                 @else
-                                    00:00:00
+                                    -
                                 @endif
                             </td>
 
@@ -147,17 +135,19 @@
                                 @if($deskQueue->status == config('vars.desk_queue_status.done'))
                                     {{ getQueuePatientTime($deskQueue, 'desk', 'serve') }}
                                 @else
-                                    00:00:00
+                                    -
                                 @endif
                             </td>
 
                             <td>
-                                @if(($deskQueue->reservation && $deskQueue->reservation->roomQueue))
-                                    @if($deskQueue->reservation->roomQueue->status == config('vars.desk_queue_status.patient_out'))
-                                        {{ getQueuePatientTime($deskQueue->reservation->roomQueue, 'room', 'serve') }}
+                                @if(isset($roomQueue))
+                                    @if($roomQueue->status == config('vars.room_queue_status.patient_out'))
+                                        {{ getQueuePatientTime($roomQueue, 'room', 'serve') }}
+                                    @else
+                                        -
                                     @endif
                                 @else
-                                    00:00:00
+                                    -
                                 @endif
                             </td>
 
@@ -182,34 +172,34 @@
 @section('scripts')
     <script>
         var tableDTUsers = $('#datatable-history-buttons').DataTable({
-                lengthChange: false,
-                buttons: [
-                    {
-                        extend: 'copyHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
-                        }
-                    },
-                    {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
-                        }
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
-                        }
+            lengthChange: false,
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
                     }
-                ],
-            });
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
+                    }
+                }
+            ],
+        });
         tableDTUsers.buttons().container().appendTo('#datatable-history-buttons_wrapper .col-md-6:eq(0)');
 
     </script>

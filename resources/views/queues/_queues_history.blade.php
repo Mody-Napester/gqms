@@ -14,13 +14,18 @@
                 </span>
             </td>
             <td>{{ \App\User::getBy('id', $history->user_id)->name }}</td>
-            <td>{{ $history->created_at }}</td>
+            <td>{{ $history->created_at->addHour(2) }}</td>
         </tr>
     @endforeach
 
-    @if($deskQueue->reservation && $deskQueue->reservation->roomQueue)
+    <?php
+    if($deskQueue->reservation){
+        $roomQueue =\App\RoomQueue::where('reservation_source_serial', $deskQueue->reservation->source_reservation_serial)->first();
+    }
+    ?>
+    @if(isset($roomQueue))
         <tr><td colspan="3">Doctor Queue</td></tr>
-        @foreach($deskQueue->reservation->roomQueue->roomQueueStatusHistories as $history)
+        @foreach($roomQueue->roomQueueStatusHistories as $history)
             <tr>
                 <td>
                     <span class="label {{ \App\QueueStatus::where('id', $history->queue_status_id)->first()->class }}">
@@ -28,7 +33,7 @@
                     </span>
                 </td>
                 <td>{{ \App\User::getBy('id', $history->user_id)->name }}</td>
-                <td>{{ $history->created_at }}</td>
+                <td>{{ $history->created_at->addHour(2) }}</td>
             </tr>
         @endforeach
     @endif
