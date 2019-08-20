@@ -31,6 +31,18 @@ function getDeskReport($user, $status){
     return $report;
 }
 
+// Get resource name
+function getName($resource){
+    $name = '';
+    if(lang() == 'ar'){
+        $name = $resource->name_ar;
+    }
+    elseif (lang() == 'en'){
+        $name = $resource->name_en;
+    }
+    return $name;
+}
+
 // Store Log User Login
 function getCurrentDeskReport($user){
     $report = \App\DeskQueue::where('desk_id', $user->desk->id)

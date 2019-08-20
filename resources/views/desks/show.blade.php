@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') {{ $desk->name_en }} @endsection
+@section('title') {{ getName($desk) }} @endsection
 
 @section('content')
 
@@ -17,8 +17,8 @@
                                     </div>
                                 </div>
                                 <div class="table-detail text-right">
-                                    <h4 class="m-t-0 m-b-5"><b>{{ $desk->name_en }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">{{ $desk->area->name_en }}</h5>
+                                    <h4 class="m-t-0 m-b-5"><b>{{ getName($desk) }}</b></h4>
+                                    <h5 class="text-muted m-b-0 m-t-0">{{ getName($desk->area) }}</h5>
                                 </div>
                             </div>
                         </div>
