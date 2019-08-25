@@ -6,6 +6,9 @@ Route::group(
 
 });
 
+// Site Languages
+Route::get('language/{language}', 'LanguagesController@setLanguage')->name('language');
+
 Route::get('test_schedule', function (){
     DB::table('test_schedule')->insert(['name' => str_random('10')]);
     return 'Done';

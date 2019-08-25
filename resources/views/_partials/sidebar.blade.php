@@ -5,13 +5,14 @@
             <ul>
                 @if (\App\User::hasAuthority('use.dashboard'))
                     <li class="has_sub">
-                        <a href="{{ route('dashboard.index') }}" class="waves-effect"><i class="ti-dashboard"></i> <span> Dashboard </span></a>
+                        {{--({{ session()->get('language') }})--}}
+                        <a href="{{ route('dashboard.index') }}" class="waves-effect"><i class="ti-dashboard"></i> <span> {{ trans('sidebar.Dashboard') }}</span></a>
                     </li>
                 @endif
 
                 @if (\App\User::hasAuthority('use.get_my_ip'))
                     <li class="has_sub">
-                        <a href="{{ route('ip.get') }}" target="_blank" class="waves-effect"><i class="ti-location-pin"></i> <span> Get my IP </span></a>
+                        <a href="{{ route('ip.get') }}" target="_blank" class="waves-effect"><i class="ti-location-pin"></i> <span> {{ trans('sidebar.Get_my_IP') }} </span></a>
                     </li>
                 @endif
 
@@ -101,7 +102,7 @@
                         @if (!is_null(auth()->user()->desk_id) && auth()->user()->login_ip == auth()->user()->desk->ip)
                              @if (\App\User::hasAuthority('use.desk_queue'))
                                 <li class="has_sub">
-                                    <a href="{{ route('desks.show', [auth()->user()->desk->uuid]) }}" class="waves-effect"><i class="ti-exchange-vertical"></i> <span> Desk queue </span></a>
+                                    <a href="{{ route('desks.show', [auth()->user()->desk->uuid]) }}" class="waves-effect"><i class="ti-exchange-vertical"></i> <span> {{ trans('sidebar.Desk_queue') }} </span></a>
                                 </li>
                              @endif
                         @endif
@@ -115,7 +116,7 @@
                         @if (!is_null(auth()->user()->room_id) && auth()->user()->login_ip == auth()->user()->room->ip)
                              @if (\App\User::hasAuthority('use.doctor_queue'))
                                 <li class="has_sub">
-                                    <a href="{{ route('rooms.show', [auth()->user()->room->uuid]) }}" class="waves-effect"><i class="ti-exchange-vertical"></i> <span> Doctors queue </span></a>
+                                    <a href="{{ route('rooms.show', [auth()->user()->room->uuid]) }}" class="waves-effect"><i class="ti-exchange-vertical"></i> <span> {{ trans('sidebar.Doctors_queue') }} </span></a>
                                 </li>
                              @endif
                         @endif
