@@ -50,7 +50,9 @@
                         <th rowspan="2">Reservation</th>
                         {{--<th rowspan="2">Desk Abuse</th>--}}
                         <th colspan="2">Attend Time</th>
+                        <th colspan="2">Call Time</th>
                         <th colspan="2">Waiting Time</th>
+                        <th colspan="2">Done Time</th>
                         <th colspan="2">Serve Time</th>
                         <th rowspan="2" class="text-center">History</th>
                     </tr>
@@ -60,6 +62,12 @@
 
                         <th>Desk</th>
                         <th>Room</th>
+                        <th>Doctor</th>
+
+                        <th>Desk</th>
+                        <th>Doctor</th>
+
+                        <th>Desk</th>
                         <th>Doctor</th>
 
                         <th>Desk</th>

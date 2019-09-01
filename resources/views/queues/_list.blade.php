@@ -33,10 +33,24 @@
         {{--@endif--}}
         {{--</td>--}}
 
+        <!-- Attend Time -->
         <td>{{ $deskQueue->created_at->addHour(2) }}</td>
 
         <td>
             {{ (isset($roomQueue))? $roomQueue->created_at->addHour(2) : '-' }}
+        </td>
+
+        <!-- Call Time -->
+        <td>
+            {{ getQueuePatientActionTime($deskQueue, 'desk', 'call') }}
+        </td>
+
+        <td>
+            @if(isset($roomQueue))
+                {{ getQueuePatientActionTime($roomQueue, 'room', 'call') }}
+            @else
+                -
+            @endif
         </td>
 
         <!-- Waiting time -->
@@ -55,6 +69,19 @@
                 @else
                     -
                 @endif
+            @else
+                -
+            @endif
+        </td>
+
+        <!-- Done Time -->
+        <td>
+            {{ getQueuePatientActionTime($deskQueue, 'desk', 'done') }}
+        </td>
+
+        <td>
+            @if(isset($roomQueue))
+                {{ getQueuePatientActionTime($roomQueue, 'room', 'done') }}
             @else
                 -
             @endif

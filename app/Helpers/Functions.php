@@ -266,6 +266,30 @@ function getQueuePatientTime($queueOpj, $toType, $timeType){
     return gmdate('H:i:s', $diffTime);
 }
 
+function getQueuePatientActionTime($queueOpj, $toType, $timeType){
+
+    $time = '';
+
+    if($toType == 'desk'){
+        if ($timeType == 'call'){
+            $time = $queueOpj->deskQueueStatusHistories()->where('queue_status_id', config('vars.desk_queue_status.called'))->first();
+        }
+        elseif ($timeType == 'done'){
+            $time = $queueOpj->deskQueueStatusHistories()->where('queue_status_id', config('vars.desk_queue_status.done'))->first();
+        }
+    }
+    elseif ($toType == 'room'){
+        if ($timeType == 'call'){
+            $time = $queueOpj->roomQueueStatusHistories()->where('queue_status_id', config('vars.room_queue_status.called'))->first();
+        }
+        elseif ($timeType == 'done'){
+            $time = $queueOpj->roomQueueStatusHistories()->where('queue_status_id', config('vars.room_queue_status.patient_out'))->first();
+        }
+    }
+
+    return $time = ($time)? $time->created_at->addHour(2) : '-';
+}
+
 function getDeskQueuePatientServeTime($queueOpj){
     $done = $queueOpj->deskQueueStatusHistories()->where('queue_status_id', config('vars.desk_queue_status.done'))->first()->created_at;
     $called = $queueOpj->deskQueueStatusHistories()->where('queue_status_id', config('vars.desk_queue_status.called'))->first()->created_at;
