@@ -13,6 +13,8 @@
 
         <title>@yield('title')</title>
 
+        @yield('pre_css')
+
         <!--Morris Chart CSS -->
         <link href="{{ url('assets/plugins/morris/morris.css') }}" rel="stylesheet">
         <link href="{{ url('assets/plugins/bootstrap-sweetalert/sweet-alert.css') }}" rel="stylesheet" type="text/css">
@@ -35,6 +37,14 @@
         <link href="{{ url('assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
 
         @yield('head')
+
+        @if(lang() == 'ar')
+            <link href="https://fonts.googleapis.com/css?family=Tajawal:400,500,700,800&display=swap" rel="stylesheet">
+
+            <style>
+                body,.wm-contact-tab .nav-tabs li a,body h1,body h2,body h3,body h4,body h5,body h6,.wm-team-info h5{font-family: 'Tajawal', sans-serif;}
+            </style>
+        @endif
 
     </head>
 

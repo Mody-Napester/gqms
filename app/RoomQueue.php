@@ -228,13 +228,17 @@ class RoomQueue extends Model
      */
     public static function getRoomQueuesByDoctor($doctor_source_id)
     {
-        $doctorQueues = self::where('doctor_id', $doctor_source_id)
-            ->where('created_at', 'like', "%".date('Y-m-d')."%")
-            ->where('serve_source_status', '<>', 'C')
-            ->orderBy('queue_number' , 'DESC')
-            ->groupBy('queue_number')
+        $doctorQueues = self::where('doctor_id', $doctor_source_id)->get();
+
+        if(count($doctorQueues) > 0){
+            $doctorQueues = self::where('doctor_id', $doctor_source_id)
+                ->where('created_at', 'like', "%".date('Y-m-d')."%")
+                ->where('serve_source_status', '<>', 'C')
+                ->orderBy('queue_number' , 'DESC')
+                ->groupBy('queue_number')
 //            ->having('created_at', 'max(created_at)')
-            ->get();
+                ->get();
+        }
 
         return $doctorQueues;
     }

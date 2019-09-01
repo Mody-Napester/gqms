@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') Floors @endsection
+@section('title') {{ trans('floors.Floors') }} @endsection
 
 @section('content')
 
@@ -14,8 +14,8 @@
             <h4 class="page-title">Floors</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
-                <li class="breadcrumb-item"><a href="#">Floors</a></li>
-                <li class="breadcrumb-item active">Index</li>
+                <li class="breadcrumb-item"><a href="#">{{ trans('floors.Floors') }}</a></li>
+                <li class="breadcrumb-item active">{{ trans('floors.Index') }}</li>
             </ol>
 
         </div>
@@ -25,10 +25,10 @@
         <div class="col-lg-12">
             <ul class="nav nav-tabs navtab-bg nav-justified">
                 <li class="nav-item">
-                    <a href="#searchResource" data-toggle="tab" aria-expanded="false" class="nav-link active">Search & filter</a>
+                    <a href="#searchResource" data-toggle="tab" aria-expanded="false" class="nav-link active">{{ trans('floors.Search_filter') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#createResource" data-toggle="tab" aria-expanded="true" class="nav-link">Create new</a>
+                    <a href="#createResource" data-toggle="tab" aria-expanded="true" class="nav-link">{{ trans('floors.Create_new') }}</a>
                 </li>
             </ul>
             <div class="tab-content">

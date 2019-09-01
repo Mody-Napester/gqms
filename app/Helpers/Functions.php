@@ -31,16 +31,15 @@ function getDeskReport($user, $status){
     return $report;
 }
 
-// Get resource name
-function getName($resource){
-    $name = '';
+// Resource translation
+function translate($resource, $field){
     if(lang() == 'ar'){
-        $name = $resource->name_ar;
+        if($field == 'name'){ $data = $resource->name_ar;}
+    }elseif (lang() == 'en'){
+        if($field == 'name'){ $data = $resource->name_en;}
     }
-    elseif (lang() == 'en'){
-        $name = $resource->name_en;
-    }
-    return $name;
+
+    return $data;
 }
 
 // Store Log User Login

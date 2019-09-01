@@ -114,6 +114,18 @@ class RoomsController extends Controller
         // Get Room
         $data['room'] = Room::getBy('uuid', $uuid);
 
+        // Room not connected to screen
+        $screen_room = DB::table('screen_room')->where('room_id', $data['room']->id)->first();
+        if (!$screen_room){
+            $data['message'] = [
+                'msg_status' => 0,
+                'type' => 'danger',
+                'text' => 'Room not connected to screen',
+            ];
+
+            return back()->with('message', $data['message']);
+        }
+
         // Check IP
         if (auth()->user()->room_id != $data['room']->id){
             $data['message'] = [

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Desk;
 use App\DeskQueue;
+use App\Doctor;
 use App\Floor;
+use App\Room;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -13,17 +15,50 @@ class QueuesController extends Controller
     /**
      * All queue histories.
      */
-    public function queuesHistory()
+    public function queuesHistory(Request $request)
     {
         if (!User::hasAuthority('use.all_queue_history')){
             return redirect('/');
         }
 
         $data['desks'] = Desk::all();
+        $data['doctors'] = Doctor::getAll();
         $data['floors'] = Floor::all();
+        $data['rooms'] = Room::all();
         $data['users'] = User::all();
         $data['statuses'] = \App\QueueStatus::getQueueStatuses('desk');
-        $data['deskQueues'] = DeskQueue::paginate(20);
+
+        if (empty($request->all()) || (count($request->all()) == 1 && $request->has('page'))){
+            $data['search'] = false;
+            $data['deskQueues'] = DeskQueue::paginate(20);
+        }else{
+
+            $data['search'] = true;
+
+            $data['deskQueues'] = new DeskQueue();
+
+//            dd($request->all());
+
+            $data['doctor']      = ($request->has('doctor')) ? $request->doctor : null;
+            $data['room']        = ($request->has('room')) ? $request->room : null;
+            $data['reservation'] = ($request->has('reservation')) ? $request->reservation : null;
+
+            if($request->has('date') && $request->date != ''){
+                $data['deskQueues'] = $data['deskQueues']->where('created_at', 'like', $request->date . '%');
+            }
+
+            if($request->has('desk')){
+                $data['desk'] = Desk::getBy('uuid', $request->desk);
+                $data['deskQueues'] = $data['deskQueues']->where('desk_id',$data['desk']->id);
+            }
+
+            $data['deskQueues'] = $data['deskQueues']->paginate(20);
+        }
+
+        // Store User Action Log
+        storeLogUserAction(\App\Enums\LogUserActions::$name['IndexQueueHistory'], 'Get',route('queues.queuesHistory'));
+
+        $data['queuesListsView'] = view('queues._list', $data);
 
         return view('queues.history', $data);
 

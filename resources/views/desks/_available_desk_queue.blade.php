@@ -1,9 +1,9 @@
 <div class="card-box">
     <h4 class="m-t-0 header-title">
-        <label for="">Today Queue ({{ count($deskQueues) }})</label>
+        <label for="">{{ trans('desks.Today_Queue') }} ({{ count($deskQueues) }})</label>
         <div class="row">
             <div class="col-md-6 pr-1">
-                <input class="form-control" type="text" id="searchInput" placeholder="Search ..">
+                <input class="form-control" type="text" id="searchInput" placeholder="{{ trans('desks.Search') }} ..">
             </div>
             <div class="col-md-6 pl-1">
                 <select class="form-control" id="searchSelect" style="height: 35px;">
@@ -20,9 +20,9 @@
     <div class="mx-box" style="overflow: auto;">
         <table data-page-length='50' id="searchTable" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
             <tr>
-                <th>Queue</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>{{ trans('desks.Queue') }}</th>
+                <th>{{ trans('desks.Status') }}</th>
+                <th>{{ trans('desks.Action') }}</th>
             </tr>
 
             @foreach($deskQueues as $deskQueue)
@@ -34,9 +34,9 @@
                     <td>
                         @if($deskQueue->queueStatus->id == config('vars.desk_queue_status.skipped'))
                             <button onclick="callSkippedAgain('{{ $deskQueue->uuid }}')" class="btn btn-secondary waves-effect"
-                                    style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Call again</button>
+                                    style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">{{ trans('desks.Call_again') }}</button>
                         @elseif($deskQueue->queueStatus->id != config('vars.desk_queue_status.waiting'))
-                            By {{ $deskQueue->desk->name_en }}
+                            {{ trans('desks.By') }} {{ translate($deskQueue->desk, 'name') }}
                         @endif
                     </td>
                 </tr>

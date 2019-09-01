@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') {{ $room->name_en }} @endsection
+@section('title') {{ translate($room, 'name') }} @endsection
 
 @section('content')
 
@@ -17,8 +17,8 @@
                                     </div>
                                 </div>
                                 <div class="table-detail text-right">
-                                    <h4 class="m-t-0 m-b-5"><b>{{ $room->name_en }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">{{ $room->floor->name_en }}</h5>
+                                    <h4 class="m-t-0 m-b-5"><b>{{ translate($room, 'name') }}</b></h4>
+                                    <h5 class="text-muted m-b-0 m-t-0">{{ translate($room->floor, 'name') }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="table-detail text-right">
                                     <h4 class="m-t-0 m-b-5"><b id="count-skip">{{ $roomQueuesSkip }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">Skipped</h5>
+                                    <h5 class="text-muted m-b-0 m-t-0">{{ trans('rooms.Skipped') }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="table-detail text-right">
                                     <h4 class="m-t-0 m-b-5"><b id="count-out">{{ $roomQueuesPatientOut }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">Patient Out</h5>
+                                    <h5 class="text-muted m-b-0 m-t-0">{{ trans('rooms.Patient_Out') }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                 <h4 class="m-t-0 m-b-20 header-title">
                     <b>Current Serving Queue</b>
                     <b class="pull-right">
-                        Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
+                        {{ trans('rooms.Waiting') }} : <span class="waitingTime">@{{ waiting_time }}</span>
 
                         {{--<span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span>--}}
 
@@ -124,18 +124,18 @@
                                 </div>
                                 <div class="col-md-4">
                                     <button v-on:click="callNext()" v-if="next_status" type="button" class="btn btn-block btn-primary waves-effect waves-light">
-                                        Call Next <i class="fa fa-fw fa-refresh"></i>
+                                        {{ trans('rooms.Call_Next') }} <i class="fa fa-fw fa-refresh"></i>
                                     </button>
                                     <button v-on:click="callNextAgain()" v-if="call_status" type="button" class="btn btn-block btn-warning waves-effect waves-light">
-                                        Call Next Again <i class="fa fa-fw fa-refresh"></i>
+                                        {{ trans('rooms.Call_Next_Again') }} <i class="fa fa-fw fa-refresh"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
                                     <button v-on:click="patientIn()" v-if="in_status" type="button" class="btn btn-block btn-pink waves-effect waves-light">
-                                        Patient in <i class="fa fa-fw fa-arrow-down"></i>
+                                        {{ trans('rooms.Patient_in') }} <i class="fa fa-fw fa-arrow-down"></i>
                                     </button>
                                     <button v-on:click="patientOut()" v-if="out_status" type="button" class="btn btn-block btn-success waves-effect waves-light">
-                                        Patient out <i class="fa fa-fw fa-arrow-up"></i>
+                                        {{ trans('rooms.Patient_out') }} <i class="fa fa-fw fa-arrow-up"></i>
                                     </button>
                                     {{--<button v-on:click="patientOutAndNext()" v-if="out_and_next_status && change_out_and_next_status" type="button" class="btn btn-block btn-success waves-effect waves-light">--}}
                                         {{--Patient out and next <i class="fa fa-fw fa-arrow-up"></i>--}}

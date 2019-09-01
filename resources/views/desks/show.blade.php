@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') {{ getName($desk) }} @endsection
+@section('title') {{ translate($desk, 'name') }} @endsection
 
 @section('content')
 
@@ -17,8 +17,8 @@
                                     </div>
                                 </div>
                                 <div class="table-detail text-right">
-                                    <h4 class="m-t-0 m-b-5"><b>{{ getName($desk) }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">{{ getName($desk->area) }}</h5>
+                                    <h4 class="m-t-0 m-b-5"><b>{{ translate($desk, 'name') }}</b></h4>
+                                    <h5 class="text-muted m-b-0 m-t-0">{{ translate($desk->area, 'name') }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="table-detail text-right">
                                     <h4 class="m-t-0 m-b-5"><b id="count-skip">{{ $deskQueuesSkip }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">Skipped</h5>
+                                    <h5 class="text-muted m-b-0 m-t-0">{{ trans('desks.Skipped') }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="table-detail text-right">
                                     <h4 class="m-t-0 m-b-5"><b id="count-done">{{ $deskQueuesDone }}</b></h4>
-                                    <h5 class="text-muted m-b-0 m-t-0">Done</h5>
+                                    <h5 class="text-muted m-b-0 m-t-0">{{ trans('desks.Done') }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -65,31 +65,31 @@
                     <div class="queue-settings-btns">
                         <div class="queue-settings-close"><i class="fa fa-fw fa-close"></i></div>
                         <div style="overflow: auto;height: 100%">
-                            <p>Done button</p>
+                            <p>{{ trans('desks.Done_button') }}</p>
                             <div class="radio radio-success" v-on:click="changeBtn('done')">
                                 <input style="margin-top: 4px;" type="radio" name="queue_done" id="radio1" value="option4">
                                 <label for="radio1">
-                                    Done
+                                    {{ trans('desks.Done') }}
                                 </label>
                             </div>
                             <div class="radio radio-success" v-on:click="changeBtn('doneandnext')">
                                 <input style="margin-top: 4px;" type="radio" checked name="queue_done" id="radio2" value="option4">
                                 <label for="radio2">
-                                    Done and next
+                                    {{ trans('desks.Done_and_next') }}
                                 </label>
                             </div>
                             <hr>
-                            <p>Skip button</p>
+                            <p>{{ trans('desks.Skip_button') }}</p>
                             <div class="radio radio-danger" v-on:click="changeBtn('skip')">
                                 <input style="margin-top: 4px;" type="radio" name="queue_skip" id="radio3" value="option4">
                                 <label for="radio3">
-                                    Skip
+                                    {{ trans('desks.Skip') }}
                                 </label>
                             </div>
                             <div class="radio radio-danger" v-on:click="changeBtn('skipandnext')">
                                 <input style="margin-top: 4px;" type="radio" checked name="queue_skip" id="radio4" value="option4">
                                 <label for="radio4">
-                                    Skip and next
+                                    {{ trans('desks.Skip_and_next') }}
                                 </label>
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                                        name="reservation_resource" id="reservation_resource" type="text"
                                        class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button v-on:click="checkReservationExists()" class="btn btn-secondary waves-effect waves-light" type="button"><i class="fa fa-fw fa-search"></i> Search</button>
+                                    <button v-on:click="checkReservationExists()" class="btn btn-secondary waves-effect waves-light" type="button"><i class="fa fa-fw fa-search"></i> {{ trans('desks.Search') }}</button>
                                 </div>
                             </div>
                             <div class="invalid-feedback reservation_resource_feedback"></div>
@@ -125,7 +125,7 @@
                 </div>
 
                 <h4 class="m-t-0 m-b-20 header-title">
-                    <b>Current Serving Queue</b> <b class="pull-right">Waiting : <span class="waitingTime">@{{ waiting_time }}</span>
+                    <b>{{ trans('desks.Current_Serving_Queue') }}</b> <b class="pull-right">{{ trans('desks.Waiting') }} : <span class="waitingTime">@{{ waiting_time }}</span>
                         <span class="queue-settings"><i class="fa fa-cog fa-fw"></i></span></b>
                 </h4>
 
@@ -137,26 +137,26 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <button v-if="active_btn && skip_status" @click.prevent="skip()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
-                                        Skip <i class="fa fa-fw fa-close"></i>
+                                        {{ trans('desks.Skip') }} <i class="fa fa-fw fa-close"></i>
                                     </button>
                                     <button v-if="active_btn && !skip_status" @click.prevent="skipAndNext()" type="button" class="btn btn-block btn-danger waves-effect waves-light">
-                                        Skip And Next <i class="fa fa-fw fa-close"></i>
+                                        {{ trans('desks.Skip_And_Next') }} <i class="fa fa-fw fa-close"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
                                     <button v-if="!active_btn" @click.prevent="next()" type="button" class="btn btn-block btn-primary waves-effect waves-light">
-                                        Next <i class="fa fa-fw fa-arrow-right"></i>
+                                        {{ trans('desks.Next') }} <i class="fa fa-fw fa-arrow-right"></i>
                                     </button>
                                     <button v-if="active_btn" @click.prevent="call()" type="button" class="btn btn-block btn-warning waves-effect waves-light">
-                                        Call Again <i class="fa fa-fw fa-refresh"></i>
+                                        {{ trans('desks.Call_Again') }} <i class="fa fa-fw fa-refresh"></i>
                                     </button>
                                 </div>
                                 <div class="col-md-4">
                                     <button v-if="active_btn && done_status" type="button" class="confirm btn btn-block btn-success waves-effect waves-light">
-                                        Done <i class="fa fa-fw fa-check"></i>
+                                        {{ trans('desks.Done') }} <i class="fa fa-fw fa-check"></i>
                                     </button>
                                     <button v-if="active_btn && !done_status" type="button" class="confirm btn btn-block btn-success waves-effect waves-light">
-                                        Done And Next <i class="fa fa-fw fa-check"></i>
+                                        {{ trans('desks.Done_And_Next') }} <i class="fa fa-fw fa-check"></i>
                                     </button>
                                 </div>
                             </div>

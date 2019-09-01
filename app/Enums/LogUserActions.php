@@ -31,5 +31,8 @@ class LogUserActions
         'EditDesk' => 'Edit Desk',
         'UpdateDesk' => 'Update Desk',
         'DestroyDesk' => 'Destroy Desk',
+
+        // Queues
+        'IndexQueueHistory' => 'Index Queue History',
     ];
 }
