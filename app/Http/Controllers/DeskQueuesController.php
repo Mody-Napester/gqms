@@ -698,17 +698,36 @@ class DeskQueuesController extends Controller
     /**
      * All queue histories.
      */
-    public function deskQueueHistory()
+    public function deskQueueHistory(Request $request)
     {
         if (!User::hasAuthority('use.desk_queue_history')){
             return redirect('/');
         }
 
-        $data['desks'] = Desk::all();
+//        dd($request->all());
+
+        $data['desk_names'] = Desk::all();
         $data['floors'] = Floor::all();
         $data['users'] = User::all();
+        $data['areas'] = Area::all();
         $data['statuses'] = \App\QueueStatus::getQueueStatuses('desk');
-        $data['deskQueues'] = DeskQueue::all();
+//        $data['deskQueues'] = DeskQueue::all();
+
+        if (empty($request->all())){
+            $data['deskQueues'] = DeskQueue::all();
+        }else{
+            $data['deskQueues'] = new DeskQueue();
+
+            $data['deskQueues'] = ($request->has('queue_number') && $request->queue_number != null)? $data['deskQueues']->where('queue_number',$request->queue_number) : $data['deskQueues'];
+            $data['deskQueues'] = ($request->has('area'))? $data['deskQueues']->where('area_id', Area::getBy('uuid', $request->area)->id ) : $data['deskQueues'];
+            $data['deskQueues'] = ($request->has('floor'))? $data['deskQueues']->where('floor_id',Floor::getBy('uuid', $request->floor)->id ) : $data['deskQueues'];
+            $data['deskQueues'] = ($request->has('desk'))? $data['deskQueues']->where('desk_id',Desk::getBy('uuid', $request->desk)->id ) : $data['deskQueues'];
+            $data['deskQueues'] = ($request->has('status'))? $data['deskQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['deskQueues'];
+            $data['deskQueues'] = ($request->has('date') && $request->date != null)? $data['deskQueues']->where('created_at', 'like', $request->date . '%') : $data['deskQueues'];
+
+            $data['deskQueues'] = $data['deskQueues']->get();
+        }
+
         return view('desks.history', $data);
 
     }

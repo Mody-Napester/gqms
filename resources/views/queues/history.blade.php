@@ -102,25 +102,25 @@
                 {
                     extend: 'copyHtml5',
                     exportOptions: {
-                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
+                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
                     }
                 },
                 {
                     extend: 'excelHtml5',
                     exportOptions: {
-                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
+                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     exportOptions: {
-                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
+                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
                     }
                 },
                 {
                     extend: 'print',
                     exportOptions: {
-                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10]
+                        columns: [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
                     }
                 }
             ],

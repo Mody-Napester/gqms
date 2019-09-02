@@ -39,8 +39,8 @@ class QueuesController extends Controller
 
 //            dd($request->all());
 
-            $data['doctor']      = ($request->has('doctor')) ? $request->doctor : null;
-            $data['room']        = ($request->has('room')) ? $request->room : null;
+            $data['doctor']      = ($request->has('doctor')) ? Doctor::getBy('uuid', $request->doctor)->id : null;
+            $data['room']        = ($request->has('room')) ? Room::getBy('uuid', $request->room)->id : null;
             $data['reservation'] = ($request->has('reservation')) ? $request->reservation : null;
 
             if($request->has('date') && $request->date != ''){

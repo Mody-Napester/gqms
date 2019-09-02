@@ -549,7 +549,7 @@ class RoomQueuesController extends Controller
     /**
      * All queue histories.
      */
-    public function roomQueueHistory()
+    public function roomQueueHistory(Request $request)
     {
         if (!User::hasAuthority('use.doctor_queue_history')){
             return redirect('/');
@@ -560,6 +560,21 @@ class RoomQueuesController extends Controller
         $data['users'] = User::where('type', UserTypes::$typesReverse['Doctor'])->get();
         $data['statuses'] = \App\QueueStatus::getQueueStatuses('room');
         $data['roomQueues'] = RoomQueue::orderBy('created_at', 'DESC')->get();
+
+        if (empty($request->all())){
+            $data['roomQueues'] = RoomQueue::all();
+        }else{
+            $data['roomQueues'] = new RoomQueue();
+
+            $data['roomQueues'] = ($request->has('queue_number') && $request->queue_number != null)? $data['roomQueues']->where('queue_number',$request->queue_number) : $data['roomQueues'];
+            $data['roomQueues'] = ($request->has('floor'))? $data['roomQueues']->where('floor_id',Floor::getBy('uuid', $request->floor)->id ) : $data['roomQueues'];
+            $data['roomQueues'] = ($request->has('desk'))? $data['roomQueues']->where('desk_id',Desk::getBy('uuid', $request->desk)->id ) : $data['roomQueues'];
+            $data['roomQueues'] = ($request->has('status'))? $data['roomQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['roomQueues'];
+            $data['roomQueues'] = ($request->has('date') && $request->date != null)? $data['roomQueues']->where('created_at', 'like', $request->date . '%') : $data['roomQueues'];
+
+            $data['roomQueues'] = $data['roomQueues']->get();
+        }
+
         return view('rooms.history', $data);
 
     }

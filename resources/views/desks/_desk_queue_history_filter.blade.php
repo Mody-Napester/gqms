@@ -1,5 +1,5 @@
-<form method="get" action="" enctype="multipart/form-data">
-    {{ csrf_field() }}
+<form method="get" action="{{ route('desks.queues.deskQueueHistory') }}" enctype="multipart/form-data">
+    @csrf
 
     <div class="row">
         <div class="col-md-6">
@@ -8,12 +8,34 @@
                 <input type="text" id="queue_number" autocomplete="off" class="form-control" name="queue_number"/>
             </div>
         </div>
+        {{--<div class="col-md-6">--}}
+            {{--<div class="form-group">--}}
+                {{--<label>Users</label>--}}
+                {{--<select name="user" id="user" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">--}}
+                    {{--@foreach($users as $user)--}}
+                        {{--<option value="{{ $user->uuid }}">{{ $user->name }}</option>--}}
+                    {{--@endforeach--}}
+                {{--</select>--}}
+            {{--</div>--}}
+        {{--</div>--}}
         <div class="col-md-6">
             <div class="form-group">
-                <label>Users</label>
-                <select name="users" id="users" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
-                    @foreach($users as $user)
-                        <option value="{{ $user->uuid }}">{{ $user->name }}</option>
+                <label>Areas</label>
+                <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option selected disabled>Choose</option>
+                    @foreach($areas as $area)
+                        <option value="{{ $area->uuid }}">{{ translate($area, 'name') }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Desk</label>
+                <select name="desk" id="desk" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option selected disabled>Choose</option>
+                    @foreach($desk_names as $key => $desk_name)
+                        <option value="{{ $desk_name->uuid }}">{{ $desk_name->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -22,6 +44,7 @@
             <div class="form-group">
                 <label>Floor</label>
                 <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option selected disabled>Choose</option>
                     @foreach($floors as $key => $floor)
                         <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
                     @endforeach
@@ -32,6 +55,7 @@
             <div class="form-group">
                 <label>Queue Status</label>
                 <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option selected disabled>Choose</option>
                     @foreach($statuses as $status)
                         <option value="{{ $status->uuid }}">{{ $status->name_en }}</option>
                     @endforeach

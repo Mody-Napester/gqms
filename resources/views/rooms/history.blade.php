@@ -18,19 +18,19 @@
         </div>
     </div>
 
-    {{--<div class="row">--}}
-        {{--<div class="col-lg-12">--}}
-            {{--<div class="card-box">--}}
-                {{--<h4 class="m-t-0 header-title">Search and filter</h4>--}}
-                {{--<p class="text-muted font-14 m-b-30">--}}
-                    {{--Here you can filter and search on room queues.--}}
-                {{--</p>--}}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-box">
+                <h4 class="m-t-0 header-title">Search and filter</h4>
+                <p class="text-muted font-14 m-b-30">
+                    Here you can filter and search on room queues.
+                </p>
 
-                {{--@include('rooms._room_queue_history_filter')--}}
-            {{--</div>--}}
-        {{--</div>--}}
-        {{--<!-- end card-box -->--}}
-    {{--</div>--}}
+                @include('rooms._room_queue_history_filter')
+            </div>
+        </div>
+        <!-- end card-box -->
+    </div>
 
     <div class="row">
         <div class="col-lg-12">
@@ -40,7 +40,7 @@
                     Here you will find all the resources to make actions on them.
                 </p>
 
-                <table data-page-length='50' id="datatable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <table data-page-length='50' id="datatable-history-buttons" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th>Queue</th>
@@ -78,4 +78,40 @@
     </div>
     <!-- end row -->
 
+@endsection
+
+@section('scripts')
+    <script>
+        var tableDTUsers = $('#datatable-history-buttons').DataTable({
+            lengthChange: false,
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4]
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4]
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4]
+                    }
+                }
+            ],
+        });
+        tableDTUsers.buttons().container().appendTo('#datatable-history-buttons_wrapper .col-md-6:eq(0)');
+
+    </script>
 @endsection
