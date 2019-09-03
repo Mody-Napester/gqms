@@ -7,6 +7,10 @@
     <!-- Page-Title -->
     <div class="row">
         <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <a class="btn btn-danger waves-effect waves-light"
+                   href="{{ route('rooms.queues.roomQueueHistory') }}">Remove search <i class="fa fa-fw fa-close"></i></a>
+            </div>
 
             <h4 class="page-title">Room Queue History</h4>
             <ol class="breadcrumb">
@@ -45,6 +49,8 @@
                         <tr>
                             <th>Queue</th>
                             <th>Floor</th>
+                            <th>Doctor</th>
+                            <th>Speciality</th>
                             <th>Current Room</th>
                             <th>Current Status</th>
                             <th>Created at</th>
@@ -57,6 +63,8 @@
                             <tr>
                                 <td>{{ $roomQueue->queue_number }}</td>
                                 <td>{{ ($roomQueue->floor)? $roomQueue->floor->name_en : '-' }}</td>
+                                <td>{{ ($roomQueue->doctor)? $roomQueue->doctor->name_en : '-' }}</td>
+                                <td>{{ ($roomQueue->doctor)? $roomQueue->doctor->speciality->name_en : '-' }}</td>
                                 <td>{{ ($roomQueue->room)? $roomQueue->room->name_en : '' }}</td>
                                 <td>
                                     <span class="label {{ $roomQueue->queueStatus->class }}">
@@ -88,25 +96,25 @@
                 {
                     extend: 'copyHtml5',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
+                        columns: [0, 1, 2, 3, 4, 5, 6]
                     }
                 },
                 {
                     extend: 'excelHtml5',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
+                        columns: [0, 1, 2, 3, 4, 5, 6]
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
+                        columns: [0, 1, 2, 3, 4, 5, 6]
                     }
                 },
                 {
                     extend: 'print',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
+                        columns: [0, 1, 2, 3, 4, 5, 6]
                     }
                 }
             ],

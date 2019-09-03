@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="queue_number">Queue number</label>
-                <input type="text" id="queue_number" autocomplete="off" class="form-control" name="queue_number"/>
+                <input type="text" id="queue_number" autocomplete="off" class="form-control" name="queue_number" value="{{ request()->get('queue_number') }}"/>
             </div>
         </div>
         {{--<div class="col-md-6">--}}
@@ -24,7 +24,7 @@
                 <select name="area" id="area" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($areas as $area)
-                        <option value="{{ $area->uuid }}">{{ translate($area, 'name') }}</option>
+                        <option @if(request()->get('area') == $area->uuid) selected @endif value="{{ $area->uuid }}">{{ translate($area, 'name') }}</option>
                     @endforeach
                 </select>
             </div>
@@ -35,7 +35,7 @@
                 <select name="desk" id="desk" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($desk_names as $key => $desk_name)
-                        <option value="{{ $desk_name->uuid }}">{{ $desk_name->name_en }}</option>
+                        <option @if(request()->get('desk') == $desk_name->uuid) selected @endif value="{{ $desk_name->uuid }}">{{ $desk_name->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -46,7 +46,7 @@
                 <select name="floor" id="floor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($floors as $key => $floor)
-                        <option value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
+                        <option @if(request()->get('floor') == $floor->uuid) selected @endif value="{{ $floor->uuid }}">{{ $floor->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -57,7 +57,7 @@
                 <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($statuses as $status)
-                        <option value="{{ $status->uuid }}">{{ $status->name_en }}</option>
+                        <option @if(request()->get('status') == $status->uuid) selected @endif value="{{ $status->uuid }}">{{ $status->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -65,7 +65,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="" for="date">Date</label>
-                <input type="date" id="date" autocomplete="off" class="form-control" name="date"/>
+                <input type="date" id="date" autocomplete="off" class="form-control" name="date" value="{{ request()->get('date') }}"/>
             </div>
         </div>
     </div>

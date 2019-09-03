@@ -170,7 +170,7 @@
 
                                 <!-- item-->
                                 <a href="{{ route('users.showUserProfile') }}" class="dropdown-item notify-item">
-                                    <i class="md md-account-circle"></i> <span>Profile</span>
+                                    <i class="md md-account-circle"></i> <span>{{ trans('dashboard.Profile') }}</span>
                                 </a>
 
                                 {{--<!-- item-->--}}
@@ -187,7 +187,7 @@
                                 <a href="{{ route('logout') }}"
                                    class="dropdown-item notify-item"
                                    onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                    <i class="md md-settings-power"></i> <span>Logout</span>
+                                    <i class="md md-settings-power"></i> <span>{{ trans('dashboard.Logout') }}</span>
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -218,10 +218,10 @@
                                     {{--</button>--}}
                                     <button @click.prevent="availability()" type="button" id="availablity" class="btn @if(auth()->user()->available == 1) btn-danger @else btn-success @endif waves-effect waves-light">
                                         @if(auth()->user()->available == 1)
-                                            <span>Go not available</span>
+                                            <span>{{ trans('dashboard.Go_not_available') }}</span>
                                             <i class="fa fa-fw fa-lock"></i>
                                         @else
-                                            <span>Go available</span>
+                                            <span>{{ trans('dashboard.Go_available') }}</span>
                                             <i class="fa fa-fw fa-unlock"></i>
                                         @endif
                                     </button>
@@ -256,7 +256,7 @@
                 </div> <!-- content -->
 
                 <footer class="footer text-right">
-                    {{ config('app.name') }} &copy; {{ date('Y') }}. All rights reserved.
+                    {{ config('app.name') }} &copy; {{ date('Y') }}. {{ trans('dashboard.All_rights_reserved') }}.
                 </footer>
 
             </div>

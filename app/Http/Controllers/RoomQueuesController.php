@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Doctor;
 use App\Enums\UserTypes;
 use App\Events\NextRoomQueue;
 use App\Floor;
@@ -557,6 +558,7 @@ class RoomQueuesController extends Controller
 
         $data['rooms'] = Room::all();
         $data['floors'] = Floor::all();
+        $data['doctors'] = Doctor::all();
         $data['users'] = User::where('type', UserTypes::$typesReverse['Doctor'])->get();
         $data['statuses'] = \App\QueueStatus::getQueueStatuses('room');
         $data['roomQueues'] = RoomQueue::orderBy('created_at', 'DESC')->get();
@@ -567,8 +569,9 @@ class RoomQueuesController extends Controller
             $data['roomQueues'] = new RoomQueue();
 
             $data['roomQueues'] = ($request->has('queue_number') && $request->queue_number != null)? $data['roomQueues']->where('queue_number',$request->queue_number) : $data['roomQueues'];
+            $data['roomQueues'] = ($request->has('reservation') && $request->reservation != null)? $data['roomQueues']->where('reservation_source_serial',$request->reservation) : $data['roomQueues'];
             $data['roomQueues'] = ($request->has('floor'))? $data['roomQueues']->where('floor_id',Floor::getBy('uuid', $request->floor)->id ) : $data['roomQueues'];
-            $data['roomQueues'] = ($request->has('desk'))? $data['roomQueues']->where('desk_id',Desk::getBy('uuid', $request->desk)->id ) : $data['roomQueues'];
+            $data['roomQueues'] = ($request->has('doctor'))? $data['roomQueues']->where('doctor_id',Doctor::getBy('uuid', $request->doctor)->source_doctor_id ) : $data['roomQueues'];
             $data['roomQueues'] = ($request->has('status'))? $data['roomQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['roomQueues'];
             $data['roomQueues'] = ($request->has('date') && $request->date != null)? $data['roomQueues']->where('created_at', 'like', $request->date . '%') : $data['roomQueues'];
 

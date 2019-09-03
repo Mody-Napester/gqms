@@ -7,6 +7,10 @@
     <!-- Page-Title -->
     <div class="row">
         <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <a class="btn btn-danger waves-effect waves-light"
+                   href="{{ route('queues.queuesHistory') }}">Remove search <i class="fa fa-fw fa-close"></i></a>
+            </div>
 
             <h4 class="page-title">Queues History</h4>
             <ol class="breadcrumb">

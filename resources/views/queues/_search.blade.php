@@ -18,7 +18,7 @@
                 <select name="doctor" id="doctor" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($doctors as $key => $doctor)
-                        <option value="{{ $doctor->uuid }}">{{ $doctor->name_en }}</option>
+                        <option @if(request()->get('doctor') == $doctor->uuid) selected @endif value="{{ $doctor->uuid }}">{{ $doctor->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -29,7 +29,7 @@
                 <select name="desk" id="desk" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($desks as $key => $desk)
-                        <option value="{{ $desk->uuid }}">{{ $desk->name_en }}</option>
+                        <option @if(request()->get('desk') == $desk->uuid) selected @endif value="{{ $desk->uuid }}">{{ $desk->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -40,7 +40,7 @@
                 <select name="room" id="room" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($rooms as $key => $room)
-                        <option value="{{ $room->uuid }}">{{ $room->name_en }}</option>
+                        <option @if(request()->get('room') == $room->uuid) selected @endif value="{{ $room->uuid }}">{{ $room->name_en }}</option>
                     @endforeach
                 </select>
             </div>

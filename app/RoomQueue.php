@@ -359,6 +359,11 @@ class RoomQueue extends Model
         return $this->belongsTo('App\Floor');
     }
 
+    // Doctor Relation
+    public function doctor(){
+        return $this->belongsTo('App\Doctor', 'doctor_id', 'source_doctor_id');
+    }
+
     // Floor Relation
     public function room(){
         return $this->belongsTo('App\Room');

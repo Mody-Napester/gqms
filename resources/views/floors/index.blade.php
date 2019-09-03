@@ -8,10 +8,10 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="btn-group pull-right m-t-15">
-                <a href="#goToAll" class="btn btn-default waves-effect waves-light">Show All <i class="fa fa-fw fa-arrow-down"></i></a>
+                <a href="#goToAll" class="btn btn-default waves-effect waves-light">{{ trans('floors.Show_All') }} <i class="fa fa-fw fa-arrow-down"></i></a>
             </div>
 
-            <h4 class="page-title">Floors</h4>
+            <h4 class="page-title">{{ trans('floors.Floors') }}</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
                 <li class="breadcrumb-item"><a href="#">{{ trans('floors.Floors') }}</a></li>
@@ -33,7 +33,7 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="searchResource">
-                    <h4 class="header-title m-t-0">Search</h4>
+                    <h4 class="header-title m-t-0">{{ trans('floors.Search') }}</h4>
                     <p class="text-muted font-14 m-b-20">
                         Search on resource from here.
                     </p>
@@ -42,7 +42,7 @@
 
                 </div>
                 <div class="tab-pane" id="createResource">
-                    <h4 class="m-t-0 header-title">Create new Floor</h4>
+                    <h4 class="m-t-0 header-title">{{ trans('floors.Create_new_Floor') }}</h4>
                     <p class="text-muted font-14 m-b-30">
                         Create new resource from here.
                     </p>
@@ -57,7 +57,7 @@
     <div class="row" id="goToAll">
         <div class="col-lg-12">
             <div class="card-box table-responsive">
-                <h4 class="m-t-0 header-title">All Floors</h4>
+                <h4 class="m-t-0 header-title">{{ trans('floors.All_Floors') }}</h4>
                 <p class="text-muted font-14 m-b-30">
                     Here you will find all the resources to make actions on them.
                 </p>
