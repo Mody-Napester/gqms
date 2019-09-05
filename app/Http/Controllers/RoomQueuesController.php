@@ -564,7 +564,7 @@ class RoomQueuesController extends Controller
         $data['roomQueues'] = RoomQueue::orderBy('created_at', 'DESC')->get();
 
         if (empty($request->all())){
-            $data['roomQueues'] = RoomQueue::all();
+            $data['roomQueues'] = RoomQueue::paginate(20);
         }else{
             $data['roomQueues'] = new RoomQueue();
 
@@ -575,7 +575,7 @@ class RoomQueuesController extends Controller
             $data['roomQueues'] = ($request->has('status'))? $data['roomQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['roomQueues'];
             $data['roomQueues'] = ($request->has('date') && $request->date != null)? $data['roomQueues']->where('created_at', 'like', $request->date . '%') : $data['roomQueues'];
 
-            $data['roomQueues'] = $data['roomQueues']->get();
+            $data['roomQueues'] = $data['roomQueues']->paginate(20);
         }
 
         return view('rooms.history', $data);

@@ -81,6 +81,8 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                {{ $roomQueues->links() }}
             </div>
         </div>
     </div>

@@ -9,6 +9,7 @@ use App\RoomQueue;
 use App\RoomQueueStatus;
 use App\User;
 use Validator;
+use DB;
 use Illuminate\Http\Request;
 
 class RoomsController extends Controller

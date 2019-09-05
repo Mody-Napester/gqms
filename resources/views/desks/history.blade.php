@@ -77,6 +77,8 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                {{ $deskQueues->links() }}
             </div>
         </div>
     </div>

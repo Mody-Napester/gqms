@@ -1,6 +1,6 @@
 @extends('_layouts.dashboard')
 
-@section('title') Dashboard @endsection
+@section('title') {{ trans('dashboard.Dashboard') }} @endsection
 
 @section('content')
 
@@ -8,14 +8,14 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="btn-group pull-right m-t-15">
-                <a class="btn btn-danger waves-effect waves-light" href="{{ route('dashboard.index') }}">Get Today
+                <a class="btn btn-danger waves-effect waves-light" href="{{ route('dashboard.index') }}">{{ trans('dashboard.Get_Today') }}
                     Statistics <i class="fa fa-fw fa-bar-chart"></i></a>
             </div>
 
-            <h4 class="page-title">Dashboard</h4>
+            <h4 class="page-title">{{ trans('dashboard.Dashboard') }}</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item active">{{ trans('dashboard.Dashboard') }}</li>
             </ol>
         </div>
     </div>
@@ -25,7 +25,7 @@
             <div class="portlet">
                 <div class="portlet-heading bg-info">
                     <h3 class="portlet-title">
-                        <i class="ti-search"></i> Search & filter
+                        <i class="ti-search"></i> {{ trans('dashboard.Search_and_filter') }}
                     </h3>
 
                     <div class="portlet-widgets">

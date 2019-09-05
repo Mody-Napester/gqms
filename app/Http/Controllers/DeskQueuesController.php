@@ -714,7 +714,7 @@ class DeskQueuesController extends Controller
 //        $data['deskQueues'] = DeskQueue::all();
 
         if (empty($request->all())){
-            $data['deskQueues'] = DeskQueue::all();
+            $data['deskQueues'] = DeskQueue::paginate(20);
         }else{
             $data['deskQueues'] = new DeskQueue();
 
@@ -725,7 +725,7 @@ class DeskQueuesController extends Controller
             $data['deskQueues'] = ($request->has('status'))? $data['deskQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['deskQueues'];
             $data['deskQueues'] = ($request->has('date') && $request->date != null)? $data['deskQueues']->where('created_at', 'like', $request->date . '%') : $data['deskQueues'];
 
-            $data['deskQueues'] = $data['deskQueues']->get();
+            $data['deskQueues'] = $data['deskQueues']->paginate(20);
         }
 
         return view('desks.history', $data);

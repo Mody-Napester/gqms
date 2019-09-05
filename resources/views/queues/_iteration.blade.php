@@ -64,6 +64,15 @@
         @endif
     </td>
 
+    <!-- Patient in -->
+    <td>
+        @if(isset($roomQueue))
+            {{ getQueuePatientActionTime($roomQueue, 'room', 'in') }}
+        @else
+            -
+        @endif
+    </td>
+
     <!-- Done Time -->
     <td>
         {{ getQueuePatientActionTime($deskQueue, 'desk', 'done') }}

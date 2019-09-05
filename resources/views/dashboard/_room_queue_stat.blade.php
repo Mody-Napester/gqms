@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <h4 class="m-t-20 m-b-20">Doctor Queue <span class="text-danger">({{ $room['total'] }})</span></h4>
+        <h4 class="m-t-20 m-b-20">{{ trans('dashboard.Waiting') }}Doctor Queue <span class="text-danger">({{ $room['total'] }})</span></h4>
     </div>
 
     <div class="col-md-6 col-lg-6 col-xl-6">
@@ -10,7 +10,7 @@
             </div>
             <div class="text-right">
                 <h3 class="text-dark"><b class="counter">{{ $room['waiting'] }}</b></h3>
-                <p class="text-muted mb-0">Waiting</p>
+                <p class="text-muted mb-0">{{ trans('dashboard.Waiting') }}</p>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -23,7 +23,7 @@
             </div>
             <div class="text-right">
                 <h3 class="text-dark"><b class="counter">{{ $room['called'] }}</b></h3>
-                <p class="text-muted mb-0">Called</p>
+                <p class="text-muted mb-0">{{ trans('dashboard.Called') }}</p>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -36,7 +36,7 @@
             </div>
             <div class="text-right">
                 <h3 class="text-dark"><b class="counter">{{ $room['skipped'] }}</b></h3>
-                <p class="text-muted mb-0">Skipped</p>
+                <p class="text-muted mb-0">{{ trans('dashboard.Skipped') }}</p>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -49,7 +49,7 @@
             </div>
             <div class="text-right">
                 <h3 class="text-dark"><b class="counter">{{ $room['patient_in'] }}</b></h3>
-                <p class="text-muted mb-0">Patient in</p>
+                <p class="text-muted mb-0">{{ trans('dashboard.Patient_in') }}</p>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="text-right">
                 <h3 class="text-dark"><b class="counter">{{ $room['patient_out'] }}</b></h3>
-                <p class="text-muted mb-0">Patient out</p>
+                <p class="text-muted mb-0">{{ trans('dashboard.Patient_out') }}</p>
             </div>
             <div class="clearfix"></div>
         </div>

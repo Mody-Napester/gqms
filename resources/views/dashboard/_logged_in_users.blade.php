@@ -1,13 +1,13 @@
-<h4 class="m-t-20 m-b-20">Logged in Users <span class="text-info">({{ count($loggedInUsers) }})</span></h4>
+<h4 class="m-t-20 m-b-20">{{ trans('dashboard.Logged_in_Users') }} <span class="text-info">({{ count($loggedInUsers) }})</span></h4>
 
 <div class="card-box p-2">
     <table class="table table-striped table-bordered table-sm">
         <thead>
         <tr>
-            <td>User</td>
-            <td>From</td>
-            <td>Available</td>
-            <td>Type</td>
+            <td>{{ trans('dashboard.User') }}</td>
+            <td>{{ trans('dashboard.From') }}</td>
+            <td>{{ trans('dashboard.Available') }}</td>
+            <td>{{ trans('dashboard.Type') }}</td>
         </tr>
         </thead>
 
@@ -24,16 +24,16 @@
                 </td>
                 <td>
                     @if($loggedInUser->available == 1)
-                        <span class="badge badge-success">Yes</span>
+                        <span class="badge badge-success">{{ trans('dashboard.Yes') }}</span>
                     @else
-                        <span class="badge badge-danger">No</span>
+                        <span class="badge badge-danger">{{ trans('dashboard.No') }}</span>
                     @endif
                 </td>
                 <td>
                     @if($loggedInUser->type == 1)
-                        <span class="badge badge-info">Doctor</span>
+                        <span class="badge badge-info">{{ trans('dashboard.Doctor') }}</span>
                     @else
-                        <span class="badge badge-warning">Desk</span>
+                        <span class="badge badge-warning">{{ trans('dashboard.Desk') }}</span>
                     @endif
 {{--                    {{ \App\Enums\UserTypes::$types[$loggedInUser->type] }}--}}
                 </td>

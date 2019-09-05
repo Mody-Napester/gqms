@@ -282,6 +282,9 @@ function getQueuePatientActionTime($queueOpj, $toType, $timeType){
         if ($timeType == 'call'){
             $time = $queueOpj->roomQueueStatusHistories()->where('queue_status_id', config('vars.room_queue_status.called'))->first();
         }
+        elseif ($timeType == 'in'){
+            $time = $queueOpj->roomQueueStatusHistories()->where('queue_status_id', config('vars.room_queue_status.patient_in'))->first();
+        }
         elseif ($timeType == 'done'){
             $time = $queueOpj->roomQueueStatusHistories()->where('queue_status_id', config('vars.room_queue_status.patient_out'))->first();
         }

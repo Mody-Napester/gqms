@@ -23,7 +23,7 @@
                     Here you will find all the login users and desks.
                 </p>
 
-                <table id="datatable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <table id="datatable-history-buttons" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th>User</th>
@@ -52,4 +52,40 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    <script>
+        var tableDTUsers = $('#datatable-history-buttons').DataTable({
+            lengthChange: false,
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                    }
+                }
+            ],
+        });
+        tableDTUsers.buttons().container().appendTo('#datatable-history-buttons_wrapper .col-md-6:eq(0)');
+
+    </script>
 @endsection
