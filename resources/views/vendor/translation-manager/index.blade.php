@@ -17,7 +17,7 @@
 
 @section('content')
 
-    {{--<link rel="stylesheet" href="{{ url('assets/translation/bootstrap.min.css') }}">--}}
+    <link rel="stylesheet" href="{{ url('assets/translation/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url('assets/translation/bootstrap-editable.css') }}"/>
 
     <script src="{{ url('assets/translation/jquery-1.11.0.min.js') }}"></script>
