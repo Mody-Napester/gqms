@@ -81,8 +81,11 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
 
-                {{ $roomQueues->links() }}
+            <div class="clearfix">
+                <div class="float-left">Pages numbers</div>
+                <div class="float-right">{{ $roomQueues->links() }}</div>
             </div>
         </div>
     </div>

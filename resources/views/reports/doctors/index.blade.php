@@ -2,6 +2,14 @@
 
 @section('title') Doctors Reports @endsection
 
+@section('post_css')
+    <style>
+        #datatable-history-buttons_wrapper{
+            padding: 0;
+        }
+    </style>
+@endsection
+
 @section('content')
 
     <!-- Page-Title -->
@@ -15,6 +23,20 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-box">
+                <h4 class="m-t-0 header-title">Search and filter</h4>
+                <p class="text-muted font-14 m-b-30">
+                    Here you can filter and search.
+                </p>
+
+                @include('reports.doctors._search')
+            </div>
+        </div>
+        <!-- end card-box -->
+    </div>
+
     <div class="row" id="goToAll">
         <div class="col-lg-12">
             <div class="card-box table-responsive">
@@ -23,7 +45,7 @@
                     Here you will find all the login users and rooms.
                 </p>
 
-                <table id="datatable-history-buttons" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <table data-page-length='50' id="datatable-history-buttons" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th>User</th>
@@ -40,16 +62,21 @@
                     @foreach($users as $user)
                         <tr>
                             <td>{{ $user->name }}</td>
-                            <td>{{ $user->room->name_en }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.called')) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped')) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in')) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out')) }}</td>
+                            <td>{{ ($user->room)? $user->room->name_en : '-' }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), 1) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), 1) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), 1) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), 1) }}</td>
                             <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+            </div>
+
+            <div class="clearfix">
+                <div class="float-left">Pages numbers</div>
+                <div class="float-right">{{ $users->links() }}</div>
             </div>
         </div>
     </div>

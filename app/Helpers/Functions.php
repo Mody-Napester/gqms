@@ -26,8 +26,8 @@ function storeLogUserLogin($user = null){
 }
 
 // Store Log User Login
-function getDeskReport($user, $status){
-    $report = \App\DeskQueueStatus::getDeskQueues($user->id, $status);
+function getDeskReport($user, $status, $all = null, $date = null){
+    $report = \App\DeskQueueStatus::getDeskQueues($user->id, $status, $all, $date);
     return $report;
 }
 
@@ -44,28 +44,41 @@ function translate($resource, $field){
 
 // Store Log User Login
 function getCurrentDeskReport($user){
-    $report = \App\DeskQueue::where('desk_id', $user->desk->id)
-        ->where('status', config('vars.desk_queue_status.called'))
-        ->where('created_at', 'like', "%".date('Y-m-d')."%")
-        ->orderBy('id', 'DESC')
-        ->first();
+
+    $desk = ($user->desk)? $user->desk : null;
+
+    if($desk){
+        $report = \App\DeskQueue::where('desk_id', $desk->id)
+            ->where('status', config('vars.desk_queue_status.called'))
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->orderBy('id', 'DESC')
+            ->first();
+    }else{
+        $report = null;
+    }
 
     return $report;
 }
 
 // Store Log User Login
-function getDoctorReport($user, $status){
-    $report = \App\RoomQueueStatus::getRoomQueues($user->id, $status);
+function getDoctorReport($user, $status, $all = null, $date = null){
+    $report = \App\RoomQueueStatus::getRoomQueues($user->id, $status, $all, $date);
     return $report;
 }
 
 // Store Log User Login
 function getCurrentDoctorReport($user){
-    $report = \App\RoomQueue::where('room_id', $user->room->id)
-        ->where('status', config('vars.room_queue_status.called'))
-        ->where('created_at', 'like', "%".date('Y-m-d')."%")
-        ->orderBy('id', 'DESC')
-        ->first();
+    $room = ($user->room)? $user->room : null;
+
+    if($room){
+        $report = \App\RoomQueue::where('room_id', $user->room->id)
+            ->where('status', config('vars.room_queue_status.called'))
+            ->where('created_at', 'like', "%".date('Y-m-d')."%")
+            ->orderBy('id', 'DESC')
+            ->first();
+    }else{
+        $report = null;
+    }
 
     return $report;
 }

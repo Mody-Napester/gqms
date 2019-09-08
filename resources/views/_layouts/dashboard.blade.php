@@ -46,6 +46,8 @@
             </style>
         @endif
 
+        @yield('post_css')
+
     </head>
 
     <body class="fixed-left">

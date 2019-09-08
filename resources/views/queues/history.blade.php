@@ -2,6 +2,14 @@
 
 @section('title') Queues History @endsection
 
+@section('post_css')
+    <style>
+        #datatable-history-buttons_wrapper{
+            padding: 0;
+        }
+    </style>
+@endsection
+
 @section('content')
 
     <!-- Page-Title -->
@@ -90,8 +98,11 @@
                         {!! $queuesListsView !!}
                     </tbody>
                 </table>
+            </div>
 
-                {{ $deskQueues->links() }}
+            <div class="clearfix">
+                <div class="float-left">Pages numbers</div>
+                <div class="float-right">{{ $deskQueues->links() }}</div>
             </div>
         </div>
     </div>
