@@ -575,7 +575,7 @@ class RoomQueuesController extends Controller
             $data['roomQueues'] = ($request->has('status'))? $data['roomQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['roomQueues'];
 //            $data['roomQueues'] = ($request->has('date') && $request->date != null)? $data['roomQueues']->where('created_at', 'like', $request->date . '%') : $data['roomQueues'];
 
-            if($request->has('date_from') && $request->date_from != null || $request->has('date_from') && $request->date_from != null){
+            if($request->has('date_from') && $request->date_from != null || $request->has('date_to') && $request->date_to != null){
                 $data['roomQueues'] = $data['roomQueues']->whereBetween('created_at', [$request->date_from, $request->date_to]);
             }
 

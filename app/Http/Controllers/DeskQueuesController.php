@@ -15,6 +15,7 @@ use App\Room;
 use App\RoomQueue;
 use App\Screen;
 use App\User;
+use DB;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -704,7 +705,7 @@ class DeskQueuesController extends Controller
             return redirect('/');
         }
 
-//        dd($request->all());
+//        DB::enableQueryLog();
 
         $data['desk_names'] = Desk::all();
         $data['floors'] = Floor::all();
@@ -716,6 +717,8 @@ class DeskQueuesController extends Controller
         if (empty($request->all())){
             $data['deskQueues'] = DeskQueue::paginate(20);
         }else{
+//            dd($request->all());
+
             $data['deskQueues'] = new DeskQueue();
 
             $data['deskQueues'] = ($request->has('queue_number') && $request->queue_number != null)? $data['deskQueues']->where('queue_number',$request->queue_number) : $data['deskQueues'];
@@ -725,9 +728,11 @@ class DeskQueuesController extends Controller
             $data['deskQueues'] = ($request->has('status'))? $data['deskQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['deskQueues'];
 //            $data['deskQueues'] = ($request->has('date') && $request->date != null)? $data['deskQueues']->where('created_at', 'like', $request->date . '%') : $data['deskQueues'];
 
-            if($request->has('date_from') && $request->date_from != null || $request->has('date_from') && $request->date_from != null){
+            if($request->has('date_from') && $request->date_from != null || $request->has('date_to') && $request->date_to != null){
                 $data['deskQueues'] = $data['deskQueues']->whereBetween('created_at', [$request->date_from, $request->date_to]);
             }
+
+//            dd(DB::getQueryLog());
 
             $data['deskQueues'] = $data['deskQueues']->get();
         }

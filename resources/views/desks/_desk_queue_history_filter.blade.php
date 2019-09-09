@@ -77,10 +77,8 @@
     </div>
 
     <div class="form-group m-b-0">
-        <div>
-            <button type="submit" class="btn btn-success waves-effect waves-light">
-                Update
-            </button>
-        </div>
+        <button type="submit" class="btn btn-success waves-effect waves-light">
+            <i class="fa fa-fw fa-search"></i> Search
+        </button>
     </div>
 </form>
