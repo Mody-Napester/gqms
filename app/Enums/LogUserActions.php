@@ -34,5 +34,9 @@ class LogUserActions
 
         // Queues
         'IndexQueueHistory' => 'Index Queue History',
+
+        // Reports
+        'IndexDeskReport' => 'Index Desk Report',
+        'IndexDoctorReport' => 'Index Doctor Report',
     ];
 }

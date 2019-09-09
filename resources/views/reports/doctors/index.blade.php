@@ -63,10 +63,10 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ ($user->room)? $user->room->name_en : '-' }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), 1) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), 1) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), 1) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), 1) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), 1, $date) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), 1, $date) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), 1, $date) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), 1, $date) }}</td>
                             <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
                         </tr>
                     @endforeach
@@ -74,10 +74,12 @@
                 </table>
             </div>
 
-            <div class="clearfix">
-                <div class="float-left">Pages numbers</div>
-                <div class="float-right">{{ $users->links() }}</div>
-            </div>
+            @if ($users instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                <div class="clearfix">
+                    <div class="float-left">Pages numbers</div>
+                    <div class="float-right">{{ $users->links() }}</div>
+                </div>
+            @endif
         </div>
     </div>
 

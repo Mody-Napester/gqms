@@ -14,21 +14,26 @@ class ReportsController extends Controller
 //        $data['users'] = User::where('desk_id', '<>', '')->get();
 
         $data['allUsers'] = User::where('type', UserTypes::$typesReverse['Desk'])->groupBy('name')->get();
+        $data['date'] = null;
 
         if (empty($request->all())){
             $data['users'] = User::where('type', UserTypes::$typesReverse['Desk'])->groupBy('name')->paginate(50);
         }else{
-            $data['floors'] = new Floor();
+            $data['users'] = new User();
 
-            $data['floors'] = ($request->has('name_ar'))? $data['floors']->where('name_ar',$request->get('name_ar')) : $data['floors'];
-            $data['floors'] = ($request->has('name_en'))? $data['floors']->where('name_en',$request->get('name_en')) : $data['floors'];
-            $data['floors'] = ($request->has('status'))? $data['floors']->where('status',$request->get('status')) : $data['floors'];
+            $data['users'] = $data['users']->where('type', UserTypes::$typesReverse['Desk']);
 
-            $data['floors'] = $data['floors']->get();
+            $data['users'] = ($request->has('user'))? $data['users']->where('id', User::getBy('uuid', $request->get('user'))->id ) : $data['users'];
+
+//            $data['users'] = ($request->has('date') && $request->date != null)? $data['users']->where('created_at', 'like', $request->date . '%') : $data['users'];
+
+            $data['date'] = ($request->has('date') && $request->date != null)? $request->date : null;
+
+            $data['users'] = $data['users']->groupBy('name')->get();
         }
 
         // Store User Action Log
-        storeLogUserAction(\App\Enums\LogUserActions::$name['IndexDeskReport'], 'Get',route('floors.index'));
+        storeLogUserAction(\App\Enums\LogUserActions::$name['IndexDeskReport'], 'Get',route('reports.desks.index'));
 
         return view('reports.desks.index', $data);
     }
@@ -39,7 +44,27 @@ class ReportsController extends Controller
 //        $data['users'] = User::where('room_id', '<>', '')->get();
 
         $data['allUsers'] = User::where('type', UserTypes::$typesReverse['Doctor'])->groupBy('name')->get();
-        $data['users'] = User::where('type', UserTypes::$typesReverse['Doctor'])->groupBy('name')->paginate(50);
+        $data['date'] = null;
+
+        if (empty($request->all())){
+            $data['users'] = User::where('type', UserTypes::$typesReverse['Doctor'])->groupBy('name')->paginate(50);
+        }else{
+            $data['users'] = new User();
+
+            $data['users'] = $data['users']->where('type', UserTypes::$typesReverse['Doctor']);
+
+            $data['users'] = ($request->has('user'))? $data['users']->where('id', User::getBy('uuid', $request->get('user'))->id ) : $data['users'];
+
+//            $data['users'] = ($request->has('date') && $request->date != null)? $data['users']->where('created_at', 'like', $request->date . '%') : $data['users'];
+
+            $data['date'] = ($request->has('date') && $request->date != null)? $request->date : null;
+
+            $data['users'] = $data['users']->groupBy('name')->get();
+        }
+
+
+        // Store User Action Log
+        storeLogUserAction(\App\Enums\LogUserActions::$name['IndexDoctorReport'], 'Get',route('reports.doctors.index'));
 
         return view('reports.doctors.index', $data);
     }

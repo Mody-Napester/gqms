@@ -8,7 +8,7 @@
                 <select name="user" id="user" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
                     @foreach($allUsers as $user)
-                        <option value="{{ $user->uuid }}">{{ $user->name }}</option>
+                        <option @if(request()->get('user') == $user->uuid) selected @endif value="{{ $user->uuid }}">{{ $user->name }}</option>
                     @endforeach
                 </select>
             </div>

@@ -44,7 +44,9 @@ class QueuesController extends Controller
             $data['reservation'] = ($request->has('reservation')) ? $request->reservation : null;
 
             if($request->has('date') && $request->date != ''){
-                $data['deskQueues'] = $data['deskQueues']->where('created_at', 'like', $request->date . '%');
+//                $data['deskQueues'] = $data['deskQueues']->where('created_at', 'like', $request->date . '%');
+                $data['deskQueues'] = $data['deskQueues']->whereBetween('created_at', [$request->date_from, $request->date_to]);
+
             }
 
             if($request->has('desk')){
@@ -52,7 +54,7 @@ class QueuesController extends Controller
                 $data['deskQueues'] = $data['deskQueues']->where('desk_id',$data['desk']->id);
             }
 
-            $data['deskQueues'] = $data['deskQueues']->paginate(20);
+            $data['deskQueues'] = $data['deskQueues']->get();
         }
 
         // Store User Action Log

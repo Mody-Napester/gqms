@@ -723,9 +723,13 @@ class DeskQueuesController extends Controller
             $data['deskQueues'] = ($request->has('floor'))? $data['deskQueues']->where('floor_id',Floor::getBy('uuid', $request->floor)->id ) : $data['deskQueues'];
             $data['deskQueues'] = ($request->has('desk'))? $data['deskQueues']->where('desk_id',Desk::getBy('uuid', $request->desk)->id ) : $data['deskQueues'];
             $data['deskQueues'] = ($request->has('status'))? $data['deskQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['deskQueues'];
-            $data['deskQueues'] = ($request->has('date') && $request->date != null)? $data['deskQueues']->where('created_at', 'like', $request->date . '%') : $data['deskQueues'];
+//            $data['deskQueues'] = ($request->has('date') && $request->date != null)? $data['deskQueues']->where('created_at', 'like', $request->date . '%') : $data['deskQueues'];
 
-            $data['deskQueues'] = $data['deskQueues']->paginate(20);
+            if($request->has('date_from') && $request->date_from != null || $request->has('date_from') && $request->date_from != null){
+                $data['deskQueues'] = $data['deskQueues']->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            }
+
+            $data['deskQueues'] = $data['deskQueues']->get();
         }
 
         return view('desks.history', $data);

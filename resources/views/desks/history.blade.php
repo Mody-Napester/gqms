@@ -79,10 +79,12 @@
                 </table>
             </div>
 
-            <div class="clearfix">
-                <div class="float-left">Pages numbers</div>
-                <div class="float-right">{{ $deskQueues->links() }}</div>
-            </div>
+            @if ($deskQueues instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                <div class="clearfix">
+                    <div class="float-left">Pages numbers</div>
+                    <div class="float-right">{{ $deskQueues->links() }}</div>
+                </div>
+            @endif
         </div>
     </div>
     <!-- end row -->

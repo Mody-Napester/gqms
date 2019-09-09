@@ -46,14 +46,14 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card-box table-responsive">
+            <div class="card-box ">
                 <h4 class="m-t-0 header-title">All Queues History</h4>
                 <p class="text-muted font-14 m-b-30">
                     Here you will find all the Queues History.
                 </p>
 
                 <table data-page-length='50' id="datatable-history-buttons"
-                       class="text-center vertical-middle table table-striped table-bordered table-sm" cellspacing="0"
+                       class="text-center vertical-middle table table-striped table-bordered table-sm table-responsive" cellspacing="0"
                        width="100%">
                     <thead style="background-color: #dddddd;">
                     <tr>
@@ -98,12 +98,17 @@
                         {!! $queuesListsView !!}
                     </tbody>
                 </table>
+
+                <br>
+                
+                @if ($deskQueues instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    <div class="clearfix">
+                        <div class="float-left">Pages numbers</div>
+                        <div class="float-right">{{ $deskQueues->links() }}</div>
+                    </div>
+                @endif
             </div>
 
-            <div class="clearfix">
-                <div class="float-left">Pages numbers</div>
-                <div class="float-right">{{ $deskQueues->links() }}</div>
-            </div>
         </div>
     </div>
     <!-- end row -->

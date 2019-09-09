@@ -62,9 +62,9 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ ($user->desk)? $user->desk->name_en : '-' }}</td>
-                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.called'), 1) }}</td>
-                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.skipped'), 1) }}</td>
-                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.done'), 1) }}</td>
+                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.called'), 1, $date) }}</td>
+                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.skipped'), 1, $date) }}</td>
+                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.done'), 1, $date) }}</td>
                             <td>{{ (getCurrentDeskReport($user))? 'Serving queue ' . getCurrentDeskReport($user)->queue_number : '-' }}</td>
                         </tr>
                     @endforeach
@@ -72,10 +72,12 @@
                 </table>
             </div>
 
-            <div class="clearfix">
-                <div class="float-left">Pages numbers</div>
-                <div class="float-right">{{ $users->links() }}</div>
-            </div>
+            @if ($users instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                <div class="clearfix">
+                    <div class="float-left">Pages numbers</div>
+                    <div class="float-right">{{ $users->links() }}</div>
+                </div>
+            @endif
         </div>
     </div>
 

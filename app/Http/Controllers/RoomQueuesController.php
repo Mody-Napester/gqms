@@ -573,9 +573,13 @@ class RoomQueuesController extends Controller
             $data['roomQueues'] = ($request->has('floor'))? $data['roomQueues']->where('floor_id',Floor::getBy('uuid', $request->floor)->id ) : $data['roomQueues'];
             $data['roomQueues'] = ($request->has('doctor'))? $data['roomQueues']->where('doctor_id',Doctor::getBy('uuid', $request->doctor)->source_doctor_id ) : $data['roomQueues'];
             $data['roomQueues'] = ($request->has('status'))? $data['roomQueues']->where('status', \App\QueueStatus::where('uuid', $request->status)->first()->id) : $data['roomQueues'];
-            $data['roomQueues'] = ($request->has('date') && $request->date != null)? $data['roomQueues']->where('created_at', 'like', $request->date . '%') : $data['roomQueues'];
+//            $data['roomQueues'] = ($request->has('date') && $request->date != null)? $data['roomQueues']->where('created_at', 'like', $request->date . '%') : $data['roomQueues'];
 
-            $data['roomQueues'] = $data['roomQueues']->paginate(20);
+            if($request->has('date_from') && $request->date_from != null || $request->has('date_from') && $request->date_from != null){
+                $data['roomQueues'] = $data['roomQueues']->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            }
+
+            $data['roomQueues'] = $data['roomQueues']->get();
         }
 
         return view('rooms.history', $data);
