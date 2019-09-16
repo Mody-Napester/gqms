@@ -139,8 +139,8 @@
                             </td>
                             <td>{!! ($user->createdBy)? $user->createdBy->name : '<span class="badge badge-danger">SYSTEM</span>' !!}</td>
                             <td>{!! ($user->updatedBy)? $user->updatedBy->name : '<span class="badge badge-danger">SYSTEM</span>' !!}</td>
-                            <td>{{ $user->created_at }}</td>
-                            <td>{{ $user->updated_at }}</td>
+                            <td>{{ $user->created_at->addHour(2) }}</td>
+                            <td>{{ $user->updated_at->addHour(2) }}</td>
                             <td class="text-center">
                                 <a href="{{ route('users.reset_password', [$user->uuid]) }}"
                                    class="btn btn-sm btn-danger">

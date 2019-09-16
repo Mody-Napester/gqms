@@ -15,6 +15,11 @@
     <!-- Page-Title -->
     <div class="row">
         <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <a class="btn btn-danger waves-effect waves-light"
+                   href="{{ route('reports.doctors.index') }}">Remove search <i class="fa fa-fw fa-close"></i></a>
+            </div>
+
             <h4 class="page-title">Doctors Reports</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
@@ -63,10 +68,10 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ ($user->room)? $user->room->name_en : '-' }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), 1, $date) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), 1, $date) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), 1, $date) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), 1, $date) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), $all, $date) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), $all, $date) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), $all, $date) }}</td>
+                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), $all, $date) }}</td>
                             <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
                         </tr>
                     @endforeach

@@ -15,6 +15,11 @@
     <!-- Page-Title -->
     <div class="row">
         <div class="col-sm-12">
+            <div class="btn-group pull-right m-t-15">
+                <a class="btn btn-danger waves-effect waves-light"
+                   href="{{ route('reports.desks.index') }}">Remove search <i class="fa fa-fw fa-close"></i></a>
+            </div>
+
             <h4 class="page-title">Desks Reports</h4>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">{{ config('app.name') }}</a></li>
@@ -62,9 +67,9 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ ($user->desk)? $user->desk->name_en : '-' }}</td>
-                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.called'), 1, $date) }}</td>
-                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.skipped'), 1, $date) }}</td>
-                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.done'), 1, $date) }}</td>
+                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.called'), $all, $date) }}</td>
+                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.skipped'), $all, $date) }}</td>
+                            <td>{{ getDeskReport($user, config('vars.desk_queue_status.done'), $all, $date) }}</td>
                             <td>{{ (getCurrentDeskReport($user))? 'Serving queue ' . getCurrentDeskReport($user)->queue_number : '-' }}</td>
                         </tr>
                     @endforeach

@@ -13,7 +13,7 @@
                 </span>
             </td>
             <td>{{ \App\User::getBy('id', $history->user_id)->name }}</td>
-            <td>{{ $history->created_at }}</td>
+            <td>{{ $history->created_at->addHour(2) }}</td>
         </tr>
     @endforeach
 

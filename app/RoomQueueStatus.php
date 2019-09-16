@@ -40,7 +40,7 @@ class RoomQueueStatus extends Model
             if($date == null){
                 $count = $count->where('created_at', 'like', "%".date('Y-m-d')."%");
             }else{
-                $count = $count->where('created_at', 'like', "%".$date."%");
+                $count = $count->where('created_at', 'like', "%".date($date)."%");
             }
         }
 

@@ -71,7 +71,7 @@
                                         {{ $roomQueue->queueStatus->name_en }}
                                     </span>
                                 </td>
-                                <td>{{ $roomQueue->created_at }}</td>
+                                <td>{{ $roomQueue->created_at->addHour(2) }}</td>
                                 <td class="text-center">
                                     @if($roomQueue->status != config('vars.room_queue_status.waiting'))
                                         <a href="{{ route('rooms.queues.roomQueueSingleHistory', [$roomQueue->uuid]) }}" class="btn history-modal btn-warning waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Show</a>

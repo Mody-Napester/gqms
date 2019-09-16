@@ -5,15 +5,19 @@
     }
     ?>
 
+
     @if($search == true)
         @if((isset($deskQueue->reservation) && $deskQueue->reservation->source_reservation_serial == $reservation) ||
-         (isset($roomQueue) && $room == $roomQueue->room_id) ||
-         (isset($roomQueue) && $doctor == $roomQueue->doctor_id)
-         )
+             (isset($roomQueue) && $room == $roomQueue->room_id) ||
+             (isset($roomQueue) && $doctor == $roomQueue->doctor_id)
+             )
             @include('queues._iteration')
         @endif
+    @elseif(isset($doctor) && $doctor == null && isset($room) && $room == null && isset($reservation) && $reservation == null)
+        @include('queues._iteration')
     @else
         @include('queues._iteration')
     @endif
 
 @endforeach
+

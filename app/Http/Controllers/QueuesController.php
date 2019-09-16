@@ -46,7 +46,10 @@ class QueuesController extends Controller
             if($request->has('date') && $request->date != ''){
 //                $data['deskQueues'] = $data['deskQueues']->where('created_at', 'like', $request->date . '%');
                 $data['deskQueues'] = $data['deskQueues']->whereBetween('created_at', [$request->date_from, $request->date_to]);
+            }
 
+            if($data['doctor'] == null && $data['room'] == null && $data['reservation'] == null){
+                $data['search'] = 2;
             }
 
             if($request->has('desk')){

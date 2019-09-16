@@ -67,7 +67,7 @@
                                         {{ $deskQueue->queueStatus->name_en }}
                                     </span>
                                 </td>
-                                <td>{{ $deskQueue->created_at }}</td>
+                                <td>{{ $deskQueue->created_at->addHour(2) }}</td>
                                 <td class="text-center">
                                     @if($deskQueue->status != config('vars.desk_queue_status.waiting'))
                                         <a href="{{ route('desks.queues.deskQueueSingleHistory', [$deskQueue->uuid]) }}" class="btn history-modal btn-warning waves-effect" style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Show</a>

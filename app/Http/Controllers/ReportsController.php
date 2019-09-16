@@ -27,7 +27,14 @@ class ReportsController extends Controller
 
 //            $data['users'] = ($request->has('date') && $request->date != null)? $data['users']->where('created_at', 'like', $request->date . '%') : $data['users'];
 
-            $data['date'] = ($request->has('date') && $request->date != null)? $request->date : null;
+            if($request->has('date') && $request->date != null){
+                $data['date'] = $request->date;
+                $data['all'] = null;
+            }else{
+                $data['date'] = null;
+                $data['all'] = 1;
+            }
+
 
             $data['users'] = $data['users']->groupBy('name')->get();
         }
@@ -57,7 +64,14 @@ class ReportsController extends Controller
 
 //            $data['users'] = ($request->has('date') && $request->date != null)? $data['users']->where('created_at', 'like', $request->date . '%') : $data['users'];
 
-            $data['date'] = ($request->has('date') && $request->date != null)? $request->date : null;
+            if($request->has('date') && $request->date != null){
+                $data['date'] = $request->date;
+                $data['all'] = null;
+            }else{
+                $data['date'] = null;
+                $data['all'] = 1;
+            }
+
 
             $data['users'] = $data['users']->groupBy('name')->get();
         }
