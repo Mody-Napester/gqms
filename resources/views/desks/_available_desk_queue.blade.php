@@ -18,11 +18,12 @@
 
 
     <div class="mx-box" style="overflow: auto;">
-        <table data-page-length='50' id="searchTable" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
+        <table id="searchTable" class="table table-striped table-bordered table-sm text-center" cellspacing="0" width="100%">
             <tr>
                 <th>{{ trans('desks.Queue') }}</th>
                 <th>{{ trans('desks.Status') }}</th>
                 <th>{{ trans('desks.Action') }}</th>
+                <th>{{ trans('desks.Attend_at') }}</th>
             </tr>
 
             @foreach($deskQueues as $deskQueue)
@@ -37,8 +38,11 @@
                                     style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">{{ trans('desks.Call_again') }}</button>
                         @elseif($deskQueue->queueStatus->id != config('vars.desk_queue_status.waiting'))
                             {{ trans('desks.By') }} {{ translate($deskQueue->desk, 'name') }}
+                        @else
+                            -
                         @endif
                     </td>
+                    <td>{{ $deskQueue->created_at->addHour(2) }}</td>
                 </tr>
             @endforeach
 

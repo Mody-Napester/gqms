@@ -34,7 +34,7 @@
                 <label>Status</label>
                 <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
                     <option selected disabled>Choose</option>
-                    @foreach(App\Enums\screenstatuses::$statuses as $key => $status)
+                    @foreach(App\Enums\ScreenStatuses::$statuses as $key => $status)
                         <option value="{{ $key }}">{{ $status['en'] }}</option>
                     @endforeach
                 </select>

@@ -16,24 +16,30 @@
             <tr>
                 <td>{{ $loggedInUser->name }}</td>
                 <td>
-                    @if($loggedInUser->desk_id != null)
-                        {{ $loggedInUser->desk->name_en }}
-                    @elseif($loggedInUser->room_id != null)
-                        {{ $loggedInUser->room->name_en }}
+                    @if($loggedInUser)
+                        @if($loggedInUser->desk_id != null)
+                            {{ ($loggedInUser->desk)? $loggedInUser->desk->name_en : '-' }}
+                        @elseif($loggedInUser->room_id != null)
+                            {{ ($loggedInUser->room)? $loggedInUser->room->name_en : '-' }}
+                        @endif
                     @endif
                 </td>
                 <td>
-                    @if($loggedInUser->available == 1)
-                        <span class="badge badge-success">{{ trans('dashboard.Yes') }}</span>
-                    @else
-                        <span class="badge badge-danger">{{ trans('dashboard.No') }}</span>
+                    @if($loggedInUser)
+                        @if($loggedInUser->available == 1)
+                            <span class="badge badge-success">{{ trans('dashboard.Yes') }}</span>
+                        @else
+                            <span class="badge badge-danger">{{ trans('dashboard.No') }}</span>
+                        @endif
                     @endif
                 </td>
                 <td>
-                    @if($loggedInUser->type == 1)
-                        <span class="badge badge-info">{{ trans('dashboard.Doctor') }}</span>
-                    @else
-                        <span class="badge badge-warning">{{ trans('dashboard.Desk') }}</span>
+                    @if($loggedInUser)
+                        @if($loggedInUser->type == 1)
+                            <span class="badge badge-info">{{ trans('dashboard.Doctor') }}</span>
+                        @else
+                            <span class="badge badge-warning">{{ trans('dashboard.Desk') }}</span>
+                        @endif
                     @endif
 {{--                    {{ \App\Enums\UserTypes::$types[$loggedInUser->type] }}--}}
                 </td>

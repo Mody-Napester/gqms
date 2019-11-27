@@ -108,7 +108,7 @@ class DeskQueue extends Model
         ->where('desk_id', $desk_id)
         ->first();
 
-        if(count($deskQueues) == 0){
+        if(!empty($deskQueues) && count($deskQueues) == 0){
             $deskQueues = self::where('status', config('vars.desk_queue_status.called'))
                 ->where('created_at', 'like', "%".date('Y-m-d')."%")
                 ->where('desk_id', $desk_id)

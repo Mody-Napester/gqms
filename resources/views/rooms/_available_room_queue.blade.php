@@ -23,6 +23,7 @@
                 <th>{{ trans('rooms.Queue') }}</th>
                 <th>{{ trans('rooms.Status') }}</th>
                 <th>{{ trans('rooms.Action') }}</th>
+                <th>{{ trans('rooms.Attend_at') }}</th>
             </tr>
 
             @foreach($roomQueues as $roomQueue)
@@ -38,8 +39,11 @@
                                     style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">{{ trans('rooms.Call_again') }}</button>
                         @elseif($roomQueue->queueStatus->id != config('vars.room_queue_status.waiting'))
                             {{ trans('rooms.From') }} {{ $roomQueue->room->name_en }}
+                        @else
+                            -
                         @endif
                     </td>
+                    <td>{{ $roomQueue->created_at->addHour(2) }}</td>
                 </tr>
                 {{--@endif--}}
             @endforeach

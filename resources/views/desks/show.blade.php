@@ -181,27 +181,58 @@
             $('body').on("keyup", "#searchInput",function() {
                 var value = $(this).val();
 
-                $("#searchTable tr").each(function(index) {
-                    if (index != 0) {
+                // Declare variables
+                var input, filter, table, tr, td, td1, td2, td3, i, txtValue, txtValue1, txtValue2, txtValue3;
+                input = value;
+                filter = input.toUpperCase();
+                table = document.getElementById("searchTable");
+                tr = table.getElementsByTagName("tr");
 
-                        $row = $(this);
+                // Loop through all table rows, and hide those who don't match the search query
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    td1 = tr[i].getElementsByTagName("td")[1];
+                    td2 = tr[i].getElementsByTagName("td")[2];
+                    td3 = tr[i].getElementsByTagName("td")[3];
 
-                        var id1 = $row.find("td:first").text();
-                        var id2 = $row.find("td:nth-child(2) span").text();
+                    if (td) {
+                        txtValue = td.textContent || td.innerHtml;
+                        txtValue1 = td1.textContent || td1.innerHtml;
+                        txtValue2 = td2.textContent || td2.innerHtml;
+                        txtValue3 = td3.textContent || td3.innerHtml;
 
-                        if (id1.indexOf(value) != 0) {
-                            if (id2.indexOf(value) != 0){
-                                $(this).hide();
-                            }else{
-                                $(this).show();
-                            }
-                        }
-                        else {
-                            $(this).show();
+                        console.log(txtValue1);
+
+                        if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValue1.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -1 || txtValue3.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
                         }
                     }
-                });
-            })
+                }
+
+//                $("#searchTable tr").each(function(index) {
+//                    if (index != 0) {
+//
+//                        $row = $(this);
+//
+//                        var id1 = $row.find("td:first").text();
+//                        var id2 = $row.find("td:nth-child(2) span").text();
+//
+//                        if (id1.indexOf(value) != 0) {
+//                            if (id2.indexOf(value) != 0){
+//                                $(this).hide();
+//                            }else{
+//                                $(this).show();
+//                            }
+//                        }
+//                        else {
+//                            $(this).show();
+//                        }
+//                    }
+//                });
+            });
+
 
             $('body').on("change", "#searchSelect",function() {
                 var value = $(this).val();

@@ -89,7 +89,7 @@
                                 <td>{{ ($desk->area)? $desk->area->name_en : '-' }}</td>
 {{--                                <td>{{ $desk->floor->name_en }}</td>--}}
                                 <td>{{ App\Enums\DeskStatuses::$statuses[$desk->status]['en'] }}</td>
-                                <td>{{ $desk->createdBy->name }}</td>
+                                <td>{{ ($desk->createdBy)? $desk->createdBy->name : '' }}</td>
 {{--                                <td>{{ $desk->updatedBy->name }}</td>--}}
                                 <td>{{ $desk->created_at }}</td>
 {{--                                <td>{{ $desk->updated_at }}</td>--}}
