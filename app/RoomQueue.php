@@ -235,7 +235,7 @@ class RoomQueue extends Model
                 ->where('created_at', 'like', "%".date('Y-m-d')."%")
                 ->where('serve_source_status', '<>', 'C')
                 ->orderBy('queue_number' , 'DESC')
-                ->groupBy('queue_number')
+//                ->groupBy('queue_number')
 //            ->having('created_at', 'max(created_at)')
                 ->get();
         }
