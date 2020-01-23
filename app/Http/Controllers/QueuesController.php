@@ -34,10 +34,7 @@ class QueuesController extends Controller
         }else{
 
             $data['search'] = true;
-
             $data['deskQueues'] = new DeskQueue();
-
-//            dd($request->all());
 
             $data['doctor']      = ($request->has('doctor')) ? Doctor::getBy('uuid', $request->doctor)->id : null;
             $data['room']        = ($request->has('room')) ? Room::getBy('uuid', $request->room)->id : null;
@@ -61,10 +58,11 @@ class QueuesController extends Controller
         }
 
         // Store User Action Log
-        storeLogUserAction(\App\Enums\LogUserActions::$name['IndexQueueHistory'], 'Get',route('queues.queuesHistory'));
+//        storeLogUserAction(\App\Enums\LogUserActions::$name['IndexQueueHistory'], 'Get',route('queues.queuesHistory'));
 
         $data['queuesListsView'] = view('queues._list', $data);
 
+//        return $data['deskQueues'];
         return view('queues.history', $data);
 
     }

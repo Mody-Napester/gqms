@@ -15,6 +15,7 @@ class ReportsController extends Controller
 
         $data['allUsers'] = User::where('type', UserTypes::$typesReverse['Desk'])->groupBy('name')->get();
         $data['date'] = null;
+        $data['all'] = null;
 
         if (empty($request->all())){
             $data['users'] = User::where('type', UserTypes::$typesReverse['Desk'])->groupBy('name')->paginate(50);
@@ -52,6 +53,7 @@ class ReportsController extends Controller
 
         $data['allUsers'] = User::where('type', UserTypes::$typesReverse['Doctor'])->groupBy('name')->get();
         $data['date'] = null;
+        $data['all'] = null;
 
         if (empty($request->all())){
             $data['users'] = User::where('type', UserTypes::$typesReverse['Doctor'])->groupBy('name')->paginate(50);
