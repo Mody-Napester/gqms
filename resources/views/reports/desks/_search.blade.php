@@ -2,7 +2,7 @@
     @csrf
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 <label>User</label>
                 <select name="user" id="user" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
@@ -13,10 +13,19 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 <label class="" for="date">Date</label>
                 <input type="date" id="date" autocomplete="off" class="form-control" name="date" @if(request()->has('date')) value="{{ request()->get('date') }}" @endif />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Show in results</label>
+                <select name="show" id="show" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
+                    <option value="1">All Users</option>
+                    <option value="0">Only Performed</option>
+                </select>
             </div>
         </div>
     </div>

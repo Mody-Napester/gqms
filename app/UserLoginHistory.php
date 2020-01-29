@@ -30,7 +30,7 @@ class UserLoginHistory extends Model
             }
         }
 
-        $browser = (function_exists(get_browser(null, true))) ? json_encode(get_browser(null, true)) : '';
+        $browser = (function_exists('get_browser')) ? json_encode(get_browser(null, true)) : '';
 
         if (User::find($user->id)){
             $result = self::create([
@@ -43,6 +43,18 @@ class UserLoginHistory extends Model
         }else{
             return false;
         }
+
+//        if (User::find($user->id)){
+//            $result = self::create([
+//                'user_id' => $user->id,
+//                'login_ip' => getenv_get_client_ip(),
+//                'login_data' => $browser,
+//            ]);
+//
+//            return $result;
+//        }else{
+//            return false;
+//        }
 
     }
 
