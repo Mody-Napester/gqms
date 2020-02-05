@@ -64,17 +64,33 @@
                     </thead>
 
                     <tbody>
-                    @foreach($users as $user)
-                        <tr>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ ($user->room)? $user->room->name_en : '-' }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), $all, $date) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), $all, $date) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), $all, $date) }}</td>
-                            <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), $all, $date) }}</td>
-                            <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
-                        </tr>
-                    @endforeach
+                    @if(request()->has('show') && request()->show == 0)
+                        @foreach($users as $user)
+                            @if(\App\RoomQueueStatus::where('user_id', $user->id)->where('created_at', 'like', "%".request()->date."%")->first())
+                                <tr>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ ($user->room)? $user->room->name_en : '-' }}</td>
+                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), $all, $date) }}</td>
+                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), $all, $date) }}</td>
+                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), $all, $date) }}</td>
+                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), $all, $date) }}</td>
+                                    <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    @else
+                        @foreach($users as $user)
+                            <tr>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ ($user->room)? $user->room->name_en : '-' }}</td>
+                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), $all, $date) }}</td>
+                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), $all, $date) }}</td>
+                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), $all, $date) }}</td>
+                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), $all, $date) }}</td>
+                                <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
                     </tbody>
                 </table>
             </div>

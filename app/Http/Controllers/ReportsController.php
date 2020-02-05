@@ -21,7 +21,6 @@ class ReportsController extends Controller
             $data['users'] = User::where('type', UserTypes::$typesReverse['Desk'])->groupBy('name')->paginate(50);
         }else{
             $data['users'] = new User();
-
             $data['users'] = $data['users']->where('type', UserTypes::$typesReverse['Desk']);
 
             $data['users'] = ($request->has('user'))? $data['users']->where('id', User::getBy('uuid', $request->get('user'))->id ) : $data['users'];
@@ -36,6 +35,9 @@ class ReportsController extends Controller
                 $data['all'] = 1;
             }
 
+//            if($request->show == 0){ // Get Only Performed
+//                $data['users'] = $data['users']->join('desk_queue_statuses', 'users.id', '=', 'desk_queue_statuses.user_id');
+//            }
 
             $data['users'] = $data['users']->groupBy('name')->get();
         }

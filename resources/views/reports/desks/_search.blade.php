@@ -23,8 +23,9 @@
             <div class="form-group">
                 <label>Show in results</label>
                 <select name="show" id="show" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
-                    <option value="1">All Users</option>
-                    <option value="0">Only Performed</option>
+                    <option selected disabled>Choose</option>
+                    <option @if(request()->has('show') &&  request()->show == 1) selected @endif value="1">All Users</option>
+                    <option @if(request()->has('show') &&  request()->show == 0) selected @endif value="0">Only Performed</option>
                 </select>
             </div>
         </div>
