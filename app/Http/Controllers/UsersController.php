@@ -10,6 +10,7 @@ use App\PermissionGroup;
 use App\Role;
 use App\Room;
 use App\User;
+use App\Doctor;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -143,6 +144,7 @@ class UsersController extends Controller
     public function edit($uuid)
     {
         $data['roles'] = Role::all();
+        $data['doctors'] = Doctor::all();
         $data['user'] = User::getBy('uuid', $uuid);
         return response([
             'title'=> "Update user ' {$data['user']->name} '",
@@ -193,6 +195,15 @@ class UsersController extends Controller
             foreach ($request->input('roles') as $role){
                 $resource->roles()->attach(Role::getBy('uuid', $role)->id);
             }
+        }
+
+        // If User 
+        if ($request->has('doctor')){
+            $doctor = Doctor::getBy('uuid', $request->doctor);
+
+            $doctor->update([
+                'user_id' => $resource->id
+            ]);
         }
 
         // Return

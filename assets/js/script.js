@@ -84,7 +84,10 @@ $(document).ready(function(){
                 targetModal.find('#editModalLabel').text(data.title);
                 targetModal.find('.modal-body').html(data.view);
                 // Select2
-                $(".select2").select2();
+                $(".select2").select2({
+                    dropdownParent: $("#editModalLabel")
+                });
+                $('.h4, h4').css('font-size','14px');
                 removeLoarder();
             },
             error:function () {

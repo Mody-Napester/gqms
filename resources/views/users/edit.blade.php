@@ -43,7 +43,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Status</label>
-                <select name="status" id="status" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                <select name="status" id="status" class="select2" data-placeholder="Choose ..."  aria-hidden="true" required>
                     @foreach(App\Enums\UserStatuses::$statuses as $key => $status)
                         <option @if($key == $user->status) selected @endif value="{{ $key }}">{{ $status }}</option>
                     @endforeach
@@ -54,9 +54,20 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Type</label>
-                <select name="type" id="type" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+                <select name="type" id="type" class="select2" data-placeholder="Choose ..."  aria-hidden="true" required>
                     @foreach(App\Enums\UserTypes::$types as $key => $type)
                         <option @if($key == $user->type) selected @endif value="{{ $key }}">{{ $type }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Doctor</label>
+                <select name="doctor" id="doctor_update" class="select2" data-placeholder="Choose ..."  aria-hidden="true">
+                    @foreach($doctors as $doctor)
+                        <option @if($doctor->user_id == $user->id) selected @endif value="{{ $doctor->uuid }}">{{ $doctor->name_en }}</option>
                     @endforeach
                 </select>
             </div>
@@ -65,7 +76,7 @@
 
     <div class="form-group">
         <label>Roles <span data-select2-target="roles_update" class="select-all text-success btn-link">(Select All)</span></label>
-        <select name="roles[]" id="roles_update" class="select2 select2-multiple" multiple="" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true" required>
+        <select name="roles[]" id="roles_update" class="select2 select2-multiple" multiple="" data-placeholder="Choose ..."  aria-hidden="true" required>
             @foreach($roles as $role)
                 <option @if(in_array($role->id, $user->roles->pluck('id')->toArray())) selected @endif value="{{ $role->uuid }}">{{ $role->name }}</option>
             @endforeach
