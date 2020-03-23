@@ -95,8 +95,10 @@
                     Echo.channel('desk-queue-screen')
                         .listen('DeskStatus', (response) => {
                             if(response.available == 1){
+                                $('#row-' + response.desk).removeClass('canceled-res-container');
                                 $('#' + response.desk).removeClass('canceled-res');
                             }else{
+                                $('#row-' + response.desk).addClass('canceled-res-container');
                                 $('#' + response.desk).addClass('canceled-res');
                             }
                         });
@@ -107,8 +109,10 @@
                             $('#doctor-' + response.room).text(response.doctor);
                             $('#clinic-' + response.room).text(response.clinic);
                             if(response.available == 1){
+                                $('#row-' + response.room).removeClass('canceled-res-container');
                                 $('#' + response.room).removeClass('canceled-res');
                             }else{
+                                $('#row-' + response.room).addClass('canceled-res-container');
                                 $('#' + response.room).addClass('canceled-res');
                             }
                         });

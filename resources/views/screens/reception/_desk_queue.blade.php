@@ -7,7 +7,7 @@
 
 @foreach($screen->desks()->orderBy('desk_id', 'ASC')->get() as $desk)
     <!-- Start Reservation Row -->
-        <div class="res-row row m-0">
+        <div id="row-{{ $desk->uuid }}" class="res-row row m-0 @if(!in_array($desk->id , $logegdInDeskUsers)) canceled-res-container @endif">
             <div class="col-md-8 p-0">
                 <div id="{{ $desk->uuid }}" class="bg-gray-1 section mb-2 @if(!in_array($desk->id , $logegdInDeskUsers)) canceled-res @endif">
                     <div class="txt-3 text-center">

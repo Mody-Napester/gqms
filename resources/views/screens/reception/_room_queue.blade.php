@@ -9,7 +9,8 @@
         @foreach($screen->rooms()->orderBy('room_id', 'ASC')->get() as $room)
             <div class="col-md-6 p-0">
                 <!-- Start Reservation Row -->
-                <div class="res-row row m-0">
+                {{-- <div class="res-row row m-0"> --}}
+                <div id="row-{{ $room->uuid }}" class="res-row row m-0 @if(!in_array($room->id , $logegdInRoomUsers)) canceled-res-container @endif">
                     <div class="col-md-4 pr-0">
                         <div id="{{ $room->uuid }}" class="bg-gray-2 section mb-2 @if(!in_array($room->id , $logegdInRoomUsers)) canceled-res @endif">
                             <div class="txt-3 text-center">
