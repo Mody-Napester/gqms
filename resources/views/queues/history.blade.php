@@ -60,7 +60,7 @@
                         <th colspan="2">Queue Numbers</th>
                         <th colspan="3">Served With</th>
                         <th rowspan="2">Reservation</th>
-                        {{--<th rowspan="2">Desk Abuse</th>--}}
+                        <th rowspan="2">Desk Abuse</th>
                         <th colspan="2">Attend Time</th>
                         <th colspan="2">Call Time</th>
                         <th colspan="2">Waiting Time</th>
@@ -95,7 +95,20 @@
                     </thead>
 
                     <tbody>
-                        {!! $queuesListsView !!}
+                        @foreach($deskQueues as $deskQueue)
+                            <?php
+                            if ($deskQueue->reservation) {
+                                $roomQueue = \App\RoomQueue::where('reservation_source_serial', $deskQueue->reservation->source_reservation_serial)->first();
+                            }
+                            ?>
+                            @if($search == 0)
+                                @include('queues._iteration')
+                            @else
+                                @if(isset($roomQueue))
+                                    @include('queues._iteration')
+                                @endif
+                            @endif
+                        @endforeach
                     </tbody>
                 </table>
 

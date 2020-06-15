@@ -30,7 +30,7 @@ class UserLoginHistory extends Model
             }
         }
 
-        $browser = (function_exists('get_browser')) ? json_encode(get_browser(null, true)) : '';
+        $browser = (function_exists('get_browser')) ? json_encode(get_browser(null, false)) : '';
 
         if (User::find($user->id)){
             $result = self::create([

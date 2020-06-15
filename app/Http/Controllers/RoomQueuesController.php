@@ -561,7 +561,7 @@ class RoomQueuesController extends Controller
         $data['doctors'] = Doctor::all();
         $data['users'] = User::where('type', UserTypes::$typesReverse['Doctor'])->get();
         $data['statuses'] = \App\QueueStatus::getQueueStatuses('room');
-        $data['roomQueues'] = RoomQueue::orderBy('created_at', 'DESC')->get();
+//        $data['roomQueues'] = RoomQueue::orderBy('created_at', 'DESC')->get();
 
         if (empty($request->all())){
             $data['roomQueues'] = RoomQueue::paginate(20);
