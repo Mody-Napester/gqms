@@ -159,6 +159,7 @@ Route::group([
 
     // All Queues History
     Route::get('queues/history', 'QueuesController@queuesHistory')->name('queues.queuesHistory');
+    Route::get('all/queues/history', 'QueuesController@allQueuesHistory')->name('queues.allQueuesHistory');
     Route::get('queues/{queue_uuid}/history', 'QueuesController@queuesSingleHistory')->name('queues.queuesSingleHistory');
 
     // Go available

@@ -54,7 +54,8 @@ class ReportsController extends Controller
 //        $data['users'] = User::where('room_id', '<>', '')->get();
 
         $data['allUsers'] = User::where('type', UserTypes::$typesReverse['Doctor'])->groupBy('name')->get();
-        $data['date'] = null;
+        $data['date_from'] = null;
+        $data['date_to'] = null;
         $data['all'] = null;
 
         if (empty($request->all())){
@@ -68,11 +69,13 @@ class ReportsController extends Controller
 
 //            $data['users'] = ($request->has('date') && $request->date != null)? $data['users']->where('created_at', 'like', $request->date . '%') : $data['users'];
 
-            if($request->has('date') && $request->date != null){
-                $data['date'] = $request->date;
+            if($request->has('date_from') && $request->date_from != null){
+                $data['date_from'] = $request->date_from;
+                $data['date_to'] = $request->date_to;
                 $data['all'] = null;
             }else{
-                $data['date'] = null;
+                $data['date_from'] = null;
+                $data['date_to'] = null;
                 $data['all'] = 1;
             }
 

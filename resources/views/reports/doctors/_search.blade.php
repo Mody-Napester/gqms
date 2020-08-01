@@ -2,7 +2,7 @@
     @csrf
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group">
                 <label>User</label>
                 <select name="user" id="user" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">
@@ -13,13 +13,19 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group">
-                <label class="" for="date">Date</label>
-                <input type="date" id="date" autocomplete="off" class="form-control" name="date" @if(request()->has('date')) value="{{ request()->get('date') }}" @endif />
+                <label class="" for="date_from">Date from</label>
+                <input type="date" id="date_from" autocomplete="off" class="form-control" name="date_from" @if(request()->has('date_from')) value="{{ request()->get('date_from') }}" @endif />
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="" for="date_to">Date to</label>
+                <input type="date" id="date_to" autocomplete="off" class="form-control" name="date_to" @if(request()->has('date_to')) value="{{ request()->get('date_to') }}" @endif />
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <label>Show in results</label>
                 <select name="show" id="show" class="select2" data-placeholder="Choose ..." tabindex="-1" aria-hidden="true">

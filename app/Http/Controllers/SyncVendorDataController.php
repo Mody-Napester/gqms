@@ -128,7 +128,7 @@ class SyncVendorDataController extends Controller
                             'name' => $val->emp_name_en,
                             'password' => bcrypt(config('vars.default_password')),
                             'type' => UserTypes::$typesReverse['Doctor'],
-                            'status' => $val->workstatus == 1 ? 1 : 0,
+                            'status' => (($val->workstatus == 1) ? 1 : 0),
                             'created_by' => 0,
                             'updated_by' => 0,
                         ]);
@@ -142,7 +142,7 @@ class SyncVendorDataController extends Controller
                             'name_ar' => $val->emp_name_ar,
                             'name_en' => $val->emp_name_en,
                             'gander' => $val->emp_gendur,
-                            'workstatus' => $val->workstatus == 1 ? 1 : 0
+                            'workstatus' => (($val->workstatus == 1) ? 1 : 0)
                         ]);
 
                         // Add Role Relation
@@ -159,19 +159,19 @@ class SyncVendorDataController extends Controller
                                 'name_ar' => $val->emp_name_ar,
                                 'name_en' => $val->emp_name_en,
                                 'gander' => $val->emp_gendur,
-                                'workstatus' => $val->workstatus == 1 ? 1 : 0
+                                'workstatus' => (($val->workstatus == 1) ? 1 : 0)
                             ], $val->emp_id);
                             User::edit([
                                 'name' => $val->emp_name_en,
-                                'status' => $val->workstatus == 1 ? 1 : 0
-                            ], $doctor->id);
+                                'status' => (($val->workstatus == 1) ? 1 : 0)
+                            ], $doctor->user_id);
                         } else {
                             $user = User::create([
                                 'email' => ' ',
                                 'name' => $val->emp_name_en,
                                 'password' => Hash::make(config('vars.defualt_password')),
                                 'type' => UserTypes::$typesReverse['Doctor'],
-                                'status' => $val->workstatus == 1 ? 1 : 0,
+                                'status' => (($val->workstatus == 1) ? 1 : 0),
                                 'created_by' => 0,
                                 'updated_by' => 0,
                             ]);
@@ -185,9 +185,12 @@ class SyncVendorDataController extends Controller
                                 'name_ar' => $val->emp_name_ar,
                                 'name_en' => $val->emp_name_en,
                                 'gander' => $val->emp_gendur,
-                                'workstatus' => $val->workstatus == 1 ? 1 : 0
+                                'workstatus' => (($val->workstatus == 1) ? 1 : 0)
                             ]);
                         }
+
+                        DB::connection('oracle')->table('vw_doctor_table')->where('emp_id', $val->emp_id)
+                            ->update(['queue_system_integ_flag' => 'PROCEED_PMS']);
                     }
                 }
             }

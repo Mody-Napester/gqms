@@ -197,13 +197,25 @@ class UsersController extends Controller
             }
         }
 
-        // If User 
+        // If User
         if ($request->has('doctor')){
-            $doctor = Doctor::getBy('uuid', $request->doctor);
+            if($request->get('doctor') == 'choose'){
+                $doctor = Doctor::getBy('user_id', $resource->id);
 
-            $doctor->update([
-                'user_id' => $resource->id
-            ]);
+                if($doctor){
+                    $doctor->update([
+                        'user_id' => ''
+                    ]);
+                }
+            }else{
+                $doctor = Doctor::getBy('uuid', $request->doctor);
+
+                if($doctor){
+                    $doctor->update([
+                        'user_id' => $resource->id
+                    ]);
+                }
+            }
         }
 
         // Return

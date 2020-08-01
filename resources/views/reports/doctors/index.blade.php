@@ -59,6 +59,7 @@
                         <th>Skipped</th>
                         <th>Patient in</th>
                         <th>Patient out</th>
+                        <th>Average Patient Time</th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -66,14 +67,15 @@
                     <tbody>
                     @if(request()->has('show') && request()->show == 0)
                         @foreach($users as $user)
-                            @if(\App\RoomQueueStatus::where('user_id', $user->id)->where('created_at', 'like', "%".request()->date."%")->first())
+                            @if(\App\RoomQueueStatus::where('user_id', $user->id)->where('created_at', 'like', "%".request()->date_from."%")->first())
                                 <tr>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ ($user->room)? $user->room->name_en : '-' }}</td>
-                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), $all, $date) }}</td>
-                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), $all, $date) }}</td>
-                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), $all, $date) }}</td>
-                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), $all, $date) }}</td>
+                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), $all, $date_from, $date_to) }}</td>
+                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), $all, $date_from, $date_to) }}</td>
+                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), $all, $date_from, $date_to) }}</td>
+                                    <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), $all, $date_from, $date_to) }}</td>
+                                    <td>{{ getPatientAverageTime($user, $date_from, $date_to) }}</td>
                                     <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
                                 </tr>
                             @endif
@@ -83,10 +85,11 @@
                             <tr>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ ($user->room)? $user->room->name_en : '-' }}</td>
-                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), $all, $date) }}</td>
-                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), $all, $date) }}</td>
-                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), $all, $date) }}</td>
-                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), $all, $date) }}</td>
+                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.called'), $all, $date_from, $date_to) }}</td>
+                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.skipped'), $all, $date_from, $date_to) }}</td>
+                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_in'), $all, $date_from, $date_to) }}</td>
+                                <td>{{ getDoctorReport($user, config('vars.room_queue_status.patient_out'), $all, $date_from, $date_to) }}</td>
+                                <td>{{ getPatientAverageTime($user, $date_from, $date_to) }}</td>
                                 <td>{{ (getCurrentDoctorReport($user))? 'Serving queue ' . getCurrentDoctorReport($user)->queue_number : '-' }}</td>
                             </tr>
                         @endforeach

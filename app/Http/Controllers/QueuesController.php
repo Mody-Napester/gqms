@@ -8,6 +8,7 @@ use App\Doctor;
 use App\Floor;
 use App\Reservation;
 use App\Room;
+use App\RoomQueue;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
@@ -99,6 +100,35 @@ class QueuesController extends Controller
         return view('queues.history', $data);
 
     }
+
+    /**
+     * All queue histories.
+     */
+    public function allQueuesHistory(Request $request)
+    {
+        if (!User::hasAuthority('use.all_queue_history')){
+            return redirect('/');
+        }
+
+        $data['desks'] = Desk::all();
+        $data['doctors'] = Doctor::getAll();
+        $data['floors'] = Floor::all();
+        $data['rooms'] = Room::all();
+        $data['users'] = User::all();
+        $data['statuses'] = \App\QueueStatus::getQueueStatuses('desk');
+
+        if (empty($request->all()) || (count($request->all()) == 1 && $request->has('page'))){
+            $data['search_type'] = 2;
+            $data['roomQueues'] = RoomQueue::paginate(20);
+        }else{
+
+
+        }
+
+        return view('all_queue_history.history', $data);
+
+    }
+
     /**
      * Single queue histories.
      */

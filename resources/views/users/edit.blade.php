@@ -66,6 +66,7 @@
             <div class="form-group">
                 <label>Doctor</label>
                 <select name="doctor" id="doctor_update" class="select2" data-placeholder="Choose ..."  aria-hidden="true">
+                    <option value="choose">Choose</option>
                     @foreach($doctors as $doctor)
                         <option @if($doctor->user_id == $user->id) selected @endif value="{{ $doctor->uuid }}">{{ $doctor->name_en }}</option>
                     @endforeach

@@ -32,15 +32,16 @@ class RoomQueueStatus extends Model
     /**
      *  Get Room Queues
      */
-    public static function getRoomQueues($user_id, $queue_status_id, $all = null,$date = null)
+    public static function getRoomQueues($user_id, $queue_status_id, $all = null, $date_from = null, $date_to = null)
     {
         $count = self::where('user_id', $user_id)->where('queue_status_id', $queue_status_id);
 
         if($all == null){
-            if($date == null){
+            if($date_from == null){
                 $count = $count->where('created_at', 'like', "%".date('Y-m-d')."%");
             }else{
-                $count = $count->where('created_at', 'like', "%".date($date)."%");
+//                $count = $count->where('created_at', 'like', "%".date($date)."%");
+                $count = $count->whereBetween('created_at', [date($date_from), date($date_to)]);
             }
         }
 

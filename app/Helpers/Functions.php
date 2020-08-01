@@ -61,8 +61,8 @@ function getCurrentDeskReport($user){
 }
 
 // Store Log User Login
-function getDoctorReport($user, $status, $all = null, $date = null){
-    $report = \App\RoomQueueStatus::getRoomQueues($user->id, $status, $all, $date);
+function getDoctorReport($user, $status, $all = null, $date_from = null, $date_to = null){
+    $report = \App\RoomQueueStatus::getRoomQueues($user->id, $status, $all, $date_from, $date_to);
     return $report;
 }
 
@@ -208,7 +208,7 @@ function deskQueueNumberFormat($area, $scheme){
     $lastNumber = \App\DeskQueue::getDeskQueues($area->id)->count() + 1;
 
     $lastNumberZeros = '';
-    
+
     if($lastNumber < $scheme){
         $schemeLength = strlen((string)$scheme);
         $lastNumberLength = strlen((string)$lastNumber);
@@ -247,6 +247,40 @@ function roomQueueNumberFormat($floor_id, $room_id, $scheme){
     }
 
     return \App\Floor::getBy('id', $floor_id)->name_en . '-' . \App\Room::getBy('id', $room_id)->name_en .'-' . $lastNumber;
+}
+
+function getPatientAverageTime($user, $date_from, $date_to){
+    $patientIns = \App\RoomQueueStatus::where('user_id', $user->id)->where('queue_status_id', config('vars.room_queue_status.patient_in'));
+
+    if($date_from == null){
+        return '-';
+    }else{
+        $patientIns = $patientIns->whereBetween('created_at', [date($date_from), date($date_to)])->get();
+
+        $allDiffTime = 0;
+        foreach ($patientIns as $patientIn){
+            $patientOut = \App\RoomQueueStatus::where('user_id', $user->id)
+                ->where('queue_status_id', config('vars.room_queue_status.patient_out'))
+                ->where('room_queue_id', $patientIn->room_queue_id)->first();
+
+            if ($patientOut){
+                $patientInCreation = $patientIn->created_at;
+                $patientOutCreation = $patientOut->created_at;
+                $diffTime = $patientOutCreation->diffInSeconds($patientInCreation);
+                $allDiffTime += $diffTime;
+            }
+        }
+
+        // Average
+        if($allDiffTime == 0){
+            $average = 0;
+        }else{
+            $diff = ($allDiffTime/count($patientIns));
+            $average = gmdate('H:i:s', $diff);
+        }
+
+        return $average;
+    }
 }
 
 function getQueuePatientTime($queueOpj, $toType, $timeType){

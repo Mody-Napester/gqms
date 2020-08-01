@@ -145,9 +145,9 @@
                         </li>
                     @endif
                     @if (\App\User::hasAuthority('index.settings'))
-                        <li class="has_sub">
-                            <a href="{{ route('settings.index') }}" class="waves-effect"><i class="ti-settings"></i> <span> {{ trans('sidebar.Settings') }} </span></a>
-                        </li>
+{{--                        <li class="has_sub">--}}
+{{--                            <a href="{{ route('settings.index') }}" class="waves-effect"><i class="ti-settings"></i> <span> {{ trans('sidebar.Settings') }} </span></a>--}}
+{{--                        </li>--}}
                     @endif
                 @endif
 
