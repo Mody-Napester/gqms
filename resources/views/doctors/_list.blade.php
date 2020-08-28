@@ -2,6 +2,10 @@
     <thead>
     <tr>
         <th>#</th>
+        <th>Username</th>
+        <th>Name</th>
+        <th>User ID</th>
+        <th>ALKhaber ID</th>
         <th>Name ar</th>
         <th>Name en</th>
         <th>Speciality</th>
@@ -16,6 +20,10 @@
         @foreach($doctors as $key => $doctor)
             <tr>
                 <td>{{ $key + 1 }}</td>
+                <td>{{ ($user = \App\User::where('id',  $doctor->user_id)->first())? $user->email : '-'}}</td>
+                <td>{{ ($user = \App\User::where('id',  $doctor->user_id)->first())? $user->name : '-'}}</td>
+                <td>{{ ($doctor->user_id != '')? $doctor->user_id : '-'}}</td>
+                <td>{{ ($doctor->source_doctor_id != '')? $doctor->source_doctor_id : '-'}}</td>
                 <td>{{ $doctor->name_ar }}</td>
                 <td>{{ $doctor->name_en }}</td>
                 <td>{{ ($doctor->speciality)? $doctor->speciality->name_en : '-'}}</td>
