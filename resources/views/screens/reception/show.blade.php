@@ -109,9 +109,11 @@
                             $('#doctor-' + response.room).text(response.doctor);
                             $('#clinic-' + response.room).text(response.clinic);
                             if(response.available == 1){
+                                $('#row-div' + response.room).removeClass('canceled-res-div-container');
                                 $('#row-' + response.room).removeClass('canceled-res-container');
                                 $('#' + response.room).removeClass('canceled-res');
                             }else{
+                                $('#row-div' + response.room).addClass('canceled-res-div-container');
                                 $('#row-' + response.room).addClass('canceled-res-container');
                                 $('#' + response.room).addClass('canceled-res');
                             }
