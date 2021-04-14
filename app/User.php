@@ -134,17 +134,24 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public static function authorities($user)
     {
-        $roles = $user->roles;
-        $permissions = [];
-        foreach ($roles as $role){
-            foreach ($role->permissions as $permission){
-                $element = PermissionGroup::getBy('id', $permission->pivot->permission_group_id)->name . '.' . $permission->name;
-                if (!in_array($element, $permissions)){
-                    $permissions[] = $element;
+        if(session()->has('permissions')){
+            $return = session('permissions')[0];
+        }else{
+            $roles = $user->roles;
+            $permissions = [];
+            foreach ($roles as $role){
+                foreach ($role->permissions as $permission){
+                    $element = PermissionGroup::getBy('id', $permission->pivot->permission_group_id)->name . '.' . $permission->name;
+                    if (!in_array($element, $permissions)){
+                        $permissions[] = $element;
+                    }
                 }
             }
+            session()->push('permissions', $permissions);
+            $return = $permissions;
         }
-        return $permissions;
+
+        return $return;
     }
 
     /**

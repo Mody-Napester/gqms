@@ -45,10 +45,8 @@ class UsersController extends Controller
         $data['roles'] = Role::all();
 
         if (empty($request->all())){
-            $data['users'] = User::all();
+            $data['users'] = User::paginate(50);
         }else{
-
-//            dd($request->all());
 
             $data['users'] = new User();
 
@@ -58,7 +56,7 @@ class UsersController extends Controller
             $data['users'] = ($request->has('status'))? $data['users']->where('status',$request->get('status')) : $data['users'];
             $data['users'] = ($request->has('type'))? $data['users']->where('type',$request->get('type')) : $data['users'];
 
-            $data['users'] = $data['users']->get();
+            $data['users'] = $data['users']->paginate(50);
         }
 
         // Store User Action Log

@@ -84,13 +84,13 @@
 
     <div class="row" id="goToAll">
         <div class="col-lg-12">
-            <div class="card-box table-responsive">
+            <div class="card-box">
                 <h4 class="m-t-0 header-title">All Users</h4>
                 <p class="text-muted font-14 m-b-30">
                     Here you will find all the resources to make actions on them.
                 </p>
 
-                <table data-page-length='50' id="datatable-users-buttons" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <table style="max-height: 600px;" data-page-length='50' id="datatable-users-buttons" class="table table-responsive table-striped table-bordered table-sm" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th>Id</th>
@@ -161,6 +161,15 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                <br>
+
+                @if($users instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                    <div class="clearfix">
+                        <div class="float-left">Pages numbers</div>
+                        <div class="float-right">{{ $users->appends($_GET)->links() }}</div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

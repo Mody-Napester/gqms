@@ -17,7 +17,7 @@
         <div class="col-sm-12">
             <div class="btn-group pull-right m-t-15">
                 <a class="btn btn-danger waves-effect waves-light"
-                   href="{{ route('queues.queuesHistory') }}">Remove search <i class="fa fa-fw fa-close"></i></a>
+                   href="{{ route('queues.allQueuesHistory') }}">Remove search <i class="fa fa-fw fa-close"></i></a>
             </div>
 
             <h4 class="page-title">Queues History</h4>
@@ -53,62 +53,135 @@
                 </p>
 
                 <table data-page-length='50' id="datatable-history-buttons"
-                       class="text-center vertical-middle table table-striped table-bordered table-sm table-responsive" cellspacing="0"
+                       class="text-center vertical-middle table-responsive table table-striped table-bordered table-sm" cellspacing="0"
                        width="100%">
                     <thead style="background-color: #dddddd;">
                     <tr>
-                        <th colspan="2">Queue Numbers</th>
-                        <th colspan="3">Served With</th>
-                        <th rowspan="2">Reservation</th>
-                        <th rowspan="2">Desk Abuse</th>
-                        <th colspan="2">Attend Time</th>
-                        <th colspan="2">Call Time</th>
-                        <th colspan="2">Waiting Time</th>
-                        <th rowspan="2">Patient in</th>
-                        <th colspan="2">Done Time</th>
-                        <th colspan="2">Serve Time</th>
+                        <th colspan="7">Desk</th>
+                        <th colspan="4">Reservation</th>
+                        <th colspan="6">Room</th>
                         <th rowspan="2" class="text-center">History</th>
                     </tr>
                     <tr>
-                        <th>Desk</th>
+                        <th>Name</th>
+                        <th>Abuse</th>
+                        <th>Queue</th>
+                        <th>Attend</th>
+                        <th>Call</th>
+                        <th>Done</th>
+                        <th>Serve</th>
+
+                        <th>ID</th>
+                        <th>Patient ID</th>
+                        <th>Time</th>
                         <th>Doctor</th>
 
-                        <th>Desk</th>
-                        <th>Room</th>
-                        <th>Doctor</th>
-
-                        <th>Desk</th>
-                        <th>Doctor</th>
-
-                        <th>Desk</th>
-                        <th>Doctor</th>
-
-                        <th>Desk</th>
-                        <th>Doctor</th>
-
-                        <th>Desk</th>
-                        <th>Doctor</th>
-
-                        <th>Desk</th>
-                        <th>Doctor</th>
+                        <th>Name</th>
+                        <th>Queue</th>
+                        <th>Attend</th>
+                        <th>Call</th>
+                        <th>Done</th>
+                        <th>Serve</th>
                     </tr>
                     </thead>
 
                     <tbody>
-                        @if($search_type == 2)
-                            @include('queues._list_desks_and_doctors')
-                        @else
-                            @include('queues._list_desks')
-                        @endif
+
+                        @foreach($histories as $history)
+                            <tr>
+                                <td>{{ ($d = \App\Desk::getBy('id', $history->desk_id))? $d->name_en : '-' }}</td>
+                                <td>
+                                    @if(isset($history->desk_id))
+                                        <span class="badge badge-success">No</span>
+                                    @else
+                                        <span class="badge badge-danger">Yes</span>
+                                    @endif
+                                </td>
+                                <td>{{ $history->desk_qn }}</td>
+                                <td>
+                                    @if(isset($history->desk_id))
+                                        {{ \Carbon\Carbon::parse($history->d_created_at)->addHour(2) }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(isset($history->desk_id))
+                                        {{ getQueueActionTime($history->dq_id, 'desk', 'call') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(isset($history->desk_id))
+                                        {{ getQueueActionTime($history->dq_id, 'desk', 'done') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(isset($history->desk_id))
+                                        {{ getQueueServeTime($history->dq_id, 'desk') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td>{{ $history->source_reservation_serial }}</td>
+                                <td>{{ $history->patientid }}</td>
+                                <td>{{ $history->reservation_date_time }}</td>
+                                <td>{{ ($doc = \App\Doctor::getBy('source_doctor_id', $history->res_doctor_id))? $doc->name_en : '-' }}</td>
+
+                                <td>{{ ($r = \App\Room::getBy('id', $history->room_id))? $r->name_en : '-' }}</td>
+                                <td>{{ $history->room_qn }}</td>
+                                <td>
+                                    @if(isset($history->room_id))
+                                        {{ \Carbon\Carbon::parse($history->r_created_at)->addHour(2) }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(isset($history->room_id))
+                                        {{ getQueueActionTime($history->rq_id, 'room', 'call') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(isset($history->room_id))
+                                        {{ getQueueActionTime($history->rq_id, 'room', 'done') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(isset($history->room_id))
+                                        {{ getQueueServeTime($history->rq_id, 'room') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td>
+                                    @if(isset($history->d_uuid) && $history->d_status != config('vars.desk_queue_status.waiting'))
+                                        <a href="{{ route('queues.queuesSingleHistory', [$history->d_uuid]) }}"
+                                           class="btn history-modal btn-warning waves-effect"
+                                           style="padding: 0.3em .6em;font-size: 75%;font-weight: 700;line-height: 1;">Show</a>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
 
                 <br>
 
-                @if ($deskQueues instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                @if ($histories instanceof \Illuminate\Pagination\LengthAwarePaginator)
                     <div class="clearfix">
                         <div class="float-left">Pages numbers</div>
-                        <div class="float-right">{{ $deskQueues->links() }}</div>
+                        <div class="float-right">{{ $histories->appends($_GET)->links() }}</div>
                     </div>
                 @endif
             </div>
@@ -123,6 +196,7 @@
     <script>
         var tableDTUsers = $('#datatable-history-buttons').DataTable({
             lengthChange: false,
+            ordering: false,
             buttons: [
                 {
                     extend: 'copyHtml5',

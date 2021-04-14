@@ -87,7 +87,7 @@ class QueuesController extends Controller
 //                $data['search'] = 1;
 //            }
 
-            $data['deskQueues'] = $data['deskQueues']->get();
+            $data['deskQueues'] = $data['deskQueues']->paginate(10);
         }
 
         // Store User Action Log
@@ -117,13 +117,29 @@ class QueuesController extends Controller
         $data['users'] = User::all();
         $data['statuses'] = \App\QueueStatus::getQueueStatuses('desk');
 
-        if (empty($request->all()) || (count($request->all()) == 1 && $request->has('page'))){
-            $data['search_type'] = 2;
-            $data['roomQueues'] = RoomQueue::paginate(20);
-        }else{
+        $data['histories'] = DeskQueue::rightJoin('reservations', 'desk_queues.id', '=', 'reservations.desk_queue_id')
+            ->join('room_queues', 'room_queues.reservation_source_serial', '=', 'reservations.source_reservation_serial')
+            ->select('desk_queues.id as dq_id','desk_queues.desk_id','desk_queues.created_at as d_created_at','desk_queues.queue_number as desk_qn','desk_queues.status as d_status','desk_queues.uuid as d_uuid',
+                'reservations.source_reservation_serial','reservations.source_queue_number','reservations.patientid','reservations.reservation_date_time','reservations.doctor_id as res_doctor_id',
+                'room_queues.id as rq_id', 'room_queues.room_id','room_queues.created_at as r_created_at','room_queues.queue_number as room_qn','room_queues.doctor_id as r_doctor_id');
 
-
+        if($request->has('date_from') && $request->has('date_to') && $request->date_from != '' && $request->date_to != ''){
+            $data['histories'] = $data['histories']->whereBetween('desk_queues.created_at', [$request->date_from, $request->date_to]);
         }
+        if($request->has('reservation') && $request->reservation != ''){
+            $data['histories'] = $data['histories']->where('reservations.source_reservation_serial', $request->reservation);
+        }
+        if($request->has('doctor') && $request->doctor != '' && $request->doctor != 'Choose'){
+            $data['histories'] = $data['histories']->where('reservations.doctor_id', $request->doctor);
+        }
+        if($request->has('desk') && $request->desk != '' && $request->desk != 'Choose'){
+            $data['histories'] = $data['histories']->where('desk_queues.desk_id', $request->desk);
+        }
+        if($request->has('room') && $request->room != '' && $request->room != 'Choose'){
+            $data['histories'] = $data['histories']->where('room_queues.room_id', $request->room);
+        }
+
+        $data['histories'] = $data['histories']->orderBy('reservations.id', 'DESC')->paginate(30);
 
         return view('all_queue_history.history', $data);
 
