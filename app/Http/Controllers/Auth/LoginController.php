@@ -115,7 +115,7 @@ class LoginController extends Controller
         }
 
         // Store Log User Login
-        storeLogUserLogin();
+//        storeLogUserLogin();
     }
 
     // Custom Logout
@@ -124,7 +124,7 @@ class LoginController extends Controller
         if(auth()->user()->desk_id){
             // Broadcast event
             event(new DeskStatus(Desk::getBy('id', auth()->user()->desk_id)->uuid, 0));
-    
+
             // Update user
             User::edit([
                 'desk_id' => null,
@@ -145,6 +145,8 @@ class LoginController extends Controller
         }
 
         auth()->logout();
+
+        session()->forget('permissions');
         return redirect(route('login'));
     }
 }

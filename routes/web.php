@@ -51,7 +51,7 @@ Route::get('/reset', 'HomeController@resetQueues')->name('resetQueues');
 Route::get('screens/unified/url', 'ScreensController@showByUnifiedUrl')->name('screens.showByUnifiedUrl');
 Route::get('screens/{screen}', 'ScreensController@show')->name('screens.show');
 Route::get('screens/ajax/{screen}/get-contents', 'ScreensController@getScreensAjaxContents')->name('screens.getScreensAjaxContents');
-Route::get('screens/search-by-letter/{type}/{letter}', 'ScreensController@searchByLetter')->name('screens.searchByLetter')->where('type', 'doctor|speciality');;
+Route::get('screens/search-by-letter/{type}/{letter}', 'ScreensController@searchByLetter')->name('screens.searchByLetter')->where('type', 'doctor|speciality');
 Route::get('doctors/get/floors/{doctor_uuid}', 'DoctorToFloorsController@getDoctorFloor')->name('doctor-to-floor.getDoctorFloor');
 
 // Auth

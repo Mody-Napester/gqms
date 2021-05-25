@@ -78,7 +78,7 @@ class DeskQueuesController extends Controller
                     'floor' => $area->floor->name_en,
                 ];
 
-                \EPSON::deskPrint($printData);
+//                \EPSON::deskPrint($printData);
             }
 
             $data['availableDeskQueue'] = DeskQueue::getAvailableDeskQueueView($area->id);
